@@ -1,0 +1,29 @@
+{
+  "name": "basedjsv14",
+  "version": "2.0.0",
+  "description": "Base de Bot para V14",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arrastão RJ",
+  "license": "ISC",
+  "dependencies": {
+    "@iamtraction/google-translate": "^2.0.1",
+    "axios": "^1.5.1",
+    "canvas": "^2.11.2",
+    "chalk": "^4.1.2",
+    "cheerio": "^1.0.0-rc.12",
+    "discord-api-types": "^0.37.60",
+    "discord-arts": "^0.5.5",
+    "discord-badges": "^0.0.0",
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.0.3",
+    "fs": "^0.0.1-security",
+    "install": "^0.13.0",
+    "moment": "^2.29.4",
+    "mongoose": "^6.8.4",
+    "npm": "^10.2.0",
+    "request": "^2.88.2"
+  }
+}

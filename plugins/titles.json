@@ -1,0 +1,480 @@
+{
+    "titles": [
+         {
+            "name": "Aprendiz",
+            "itemId": 1
+        },
+         {
+            "name": "Deus do ARAM",
+            "itemId": 10100006
+        },
+         {
+            "name": "Implacável",
+            "itemId": 10110005
+        },
+         {
+            "name": "Anjo da misericórdia",
+            "itemId": 10110403
+        },
+         {
+            "name": "Veloz",
+            "itemId": 10120005
+        },
+         {
+            "name": "Avalanche",
+            "itemId": 10120303
+        },
+         {
+            "name": "Nobreza Poro",
+            "itemId": 10120601
+        },
+         {
+            "name": "Abissal",
+            "itemId": 10130005
+        },
+         {
+            "name": "Intocável",
+            "itemId": 10130604
+        },
+         {
+            "name": "Inteligência fenomenal",
+            "itemId": 10300006
+        },
+         {
+            "name": "Estiloso",
+            "itemId": 10310005
+        },
+         {
+            "name": "Inovador",
+            "itemId": 10320005
+        },
+         {
+            "name": "Gamer de nicho",
+            "itemId": 10320103
+        },
+         {
+            "name": "Brilhante",
+            "itemId": 10320303
+        },
+         {
+            "name": "Sobrevivente",
+            "itemId": 10320503
+        },
+         {
+            "name": "Ás",
+            "itemId": 10320704
+        },
+         {
+            "name": "Estratégico",
+            "itemId": 10330005
+        },
+         {
+            "name": "Insolente",
+            "itemId": 10330404
+        },
+         {
+            "name": "Detonador de Bots",
+            "itemId": 12000006
+        },
+         {
+            "name": "Letal",
+            "itemId": 20100006
+        },
+         {
+            "name": "Tropa",
+            "itemId": 20100204
+        },
+         {
+            "name": "Demônio Indestrutível",
+            "itemId": 20100304
+        },
+         {
+            "name": "Maioral",
+            "itemId": 20200006
+        },
+         {
+            "name": "Dominador",
+            "itemId": 20210005
+        },
+         {
+            "name": "Indomável",
+            "itemId": 20210104
+        },
+         {
+            "name": "Inigualável",
+            "itemId": 20220005
+        },
+         {
+            "name": "Desafiante '22",
+            "itemId": 202200006
+        },
+         {
+            "name": "Patrulheiro",
+            "itemId": 20220204
+        },
+         {
+            "name": "Sublime",
+            "itemId": 20230005
+        },
+         {
+            "name": "Prodígio",
+            "itemId": 20230204
+        },
+         {
+            "name": "Lenda",
+            "itemId": 20300006
+        },
+         {
+            "name": "Exibido",
+            "itemId": 20310005
+        },
+         {
+            "name": "Pés Velozes",
+            "itemId": 20310203
+        },
+         {
+            "name": "Captain Jack",
+            "itemId": 20310302
+        },
+         {
+            "name": "Gigante",
+            "itemId": 20320005
+        },
+         {
+            "name": "Unidade absoluta",
+            "itemId": 20320104
+        },
+         {
+            "name": "Dissidente",
+            "itemId": 20330005
+        },
+         {
+            "name": "Lobo Solitário",
+            "itemId": 20330103
+        },
+         {
+            "name": "Sortudo",
+            "itemId": 20330204
+        },
+         {
+            "name": "Predador",
+            "itemId": 20340005
+        },
+         {
+            "name": "Caçador de Aronguejos",
+            "itemId": 20340502
+        },
+         {
+            "name": "Invasor",
+            "itemId": 20340804
+        },
+         {
+            "name": "Mandante",
+            "itemId": 20400006
+        },
+         {
+            "name": "Alicerce",
+            "itemId": 20410005
+        },
+         {
+            "name": "Onisciente",
+            "itemId": 20410204
+        },
+         {
+            "name": "Visionário",
+            "itemId": 20420005
+        },
+         {
+            "name": "Vigia de vigias",
+            "itemId": 20420202
+        },
+         {
+            "name": "Top dos Tops",
+            "itemId": 21000006
+        },
+         {
+            "name": "S+",
+            "itemId": 21000104
+        },
+         {
+            "name": "Magistral",
+            "itemId": 21000406
+        },
+         {
+            "name": "Jogador do K/DA",
+            "itemId": 21000506
+        },
+         {
+            "name": "Obstinado",
+            "itemId": 30100006
+        },
+         {
+            "name": "Caçador de Grandes Partidas",
+            "itemId": 30110005
+        },
+         {
+            "name": "Épico",
+            "itemId": 30110102
+        },
+         {
+            "name": "Quem cedo madruga",
+            "itemId": 30110203
+        },
+         {
+            "name": "Corajoso",
+            "itemId": 30120005
+        },
+         {
+            "name": "Especialista em viradas",
+            "itemId": 30120104
+        },
+         {
+            "name": "Desinibição",
+            "itemId": 30120203
+        },
+         {
+            "name": "Incendiário",
+            "itemId": 30120504
+        },
+         {
+            "name": "Excepcional",
+            "itemId": 30130005
+        },
+         {
+            "name": "Impecável",
+            "itemId": 30130106
+        },
+         {
+            "name": "Pé de valsa",
+            "itemId": 30130503
+        },
+         {
+            "name": "Armador de Jogadas",
+            "itemId": 30200006
+        },
+         {
+            "name": "Estrategista",
+            "itemId": 30210005
+        },
+         {
+            "name": "Coletor de Campeões",
+            "itemId": 30210203
+        },
+         {
+            "name": "No Controle",
+            "itemId": 30210504
+        },
+         {
+            "name": "Demolidor",
+            "itemId": 30220005
+        },
+         {
+            "name": "Lenhador",
+            "itemId": 30220204
+        },
+         {
+            "name": "Sinergizado",
+            "itemId": 30230005
+        },
+         {
+            "name": "Fanático",
+            "itemId": 30230103
+        },
+         {
+            "name": "Anjo guardião",
+            "itemId": 30230302
+        },
+         {
+            "name": "Especialista em Insec",
+            "itemId": 30230504
+        },
+         {
+            "name": "Espirituoso",
+            "itemId": 30240005
+        },
+         {
+            "name": "Penetra",
+            "itemId": 30240402
+        },
+         {
+            "name": "Espírito de Equipe",
+            "itemId": 30300006
+        },
+         {
+            "name": "Mestre do Clash",
+            "itemId": 30320005
+        },
+         {
+            "name": "Clasher",
+            "itemId": 30320103
+        },
+         {
+            "name": "Sincronia Perfeita",
+            "itemId": 30330005
+        },
+         {
+            "name": "Harmonioso",
+            "itemId": 30340005
+        },
+         {
+            "name": "Habitante de Runeterra",
+            "itemId": 30350005
+        },
+         {
+            "name": "Erudição",
+            "itemId": 40100006
+        },
+         {
+            "name": "Guia",
+            "itemId": 40110005
+        },
+         {
+            "name": "Mestre de Campeões",
+            "itemId": 40110104
+        },
+         {
+            "name": "Mergulho profundo",
+            "itemId": 40110504
+        },
+         {
+            "name": "Inigualável",
+            "itemId": 40120005
+        },
+         {
+            "name": "Mestre da morte",
+            "itemId": 40120104
+        },
+         {
+            "name": "Mestre da guerra",
+            "itemId": 40120204
+        },
+         {
+            "name": "Arquimago",
+            "itemId": 40120304
+        },
+         {
+            "name": "Na Mosca",
+            "itemId": 40120404
+        },
+         {
+            "name": "Vigia",
+            "itemId": 40120504
+        },
+         {
+            "name": "Titã",
+            "itemId": 40120604
+        },
+         {
+            "name": "Simplesmente o Melhor",
+            "itemId": 40130005
+        },
+         {
+            "name": "Diferencial na selva",
+            "itemId": 40130104
+        },
+         {
+            "name": "Diferencial em suporte",
+            "itemId": 40130204
+        },
+         {
+            "name": "Diferencial na rota inferior",
+            "itemId": 40130304
+        },
+         {
+            "name": "Diferencial na rota do meio",
+            "itemId": 40130404
+        },
+         {
+            "name": "Diferencial na rota superior",
+            "itemId": 40130504
+        },
+         {
+            "name": "Nível de habilidade diferenciado",
+            "itemId": 40130604
+        },
+         {
+            "name": "Veterano",
+            "itemId": 40200006
+        },
+         {
+            "name": "Carrasco",
+            "itemId": 40210005
+        },
+         {
+            "name": "Especialista em Penta Kill",
+            "itemId": 40210604
+        },
+         {
+            "name": "Sanguinário",
+            "itemId": 40210903
+        },
+         {
+            "name": "Patrulheiros",
+            "itemId": 40220005
+        },
+         {
+            "name": "Ladrão",
+            "itemId": 40220104
+        },
+         {
+            "name": "Engenhoso",
+            "itemId": 40240005
+        },
+         {
+            "name": "Mítico",
+            "itemId": 40240603
+        },
+         {
+            "name": "Caça às recompensas",
+            "itemId": 40240802
+        },
+         {
+            "name": "Encantado",
+            "itemId": 40250005
+        },
+         {
+            "name": "Protetor",
+            "itemId": 40250104
+        },
+         {
+            "name": "Fenômeno",
+            "itemId": 50200005
+        },
+         {
+            "name": "Titular",
+            "itemId": 50200104
+        },
+         {
+            "name": "Tesoureiro",
+            "itemId": 50400005
+        },
+         {
+            "name": "Icônico",
+            "itemId": 50400204
+        },
+         {
+            "name": "Colecionador",
+            "itemId": 50500005
+        },
+         {
+            "name": "Especialista",
+            "itemId": 51000006
+        },
+         {
+            "name": "Companheiro",
+            "itemId": 51000203
+        },
+         {
+            "name": "Elegante",
+            "itemId": 51000603
+        },
+         {
+            "name": "Criação de tendências",
+            "itemId": 51000904
+        },
+         {
+            "name": "Fashionista",
+            "itemId": 51001104
+        }
+    ]
+}
