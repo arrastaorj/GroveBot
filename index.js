@@ -1,7 +1,7 @@
 const discord = require("discord.js")
 
 const { GatewayIntentBits, Partials } = require('discord.js')
-require('dotenv').config();
+require('dotenv').config()
 
 const client = new discord.Client({
   intents: [
@@ -19,25 +19,25 @@ const client = new discord.Client({
 
 console.clear()
 
-module.exports = client;
+module.exports = client
 
-client.slashCommands = new discord.Collection();
-client.aliases = new discord.Collection();
+client.slashCommands = new discord.Collection()
+client.aliases = new discord.Collection()
 
-require('./handler')(client);
+require('./handler')(client)
 
 const connectiondb = require("./database/connect")
-connectiondb.start();
+connectiondb.start()
 
 client.login(process.env.token)
 
 //ANTICRASH
-// process.on('unhandRejection', (reason, promise) => {
-//   console.log(`❗ | [Erro]\n\n` + reason, promise);
-// });
-// process.on('uncaughtException', (error, origin) => {
-//   console.log(`❗ | [Erro]\n\n` + error, origin);
-// });
-// process.on('uncaughtExceptionMonitor', (error, origin) => {
-//   console.log(`❗ | [Erro]\n\n` + error, origin);
-// });
+process.on('unhandRejection', (reason, promise) => {
+  console.log(`❗ | [Erro]\n\n` + reason, promise)
+})
+process.on('uncaughtException', (error, origin) => {
+  console.log(`❗ | [Erro]\n\n` + error, origin)
+})
+process.on('uncaughtExceptionMonitor', (error, origin) => {
+  console.log(`❗ | [Erro]\n\n` + error, origin)
+})
