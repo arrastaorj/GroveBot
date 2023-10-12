@@ -4,6 +4,7 @@ const cargos = require("../../database/models/cargos")
 
 client.on("interactionCreate", async (interaction) => {
     const { options, guild, member, customId, message } = interaction
+    
     if (interaction.customId === "select2") {
 
         const teste = await cargos.find({

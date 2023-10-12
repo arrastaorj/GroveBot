@@ -5,6 +5,14 @@ module.exports = {
   name: "",
   description: "",
   type: discord.ApplicationCommandType.ChatInput,
+  options: [
+    {
+      name: "",
+      type: discord.ApplicationCommandOptionType.User,
+      description: "",
+      required: false
+    },
+  ],
 
   run: async (client, interaction) => {
 
