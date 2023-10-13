@@ -45,10 +45,9 @@ client.on("messageCreate", async (message, member) => {
                 level.xp = 0
                 level.level += 1
 
-                const embed = new discord.EmbedBuilder()
-                    .setDescription(`**${message.author}, Parabêns, você subiu para o nível: \`${level.level}\` **`)
 
-                client.channels.cache.get(cmd1).send({ embeds: [embed], ephemeral: false })
+
+                client.channels.cache.get(cmd1).send(`**🎆 ${message.author}, Parabêns, você subiu para o nível: \`${level.level}\` **`)
 
             }
 

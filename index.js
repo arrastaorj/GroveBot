@@ -32,6 +32,7 @@ connectiondb.start()
 client.login(process.env.token)
 
 //ANTICRASH
+
 process.on('unhandRejection', (reason, promise) => {
   console.log(`❗ | [Erro]\n\n` + reason, promise)
 })
