@@ -30,7 +30,7 @@ module.exports = {
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`+\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `> \`-\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
 
         let cmd1 = cmd.canal1
 
@@ -115,11 +115,11 @@ module.exports = {
                 .setImage(`attachment://ship.png`);
 
 
-            await interaction.reply({ embeds: [embed], files: [attachment], content: `🔥 | Casal: ${user1} & ${user2}\n🎆 | Nome do Ship: **${combinedUsername}**\n💝 | Compatibilidade: **${shipPercentage}%**` });
+            await interaction.reply({ embeds: [embed], files: [attachment], content: `> \`+\` 🔥 | Casal: ${user1} & ${user2}\n🎆 | Nome do Ship: **${combinedUsername}**\n💝 | Compatibilidade: **${shipPercentage}%**` });
         }
         else
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
 
     }
 }

@@ -30,7 +30,7 @@ module.exports = {
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`+\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `> \`-\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
 
         let cmd1 = cmd.canal1
 
@@ -1177,18 +1177,18 @@ module.exports = {
 
                     if (i.customId === 'info') {
 
-                        await i.reply({ content: `Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
+                        await i.reply({ content: `> \`+\` Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
 
                     }
                     if (i.customId === 'info2') {
 
-                        await i.reply({ content: `Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
+                        await i.reply({ content: `> \`+\` Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
 
                     }
 
                     if (i.customId === 'info3') {
 
-                        await i.reply({ content: `Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
+                        await i.reply({ content: `> \`+\` Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
 
                     }
 
@@ -1198,7 +1198,7 @@ module.exports = {
         }
         else
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
 
     }
 }

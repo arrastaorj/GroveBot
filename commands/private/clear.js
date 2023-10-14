@@ -20,14 +20,14 @@ module.exports = {
             interaction.channel.bulkDelete(numero, true)
             let embed = new discord.EmbedBuilder()
                 .setTitle(`Limpeza concluida`)
-                .setDescription(`**Observação:** > \`+\` Você só pode excluir mensagens em massa com menos de 14 dias.`)
+                .setDescription(`**Observação:** Você só pode excluir mensagens em massa com menos de 14 dias.`)
                 .setTimestamp()
                 .setFooter({ text: `Limpado por: ${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
                 .setColor("#41b2b0")
             interaction.reply({ embeds: [embed], ephemeral: true })
         } else {
 
-            return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+            return interaction.reply({ content: "> \`-\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
         }
 
     }

@@ -28,7 +28,7 @@ module.exports = {
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`+\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `> \`-\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
 
         let cmd1 = cmd.canal1
 
@@ -51,8 +51,8 @@ module.exports = {
                 interaction.reply({
                     content:
                         mentionedUserId
-                            ? `${targetUserObj.user.tag} ainda não tem níveis. Tente novamente quando ele conversarem um pouco mais.`
-                            : "Você ainda não tem nenhum nível. Converse mais um pouco e tente novamente.",
+                            ? `> \`-\` ${targetUserObj.user.tag} ainda não tem níveis. Tente novamente quando ele conversarem um pouco mais.`
+                            : "> \`-\` Você ainda não tem nenhum nível. Converse mais um pouco e tente novamente.",
                     ephemeral: true
                 })
                 return
@@ -146,7 +146,7 @@ module.exports = {
 
         else
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`+\` Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
 
     }
 }

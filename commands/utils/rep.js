@@ -23,7 +23,7 @@ module.exports = {
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`+\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `> \`-\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
 
         let cmd1 = cmd.canal1
 
@@ -41,10 +41,10 @@ module.exports = {
 
             if (cmd3 !== null && timeout - (Date.now() - cmd3.Cd) > 0) {
                 const time = ms(timeout - (Date.now() - cmd3.Cd))
-                return interaction.reply({ content: `> \`+\` ⌛ Você está em **tempo de recarga**, Volte em **${time.minutes}** minutos **${time.seconds}**s`, ephemeral: true })
+                return interaction.reply({ content: `> \`-\` ⌛ Você está em **tempo de recarga**, Volte em **${time.minutes}** minutos **${time.seconds}**s`, ephemeral: true })
             } else {
 
-                if (user === interaction.user) return interaction.reply({ content: `> \`+\` 🙅‍♀️ Por mais talentoso que você seja, não pode adicionar reputações para você mesmo!`, ephemeral: true })
+                if (user === interaction.user) return interaction.reply({ content: `> \`-\` 🙅‍♀️ Por mais talentoso que você seja, não pode adicionar reputações para você mesmo!`, ephemeral: true })
 
                 await rep.findOneAndUpdate(
                     {
@@ -90,6 +90,6 @@ module.exports = {
 
         else
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
     }
 }

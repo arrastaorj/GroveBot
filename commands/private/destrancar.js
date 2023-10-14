@@ -19,7 +19,7 @@ module.exports = {
             })
         } else {
 
-            return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+            return interaction.reply({ content: "> \`-\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
         }
     }
 }

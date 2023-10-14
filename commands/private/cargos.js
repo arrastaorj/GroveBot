@@ -198,7 +198,7 @@ module.exports = {
             if (setmax <= currentCargos.length) {
                 stringSelectMenu.setMaxValues(setmax);
             } else {
-                return interaction.reply({ content: "\`\`\`❌ AVISO: Seu máximo selecionado não pode ser maior do que a quantidade de cargos configurados.\`\`\`", ephemeral: true });
+                return interaction.reply({ content: "> \`-\` AVISO: Seu máximo selecionado não pode ser maior do que a quantidade de cargos configurados.", ephemeral: true });
             }
 
             stringSelectMenu.setMinValues(0)
@@ -269,11 +269,11 @@ module.exports = {
 
             })
             
-            await interaction.reply({ ephemeral: true, content: `${interaction.user},\n\n**dropdownRoles**, Enviado com sucesso!\n\n**Canal:** ${chat}\n**Logs:** ${logs}`, })
+            await interaction.reply({ ephemeral: true, content: `> \`+\` ${interaction.user},\n\n**dropdownRoles**, Enviado com sucesso!\n\n**Canal:** ${chat}\n**Logs:** ${logs}`, })
 
         } else {
 
-            return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+            return interaction.reply({ content: "> \`-\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
         }
 
     }
