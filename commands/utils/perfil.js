@@ -44,9 +44,6 @@ module.exports = {
             const user = interaction.options.getUser("usuario") || interaction.user
 
 
-
-
-
             let chave = {}
             chave.create = Canvas.createCanvas(900, 600)
             chave.context = chave.create.getContext('2d')
@@ -637,11 +634,6 @@ module.exports = {
 
                             await perfilID.create(newCmd)
 
-                            let cargoNames = []
-
-                            if (attachment) {
-                                cargoNames.push(attachment)
-                            }
 
                         } else {
 
@@ -656,11 +648,7 @@ module.exports = {
                                 }, { $set: { "Img1": attachment } })
                             }
 
-                            let cargoNames = []
-
-                            if (attachment) {
-                                cargoNames.push(attachment)
-                            }
+    
                         }
 
                     }
@@ -723,11 +711,7 @@ module.exports = {
 
                             await perfilID.create(newCmd)
 
-                            let cargoNames = []
-
-                            if (attachment) {
-                                cargoNames.push(attachment)
-                            }
+                           
 
                         } else {
 
@@ -742,15 +726,10 @@ module.exports = {
                                 }, { $set: { "Img1": attachment } })
                             }
 
-                            let cargoNames = []
-
-                            if (attachment) {
-                                cargoNames.push(attachment)
-                            }
+                           
                         }
 
                     }
-
 
 
 
