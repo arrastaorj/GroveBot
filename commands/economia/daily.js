@@ -1,13 +1,17 @@
-const schema = require("../../database/models/currencySchema")
-const discord = require("discord.js")
-const ms = require("ms")
+const discord = require('discord.js')
+const User = require('../../database/models/economia')
+const ms = require("../../plugins/parseMs")
 const comandos = require("../../database/models/comandos")
+
 
 module.exports = {
     name: 'daily',
-    description: 'Reivindique sua recompensa diária.',
+    description: 'Collect your dailies!',
+
 
     run: async (client, interaction) => {
+
+
 
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
@@ -21,44 +25,52 @@ module.exports = {
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
 
-            let amount = Math.floor(Math.random() * 10000) + 1000
 
-            let data
+            const amount = Math.floor(Math.random() * 10000) + 1000
+
             try {
-                data = await schema.findOne({
-                    userId: interaction.user.id,
-                })
 
-                if (!data) {
-                    data = await schema.create({
-                        userId: interaction.user.id,
-                        guildId: interaction.guild.id,
+                const query = {
+                    userId: interaction.member.id,
+                    guildId: interaction.guild.id,
+                }
+
+                let user = await User.findOne(query)
+
+                if (user) {
+
+
+                    let timeout = 86400000
+
+                    if (timeout - (Date.now() - user.lastDaily) > 0) {
+
+                        const timeLeft = ms(timeout - (Date.now() - user.lastDaily))
+
+                        interaction.reply({ content: `${interaction.user}\n> \`-\` Você já resgatou recompensas diárias hoje! Aguarde **${timeLeft.hours}h e ${timeLeft.minutes}m** Para resgata novamente.`, ephemeral: true })
+                        return
+                    }
+
+                    user.lastDaily = new Date()
+                } else {
+                    user = new User({
+                        ...query,
+                        lastDaily: new Date(),
                     })
                 }
-            } catch (err) {
-                console.log(err)
-                await interaction.reply({ content: "> \`-\` Ocorreu um erro ao executar este comando...", ephemeral: true })
+
+                user.saldo += amount * 1
+                await user.save()
+
+                interaction.reply({ content: `${interaction.user}\n> \`+\` Você regatou **<:Lecoin:1059125860524900402> ${amount.toLocaleString()} LexaCoins**` })
+
+
+            } catch (error) {
+                console.log(`Error with /daily: ${error}`)
             }
-
-            let timeout = 86400000
-
-            if (timeout - (Date.now() - data.dailyTimeout) > 0) {
-                let timeLeft = ms(timeout - (Date.now() - data.dailyTimeout))
-
-                await interaction.reply({ content: `> \`-\` Você já resgatou recompensas diárias hoje! Aguarde até **${timeLeft}** Para resgata novamente.`, ephemeral: true })
-            } else {
-                data.dailyTimeout = Date.now()
-                data.wallet += amount * 1
-                await data.save()
-
-                await interaction.reply({ content: `> \`+\` Você recebeu **<:Lecoin:1059125860524900402> ${amount.toLocaleString()} LexaCoins**` })
-            }
-
         }
         else
 
 
             if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
-
     }
 }

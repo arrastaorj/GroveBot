@@ -1,7 +1,7 @@
-const schema = require("../../database/models/currencySchema")
 const discord = require("discord.js")
 const ms = require("ms")
 const comandos = require("../../database/models/comandos")
+const User = require('../../database/models/economia')
 
 module.exports = {
     name: 'implorar',
@@ -23,33 +23,22 @@ module.exports = {
 
             let amount = Math.floor(Math.random() * 1000) + 100
 
-            let data
-            try {
-                data = await schema.findOne({
-                    userId: interaction.user.id,
-                })
-
-                if (!data) {
-                    data = await schema.create({
-                        userId: interaction.user.id,
-                        guildId: interaction.guild.id,
-                    })
-                }
-            } catch (err) {
-                console.log(err)
-                await interaction.reply({
-                    content: "> \`-\` Ocorreu um erro ao executar este comando...",
-                    ephemeral: true,
-                })
+            const query = {
+                userId: interaction.user.id,
+                guildId: interaction.guild.id,
             }
 
-            let timeout = 300000
+            let data = await User.findOne(query)
+
+            if (data) {
+
+                let timeout = 300000
 
             if (timeout - (Date.now() - data.begTimeout) > 0) {
                 let timeLeft = ms(timeout - (Date.now() - data.begTimeout))
 
                 await interaction.reply({
-                    content: `> \`-\` Você não ja implorou de mais hoje? Aguarde até **${timeLeft}** para implorar novamente.`, ephemeral: true
+                    content: `${interaction.user}\n> \`-\` Você não ja implorou de mais hoje? Aguarde mais **${timeLeft}** para implorar novamente.`, ephemeral: true
                 })
             } else {
                 data.begTimeout = Date.now()
@@ -58,8 +47,14 @@ module.exports = {
 
 
 
-                await interaction.reply({ content: `> \`+\`Você implorou e recebeu **<:Lecoin:1059125860524900402> ${amount.toLocaleString()} LexaCoins**` })
+                await interaction.reply({ content: `${interaction.user}\n> \`+\`Você implorou e recebeu **<:Lecoin:1059125860524900402> ${amount.toLocaleString()} LexaCoins**` })
             }
+
+            }
+
+
+
+            
         }
         else
 

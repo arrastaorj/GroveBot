@@ -1,6 +1,6 @@
-const schema = require("../../database/models/currencySchema")
 const discord = require("discord.js")
 const comandos = require("../../database/models/comandos")
+const User = require('../../database/models/economia')
 
 module.exports = {
     name: 'sacar',
@@ -32,53 +32,39 @@ module.exports = {
 
             let withdrawAmount = interaction.options.getInteger("valor")
 
-            let data
-            try {
-                data = await schema.findOne({
-                    userId: interaction.user.id,
-                })
 
-                if (!data) {
-                    data = await schema.create({
-                        userId: interaction.user.id,
-                        guildId: interaction.guild.id,
+            const query = {
+                userId: interaction.user.id,
+                guildId: interaction.guild.id,
+            }
+
+            let data = await User.findOne(query)
+
+            if (data) {
+
+                if (withdrawAmount > data.bank) {
+                    await interaction.reply({
+                        content: `${interaction.user}\n> \`-\` Você não tem tantas moedas em seu banco para sacar.`,
+                        ephemeral: true,
+                    })
+                } else if (withdrawAmount <= 0) {
+                    await interaction.reply({
+                        content: `${interaction.user}\n> \`-\` Insira um número acima de 0.`,
+                        ephemeral: true,
+                    })
+                } else {
+                    data.bank -= withdrawAmount * 1
+                    data.saldo += withdrawAmount * 1
+                    await data.save()
+
+                    await interaction.reply({
+
+                        content: `${interaction.user}\n> \`+\` <:download_9906560:1162869267591602327> Operação realizada com sucesso.\n> \`+\` Valor do saque: **<:Lecoin:1059125860524900402> ${withdrawAmount.toLocaleString()} LexaCoins**`,
+
                     })
                 }
-            } catch (err) {
-                console.log(err)
-                await interaction.reply({
-                    content: "> \`-\` Ocorreu um erro ao executar este comando...",
-                    ephemeral: true,
-                })
+
             }
-
-            if (withdrawAmount > data.bank) {
-                await interaction.reply({
-                    content: "> \`-\` Você não tem tantas moedas em seu banco para sacar.",
-                    ephemeral: true,
-                })
-            } else if (withdrawAmount <= 0) {
-                await interaction.reply({
-                    content: "> \`-\` Insira um número acima de 0.",
-                    ephemeral: true,
-                })
-            } else {
-                data.bank -= withdrawAmount * 1
-                data.wallet += withdrawAmount * 1
-                await data.save()
-
-                const withdrawEmbed = new discord.EmbedBuilder()
-                    .setColor("#0155b6")
-                    .setDescription(
-                        `Retirado com sucesso **:coin: ${withdrawAmount.toLocaleString()}** do banco`
-                    )
-
-                await interaction.reply({
-                    content: `> \`+\` <:withdraw_8378797:1162537287188496434> Operação realizada com sucesso. Valor do saque: **<:Lecoin:1059125860524900402> ${withdrawAmount.toLocaleString()}**`,
-                    ephemeral: true,
-                })
-            }
-
 
         }
         else

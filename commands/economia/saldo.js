@@ -1,6 +1,6 @@
-const schema = require("../../database/models/currencySchema")
 const discord = require("discord.js")
 const comandos = require("../../database/models/comandos")
+const User = require('../../database/models/economia')
 
 module.exports = {
     name: 'saldo',
@@ -29,33 +29,49 @@ module.exports = {
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
 
-            let user = interaction.options.getUser("user")
+            const user = interaction.options.getUser("user") || interaction.user
 
-            if (!user) {
-                user = interaction.user
-            }
-
-            let data
             try {
-                data = await schema.findOne({
-                    userId: user.id,
-                })
 
-                if (!data) {
-                    data = await schema.create({
+                const query = {
+                    userId: user.id,
+                    guildId: interaction.guild.id,
+                }
+
+                const user2 = await User.findOne(query)
+
+                if (user2) {
+
+                    await interaction.reply({ content: `${user}\n> \`+\` <:money_513951:1162527942346293259> Carteira: <:Lecoin:1059125860524900402> **${user2.saldo.toLocaleString()} LexaCoins** \n> \`+\` <:bank_7407955:1162534093997752420> Banco: <:Lecoin:1059125860524900402> **${user2.bank.toLocaleString()} LexaCoins**\n\n> \`+\` Membros <:star_4066310:1162534911211737098> **LC Primer** recebem **LexaCoins** em Dobro!` })
+
+                } else {
+                    const newUser = new User({
                         userId: user.id,
                         guildId: interaction.guild.id,
-                    })
+
+                    });
+
+                    await newUser.save()
+
+
+                    const query = {
+                        userId: user.id,
+                        guildId: interaction.guild.id,
+                    }
+
+                    const user2 = await User.findOne(query)
+
+
+                    await interaction.reply({ content: `${user}\n> \`+\` <:money_513951:1162527942346293259> Carteira: <:Lecoin:1059125860524900402> **${user2.saldo.toLocaleString()} LexaCoins** \n> \`+\` <:bank_7407955:1162534093997752420> Banco: <:Lecoin:1059125860524900402> **${user2.bank.toLocaleString()} LexaCoins**\n\n> \`+\` Membros <:star_4066310:1162534911211737098> **LC Primer** recebem **LexaCoins** em Dobro!` })
+
+                    // await interaction.reply({ content: `> \`+\` ${user} Ainda não está em meus registros!\n> \`+\` Acabei de realiar o cadastro, Agora você já pode vizualizar o saldo do usuário` })
+
+
                 }
-            } catch (err) {
-                await interaction.reply({
-                    content: "> \`-\` Ocorreu um erro ao executar este comando...",
-                    ephemeral: true,
-                })
+
+            } catch (error) {
+                console.log(`Error with /daily: ${error}`)
             }
-
-
-            await interaction.reply({ content: `> \`+\` <:money_513951:1162527942346293259> Carteira: <:Lecoin:1059125860524900402> **${data.wallet.toLocaleString()} LexaCoins** \n> \`+\` <:bank_7407955:1162534093997752420> Banco: <:Lecoin:1059125860524900402> **${data.bank.toLocaleString()} LexaCoins**\n\n> \`+\` Membros <:star_4066310:1162534911211737098> **LC Primer** recebem **LexaCoins** em Dobro!` })
 
         }
         else
