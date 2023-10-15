@@ -1,6 +1,7 @@
 const client = require('../../index')
 const discord = require("discord.js")
 const ticket = require("../../database/models/ticket")
+const discordTranscripts = require('discord-html-transcripts')
 
 client.on("interactionCreate", async (interaction) => {
 

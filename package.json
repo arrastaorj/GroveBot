@@ -17,6 +17,7 @@
     "discord-api-types": "^0.37.60",
     "discord-arts": "^0.5.5",
     "discord-badges": "^0.0.0",
+    "discord-html-transcripts": "^3.2.0",
     "discord.js": "^14.13.0",
     "dotenv": "^16.0.3",
     "fs": "^0.0.1-security",

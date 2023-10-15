@@ -684,23 +684,6 @@ module.exports = {
 
                         await ticket.create(newCmd)
 
-                        let cargoNames = []
-
-                        if (canal) {
-                            cargoNames.push(canal)
-                        }
-                        if (canal_log) {
-                            cargoNames.push(canal_log)
-                        }
-                        if (categoria) {
-                            cargoNames.push(categoria)
-                        }
-                        if (button) {
-                            cargoNames.push(button)
-                        }
-                        if (cargo) {
-                            cargoNames.push(cargo)
-                        }
 
                     } else {
 
@@ -754,24 +737,6 @@ module.exports = {
                             }, { $set: { "cargo": cargo.id } })
                         }
 
-
-                        let cargoNames = []
-
-                        if (canal) {
-                            cargoNames.push(canal)
-                        }
-                        if (canal_log) {
-                            cargoNames.push(canal_log)
-                        }
-                        if (categoria) {
-                            cargoNames.push(categoria)
-                        }
-                        if (button) {
-                            cargoNames.push(button)
-                        }
-                        if (cargo) {
-                            cargoNames.push(cargo)
-                        }
                     }
 
 
