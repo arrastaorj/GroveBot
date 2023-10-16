@@ -33,7 +33,7 @@ module.exports = {
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
 
         let cmd1 = cmd.canal1
 
@@ -369,6 +369,8 @@ module.exports = {
                 const collector = m.createMessageComponentCollector({ filtro, time: 9000000 })
 
                 collector.on('collect', async (i) => {
+
+                    if (i.user != user) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/perfil\`\` para vizualizar seu perfil.`, ephemeral: true })
 
 
                     if (i.customId === 'sms') {
@@ -1733,13 +1735,16 @@ module.exports = {
 
                     }
 
-                })
 
+                })
+                collector.on('end', collected => {
+                    console.log(`Collected ${collected.size} interactions.`);
+                });
             }
         }
         else
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
 
     }
 }

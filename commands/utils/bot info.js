@@ -2,7 +2,7 @@ const discord = require('discord.js')
 const comandos = require("../../database/models/comandos")
 
 module.exports = {
-    name: "bot",
+    name: "lexa",
     description: 'Veja info sobre mim.',
     options: [
         {
@@ -20,12 +20,12 @@ module.exports = {
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
 
 
         let cmd1 = cmd.canal1
 
-        if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
+        if (cmd1 === null || cmd1 === true || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
 
             const botcor = interaction.guild.members.cache.get(client.user.id)
@@ -53,67 +53,69 @@ module.exports = {
                     {
 
                         name: 'Desenvolvedor:',
-                        value: `\`\`\`Arrastão RJ#6839\`\`\``,
+                        value: `\`\`Arrastão RJ#6839\`\``,
                         inline: true,
 
 
                     },
                     {
                         name: 'ID:',
-                        value: `\`\`\`${client.user.id}\`\`\``,
+                        value: `\`\`${client.user.id}\`\``,
                         inline: true,
 
                     },
                     {
                         name: 'Ping:',
-                        value: `\`\`\`Ping: ${ping}\`\`\``,
-                        inline: false
+                        value: `\`\`Ping: ${ping}\`\``,
+                        inline: true
 
                     },
                     {
+                        name: 'Entrou no Servidor:',
+                        value: `<t:${Math.ceil(server.joinedTimestamp / 1000)}:F> (<t:${~~(server.joinedTimestamp / 1000)}:R>)`,
+                        inline: true,
+                    },
+                    {
+                        name: `Criado:`,
+                        value: `<t:${parseInt(client.user.createdTimestamp / 1000)}> (<t:${~~(client.user.createdTimestamp / 1000)}:R>)`,
+                        inline: true,
+                    },
+                  
+                    {
                         name: 'Linguagem:',
-                        value: `\`\`\`JavaScript\`\`\``,
+                        value: `\`\`JavaScript\`\``,
                         inline: true,
 
                     },
                     {
                         name: 'Livraria:',
-                        value: `\`\`\`discord.js: 14.7.1\`\`\``,
+                        value: `\`\`discord.js: 14.7.1\`\``,
                         inline: true,
                     },
                     {
-                        name: 'Entrou no Servidor:',
-                        value: `<t:${Math.ceil(server.joinedTimestamp / 1000)}:F>`,
-                        inline: false,
-                    },
-                    {
-                        name: `Criado:`,
-                        value: `<t:${parseInt(client.user.createdTimestamp / 1000)}>`,
-                        inline: false,
-                    },
-
-                    {
                         name: 'Meus comandos:',
-                        value: `\`\`\`Digite /help\`\`\``
+                        value: `\`\`Digite /help\`\``,
+                        inline: true,
                     },
                     {
                         name: 'Gerenciando:',
-                        value: `\`\`\`Membros: ${membros}\`\`\``
+                        value: `\`\`Membros: ${membros}\`\``,
+                        inline: true,
                     },
 
                     {
                         name: 'Host',
-                        value: '\`\`\`Discloud\`\`\`',
+                        value: '\`\`Discloud\`\`',
                         inline: true,
                     },
                     {
                         name: 'Container',
-                        value: '\`\`\`Online\`\`\`',
+                        value: '\`\`Online\`\`',
                         inline: true,
                     },
                     {
                         name: `Ram:`,
-                        value: `\`\`\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + 'MB'}\`\`\``,
+                        value: `\`\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + 'MB'}\`\``,
                         inline: true,
                     },
 
@@ -126,6 +128,6 @@ module.exports = {
         else
 
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
     }
 }

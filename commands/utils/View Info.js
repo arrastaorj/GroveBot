@@ -20,7 +20,7 @@ module.exports = {
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
 
 
         let cmd1 = cmd.canal1
@@ -259,7 +259,7 @@ module.exports = {
 
                 collector.on('collect', async (i) => {
 
-                    if (i.user.id != interaction.user.id) return i.reply({ content: `Somente a pessoa que executou o comando (\`${interaction.user.tag}\`) pode interagir com ele.`, ephemeral: true });
+                    if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Somente a pessoa que executou o comando (\`${interaction.user.tag}\`) pode interagir com ele.`, ephemeral: true });
 
                     i.deferUpdate()
                     switch (i.customId) {
@@ -318,7 +318,7 @@ module.exports = {
 
                 collector.on('collect', async (i) => {
 
-                    if (i.user.id != interaction.user.id) return i.reply({ content: `Somente a pessoa que executou o comando (\`${interaction.user.tag}\`) pode interagir com ele.`, ephemeral: true });
+                    if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Somente a pessoa que executou o comando (\`${interaction.user.tag}\`) pode interagir com ele.`, ephemeral: true });
 
                     i.deferUpdate()
                     switch (i.customId) {
@@ -346,7 +346,7 @@ module.exports = {
         }
         else
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
     }
 }
 
