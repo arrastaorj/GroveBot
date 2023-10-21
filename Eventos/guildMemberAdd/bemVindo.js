@@ -6,6 +6,8 @@ const Canvas = require("canvas")
 
 client.on("guildMemberAdd", async (member) => {
 
+
+
     const cmd = await bemvindo.findOne({
         guildId: member.guild.id
     })
@@ -16,13 +18,18 @@ client.on("guildMemberAdd", async (member) => {
 
     if (!cmd1) return
 
+
     const cmd2 = await fbv.findOne({
         guildId: member.guild.id
     })
 
-    let foto = cmd2.canal1
+    let foto = ""
 
-    if (foto === null) foto = "https://raw.githubusercontent.com/arrastaorj/flags/main/bemvindo.png"
+    if (cmd2 === null) {
+
+        foto = "https://raw.githubusercontent.com/arrastaorj/flags/main/bemvindo.png"
+    } else { foto = cmd2.canal1 }
+
 
 
     const { registerFont } = require('canvas')

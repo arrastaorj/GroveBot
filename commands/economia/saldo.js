@@ -64,7 +64,6 @@ module.exports = {
 
                     await interaction.reply({ content: `${user}\n> \`+\` <:money_513951:1162527942346293259> Carteira: <:Lecoin:1059125860524900402> **${user2.saldo.toLocaleString()} LexaCoins** \n> \`+\` <:bank_7407955:1162534093997752420> Banco: <:Lecoin:1059125860524900402> **${user2.bank.toLocaleString()} LexaCoins**\n\n> \`+\` Membros <:star_4066310:1162534911211737098> **LC Primer** recebem **LexaCoins** em Dobro!` })
 
-                    // await interaction.reply({ content: `> \`+\` ${user} Ainda não está em meus registros!\n> \`+\` Acabei de realiar o cadastro, Agora você já pode vizualizar o saldo do usuário` })
 
 
                 }

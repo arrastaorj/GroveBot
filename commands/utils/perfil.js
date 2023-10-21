@@ -16,7 +16,7 @@ const sobre = require('../../database/models/sobre')
 
 module.exports = {
     name: "perfil",
-    description: "Veja o perfil de um usuário.",
+    description: "Veja o perfil exclusivo na Lexa",
     type: discord.ApplicationCommandType.ChatInput,
     options: [
         {
@@ -187,7 +187,6 @@ module.exports = {
 
 
             const cmd2 = await perfilID.findOne({
-                userId: user.id,
                 guildId: interaction.guild.id
             })
 
@@ -430,7 +429,6 @@ module.exports = {
 
 
                                     const cmd2 = await perfilID.findOne({
-                                        userId: user.id,
                                         guildId: interaction.guild.id
                                     })
 
@@ -676,7 +674,6 @@ module.exports = {
 
 
                         const teste = await perfilID.findOne({
-                            userId: user.id,
                             guildId: interaction.guild.id
                         })
 
@@ -696,12 +693,12 @@ module.exports = {
 
                             if (!attachment) {
                                 await perfilID.findOneAndUpdate({
-                                    userId: user.id,
+                                    guildId: interaction.guild.id
 
                                 }, { $unset: { "Img1": "" } })
                             } else {
                                 await perfilID.findOneAndUpdate({
-                                    userId: user.id,
+                                    guildId: interaction.guild.id
                                 }, { $set: { "Img1": attachment } })
                             }
 
@@ -716,7 +713,6 @@ module.exports = {
                         await i.reply({ content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!`, ephemeral: true })
 
                         const teste = await perfilID.findOne({
-                            userId: user.id,
                             guildId: interaction.guild.id
                         })
 
@@ -735,12 +731,12 @@ module.exports = {
 
                             if (!attachment) {
                                 await perfilID.findOneAndUpdate({
-                                    userId: user.id,
+                                    guildId: interaction.guild.id
 
                                 }, { $unset: { "Img1": "" } })
                             } else {
                                 await perfilID.findOneAndUpdate({
-                                    userId: user.id,
+                                    guildId: interaction.guild.id
                                 }, { $set: { "Img1": attachment } })
                             }
 
@@ -753,7 +749,6 @@ module.exports = {
                         await i.reply({ content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!`, ephemeral: true })
 
                         const teste = await perfilID.findOne({
-                            userId: user.id,
                             guildId: interaction.guild.id
                         })
 
@@ -774,12 +769,12 @@ module.exports = {
 
                             if (!attachment) {
                                 await perfilID.findOneAndUpdate({
-                                    userId: user.id,
+                                    guildId: interaction.guild.id
 
                                 }, { $unset: { "Img1": "" } })
                             } else {
                                 await perfilID.findOneAndUpdate({
-                                    userId: user.id,
+                                    guildId: interaction.guild.id
                                 }, { $set: { "Img1": attachment } })
                             }
 
@@ -795,7 +790,6 @@ module.exports = {
 
 
                         const teste = await perfilID.findOne({
-                            userId: user.id,
                             guildId: interaction.guild.id
                         })
 
@@ -815,12 +809,12 @@ module.exports = {
 
                             if (!attachment) {
                                 await perfilID.findOneAndUpdate({
-                                    userId: user.id,
+                                    guildId: interaction.guild.id
 
                                 }, { $unset: { "Img1": "" } })
                             } else {
                                 await perfilID.findOneAndUpdate({
-                                    userId: user.id,
+                                    guildId: interaction.guild.id
                                 }, { $set: { "Img1": attachment } })
                             }
 
@@ -845,7 +839,6 @@ module.exports = {
 
 
                         const cmd2 = await perfilID.findOne({
-                            userId: user.id,
                             guildId: interaction.guild.id
                         })
 
@@ -1022,7 +1015,6 @@ module.exports = {
 
 
                         const cmd2 = await perfilID.findOne({
-                            userId: user.id,
                             guildId: interaction.guild.id
                         })
 
@@ -1197,7 +1189,7 @@ module.exports = {
 
 
                         const cmd2 = await perfilID.findOne({
-                            userId: user.id,
+
                             guildId: interaction.guild.id
                         })
 
@@ -1371,7 +1363,7 @@ module.exports = {
 
 
                         const cmd2 = await perfilID.findOne({
-                            userId: user.id,
+
                             guildId: interaction.guild.id
                         })
 
@@ -1737,9 +1729,7 @@ module.exports = {
 
 
                 })
-                collector.on('end', collected => {
-                    console.log(`Collected ${collected.size} interactions.`);
-                });
+
             }
         }
         else
