@@ -292,10 +292,6 @@ module.exports = {
                     chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2);
                     chave.context.stroke();
 
-
-
-
-
                 })
                 chave.context.restore()
 
