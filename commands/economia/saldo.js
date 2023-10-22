@@ -34,7 +34,6 @@ module.exports = {
             try {
 
                 const query = {
-                    userId: user.id,
                     guildId: interaction.guild.id,
                 }
 
@@ -55,7 +54,6 @@ module.exports = {
 
 
                     const query = {
-                        userId: user.id,
                         guildId: interaction.guild.id,
                     }
 

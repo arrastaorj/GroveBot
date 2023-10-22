@@ -1,5 +1,4 @@
 const discord = require("discord.js")
-const db = require("quick.db")
 const schema = require("../../database/models/economia")
 const skin = require("../../database/models/skin")
 
@@ -12,10 +11,17 @@ module.exports = {
 
         let user = interaction.user
 
+        // const images = [
+        //     "././img/shop/soulfighter.png",
+        //     "././img/shop/RazerEKillJoyu.png",
+        //     "././img/shop/jett.png",
+        // ]
+
+
         const images = [
-            'https://cdn.discordapp.com/attachments/1063231058407079946/1065445574100398202/minecrafttt.png',
-            'https://cdn.discordapp.com/attachments/1063231058407079946/1065442957827784814/settt.png',
-            'https://cdn.discordapp.com/attachments/1063231058407079946/1065441816985481246/vaynearcoceleste.png',
+            "././img/shop/minecraft.png",
+            "././img/shop/sett.png",
+            "././img/shop/vaynearcoceleste.png",
         ]
 
         let currentIndex = 0
@@ -24,8 +30,6 @@ module.exports = {
 
         let maxIndex2 = images.length - 2
 
-
-        const canvas = images[currentIndex]
 
         const row = new discord.ActionRowBuilder().addComponents(
             new discord.ButtonBuilder()
@@ -100,7 +104,6 @@ module.exports = {
         )
 
 
-
         const m = await interaction.reply({
             content: 'Loja Diária',
             files: [images[currentIndex]], // Use o índice atual para as imagens
@@ -148,10 +151,10 @@ module.exports = {
 
                 if (!data) {
                     data = await schema.create({
-                        userId: schema.user.id,
                         guildId: interaction.guild.id,
                     })
                 }
+
 
                 const verif = await skin.findOne({
                     userId: user.id,
@@ -172,19 +175,19 @@ module.exports = {
                     await i.followUp({ content: `${interaction.user} Você comprou Minecraft! Visualize e use no seu /perfil.`, ephemeral: true })
 
 
-                    const imagemComprada = ("https://cdn.discordapp.com/attachments/1063231058407079946/1065445574100398202/minecrafttt.png")
+                    const imagemComprada = ("././img/shop/minecraft.png")
 
 
                     const skins = await skin.findOne({
-                        userId: user.id,
-                        guildId: interaction.guild.id
+                        guildId: interaction.guild.id,
+                        userId: user.id
                     })
 
 
                     if (!skins) {
                         const newCmd = {
-                            userId: user.id,
-                            guildId: interaction.guild.id
+                            guildId: interaction.guild.id,
+                            userId: user.id
                         }
                         if (imagemComprada) {
                             newCmd.Img1 = imagemComprada
@@ -222,15 +225,15 @@ module.exports = {
 
                 if (!data) {
                     data = await schema.create({
-                        userId: schema.user.id,
                         guildId: interaction.guild.id,
+                        userId: user.id
                     })
                 }
 
 
                 const verif = await skin.findOne({
-                    userId: user.id,
-                    guildId: interaction.guild.id
+                    guildId: interaction.guild.id,
+                    userId: user.id
                 });
 
                 if (verif && verif.Img2) {
@@ -247,19 +250,19 @@ module.exports = {
                     await data.save()
 
 
-                    const imagemComprada = ("https://cdn.discordapp.com/attachments/1063231058407079946/1065442957827784814/settt.png")
+                    const imagemComprada = ("././img/shop/sett.png")
 
 
                     const skins = await skin.findOne({
-                        userId: user.id,
-                        guildId: interaction.guild.id
+                        guildId: interaction.guild.id,
+                        userId: user.id
                     })
 
 
                     if (!skins) {
                         const newCmd = {
-                            userId: user.id,
-                            guildId: interaction.guild.id
+                            guildId: interaction.guild.id,
+                            userId: user.id
                         }
                         if (imagemComprada) {
                             newCmd.Img2 = imagemComprada
@@ -271,12 +274,14 @@ module.exports = {
 
                         if (!imagemComprada) {
                             await skin.findOneAndUpdate({
-                                userId: user.id,
+                                guildId: interaction.guild.id,
+                                userId: user.id
 
                             }, { $unset: { "Img2": "" } })
                         } else {
                             await skin.findOneAndUpdate({
-                                userId: user.id,
+                                guildId: interaction.guild.id,
+                                userId: user.id
                             }, { $set: { "Img2": imagemComprada } })
                         }
 
@@ -296,14 +301,14 @@ module.exports = {
 
                 if (!data) {
                     data = await schema.create({
-                        userId: schema.user.id,
                         guildId: interaction.guild.id,
+                        userId: user.id
                     })
                 }
 
                 const verif = await skin.findOne({
-                    userId: user.id,
-                    guildId: interaction.guild.id
+                    guildId: interaction.guild.id,
+                    userId: user.id
                 });
 
                 if (verif && verif.Img3) {
@@ -323,19 +328,19 @@ module.exports = {
                     await data.save()
 
 
-                    const imagemComprada = ("https://cdn.discordapp.com/attachments/1063231058407079946/1065441816985481246/vaynearcoceleste.png")
+                    const imagemComprada = ("././img/shop/vaynearcoceleste.png")
 
 
                     const skins = await skin.findOne({
-                        userId: user.id,
-                        guildId: interaction.guild.id
+                        guildId: interaction.guild.id,
+                        userId: user.id
                     })
 
 
                     if (!skins) {
                         const newCmd = {
-                            userId: user.id,
-                            guildId: interaction.guild.id
+                            guildId: interaction.guild.id,
+                            userId: user.id
                         }
                         if (imagemComprada) {
                             newCmd.Img3 = imagemComprada

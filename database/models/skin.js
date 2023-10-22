@@ -7,6 +7,8 @@ const cmd = new db.Schema({
     Img2: { type: String },
     Img3: { type: String },
     Img4: { type: String },
+    Img5: { type: String },
+    Img6: { type: String },
 
 })
 
