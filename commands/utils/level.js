@@ -43,8 +43,9 @@ module.exports = {
 
 
             const fetchedLevel = await Level.findOne({
-                userId: targetUserId,
                 guildId: interaction.guild.id,
+                userId: targetUserId,
+
             })
 
             if (!fetchedLevel) {

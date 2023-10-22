@@ -33,8 +33,9 @@ module.exports = {
 
 
             const cmd3 = await rep.findOne({
+                guildId: interaction.guild.id,
                 userId: interaction.user.id,
-                guildId: interaction.guild.id
+
             })
 
             const timeout = 300000
@@ -48,8 +49,8 @@ module.exports = {
 
                 await rep.findOneAndUpdate(
                     {
+                        guildId: interaction.guild.id,
                         userId: interaction.user.id,
-                        guildId: interaction.guild.id
                     },
                     {
                         $set: {
@@ -60,14 +61,15 @@ module.exports = {
                 )
 
                 const cmd2 = await rep.findOne({
+                    guildId: interaction.guild.id,
                     userId: user.id,
-                    guildId: interaction.guild.id
+
                 })
 
                 if (!cmd2) {
                     const newCmd = {
-                        userId: user.id,
                         guildId: interaction.guild.id,
+                        userId: user.id,
                         Rep: 1
                     }
                     await rep.create(newCmd)
@@ -75,8 +77,8 @@ module.exports = {
                     const currentRep = cmd2.Rep || 0
                     await rep.findOneAndUpdate(
                         {
+                            guildId: interaction.guild.id,
                             userId: user.id,
-                            guildId: interaction.guild.id
                         },
                         {
                             $set: { "Rep": currentRep + 1 }
@@ -84,7 +86,7 @@ module.exports = {
                     )
                 }
 
-                interaction.reply({ content: `> \`+\` 🎉 ${interaction.user} adicionou uma reputação a ${user}`, ephemeral: true })
+                interaction.reply({ content: `> \`+\` 🎉 ${interaction.user} adicionou uma reputação a ${user}`, ephemeral: false })
             }
         }
 

@@ -33,8 +33,8 @@ module.exports = {
             try {
 
                 const query = {
-                    userId: interaction.user.id,
                     guildId: interaction.guild.id,
+                    userId: interaction.user.id,
                 }
 
                 let data = await User.findOne(query)

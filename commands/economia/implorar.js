@@ -24,8 +24,8 @@ module.exports = {
             let amount = Math.floor(Math.random() * 1000) + 100
 
             const query = {
-                userId: interaction.user.id,
                 guildId: interaction.guild.id,
+                userId: interaction.user.id,
             }
 
             let data = await User.findOne(query)

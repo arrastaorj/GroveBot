@@ -14,6 +14,7 @@ const repUser = require('../../database/models/rep')
 const sobre = require('../../database/models/sobre')
 
 const skin = require("../../database/models/skin")
+const User = require('../../database/models/economia')
 
 
 module.exports = {
@@ -168,7 +169,6 @@ module.exports = {
             ])
 
 
-
             let verific = new discord.ActionRowBuilder().addComponents([
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Secondary)
@@ -180,8 +180,6 @@ module.exports = {
                     .setCustomId("nao")
                     .setDisabled(true),
             ])
-
-
 
 
             const modal = new discord.ModalBuilder()
@@ -297,10 +295,22 @@ module.exports = {
 
 
 
-                let money = await db.get(`money_${interaction.guild.id}_${user.id}`)
-                if (money === null) money = 0
+                Saldo = ""
+
+                const money2 = await User.findOne({
+                    guildId: interaction.guild.id,
+                    userId: user.id,
+                })
+
+
+                if (money2 === null) {
+                    Saldo = 0
+                } else { Saldo = money2.saldo }
+
+
+
                 chave.context.font = '50px "up"'
-                chave.context.fillText(`${money.toLocaleString()}`, 120, 400)
+                chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
 
@@ -561,12 +571,20 @@ module.exports = {
                                         })
                                         chave.context.restore()
 
+                                        Saldo = ""
 
-                                        let money = await db.get(`money_${interaction.guild.id}_${user.id}`);
-                                        if (money === null) money = 0;
+                                        const money2 = await User.findOne({
+                                            guildId: interaction.guild.id,
+                                            userId: user.id,
+                                        })
+                        
+                        
+                                        if (money2 === null) {
+                                            Saldo = 0
+                                        } else { Saldo = money2.saldo }
 
                                         chave.context.font = '50px "up"';
-                                        chave.context.fillText(`${money.toLocaleString()}`, 120, 400)
+                                        chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
                                         lvl = ""
@@ -607,7 +625,6 @@ module.exports = {
                                             guildId: interaction.guild.id,
                                             userId: user.id,
                                         })
-
 
 
                                         chave.context.textAlign = "left";
@@ -1127,10 +1144,20 @@ module.exports = {
                             chave.context.restore()
 
 
-                            let money = await db.get(`money_${interaction.guild.id}_${user.id}`)
-                            if (money === null) money = 0
-                            chave.context.font = '50px "up"'
-                            chave.context.fillText(`${money.toLocaleString()}`, 120, 400)
+                            Saldo = ""
+
+                            const money2 = await User.findOne({
+                                guildId: interaction.guild.id,
+                                userId: user.id,
+                            })
+            
+            
+                            if (money2 === null) {
+                                Saldo = 0
+                            } else { Saldo = money2.saldo }
+
+                            chave.context.font = '50px "up"';
+                            chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
                             lvl = ""
@@ -1330,10 +1357,20 @@ module.exports = {
 
 
 
-                            let money = await db.get(`money_${interaction.guild.id}_${user.id}`)
-                            if (money === null) money = 0
-                            chave.context.font = '50px "up"'
-                            chave.context.fillText(`${money.toLocaleString()}`, 120, 400)
+                            Saldo = ""
+
+                            const money2 = await User.findOne({
+                                guildId: interaction.guild.id,
+                                userId: user.id,
+                            })
+            
+            
+                            if (money2 === null) {
+                                Saldo = 0
+                            } else { Saldo = money2.saldo }
+
+                            chave.context.font = '50px "up"';
+                            chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
                             lvl = ""
@@ -1525,11 +1562,20 @@ module.exports = {
                             chave.context.restore()
 
 
-                            let money = await db.get(`money_${interaction.guild.id}_${user.id}`)
-                            if (money === null) money = 0
-                            chave.context.font = '50px "up"'
-                            chave.context.fillText(`${money.toLocaleString()}`, 120, 400)
+                            Saldo = ""
 
+                            const money2 = await User.findOne({
+                                guildId: interaction.guild.id,
+                                userId: user.id,
+                            })
+            
+            
+                            if (money2 === null) {
+                                Saldo = 0
+                            } else { Saldo = money2.saldo }
+
+                            chave.context.font = '50px "up"';
+                            chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
                             lvl = ""
 
@@ -1720,10 +1766,20 @@ module.exports = {
                             chave.context.restore()
 
 
-                            let money = await db.get(`money_${interaction.guild.id}_${user.id}`)
-                            if (money === null) money = 0
-                            chave.context.font = '50px "up"'
-                            chave.context.fillText(`${money.toLocaleString()}`, 120, 400)
+                            Saldo = ""
+
+                            const money2 = await User.findOne({
+                                guildId: interaction.guild.id,
+                                userId: user.id,
+                            })
+            
+            
+                            if (money2 === null) {
+                                Saldo = 0
+                            } else { Saldo = money2.saldo }
+
+                            chave.context.font = '50px "up"';
+                            chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
                             lvl = ""
@@ -1917,10 +1973,20 @@ module.exports = {
 
 
 
-                            let money = await db.get(`money_${interaction.guild.id}_${user.id}`)
-                            if (money === null) money = 0
-                            chave.context.font = '50px "up"'
-                            chave.context.fillText(`${money.toLocaleString()}`, 120, 400)
+                            Saldo = ""
+
+                            const money2 = await User.findOne({
+                                guildId: interaction.guild.id,
+                                userId: user.id,
+                            })
+            
+            
+                            if (money2 === null) {
+                                Saldo = 0
+                            } else { Saldo = money2.saldo }
+
+                            chave.context.font = '50px "up"';
+                            chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
                             lvl = ""
@@ -2112,10 +2178,20 @@ module.exports = {
                             chave.context.restore()
 
 
-                            let money = await db.get(`money_${interaction.guild.id}_${user.id}`)
-                            if (money === null) money = 0
-                            chave.context.font = '50px "up"'
-                            chave.context.fillText(`${money.toLocaleString()}`, 120, 400)
+                            Saldo = ""
+
+                            const money2 = await User.findOne({
+                                guildId: interaction.guild.id,
+                                userId: user.id,
+                            })
+            
+            
+                            if (money2 === null) {
+                                Saldo = 0
+                            } else { Saldo = money2.saldo }
+
+                            chave.context.font = '50px "up"';
+                            chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
                             lvl = ""
@@ -2308,10 +2384,20 @@ module.exports = {
 
 
 
-                            let money = await db.get(`money_${interaction.guild.id}_${user.id}`)
-                            if (money === null) money = 0
-                            chave.context.font = '50px "up"'
-                            chave.context.fillText(`${money.toLocaleString()}`, 120, 400)
+                            Saldo = ""
+
+                            const money2 = await User.findOne({
+                                guildId: interaction.guild.id,
+                                userId: user.id,
+                            })
+            
+            
+                            if (money2 === null) {
+                                Saldo = 0
+                            } else { Saldo = money2.saldo }
+
+                            chave.context.font = '50px "up"';
+                            chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
                             lvl = ""
@@ -2506,11 +2592,20 @@ module.exports = {
 
 
 
+                            Saldo = ""
 
-                            let money = await db.get(`money_${interaction.guild.id}_${user.id}`)
-                            if (money === null) money = 0
-                            chave.context.font = '50px "up"'
-                            chave.context.fillText(`${money.toLocaleString()}`, 120, 400)
+                            const money2 = await User.findOne({
+                                guildId: interaction.guild.id,
+                                userId: user.id,
+                            })
+            
+            
+                            if (money2 === null) {
+                                Saldo = 0
+                            } else { Saldo = money2.saldo }
+
+                            chave.context.font = '50px "up"';
+                            chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
                             lvl = ""

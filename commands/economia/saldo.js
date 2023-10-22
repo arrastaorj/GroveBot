@@ -35,6 +35,7 @@ module.exports = {
 
                 const query = {
                     guildId: interaction.guild.id,
+                    userId: user.id,
                 }
 
                 const user2 = await User.findOne(query)
@@ -45,8 +46,8 @@ module.exports = {
 
                 } else {
                     const newUser = new User({
-                        userId: user.id,
                         guildId: interaction.guild.id,
+                        userId: user.id,
 
                     });
 
@@ -55,6 +56,7 @@ module.exports = {
 
                     const query = {
                         guildId: interaction.guild.id,
+                        userId: user.id,
                     }
 
                     const user2 = await User.findOne(query)

@@ -9,7 +9,7 @@ module.exports = {
 
     run: async (client, interaction, args) => {
 
-        let user = interaction.user
+        const user = interaction.user
 
         // const images = [
         //     "././img/shop/soulfighter.png",
@@ -114,6 +114,9 @@ module.exports = {
         const collector = m.createMessageComponentCollector({ filtro, time: 9000000 });
 
         collector.on('collect', async (i) => {
+
+            if (i.user != user) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/perfil\`\` para vizualizar seu perfil.`, ephemeral: true })
+
             await i.deferUpdate();
 
             // Atualiza o índice com base no botão pressionado
@@ -147,18 +150,21 @@ module.exports = {
 
                 data = await schema.findOne({
                     guildId: interaction.guild.id,
+                    userId: user.id,
                 })
 
                 if (!data) {
                     data = await schema.create({
                         guildId: interaction.guild.id,
+                        userId: user.id,
                     })
                 }
 
 
                 const verif = await skin.findOne({
+                    guildId: interaction.guild.id,
                     userId: user.id,
-                    guildId: interaction.guild.id
+
                 });
 
                 if (verif && verif.Img1) {
@@ -200,11 +206,13 @@ module.exports = {
 
                         if (!imagemComprada) {
                             await skin.findOneAndUpdate({
+                                guildId: interaction.guild.id,
                                 userId: user.id,
 
                             }, { $unset: { "Img1": "" } })
                         } else {
                             await skin.findOneAndUpdate({
+                                guildId: interaction.guild.id,
                                 userId: user.id,
                             }, { $set: { "Img1": imagemComprada } })
                         }
@@ -221,19 +229,20 @@ module.exports = {
 
                 data = await schema.findOne({
                     guildId: interaction.guild.id,
+                    userId: user.id,
                 })
 
                 if (!data) {
                     data = await schema.create({
                         guildId: interaction.guild.id,
-                        userId: user.id
+                        userId: user.id,
                     })
                 }
 
 
                 const verif = await skin.findOne({
                     guildId: interaction.guild.id,
-                    userId: user.id
+                    userId: user.id,
                 });
 
                 if (verif && verif.Img2) {
@@ -297,6 +306,7 @@ module.exports = {
 
                 data = await schema.findOne({
                     guildId: interaction.guild.id,
+                    userId: user.id,
                 })
 
                 if (!data) {
@@ -352,11 +362,13 @@ module.exports = {
 
                         if (!imagemComprada) {
                             await skin.findOneAndUpdate({
+                                guildId: interaction.guild.id,
                                 userId: user.id,
 
                             }, { $unset: { "Img3": "" } })
                         } else {
                             await skin.findOneAndUpdate({
+                                guildId: interaction.guild.id,
                                 userId: user.id,
                             }, { $set: { "Img3": imagemComprada } })
                         }
