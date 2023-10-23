@@ -1,6 +1,7 @@
 { 
     "config": {
         "color": "Random"
+       
     },
 
     "slash": {
@@ -9,7 +10,8 @@
 
     "emoji": {
         "sim": "✔",
-        "nao": "❌"
+        "nao": "❌",
+        "erro": "❌"
     }
 
 }
