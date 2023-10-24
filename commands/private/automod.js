@@ -53,7 +53,7 @@ module.exports = {
         const sub = options.getSubcommand()
 
 
-        if (!interaction.member.permissions.has(discord.PermissionsBitField.Flags.Administrator)) return await interaction.reply({ content: `Você não tem permissão para configurar o automod neste servidor`, ephemeral: true })
+        if (!interaction.member.permissions.has(discord.PermissionsBitField.Flags.Administrator)) return await interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você não tem permissão para configurar o automod neste servidor`, ephemeral: true })
 
 
         const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -251,7 +251,7 @@ module.exports = {
 
         } else {
 
-            return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
         }
 
 

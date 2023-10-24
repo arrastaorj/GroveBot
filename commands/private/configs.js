@@ -161,7 +161,7 @@ module.exports = {
 
             case "autorole": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
                 const hasPermission = botMember.permissions.has("Administrator")
@@ -186,7 +186,7 @@ module.exports = {
                             continue
                         }
                         if (cargoList.managed === true) {
-                            return interaction.reply({ content: "\`\`\`❌ AVISO: Todos os cargos configurados devem estar abaixo de mim e não gerenciados.\`\`\`", ephemeral: true })
+                            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> AVISO: Todos os cargos configurados devem estar abaixo de mim e não gerenciados.", ephemeral: true })
                         }
                     }
 
@@ -329,7 +329,7 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
                 }
 
                 break
@@ -337,7 +337,7 @@ module.exports = {
 
             case "bem-vindo": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
 
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -405,7 +405,7 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
                 }
 
                 break
@@ -480,7 +480,7 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
                 }
 
                 break
@@ -490,7 +490,7 @@ module.exports = {
             //////// fbv Atualizado MongoDB
             case "fbv": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
 
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -559,7 +559,7 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
                 }
 
                 break
@@ -568,7 +568,7 @@ module.exports = {
 
             case "memes": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
 
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -635,7 +635,7 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
                 }
 
                 break
@@ -643,7 +643,7 @@ module.exports = {
 
             case "ticket": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.Administrator)) return interaction.reply({ content: `❌ **Calma! Você precisar ser um admin para usar o meu sistema de ticket!**`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.Administrator)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
                 const hasPermission = botMember.permissions.has("Administrator")
@@ -783,7 +783,7 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
                 }
 
                 break
