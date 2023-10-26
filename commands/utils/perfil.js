@@ -577,8 +577,8 @@ module.exports = {
                                             guildId: interaction.guild.id,
                                             userId: user.id,
                                         })
-                        
-                        
+
+
                                         if (money2 === null) {
                                             Saldo = 0
                                         } else { Saldo = money2.saldo }
@@ -748,29 +748,29 @@ module.exports = {
 
                                     const attachments = {
                                         mc: {
-                                            path: "././img/shop/minecraft.png",
+                                            path: "././img/perfil/minecraft.png",
                                             component: [painel, btnn]
                                         },
                                         sett: {
-                                            path: "././img/shop/sett.png",
+                                            path: "././img/perfil/sett.png",
                                             component: [painel, btnn2]
                                         },
 
                                         vayne: {
-                                            path: "././img/shop/vaynearcoceleste.png",
+                                            path: "././img/perfil/vaynearcoceleste.png",
                                             component: [painel, btnn3]
                                         },
 
                                         soulfighter: {
-                                            path: "././img/shop/soulfighter.png",
+                                            path: "././img/perfil/soulfighter.png",
                                             component: [painel, btnn5]
                                         },
                                         jett: {
-                                            path: "././img/shop/jett.png",
+                                            path: "././img/perfil/jett.png",
                                             component: [painel, btnn6]
                                         },
                                         RazerekillJoy: {
-                                            path: "././img/shop/RazerEKillJoyu.png",
+                                            path: "././img/perfil/RazerEKillJoyu.png",
                                             component: [painel, btnn7]
                                         }
                                     }
@@ -823,7 +823,7 @@ module.exports = {
 
                     if (i.customId === 'confirma') {
                         if (!i.isButton()) return
-                        const attachment = ("././img/shop/minecraft.png")
+                        const attachment = ("././img/perfil/minecraft.png")
                         await i.reply({ content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!`, ephemeral: true })
 
 
@@ -867,7 +867,7 @@ module.exports = {
 
                     if (i.customId === 'confirma2') {
                         if (!i.isButton()) return
-                        const attachment = ("././img/shop/sett.png")
+                        const attachment = ("././img/perfil/sett.png")
                         await i.reply({ content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!`, ephemeral: true })
 
                         const teste = await perfilID.findOne({
@@ -907,7 +907,7 @@ module.exports = {
 
                     if (i.customId === 'confirma3') {
                         if (!i.isButton()) return
-                        const attachment = ("././img/shop/vaynearcoceleste.png")
+                        const attachment = ("././img/perfil/vaynearcoceleste.png")
                         await i.reply({ content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!`, ephemeral: true })
 
                         const teste = await perfilID.findOne({
@@ -950,7 +950,7 @@ module.exports = {
 
                     if (i.customId === 'confirma5') {
                         if (!i.isButton()) return
-                        const attachment = ("././img/shop/soulfighter.png")
+                        const attachment = ("././img/perfil/soulfighter.png")
                         await i.reply({ content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!`, ephemeral: true })
 
 
@@ -993,7 +993,7 @@ module.exports = {
 
                     if (i.customId === 'confirma6') {
                         if (!i.isButton()) return
-                        const attachment = ("././img/shop/jett.png")
+                        const attachment = ("././img/perfil/jett.png")
                         await i.reply({ content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!`, ephemeral: true })
 
 
@@ -1036,7 +1036,7 @@ module.exports = {
 
                     if (i.customId === 'confirma7') {
                         if (!i.isButton()) return
-                        const attachment = ("././img/shop/RazerEKillJoyu.png")
+                        const attachment = ("././img/perfil/RazerEKillJoyu.png")
                         await i.reply({ content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!`, ephemeral: true })
 
 
@@ -1150,8 +1150,8 @@ module.exports = {
                                 guildId: interaction.guild.id,
                                 userId: user.id,
                             })
-            
-            
+
+
                             if (money2 === null) {
                                 Saldo = 0
                             } else { Saldo = money2.saldo }
@@ -1363,8 +1363,8 @@ module.exports = {
                                 guildId: interaction.guild.id,
                                 userId: user.id,
                             })
-            
-            
+
+
                             if (money2 === null) {
                                 Saldo = 0
                             } else { Saldo = money2.saldo }
@@ -1568,8 +1568,8 @@ module.exports = {
                                 guildId: interaction.guild.id,
                                 userId: user.id,
                             })
-            
-            
+
+
                             if (money2 === null) {
                                 Saldo = 0
                             } else { Saldo = money2.saldo }
@@ -1772,8 +1772,8 @@ module.exports = {
                                 guildId: interaction.guild.id,
                                 userId: user.id,
                             })
-            
-            
+
+
                             if (money2 === null) {
                                 Saldo = 0
                             } else { Saldo = money2.saldo }
@@ -1979,8 +1979,8 @@ module.exports = {
                                 guildId: interaction.guild.id,
                                 userId: user.id,
                             })
-            
-            
+
+
                             if (money2 === null) {
                                 Saldo = 0
                             } else { Saldo = money2.saldo }
@@ -2184,8 +2184,8 @@ module.exports = {
                                 guildId: interaction.guild.id,
                                 userId: user.id,
                             })
-            
-            
+
+
                             if (money2 === null) {
                                 Saldo = 0
                             } else { Saldo = money2.saldo }
@@ -2390,8 +2390,8 @@ module.exports = {
                                 guildId: interaction.guild.id,
                                 userId: user.id,
                             })
-            
-            
+
+
                             if (money2 === null) {
                                 Saldo = 0
                             } else { Saldo = money2.saldo }
@@ -2598,8 +2598,8 @@ module.exports = {
                                 guildId: interaction.guild.id,
                                 userId: user.id,
                             })
-            
-            
+
+
                             if (money2 === null) {
                                 Saldo = 0
                             } else { Saldo = money2.saldo }
@@ -2735,46 +2735,14 @@ module.exports = {
 
                     }
 
-                    if (i.customId === 'info') {
+                    const customIds = ['info', 'info2', 'info3', 'info4', 'info5', 'info6', 'info7']
+                    const replyContent = `> \`+\` <:information_2538026:1162569088871174175> Você pode mudar de skin quantas vezes quiser!`
 
-                        await i.reply({ content: `> \`+\` <:information_2538026:1162569088871174175> Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
-
-                    }
-
-                    if (i.customId === 'info2') {
-
-                        await i.reply({ content: `> \`+\` <:information_2538026:1162569088871174175> Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
-
-                    }
-
-                    if (i.customId === 'info3') {
-
-                        await i.reply({ content: `> \`+\` <:information_2538026:1162569088871174175> Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
-
-                    }
-
-                    if (i.customId === 'info4') {
-
-                        await i.reply({ content: `> \`+\` <:information_2538026:1162569088871174175> Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
-
-                    }
-
-                    if (i.customId === 'info5') {
-
-                        await i.reply({ content: `> \`+\` <:information_2538026:1162569088871174175> Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
-
-                    }
-
-                    if (i.customId === 'info6') {
-
-                        await i.reply({ content: `> \`+\` <:information_2538026:1162569088871174175> Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
-
-                    }
-
-                    if (i.customId === 'info7') {
-
-                        await i.reply({ content: `> \`+\` <:information_2538026:1162569088871174175> Você muda mudar de skin quantas vezes quiser!`, ephemeral: true })
-
+                    for (const customId of customIds) {
+                        if (i.customId === customId) {
+                            await i.reply({ content: replyContent, ephemeral: true })
+                            break;
+                        }
                     }
 
                 })

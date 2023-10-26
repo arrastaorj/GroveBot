@@ -48,7 +48,7 @@ module.exports = {
             const row = new discord.ActionRowBuilder().addComponents(
                 new discord.ButtonBuilder()
                     .setCustomId('volta')
-                    .setEmoji('<:voltar:1166181275938336929>')
+                    .setEmoji('<:1095137898262695937:1166902501572870195>')
                     .setDisabled(true)
                     .setStyle('Primary'),
                 new discord.ButtonBuilder()
@@ -58,14 +58,14 @@ module.exports = {
                     .setStyle('Secondary'),
                 new discord.ButtonBuilder()
                     .setCustomId('avancar')
-                    .setEmoji('<:avancar:1166181278442332211>')
+                    .setEmoji('<:1095137870882279564:1166902503703580704>')
                     .setStyle('Primary')
             )
 
             const rowd = new discord.ActionRowBuilder().addComponents(
                 new discord.ButtonBuilder()
                     .setCustomId('volta')
-                    .setEmoji('<:voltar:1166181275938336929>')
+                    .setEmoji('<:1095137898262695937:1166902501572870195>')
                     .setStyle('Primary'),
                 new discord.ButtonBuilder()
                     .setCustomId('home')
@@ -74,14 +74,14 @@ module.exports = {
                     .setStyle('Secondary'),
                 new discord.ButtonBuilder()
                     .setCustomId('avancar')
-                    .setEmoji('<:avancar:1166181278442332211>')
+                    .setEmoji('<:1095137870882279564:1166902503703580704>')
                     .setStyle('Primary')
                     .setDisabled(true)
             )
             const rows = new discord.ActionRowBuilder().addComponents(
                 new discord.ButtonBuilder()
                     .setCustomId('volta')
-                    .setEmoji('<:voltar:1166181275938336929>')
+                    .setEmoji('<:1095137898262695937:1166902501572870195>')
                     .setStyle('Primary'),
                 new discord.ButtonBuilder()
                     .setCustomId('home')
@@ -90,7 +90,7 @@ module.exports = {
                     .setStyle('Secondary'),
                 new discord.ButtonBuilder()
                     .setCustomId('avancar')
-                    .setEmoji('<:avancar:1166181278442332211>')
+                    .setEmoji('<:1095137870882279564:1166902503703580704>')
                     .setStyle('Primary')
             )
 
@@ -101,13 +101,21 @@ module.exports = {
                     .setLabel('110.000')
                     .setEmoji("<:Lecoin:1059125860524900402>")
                     .setStyle('Success'),
+                new discord.ButtonBuilder()
+                    .setCustomId('info1')
+                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
+                    .setStyle('Secondary'),
             )
             const comprar11 = new discord.ActionRowBuilder().addComponents(
                 new discord.ButtonBuilder()
                     .setCustomId('comprar11')
                     .setLabel('Já Habilitada')
-                    .setEmoji("<:block:1166174243172651018>")
+                    .setEmoji("<:padlock_5754374:1166904628672213044>")
                     .setDisabled(true)
+                    .setStyle('Secondary'),
+                new discord.ButtonBuilder()
+                    .setCustomId('info11')
+                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
                     .setStyle('Secondary'),
             )
             const comprar2 = new discord.ActionRowBuilder().addComponents(
@@ -116,13 +124,21 @@ module.exports = {
                     .setLabel('210.000')
                     .setEmoji("<:Lecoin:1059125860524900402>")
                     .setStyle('Success'),
+                new discord.ButtonBuilder()
+                    .setCustomId('info2')
+                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
+                    .setStyle('Secondary'),
             )
             const comprar22 = new discord.ActionRowBuilder().addComponents(
                 new discord.ButtonBuilder()
                     .setCustomId('comprar22')
                     .setLabel('Já Habilitada')
-                    .setEmoji("<:block:1166174243172651018>")
+                    .setEmoji("<:padlock_5754374:1166904628672213044>")
                     .setDisabled(true)
+                    .setStyle('Secondary'),
+                new discord.ButtonBuilder()
+                    .setCustomId('info22')
+                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
                     .setStyle('Secondary'),
             )
             const comprar3 = new discord.ActionRowBuilder().addComponents(
@@ -131,13 +147,21 @@ module.exports = {
                     .setLabel('310.000')
                     .setEmoji("<:Lecoin:1059125860524900402>")
                     .setStyle('Success'),
+                new discord.ButtonBuilder()
+                    .setCustomId('info3')
+                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
+                    .setStyle('Secondary'),
             )
             const comprar33 = new discord.ActionRowBuilder().addComponents(
                 new discord.ButtonBuilder()
                     .setCustomId('comprar33')
                     .setLabel('Já Habilitada')
-                    .setEmoji("<:block:1166174243172651018>")
+                    .setEmoji("<:padlock_5754374:1166904628672213044>")
                     .setDisabled(true)
+                    .setStyle('Secondary'),
+                new discord.ButtonBuilder()
+                    .setCustomId('info33')
+                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
                     .setStyle('Secondary'),
 
             )
@@ -150,8 +174,9 @@ module.exports = {
             });
 
             if (verif && verif.Img1) {
+
                 const m = await interaction.reply({
-                    content: 'Loja Diária',
+                    content: '',
                     files: [images[currentIndex]],
                     components: [comprar11, row],
                 })
@@ -247,7 +272,7 @@ module.exports = {
                             await i.followUp({ content: `${interaction.user} Você comprou Minecraft! Visualize e use no seu /perfil.`, ephemeral: true })
 
 
-                            const imagemComprada = ("././img/shop/minecraft.png")
+                            const imagemComprada = ("././img/perfil/minecraft.png")
 
 
                             const skins = await skin.findOne({
@@ -325,7 +350,7 @@ module.exports = {
                             await data.save()
 
 
-                            const imagemComprada = ("././img/shop/sett.png")
+                            const imagemComprada = ("././img/perfil/sett.png")
 
 
                             const skins = await skin.findOne({
@@ -404,7 +429,7 @@ module.exports = {
                             await data.save()
 
 
-                            const imagemComprada = ("././img/shop/vaynearcoceleste.png")
+                            const imagemComprada = ("././img/perfil/vaynearcoceleste.png")
 
 
                             const skins = await skin.findOne({
@@ -442,9 +467,30 @@ module.exports = {
                             }
                         }
                     }
+                    const customIdToContentMap = {
+                        'info1': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                        'info11': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                        'info2': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                        'info22': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                        'info3': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                        'info33': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                    };
+
+                    const content = customIdToContentMap[i.customId];
+
+                    if (content) {
+                        await i.followUp({ content, ephemeral: true });
+                    }
+
                 })
 
             } else {
+
+                const m = await interaction.reply({
+                    content: "",
+                    files: [images[currentIndex]],
+                    components: [comprar1, row],
+                })
 
                 async function hasImage(user, imageNumber) {
                     const verif = await skin.findOne({
@@ -537,7 +583,7 @@ module.exports = {
                             await i.followUp({ content: `${interaction.user} Você comprou Minecraft! Visualize e use no seu /perfil.`, ephemeral: true })
 
 
-                            const imagemComprada = ("././img/shop/minecraft.png")
+                            const imagemComprada = ("././img/perfil/minecraft.png")
 
 
                             const skins = await skin.findOne({
@@ -615,7 +661,7 @@ module.exports = {
                             await data.save()
 
 
-                            const imagemComprada = ("././img/shop/sett.png")
+                            const imagemComprada = ("././img/perfil/sett.png")
 
 
                             const skins = await skin.findOne({
@@ -694,7 +740,7 @@ module.exports = {
                             await data.save()
 
 
-                            const imagemComprada = ("././img/shop/vaynearcoceleste.png")
+                            const imagemComprada = ("././img/perfil/vaynearcoceleste.png")
 
 
                             const skins = await skin.findOne({
@@ -732,6 +778,23 @@ module.exports = {
                             }
                         }
                     }
+
+                    const customIdToContentMap = {
+                        'info1': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                        'info11': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                        'info2': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                        'info22': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                        'info3': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                        'info33': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
+                    };
+
+                    const content = customIdToContentMap[i.customId];
+
+                    if (content) {
+                        await i.followUp({ content, ephemeral: true });
+                    }
+
+
                 })
 
             }

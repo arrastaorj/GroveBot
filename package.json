@@ -25,6 +25,7 @@
     "fs": "^0.0.1-security",
     "install": "^0.13.0",
     "moment": "^2.29.4",
+    "moment-duration-format": "^2.3.2",
     "mongoose": "^6.8.4",
     "node-canvas-with-twemoji-and-discord-emoji": "^1.2.1",
     "npm": "^10.2.0",

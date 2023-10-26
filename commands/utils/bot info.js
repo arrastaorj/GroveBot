@@ -1,5 +1,9 @@
 const discord = require('discord.js')
 const comandos = require("../../database/models/comandos")
+const { EmbedBuilder, Client, version } = require("discord.js");
+const { readdirSync } = require("fs");
+require("moment-duration-format");
+const os = require("os");
 
 module.exports = {
     name: "lexa",
@@ -27,102 +31,101 @@ module.exports = {
 
         if (cmd1 === null || cmd1 === true || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
+    
+            var commands = [];
+            readdirSync("././commands/").forEach((dir) => {
+                var dircmds = readdirSync(`././commands/${dir}/`).filter((file) =>
+                    file.endsWith(".js")
+                );
 
-            const botcor = interaction.guild.members.cache.get(client.user.id)
+                commands = commands.concat(dircmds);
+            });
 
-            //  const up = Math.floor(client.uptime / 60000) % 60;
-
-
-            const ping = Math.round(client.ws.ping)
-
-            let membros = client.users.cache.size;
-            const server = interaction.guild.members.cache.get(client.user.id)
-
-            const b1 = new discord.ButtonBuilder()
-                .setLabel(`Me Adicione`)
-                .setStyle(5)
-                .setURL(`https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot`) //Link do invite
-
-            const botbutton = new discord.ActionRowBuilder().addComponents(b1)
-
-            const botembed = new discord.EmbedBuilder()
-                .setTitle(client.user.username)
-                .setColor("#41b2b0")
-                .setDescription(`*Veja as minhas informações abaixo!*`)
+            const embed = new discord.EmbedBuilder()
+                .setAuthor({ name: `${interaction.user.username} Status/Informações!`, iconURL: client.user.displayAvatarURL() })
                 .addFields(
                     {
-
-                        name: 'Desenvolvedor:',
-                        value: `\`\`Arrastão RJ#6839\`\``,
-                        inline: true,
-
-
-                    },
-                    {
-                        name: 'ID:',
-                        value: `\`\`${client.user.id}\`\``,
-                        inline: true,
-
-                    },
-                    {
-                        name: 'Ping:',
-                        value: `\`\`Ping: ${ping}\`\``,
-                        inline: true
-
-                    },
-                    {
-                        name: 'Entrou no Servidor:',
-                        value: `<t:${Math.ceil(server.joinedTimestamp / 1000)}:F> (<t:${~~(server.joinedTimestamp / 1000)}:R>)`,
+                        name: "Nome",
+                        value: `┕ \`${client.user.username}\``,
                         inline: true,
                     },
                     {
-                        name: `Criado:`,
-                        value: `<t:${parseInt(client.user.createdTimestamp / 1000)}> (<t:${~~(client.user.createdTimestamp / 1000)}:R>)`,
-                        inline: true,
-                    },
-                  
-                    {
-                        name: 'Linguagem:',
-                        value: `\`\`JavaScript\`\``,
-                        inline: true,
-
-                    },
-                    {
-                        name: 'Livraria:',
-                        value: `\`\`discord.js: 14.7.1\`\``,
+                        name: "Developers",
+                        value: `┕ <@424244967893106699>`,
                         inline: true,
                     },
                     {
-                        name: 'Meus comandos:',
-                        value: `\`\`Digite /help\`\``,
+                        name: "Criação",
+                        value: `<t:${Math.round(client.user.createdTimestamp / 1000)}>`,
                         inline: true,
                     },
                     {
-                        name: 'Gerenciando:',
-                        value: `\`\`Membros: ${membros}\`\``,
-                        inline: true,
-                    },
-
-                    {
-                        name: 'Host',
-                        value: '\`\`Discloud\`\`',
+                        name: "**Gerenciando**",
+                        value: `​ ┕ \`${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)}\`Usuários`,
                         inline: true,
                     },
                     {
-                        name: 'Container',
-                        value: '\`\`Online\`\`',
+                        name: "**Servidores**",
+                        value: `​ ┕ \`${client.guilds.cache.size}\``,
                         inline: true,
                     },
                     {
-                        name: `Ram:`,
-                        value: `\`\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + 'MB'}\`\``,
+                        name: "**Canais**",
+                        value: `​ ┕ \`${client.channels.cache.size}\``,
                         inline: true,
                     },
-
+                    {
+                        name: "**Memory usanda**",
+                        value: `​ ┕ \`${Math.round(
+                            process.memoryUsage().heapUsed / 1024 / 1024
+                        )}mb\``,
+                        inline: true,
+                    },
+                    {
+                        name: `Node.js Versão`,
+                        value: `┕ \`${process.version}\``,
+                        inline: true,
+                    },
+                    {
+                        name: `Discord.js Versão`,
+                        value: `┕ \`${version}\``,
+                        inline: true,
+                    },
+                    {
+                        name: `Comandos`,
+                        value: `┕ \`${commands.length}\``,
+                        inline: true,
+                    },
+                    {
+                        name: `Plataforma`,
+                        value: `┕ ${os.type}`,
+                        inline: true,
+                    },
+                    {
+                        name: `Cores`,
+                        value: `┕ ${os.cpus().length}`,
+                        inline: true,
+                    },
+                    {
+                        name: `Model`,
+                        value: `┕ ${os.cpus()[0].model}`,
+                        inline: true,
+                    },
+                    {
+                        name: `Valocidade`,
+                        value: `┕ ${os.cpus()[0].speed} MHz`,
+                        inline: true,
+                    },
+                    {
+                        name: "Shards",
+                        value: `\`${client.options.shardCount}\``,
+                        inline: true,
+                    },
+                    
                 )
 
 
-            interaction.reply({ embeds: [botembed], components: [botbutton] })
+            interaction.reply({ embeds: [embed] })
 
         }
         else
