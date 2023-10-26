@@ -35,7 +35,7 @@ module.exports = {
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos.`, ephemeral: true })
 
         let cmd1 = cmd.canal1
 
@@ -178,6 +178,11 @@ module.exports = {
                     .setLabel("Não Habilitada")
                     .setCustomId("nao")
                     .setDisabled(true),
+                new discord.ButtonBuilder()
+                    .setStyle(discord.ButtonStyle.Secondary)
+                    .setEmoji("<:info:1167105337648742553>")
+                    .setCustomId("infoVerif")
+                    .setDisabled(false),
             ])
 
 
@@ -202,31 +207,37 @@ module.exports = {
                     {
                         label: 'Minecraft',
                         description: 'Minecraft Defaut',
+                        emoji: "<:epica:1167121548226854944>",
                         value: 'mc',
                     },
                     {
                         label: 'League of Legends',
                         description: 'Sett Defaut',
+                        emoji: "<:epica:1167121548226854944>",
                         value: 'sett',
                     },
                     {
                         label: 'League of Legends',
                         description: 'Vayne Arco Celeste',
+                        emoji: "<:epica:1167121548226854944>",
                         value: 'vayne',
                     },
                     {
                         label: 'League of Legends',
                         description: 'SoulFighter',
+                        emoji: "<:lendaria:1167123019752280114>",
                         value: 'soulfighter',
                     },
                     {
                         label: 'Valorant',
                         description: 'Jett',
+                        emoji: "<:lendaria:1167123019752280114>",
                         value: 'jett',
                     },
                     {
                         label: 'Valorant',
                         description: 'Razer E KillJoy',
+                        emoji: "<:lendaria:1167123019752280114>",
                         value: 'RazerekillJoy',
                     },
                 ])
@@ -822,7 +833,7 @@ module.exports = {
                         if (interaction.customId === customId && interaction.isButton()) {
                             const attachment = `././img/perfil/${image}.png`;
                             await interaction.reply({
-                                content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!\n > \`+\` Clique em <:voltar:1167104944420175984> para visualizá-la`,
+                                content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!\n > \`+\` Clique em <:voltar:1167104944420175984> para visualizá-la.`,
                                 ephemeral: true
                             });
 
@@ -1087,6 +1098,12 @@ module.exports = {
                             await i.reply({ content: replyContent, ephemeral: true })
                             break;
                         }
+                    }
+
+                    if (i.customId === 'infoVerif') {
+                        if (interaction.isButton()) return
+                        await i.reply({ content: `> \`+\` A skin ainda não está disponível em seu inventário. Para visualizá-la, basta digitar \`/loja\` e conferir as ofertas diárias da Lexa.`, ephemeral: true })
+
                     }
 
                 })

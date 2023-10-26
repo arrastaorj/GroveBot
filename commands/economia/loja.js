@@ -228,252 +228,96 @@ module.exports = {
                     }
 
                     await i.editReply({
-                        content: 'Loja Diária',
+                        content: '',
                         files: [images[currentIndex]],
                         components: components,
                     });
 
 
 
-                    if (i.customId === 'comprar1') {
-
-                        let data
-
-                        data = await schema.findOne({
+                    async function buySkin(interaction, user, cost, image, imgField) {
+                        let data = await schema.findOne({
                             guildId: interaction.guild.id,
                             userId: user.id,
-                        })
+                        });
 
                         if (!data) {
                             data = await schema.create({
                                 guildId: interaction.guild.id,
                                 userId: user.id,
-                            })
+                            });
                         }
-
 
                         const verif = await skin.findOne({
                             guildId: interaction.guild.id,
                             userId: user.id,
-
                         });
 
-                        if (verif && verif.Img1) {
-                            return await i.followUp({ content: `${interaction.user} Você já possui esse item! Visualize e equipe no seu /perfil. `, ephemeral: true });
+                        if (verif && verif[imgField]) {
+                            return await i.followUp({ content: `> \`-\` ${interaction.user} Você já possui esse item! Visualize e equipe no seu \`/perfil\`. `, ephemeral: true });
                         }
 
-                        if (data.saldo.toLocaleString() < 110.000) {
-                            await i.followUp({ content: `${interaction.user} Você não tem LexaCoins suficientes para essa compra.`, ephemeral: true })
+                        if (data.saldo < cost) {
+                            await i.followUp({ content: `> \`-\` ${interaction.user} Você não tem <:LexaCoins:1167100813634719866> LexaCoins suficientes para essa compra.`, ephemeral: true });
                         } else {
+                            await i.followUp({ content: `> \`+\` ${interaction.user} Parabéns, você acabou de adquirir um item! Visualize e use no seu \`/perfil\`.`, ephemeral: true });
 
-                            data.saldo -= 110000;
-                            await data.save()
+                            data.saldo -= cost;
+                            await data.save();
 
-                            await i.followUp({ content: `${interaction.user} Você comprou Minecraft! Visualize e use no seu /perfil.`, ephemeral: true })
-
-
-                            const imagemComprada = ("././img/perfil/minecraft.png")
-
+                            const imagemComprada = image;
 
                             const skins = await skin.findOne({
                                 guildId: interaction.guild.id,
-                                userId: user.id
-                            })
+                                userId: user.id,
+                            });
 
+                            const newCmd = {
+                                guildId: interaction.guild.id,
+                                userId: user.id,
+                            };
+
+                            if (imagemComprada) {
+                                newCmd[imgField] = imagemComprada;
+                            }
 
                             if (!skins) {
-                                const newCmd = {
-                                    guildId: interaction.guild.id,
-                                    userId: user.id
-                                }
-                                if (imagemComprada) {
-                                    newCmd.Img1 = imagemComprada
-                                }
-
-
-                                await skin.create(newCmd)
-
+                                await skin.create(newCmd);
                             } else {
-
                                 if (!imagemComprada) {
                                     await skin.findOneAndUpdate({
                                         guildId: interaction.guild.id,
                                         userId: user.id,
-
-                                    }, { $unset: { "Img1": "" } })
+                                    }, { $unset: { [imgField]: "" } });
                                 } else {
                                     await skin.findOneAndUpdate({
                                         guildId: interaction.guild.id,
                                         userId: user.id,
-                                    }, { $set: { "Img1": imagemComprada } })
+                                    }, { $set: { [imgField]: imagemComprada } });
                                 }
-
                             }
-
                         }
+                    }
 
+                    if (i.customId === 'comprar1') {
+                        await buySkin(i, user, 110000, "././img/perfil/minecraft.png", "Img1");
                     }
 
                     if (i.customId === 'comprar2') {
-
-                        let data
-
-                        data = await schema.findOne({
-                            guildId: interaction.guild.id,
-                            userId: user.id,
-                        })
-
-                        if (!data) {
-                            data = await schema.create({
-                                guildId: interaction.guild.id,
-                                userId: user.id,
-                            })
-                        }
-
-
-                        const verif = await skin.findOne({
-                            guildId: interaction.guild.id,
-                            userId: user.id,
-                        });
-
-                        if (verif && verif.Img2) {
-                            return await i.followUp({ content: `${interaction.user} Você já possui esse item! Visualize e equipe no seu /perfil. `, ephemeral: true });
-                        }
-
-                        if (data.saldo.toLocaleString() < 210.000) {
-                            await i.followUp({ content: `${interaction.user} Você não tem LexaCoins suficientes para essa compra.`, ephemeral: true })
-                        } else {
-
-                            await i.followUp({ content: `${interaction.user} Você comprou Sett Defaut! Visualize e use no seu /perfil.`, ephemeral: true })
-
-                            data.saldo -= 210000
-                            await data.save()
-
-
-                            const imagemComprada = ("././img/perfil/sett.png")
-
-
-                            const skins = await skin.findOne({
-                                guildId: interaction.guild.id,
-                                userId: user.id
-                            })
-
-
-                            if (!skins) {
-                                const newCmd = {
-                                    guildId: interaction.guild.id,
-                                    userId: user.id
-                                }
-                                if (imagemComprada) {
-                                    newCmd.Img2 = imagemComprada
-                                }
-
-                                await skin.create(newCmd)
-
-                            } else {
-
-                                if (!imagemComprada) {
-                                    await skin.findOneAndUpdate({
-                                        guildId: interaction.guild.id,
-                                        userId: user.id
-
-                                    }, { $unset: { "Img2": "" } })
-                                } else {
-                                    await skin.findOneAndUpdate({
-                                        guildId: interaction.guild.id,
-                                        userId: user.id
-                                    }, { $set: { "Img2": imagemComprada } })
-                                }
-
-
-                            }
-
-                        }
+                        await buySkin(i, user, 210000, "././img/perfil/sett.png", "Img2");
                     }
 
                     if (i.customId === 'comprar3') {
-
-                        let data
-
-                        data = await schema.findOne({
-                            guildId: interaction.guild.id,
-                            userId: user.id,
-                        })
-
-                        if (!data) {
-                            data = await schema.create({
-                                guildId: interaction.guild.id,
-                                userId: user.id
-                            })
-                        }
-
-                        const verif = await skin.findOne({
-                            guildId: interaction.guild.id,
-                            userId: user.id
-                        });
-
-                        if (verif && verif.Img3) {
-                            return await i.followUp({ content: `${interaction.user} Você já possui esse item! Visualize e equipe no seu /perfil. `, ephemeral: true });
-                        }
-
-                        if (data.saldo.toLocaleString() < 310.000) {
-
-                            await i.followUp({ content: `${interaction.user} Você não tem LexaCoins suficientes para essa compra.`, ephemeral: true })
-
-                        } else {
-
-                            await i.followUp({ content: `${interaction.user} Você comprou Vayne Arco Celeste! Visualize e use no seu /perfil.`, ephemeral: true })
-
-
-                            data.saldo -= 310000
-                            await data.save()
-
-
-                            const imagemComprada = ("././img/perfil/vaynearcoceleste.png")
-
-
-                            const skins = await skin.findOne({
-                                guildId: interaction.guild.id,
-                                userId: user.id
-                            })
-
-
-                            if (!skins) {
-                                const newCmd = {
-                                    guildId: interaction.guild.id,
-                                    userId: user.id
-                                }
-                                if (imagemComprada) {
-                                    newCmd.Img3 = imagemComprada
-                                }
-
-                                await skin.create(newCmd)
-
-                            } else {
-
-                                if (!imagemComprada) {
-                                    await skin.findOneAndUpdate({
-                                        guildId: interaction.guild.id,
-                                        userId: user.id,
-
-                                    }, { $unset: { "Img3": "" } })
-                                } else {
-                                    await skin.findOneAndUpdate({
-                                        guildId: interaction.guild.id,
-                                        userId: user.id,
-                                    }, { $set: { "Img3": imagemComprada } })
-                                }
-
-                            }
-                        }
+                        await buySkin(i, user, 310000, "././img/perfil/vaynearcoceleste.png", "Img3");
                     }
+
 
 
                     const customIds = ['info1', 'info11', 'info2', 'info22', 'info3', 'info33']
 
                     for (const customId of customIds) {
                         if (i.customId === customId) {
-                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária da Lexa, onde você pode aprimorar seu /perfil com as <:LexaCoins:1167100813634719866> LexaCoins.`, ephemeral: true })
+                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária da Lexa, onde você pode aprimorar seu \`/perfil\` com as <:LexaCoins:1167100813634719866> LexaCoins.`, ephemeral: true })
                             break;
                         }
                     }
@@ -535,251 +379,95 @@ module.exports = {
                     }
 
                     await i.editReply({
-                        content: 'Loja Diária',
+                        content: '',
                         files: [images[currentIndex]],
                         components: components,
                     });
 
 
 
-                    if (i.customId === 'comprar1') {
-
-                        let data
-
-                        data = await schema.findOne({
+                    async function buySkin(interaction, user, cost, image, imgField) {
+                        let data = await schema.findOne({
                             guildId: interaction.guild.id,
                             userId: user.id,
-                        })
+                        });
 
                         if (!data) {
                             data = await schema.create({
                                 guildId: interaction.guild.id,
                                 userId: user.id,
-                            })
+                            });
                         }
-
 
                         const verif = await skin.findOne({
                             guildId: interaction.guild.id,
                             userId: user.id,
-
                         });
 
-                        if (verif && verif.Img1) {
-                            return await i.followUp({ content: `${interaction.user} Você já possui esse item! Visualize e equipe no seu /perfil. `, ephemeral: true });
+                        if (verif && verif[imgField]) {
+                            return await i.followUp({ content: `> \`-\` ${interaction.user} Você já possui esse item! Visualize e equipe no seu \`/perfil\`. `, ephemeral: true });
                         }
 
-                        if (data.saldo.toLocaleString() < 110.000) {
-                            await i.followUp({ content: `${interaction.user} Você não tem LexaCoins suficientes para essa compra.`, ephemeral: true })
+                        if (data.saldo < cost) {
+                            await i.followUp({ content: `> \`-\` ${interaction.user} Você não tem <:LexaCoins:1167100813634719866> LexaCoins suficientes para essa compra.`, ephemeral: true });
                         } else {
+                            await i.followUp({ content: `> \`+\` ${interaction.user} Parabéns, você acabou de adquirir um item! Visualize e use no seu \`/perfil\`.`, ephemeral: true });
 
-                            data.saldo -= 110000;
-                            await data.save()
+                            data.saldo -= cost;
+                            await data.save();
 
-                            await i.followUp({ content: `${interaction.user} Você comprou Minecraft! Visualize e use no seu /perfil.`, ephemeral: true })
-
-
-                            const imagemComprada = ("././img/perfil/minecraft.png")
-
+                            const imagemComprada = image;
 
                             const skins = await skin.findOne({
                                 guildId: interaction.guild.id,
-                                userId: user.id
-                            })
+                                userId: user.id,
+                            });
 
+                            const newCmd = {
+                                guildId: interaction.guild.id,
+                                userId: user.id,
+                            };
+
+                            if (imagemComprada) {
+                                newCmd[imgField] = imagemComprada;
+                            }
 
                             if (!skins) {
-                                const newCmd = {
-                                    guildId: interaction.guild.id,
-                                    userId: user.id
-                                }
-                                if (imagemComprada) {
-                                    newCmd.Img1 = imagemComprada
-                                }
-
-
-                                await skin.create(newCmd)
-
+                                await skin.create(newCmd);
                             } else {
-
                                 if (!imagemComprada) {
                                     await skin.findOneAndUpdate({
                                         guildId: interaction.guild.id,
                                         userId: user.id,
-
-                                    }, { $unset: { "Img1": "" } })
+                                    }, { $unset: { [imgField]: "" } });
                                 } else {
                                     await skin.findOneAndUpdate({
                                         guildId: interaction.guild.id,
                                         userId: user.id,
-                                    }, { $set: { "Img1": imagemComprada } })
+                                    }, { $set: { [imgField]: imagemComprada } });
                                 }
-
                             }
-
                         }
+                    }
 
+                    if (i.customId === 'comprar1') {
+                        await buySkin(i, user, 110000, "././img/perfil/minecraft.png", "Img1");
                     }
 
                     if (i.customId === 'comprar2') {
-
-                        let data
-
-                        data = await schema.findOne({
-                            guildId: interaction.guild.id,
-                            userId: user.id,
-                        })
-
-                        if (!data) {
-                            data = await schema.create({
-                                guildId: interaction.guild.id,
-                                userId: user.id,
-                            })
-                        }
-
-
-                        const verif = await skin.findOne({
-                            guildId: interaction.guild.id,
-                            userId: user.id,
-                        });
-
-                        if (verif && verif.Img2) {
-                            return await i.followUp({ content: `${interaction.user} Você já possui esse item! Visualize e equipe no seu /perfil. `, ephemeral: true });
-                        }
-
-                        if (data.saldo.toLocaleString() < 210.000) {
-                            await i.followUp({ content: `${interaction.user} Você não tem LexaCoins suficientes para essa compra.`, ephemeral: true })
-                        } else {
-
-                            await i.followUp({ content: `${interaction.user} Você comprou Sett Defaut! Visualize e use no seu /perfil.`, ephemeral: true })
-
-                            data.saldo -= 210000
-                            await data.save()
-
-
-                            const imagemComprada = ("././img/perfil/sett.png")
-
-
-                            const skins = await skin.findOne({
-                                guildId: interaction.guild.id,
-                                userId: user.id
-                            })
-
-
-                            if (!skins) {
-                                const newCmd = {
-                                    guildId: interaction.guild.id,
-                                    userId: user.id
-                                }
-                                if (imagemComprada) {
-                                    newCmd.Img2 = imagemComprada
-                                }
-
-                                await skin.create(newCmd)
-
-                            } else {
-
-                                if (!imagemComprada) {
-                                    await skin.findOneAndUpdate({
-                                        guildId: interaction.guild.id,
-                                        userId: user.id
-
-                                    }, { $unset: { "Img2": "" } })
-                                } else {
-                                    await skin.findOneAndUpdate({
-                                        guildId: interaction.guild.id,
-                                        userId: user.id
-                                    }, { $set: { "Img2": imagemComprada } })
-                                }
-
-
-                            }
-
-                        }
+                        await buySkin(i, user, 210000, "././img/perfil/sett.png", "Img2");
                     }
 
                     if (i.customId === 'comprar3') {
-
-                        let data
-
-                        data = await schema.findOne({
-                            guildId: interaction.guild.id,
-                            userId: user.id,
-                        })
-
-                        if (!data) {
-                            data = await schema.create({
-                                guildId: interaction.guild.id,
-                                userId: user.id
-                            })
-                        }
-
-                        const verif = await skin.findOne({
-                            guildId: interaction.guild.id,
-                            userId: user.id
-                        });
-
-                        if (verif && verif.Img3) {
-                            return await i.followUp({ content: `${interaction.user} Você já possui esse item! Visualize e equipe no seu /perfil. `, ephemeral: true });
-                        }
-
-                        if (data.saldo.toLocaleString() < 310.000) {
-
-                            await i.followUp({ content: `${interaction.user} Você não tem LexaCoins suficientes para essa compra.`, ephemeral: true })
-
-                        } else {
-
-                            await i.followUp({ content: `${interaction.user} Você comprou Vayne Arco Celeste! Visualize e use no seu /perfil.`, ephemeral: true })
-
-
-                            data.saldo -= 310000
-                            await data.save()
-
-
-                            const imagemComprada = ("././img/perfil/vaynearcoceleste.png")
-
-
-                            const skins = await skin.findOne({
-                                guildId: interaction.guild.id,
-                                userId: user.id
-                            })
-
-
-                            if (!skins) {
-                                const newCmd = {
-                                    guildId: interaction.guild.id,
-                                    userId: user.id
-                                }
-                                if (imagemComprada) {
-                                    newCmd.Img3 = imagemComprada
-                                }
-
-                                await skin.create(newCmd)
-
-                            } else {
-
-                                if (!imagemComprada) {
-                                    await skin.findOneAndUpdate({
-                                        guildId: interaction.guild.id,
-                                        userId: user.id,
-
-                                    }, { $unset: { "Img3": "" } })
-                                } else {
-                                    await skin.findOneAndUpdate({
-                                        guildId: interaction.guild.id,
-                                        userId: user.id,
-                                    }, { $set: { "Img3": imagemComprada } })
-                                }
-
-                            }
-                        }
+                        await buySkin(i, user, 310000, "././img/perfil/vaynearcoceleste.png", "Img3");
                     }
+
 
                     const customIds = ['info1', 'info11', 'info2', 'info22', 'info3', 'info33']
 
                     for (const customId of customIds) {
                         if (i.customId === customId) {
-                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária da Lexa, onde você pode aprimorar seu /perfil com as <:LexaCoins:1167100813634719866> LexaCoins.`, ephemeral: true })
+                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária da Lexa, onde você pode aprimorar seu \`/perfil\` com as <:LexaCoins:1167100813634719866> LexaCoins.`, ephemeral: true })
                             break;
                         }
                     }

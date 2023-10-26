@@ -34,27 +34,24 @@ module.exports = {
 
                 let timeout = 300000
 
-            if (timeout - (Date.now() - data.begTimeout) > 0) {
-                let timeLeft = ms(timeout - (Date.now() - data.begTimeout))
+                if (timeout - (Date.now() - data.begTimeout) > 0) {
+                    let timeLeft = ms(timeout - (Date.now() - data.begTimeout))
 
-                await interaction.reply({
-                    content: `${interaction.user}\n> \`-\` Você não ja implorou de mais hoje? Aguarde mais **${timeLeft}** para implorar novamente.`, ephemeral: true
-                })
-            } else {
-                data.begTimeout = Date.now()
-                data.wallet += amount * 1
-                await data.save()
-
-
-
-                await interaction.reply({ content: `${interaction.user}\n> \`+\`Você implorou e recebeu **<:Lecoin:1059125860524900402> ${amount.toLocaleString()} LexaCoins**` })
-            }
+                    await interaction.reply({
+                        content: `${interaction.user}\n> \`-\` Você não ja implorou de mais hoje? Aguarde mais **${timeLeft}** para implorar novamente.`, ephemeral: true
+                    })
+                } else {
+                    data.begTimeout = Date.now()
+                    data.wallet += amount * 1
+                    await data.save()
+                    await interaction.reply({ content: `${interaction.user}\n> \`+\`Você implorou e recebeu **<:Lecoin:1059125860524900402> ${amount.toLocaleString()} LexaCoins**` })
+                }
 
             }
 
 
 
-            
+
         }
         else
 
