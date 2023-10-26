@@ -277,7 +277,7 @@ module.exports = {
                 chave.context.save()
                 await Canvas.loadImage(user.displayAvatarURL({ extension: 'png', size: 1024 })).then(async (interaction) => {
                     chave.context.beginPath()
-                    // Calcula as coordenadas e dimensões da imagem e do círculo de recorte deslocados 4 pixels para a esquerda e com tamanho aumentado
+
                     const centerX = 154 - 4; // Coordenada X do centro do círculo deslocada 4 pixels para a esquerda
                     const centerY = 150 + 2; // Coordenada Y do centro do círculo deslocada 2 pixels para baixo
                     const clipRadius = 115;  // Raio do círculo de recorte (originalmente 115)
@@ -306,18 +306,14 @@ module.exports = {
 
 
                 Saldo = ""
-
                 const money2 = await User.findOne({
                     guildId: interaction.guild.id,
                     userId: user.id,
                 })
 
-
                 if (money2 === null) {
                     Saldo = 0
                 } else { Saldo = money2.saldo }
-
-
 
                 chave.context.font = '50px "up"'
                 chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
@@ -325,18 +321,13 @@ module.exports = {
 
 
                 lvl = ""
-
                 const fetchedLevel = await Level.findOne({
                     guildId: interaction.guild.id,
                     userId: user.id,
                 })
-
-
                 if (fetchedLevel === null) {
                     lvl = 0
                 } else { lvl = fetchedLevel.level }
-
-
 
                 chave.context.font = '50px "up"'
                 chave.context.fillText(`${lvl}`, 245, 470)
@@ -346,16 +337,13 @@ module.exports = {
 
 
                 rep = ""
-
                 const userRep = await repUser.findOne({
                     guildId: interaction.guild.id,
                     userId: user.id,
                 })
-
                 if (userRep === null) {
                     rep = 0
                 } else { rep = userRep.Rep }
-
                 chave.context.fillText(`${rep}`, 136, 552)
 
 
@@ -364,9 +352,6 @@ module.exports = {
                     guildId: interaction.guild.id,
                     userId: user.id,
                 })
-
-
-
                 chave.context.textAlign = "left"
                 chave.context.font = '22px "up"'
                 chave.context.strokeStyle = "#a7a7a7"
