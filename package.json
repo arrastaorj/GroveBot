@@ -1,38 +1,24 @@
 {
-  "name": "basedjsv14",
-  "version": "2.0.0",
-  "description": "Base de Bot para V14",
+  "name": "lexav142023",
+  "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Arrastão RJ",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "@iamtraction/google-translate": "^2.0.1",
-    "axios": "^1.5.1",
+    "axios": "^1.6.0",
     "canvas": "^2.11.2",
     "chalk": "^4.1.2",
-    "chance": "^1.1.11",
-    "cheerio": "^1.0.0-rc.12",
-    "discord-api-types": "^0.37.60",
-    "discord-arts": "^0.5.5",
-    "discord-badges": "^0.0.0",
+    "discord-arts": "^0.5.8",
     "discord-html-transcripts": "^3.2.0",
     "discord.js": "^14.13.0",
-    "discord.js-menu": "^2.3.1",
-    "dotenv": "^16.0.3",
-    "fs": "^0.0.1-security",
-    "install": "^0.13.0",
-    "moment": "^2.29.4",
+    "dotenv": "^16.3.1",
     "moment-duration-format": "^2.3.2",
-    "mongoose": "^6.8.4",
-    "node-canvas-with-twemoji-and-discord-emoji": "^1.2.1",
-    "npm": "^10.2.0",
-    "openai": "^4.12.1",
-    "quick.db": "^7.1.3",
-    "reconlx": "^2.5.6",
-    "request": "^2.88.2",
-    "util": "^0.12.5"
+    "mongoose": "^7.6.3",
+    "node-canvas-with-twemoji-and-discord-emoji": "^1.2.1"
   }
 }

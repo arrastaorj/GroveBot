@@ -167,6 +167,7 @@ module.exports = {
 
                 new discord.ButtonBuilder()
                     .setLabel('Permissões do Membro')
+                    .setEmoji("<:9081settings:1167219166898557029>")
                     .setStyle("Success")
                     .setCustomId('verPerms')
 
@@ -190,6 +191,7 @@ module.exports = {
 
                 new discord.ButtonBuilder()
                     .setLabel('Permissões do Membro')
+                    .setEmoji("<:9081settings:1167219166898557029>")
                     .setStyle("Success")
                     .setCustomId('verPerms')
             ])
@@ -202,12 +204,12 @@ module.exports = {
                 .setThumbnail(AvatarUser)
                 .setFields(
                     {
-                        name: '<:channel:1026580767796625490> Tag',
+                        name: '<:3310profile:1167220206607810600> Tag',
                         value: `\`\`\`${member.user.tag}\`\`\``,
                         inline: true
                     },
                     {
-                        name: '<:idd:1026580771181428806> ID',
+                        name: '<:4226description:1167220574343417896> ID',
                         value: `\`\`\`${member.user.id}\`\`\``,
                         inline: true
                     },
