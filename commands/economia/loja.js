@@ -103,7 +103,7 @@ module.exports = {
                     .setStyle('Success'),
                 new discord.ButtonBuilder()
                     .setCustomId('info1')
-                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
+                    .setEmoji("<:info:1167105337648742553>")
                     .setStyle('Secondary'),
             )
             const comprar11 = new discord.ActionRowBuilder().addComponents(
@@ -115,7 +115,7 @@ module.exports = {
                     .setStyle('Secondary'),
                 new discord.ButtonBuilder()
                     .setCustomId('info11')
-                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
+                    .setEmoji("<:info:1167105337648742553>")
                     .setStyle('Secondary'),
             )
             const comprar2 = new discord.ActionRowBuilder().addComponents(
@@ -126,7 +126,7 @@ module.exports = {
                     .setStyle('Success'),
                 new discord.ButtonBuilder()
                     .setCustomId('info2')
-                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
+                    .setEmoji("<:info:1167105337648742553>")
                     .setStyle('Secondary'),
             )
             const comprar22 = new discord.ActionRowBuilder().addComponents(
@@ -138,7 +138,7 @@ module.exports = {
                     .setStyle('Secondary'),
                 new discord.ButtonBuilder()
                     .setCustomId('info22')
-                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
+                    .setEmoji("<:info:1167105337648742553>")
                     .setStyle('Secondary'),
             )
             const comprar3 = new discord.ActionRowBuilder().addComponents(
@@ -149,7 +149,7 @@ module.exports = {
                     .setStyle('Success'),
                 new discord.ButtonBuilder()
                     .setCustomId('info3')
-                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
+                    .setEmoji("<:info:1167105337648742553>")
                     .setStyle('Secondary'),
             )
             const comprar33 = new discord.ActionRowBuilder().addComponents(
@@ -161,7 +161,7 @@ module.exports = {
                     .setStyle('Secondary'),
                 new discord.ButtonBuilder()
                     .setCustomId('info33')
-                    .setEmoji("<:commentexclamation_8034646:1166906179474165790>")
+                    .setEmoji("<:info:1167105337648742553>")
                     .setStyle('Secondary'),
 
             )
@@ -201,7 +201,7 @@ module.exports = {
 
                     await i.deferUpdate();
 
-                    // Atualiza o índice com base no botão pressionado
+
                     if (i.isButton()) {
                         if (i.customId === 'volta') {
                             currentIndex = (currentIndex - 1 + images.length) % images.length;
@@ -467,19 +467,15 @@ module.exports = {
                             }
                         }
                     }
-                    const customIdToContentMap = {
-                        'info1': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                        'info11': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                        'info2': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                        'info22': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                        'info3': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                        'info33': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                    };
 
-                    const content = customIdToContentMap[i.customId];
 
-                    if (content) {
-                        await i.followUp({ content, ephemeral: true });
+                    const customIds = ['info1', 'info11', 'info2', 'info22', 'info3', 'info33']
+
+                    for (const customId of customIds) {
+                        if (i.customId === customId) {
+                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária da Lexa, onde você pode aprimorar seu /perfil com as <:LexaCoins:1167100813634719866> LexaCoins.`, ephemeral: true })
+                            break;
+                        }
                     }
 
                 })
@@ -779,19 +775,13 @@ module.exports = {
                         }
                     }
 
-                    const customIdToContentMap = {
-                        'info1': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                        'info11': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                        'info2': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                        'info22': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                        'info3': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                        'info33': '> `+` Essa é a Loja Diária da Lexa! Você pode obter personalizações para seu perfil com LexaCoins.',
-                    };
+                    const customIds = ['info1', 'info11', 'info2', 'info22', 'info3', 'info33']
 
-                    const content = customIdToContentMap[i.customId];
-
-                    if (content) {
-                        await i.followUp({ content, ephemeral: true });
+                    for (const customId of customIds) {
+                        if (i.customId === customId) {
+                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária da Lexa, onde você pode aprimorar seu /perfil com as <:LexaCoins:1167100813634719866> LexaCoins.`, ephemeral: true })
+                            break;
+                        }
                     }
 
 
