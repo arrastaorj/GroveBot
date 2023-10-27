@@ -69,14 +69,14 @@ module.exports = async (client) => {
       // Envie a mensagem para o canal do Discord
       const channel = client.channels.cache.get(process.env.CHANNEL_ID);
       if (channel) {
-        channel.send({ embeds: [embed] });
+        channel.send({ embeds: [embed] })
       }
     }
     res.sendStatus(200);
   });
 
   app.listen(port, () => {
-    console.log(`Servidor ouvindo na porta ${port}`);
+    console.log(`Servidor ouvindo na porta ${port}`)
   });
 
 
