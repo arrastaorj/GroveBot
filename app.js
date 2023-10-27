@@ -45,16 +45,6 @@ async function handlePullRequestOpened({ octokit, payload }) {
             },
         });
 
-        console.log(payload)
-        if (payload.commits && payload.commits[0]) {
-            console.log("Commits no evento de envio (push):");
-            payload.commits.forEach(commit => {
-                console.log(`Commit SHA: ${commit.id}`);
-                console.log(`Autor: ${commit.author.name}`);
-                console.log(`Mensagem do Commit: ${commit.message}`);
-                // Adicione aqui o código para puxar informações adicionais do commit, se necessário
-            });
-        }
 
 
     } catch (error) {
@@ -65,7 +55,29 @@ async function handlePullRequestOpened({ octokit, payload }) {
     }
 };
 
+app.webhooks.on("push", handlePushEvent);
 
+// Função de manipulador para o evento "push"
+async function handlePushEvent({ octokit, payload }) {
+
+    await octokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/comments", {
+        owner: payload.repository.owner.login,
+        repo: payload.repository.name,
+        issue_number: payload.pull_request.number,
+        body: messageForNewPRs,
+        headers: {
+            "x-github-api-version": "2022-11-28",
+        },
+    });
+
+    console.log("Commits no evento de envio (push):");
+    payload.commits.forEach(commit => {
+        console.log(`Commit SHA: ${commit.id}`);
+        console.log(`Autor: ${commit.author.name}`);
+        console.log(`Mensagem do Commit: ${commit.message}`);
+    }
+    )
+}
 
 // This sets up a webhook event listener. When your app receives a webhook event from GitHub with a `X-GitHub-Event` header value of `pull_request` and an `action` payload value of `opened`, it calls the `handlePullRequestOpened` event handler that is defined above.
 app.webhooks.on("pull_request.opened", handlePullRequestOpened);
