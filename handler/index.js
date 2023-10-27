@@ -74,6 +74,37 @@ module.exports = async (client) => {
   })
 
 
+  const express = require('express');
+  const app = express();
+  const bodyParser = require('body-parser');
+  const { Client, GatewayIntentBits } = require('discord.js');
+  
+  // Configuração do servidor Express
+  app.use(bodyParser.json());
+  
+  // Rota para receber mensagens do webhook do GitHub
+  app.post('https://discord.com/api/webhooks/1167504574572146778/08Sa4u1rKYX2bszELras2NHVht9irHg9415uyIPjytBptN9gJ-KFvMU-X3ri-Gk_vbeJ/github', (req, res) => {
+    // Processar e alterar a mensagem aqui
+    const githubMessage = req.body;
+  
+    // Enviar a mensagem ao webhook do Discord
+    const discordWebhookURL = 'https://discord.com/api/webhooks/1167504574572146778/08Sa4u1rKYX2bszELras2NHVht9irHg9415uyIPjytBptN9gJ-KFvMU-X3ri-Gk_vbeJ';
+    const webhookClient = new webhookClient({ url: discordWebhookURL });
+    webhookClient.send({
+      content: `Mensagem do GitHub: ${githubMessage}`,
+    });
+  
+    res.status(200).send('Mensagem recebida e enviada ao Discord');
+  });
+  
+  
+  // Iniciar o servidor Express
+  const port = 3000;
+  app.listen(port, () => {
+    console.log(`Servidor Express ouvindo na porta ${port}`);
+  });
+  
+
   //Carregando os eventos.
   fs.readdir(`././Eventos/`, (err, fol) => {
 
