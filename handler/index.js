@@ -85,11 +85,12 @@ module.exports = async (client) => {
     app.post('/github-webhook', (req, res) => {
       const payload = req.body;
 
+      console.log(payload)
       // Verificar se o segredo do webhook corresponde ao segredo configurado no GitHub
       if (req.headers['x-hub-signature'] !== `sha1=${githubSecret}`) {
         return res.status(403).json({ error: 'Acesso negado' });
       }
-
+      console.log(payload)
       // Extrair informações relevantes do webhook do GitHub
       const author = payload.pusher.name;
       const repoName = payload.repository.name;
