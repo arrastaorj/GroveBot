@@ -55,6 +55,9 @@ try {
 
     app.webhooks.on("pull_request.opened", handlePullRequestOpened);
 
+    app.webhooks.on("pull_request.opened", handlePushEvent);
+    app.webhooks.on("push", handlePushEvent);
+
     app.webhooks.onError((error) => {
         if (error.name === "AggregateError") {
             console.error(`Error processing request: ${error.event}`);
