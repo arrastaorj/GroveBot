@@ -45,6 +45,7 @@ async function handlePullRequestOpened({ octokit, payload }) {
             },
         });
 
+        console.log(payload)
         if (payload.commits && payload.commits.length > 0) {
             console.log("Commits no evento de envio (push):");
             payload.commits.forEach(commit => {
