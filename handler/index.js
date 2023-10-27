@@ -2,7 +2,7 @@ const fs = require("fs")
 const bot = require('../bot.json')
 const chalk = require('chalk')
 const axios = require('axios');
-
+const discord = require("discord.js")
 
 module.exports = async (client) => {
 
@@ -85,7 +85,7 @@ module.exports = async (client) => {
           if (latestCommit !== lastCommitSent) {
             lastCommitSent = latestCommit;
 
-            const embed = new MessageEmbed()
+            const embed = new discord.EmbedBuilder()
               .setColor('#ff0000')
               .setTitle('**Novo Commit no Repositório**')
               .addFields(
@@ -101,7 +101,7 @@ module.exports = async (client) => {
             channel.send({ embeds: [embed] });
           }
         }
-      }, 60000);
+      }, 10000);
     } else {
       console.error(`Canal com ID ${process.env.CHANNEL_ID} não encontrado.`);
     }
