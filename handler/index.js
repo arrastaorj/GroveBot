@@ -35,48 +35,12 @@ module.exports = async (client) => {
 
   })
 
+
   const GITHUB_TOKEN = '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' // Substitua com seu token de acesso pessoal.
   const GITHUB_REPO = 'arrastaorj/LexaV142023' // Substitua com o nome do proprietário e repositório GitHub.
   const CHANNEL_ID = '1054128840642920468' // Substitua pelo ID do canal onde você deseja que os logs de commit sejam enviados.
 
-  //Carregando os slash.
-  client.on("ready", async () => {
-
-    //Carregando em 1 servidor.
-    if (bot.slash.guild_id) {
-
-      var server = client.guilds.cache.get(bot.slash.guild_id)
-
-      if (!server) {
-        console.log(chalk.hex(`FF0000`).bold(`[commands] > Servidor de carregamento inválido.`))
-        process.exit()
-      }
-
-      try {
-
-        server.commands.set(ArgsScommands)
-
-        console.log(chalk.hex(`4169E1`).bold(`[commands] > Os comandos foram carregados em ${server.name}.`))
-      } catch (e) {
-        console.log(chalk.hex(`FF0000`).bold(`[commands] > Não foi possível carregar os comandos em ${server.name}.`))
-        process.exit()
-      }
-
-    } else {
-      //Carregando no global.
-
-      try {
-
-        client.application.commands.set(ArgsScommands)
-
-        console.log(chalk.hex(`4169E1`).bold(`[commands] > Os comandos foram carregados globalmente.`))
-      } catch (e) {
-        console.log(chalk.hex(`FF0000`).bold(`[commands] > Não foi possível carregar os comandos globalmente.`))
-        process.exit()
-      }
-
-    }
-
+  client.once('ready', () => {
 
     const channel = client.channels.cache.get(CHANNEL_ID);
 
@@ -104,13 +68,12 @@ module.exports = async (client) => {
             channel.send({ embeds: [embed] });
           }
         }
-      }, 60000);
+      }, 10000);
     } else {
       console.error(`Canal com ID ${CHANNEL_ID} não encontrado.`);
     }
 
   })
-
 
   let lastCommitSent = '';
 
@@ -141,6 +104,45 @@ module.exports = async (client) => {
     }
   }
 
+
+
+  //Carregando os slash.
+  client.on("ready", async () => {
+
+    //Carregando em 1 servidor.
+    if (bot.slash.guild_id) {
+
+      var server = client.guilds.cache.get(bot.slash.guild_id)
+
+      if (!server) {
+        console.log(chalk.hex(`FF0000`).bold(`[commands] > Servidor de carregamento inválido.`))
+        process.exit()
+      }
+
+      try {
+
+        server.commands.set(ArgsScommands)
+
+        console.log(chalk.hex(`4169E1`).bold(`[commands] > Os comandos foram carregados em ${server.name}.`))
+      } catch (e) {
+        console.log(chalk.hex(`FF0000`).bold(`[commands] > Não foi possível carregar os comandos em ${server.name}.`))
+        process.exit()
+      }
+
+    } else {
+      //Carregando no global.
+      try {
+
+        client.application.commands.set(ArgsScommands)
+
+        console.log(chalk.hex(`4169E1`).bold(`[commands] > Os comandos foram carregados globalmente.`))
+      } catch (e) {
+        console.log(chalk.hex(`FF0000`).bold(`[commands] > Não foi possível carregar os comandos globalmente.`))
+        process.exit()
+      }
+
+    }
+  })
 
 
 
