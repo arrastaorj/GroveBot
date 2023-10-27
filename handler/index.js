@@ -103,7 +103,7 @@ module.exports = async (client) => {
         }
       }, 60000);
     } else {
-      console.error(`Canal com ID ${CHANNEL_ID} não encontrado.`);
+      console.error(`Canal com ID ${process.env.CHANNEL_ID} não encontrado.`);
     }
   })
 
