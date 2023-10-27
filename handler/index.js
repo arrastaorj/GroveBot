@@ -86,26 +86,26 @@ module.exports = async (client) => {
 
     // Configurações do webhook do GitHub
     const GITHUB_WEBHOOK_SECRET = '785643129';
-    const GITHUB_WEBHOOK_PORT = 3000;
-    
+    const GITHUB_WEBHOOK_PORT = 3000
+
     const app = express();
-    app.use(bodyParser.json());
-    
+    app.use(bodyParser.json())
+
     app.post('/github-webhook', (req, res) => {
       const payload = JSON.stringify(req.body);
-    
+
       const signature = req.get('X-Hub-Signature-256');
       const computedSignature = `sha256=${createHmac('sha256', GITHUB_WEBHOOK_SECRET).update(payload).digest('hex')}`;
-    
+
       if (signature === computedSignature) {
         if (req.body && req.body.commits) {
           const latestCommit = req.body.commits[0];
           const commitMessage = latestCommit.message;
           const commitAuthor = latestCommit.author.name;
           const commitURL = latestCommit.url;
-    
+
           const messageContent = `**Novo commit em ${GITHUB_REPO_NAME}**:\nAutor: ${commitAuthor}\nMensagem: ${commitMessage}\n[Link para o commit](${commitURL})`;
-    
+
           // Enviar mensagem para o canal do Discord
           const channel = client.channels.cache.get('1055105515706908682'); // Substitua pelo ID do canal
           if (channel) {
@@ -119,7 +119,7 @@ module.exports = async (client) => {
         res.status(403).send('Invalid signature');
       }
     });
-    
+
     app.listen(GITHUB_WEBHOOK_PORT, () => {
       console.log(`Servidor do webhook do GitHub rodando na porta ${GITHUB_WEBHOOK_PORT}`);
     })
