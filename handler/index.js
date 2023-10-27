@@ -74,7 +74,6 @@ module.exports = async (client) => {
         console.log(chalk.hex(`FF0000`).bold(`[commands] > Não foi possível carregar os comandos globalmente.`))
         process.exit()
       }
-
     }
 
 
