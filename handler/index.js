@@ -1,4 +1,5 @@
 const fs = require("fs")
+const discord = require("discord.js")
 const bot = require('../bot.json')
 const chalk = require('chalk')
 const axios = require('axios')
@@ -77,27 +78,41 @@ module.exports = async (client) => {
     }
 
 
-    const channel = client.channels.cache.get(CHANNEL_ID)
+    const channel = client.channels.cache.get(CHANNEL_ID);
 
     if (channel) {
       setInterval(async () => {
-        const latestCommit = await getLatestCommit(GITHUB_REPO)
+        const latestCommit = await getLatestCommit(GITHUB_REPO);
 
         if (latestCommit) {
           if (latestCommit !== lastCommitSent) {
-            lastCommitSent = latestCommit
-            channel.send(`Novo commit no repositório ${GITHUB_REPO}:\n${latestCommit}`)
+            lastCommitSent = latestCommit;
+
+            const embed = new discord.EmbedBuilder()
+              .setColor('#ff0000')
+              .setTitle('**Novo Commit no Repositório**')
+              .addFields(
+                { name: 'Repositório', value: GITHUB_REPO },
+                { name: 'Hash do Commit', value: latestCommit.hash },
+                { name: 'Autor', value: latestCommit.author },
+                { name: 'Data do Commit', value: latestCommit.date },
+                { name: 'Mensagem do Commit', value: latestCommit.message }
+              )
+              .setURL(latestCommit.url)
+              .setTimestamp();
+
+            channel.send({ embeds: [embed] });
           }
         }
-      }, 60000)
+      }, 60000);
     } else {
-      console.error(`Canal com ID ${CHANNEL_ID} não encontrado.`)
+      console.error(`Canal com ID ${CHANNEL_ID} não encontrado.`);
     }
 
   })
 
 
-  let lastCommitSent = ''
+  let lastCommitSent = '';
 
   async function getLatestCommit(repo) {
     try {
@@ -105,18 +120,24 @@ module.exports = async (client) => {
         headers: {
           Authorization: `Bearer ${GITHUB_TOKEN}`,
         },
-      })
-      const latestCommit = response.data[0]
+      });
+      const latestCommit = response.data[0];
 
-      const commitHash = latestCommit.sha
-      const commitMessage = latestCommit.commit.message
-      const commitAuthor = latestCommit.commit.author.name
-      const commitDate = latestCommit.commit.author.date
+      const commitHash = latestCommit.sha;
+      const commitMessage = latestCommit.commit.message;
+      const commitAuthor = latestCommit.commit.author.name;
+      const commitDate = latestCommit.commit.author.date;
 
-      return `Hash do Commit: ${commitHash}\nAutor: ${commitAuthor}\nData do Commit: ${commitDate}\nMensagem do Commit: ${commitMessage}`
+      return {
+        hash: commitHash,
+        author: commitAuthor,
+        date: commitDate,
+        message: commitMessage,
+        url: latestCommit.html_url,
+      };
     } catch (error) {
-      console.error('Erro ao buscar o último commit:', error)
-      return null
+      console.error('Erro ao buscar o último commit:', error);
+      return null;
     }
   }
 
