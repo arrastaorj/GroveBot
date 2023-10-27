@@ -74,7 +74,6 @@ module.exports = async (client) => {
   })
 
 
-
   //Carregando os eventos.
   fs.readdir(`././Eventos/`, (err, fol) => {
 
