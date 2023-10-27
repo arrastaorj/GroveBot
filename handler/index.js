@@ -82,7 +82,7 @@ module.exports = async (client) => {
 
     app.use(bodyParser.json());
 
-    app.post('https://webhook.discloudbot.com/424244967893106699/1698414829594', (req, res) => {
+    app.post('/github-webhook', (req, res) => {
       const payload = req.body;
 
       // Verificar se o segredo do webhook corresponde ao segredo configurado no GitHub
