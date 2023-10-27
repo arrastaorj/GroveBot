@@ -91,7 +91,7 @@ module.exports = async (client) => {
     const app = express();
     app.use(bodyParser.json())
 
-    app.post('https://discord.com/api/webhooks/1167556009074622494/yRQ7hj4r6qIrDPZYQyk-egZzJnHIZGO8yIuqt8dCKkKf5RjFjupyji4sIRdKgfsEwU5T/github', (req, res) => {
+    app.post('/github', (req, res) => {
       const payload = JSON.stringify(req.body);
 
       const signature = req.get('X-Hub-Signature-256');
