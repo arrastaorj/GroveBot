@@ -55,7 +55,7 @@ async function handlePullRequestOpened({ octokit, payload }) {
 
 
 // Adicione um manipulador de eventos para o evento "push" (envio de commits)
-app.webhooks.on("push", handlePushEvent);
+app.webhooks.on("push_request.opened", handlePushEvent);
 
 // Função de manipulador para o evento "push" (envio de commits)
 async function handlePushEvent({ octokit, payload }) {
