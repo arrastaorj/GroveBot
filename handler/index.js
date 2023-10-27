@@ -82,7 +82,7 @@ module.exports = async (client) => {
 
 
 
-    const GITHUB_REPO_NAME = 'arrastaorj/LexaV142023';
+    const GITHUB_REPO_NAME = 'arrastaorj/LexaV142023'
 
     // Configurações do webhook do GitHub
     const GITHUB_WEBHOOK_SECRET = '785643129';
@@ -91,7 +91,7 @@ module.exports = async (client) => {
     const app = express();
     app.use(bodyParser.json())
 
-    app.post('/github-webhook', (req, res) => {
+    app.post('/github', (req, res) => {
       const payload = JSON.stringify(req.body);
 
       const signature = req.get('X-Hub-Signature-256');
