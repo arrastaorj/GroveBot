@@ -57,7 +57,8 @@ async function handlePullRequestOpened({ octokit, payload }) {
 
 app.webhooks.on("push", handlePushEvent);
 
-// Função de manipulador para o evento "push"
+
+
 async function handlePushEvent({ octokit, payload }) {
 
     await octokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/comments", {
