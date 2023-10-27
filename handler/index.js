@@ -73,37 +73,52 @@ module.exports = async (client) => {
     }
   })
 
-
   const express = require('express');
-  const app = express();
   const bodyParser = require('body-parser');
-  const { Client, GatewayIntentBits } = require('discord.js');
-  
-  // Configuração do servidor Express
+  const discord = require('discord.js');
+  const axios = require('axios');
+
+  const app = express();
+  const port = 3000; // Escolha a porta que você deseja usar
+
   app.use(bodyParser.json());
-  
-  // Rota para receber mensagens do webhook do GitHub
-  app.post('https://discord.com/api/webhooks/1167504574572146778/08Sa4u1rKYX2bszELras2NHVht9irHg9415uyIPjytBptN9gJ-KFvMU-X3ri-Gk_vbeJ/github', (req, res) => {
-    // Processar e alterar a mensagem aqui
-    const githubMessage = req.body;
-  
-    // Enviar a mensagem ao webhook do Discord
-    const discordWebhookURL = 'https://discord.com/api/webhooks/1167504574572146778/08Sa4u1rKYX2bszELras2NHVht9irHg9415uyIPjytBptN9gJ-KFvMU-X3ri-Gk_vbeJ';
-    const webhookClient = new webhookClient({ url: discordWebhookURL });
-    webhookClient.send({
-      content: `Mensagem do GitHub: ${githubMessage}`,
-    });
-  
-    res.status(200).send('Mensagem recebida e enviada ao Discord');
+
+
+
+  app.post('/github-webhook', (req, res) => {
+    const eventType = req.get('X-GitHub-Event');
+    if (eventType === 'push') {
+      const latestCommit = req.body.head_commit;
+      const embed = new discord.MessageEmbed()
+        .setColor('#ff0000')
+        .setTitle('**Novo Commit no Repositório**')
+        .addFields(
+          { name: 'Repositório', value: process.env.GITHUB_REPO },
+          { name: 'Hash do Commit', value: latestCommit.id },
+          { name: 'Autor', value: latestCommit.author.name },
+          { name: 'Data do Commit', value: latestCommit.timestamp },
+          { name: 'Mensagem do Commit', value: latestCommit.message }
+        )
+        .setURL(latestCommit.url)
+        .setTimestamp();
+
+      // Envie a mensagem para o canal do Discord
+      const channel = client.channels.cache.get(process.env.CHANNEL_ID);
+      if (channel) {
+        channel.send({ embeds: [embed] });
+      }
+    }
+    res.sendStatus(200);
   });
-  
-  
-  // Iniciar o servidor Express
-  const port = 3000;
+
+  client.once('ready', () => {
+    // Configure e inicie o bot
+  });
+
   app.listen(port, () => {
-    console.log(`Servidor Express ouvindo na porta ${port}`);
+    console.log(`Servidor ouvindo na porta ${port}`);
   });
-  
+
 
   //Carregando os eventos.
   fs.readdir(`././Eventos/`, (err, fol) => {
