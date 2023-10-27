@@ -105,7 +105,6 @@ module.exports = async (client) => {
                 { name: 'Mensagem do Commit', value: latestCommit.message }
               )
               .setURL(latestCommit.url)
-              .setTimestamp()
 
             channel.send({ embeds: [embed] })
           }
