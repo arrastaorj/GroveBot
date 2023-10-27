@@ -77,115 +77,73 @@ module.exports = async (client) => {
 
     }
 
-    // Middleware para analisar JSON no corpo da solicitação
-    app.use(express.json());
 
-    // Rota para lidar com notificações do webhook do GitHub
-    app.post("/github", (req, res) => {
-      const payload = req.body; // O payload contém informações sobre o evento do GitHub
+    const channel = client.channels.cache.get(process.env.CHANNEL_ID)
 
-      console.log(payload)
-      if (payload && payload.action === "created") {
-        // Verifique se o evento é um novo commit
-        const latestCommitMessage = payload.commits[0].message;
-        const repositoryName = payload.repository.full_name;
+    if (channel) {
+      setInterval(async () => {
+        const latestCommit = await getLatestCommit(process.env.GITHUB_REPO)
 
-        // Agora você pode enviar a mensagem do commit para o canal do Discord
-        const channel = client.channels.cache.get(process.env.CHANNEL_ID);
+        if (latestCommit) {
+          if (latestCommit !== lastCommitSent) {
+            lastCommitSent = latestCommit
 
-        if (channel) {
-          const embed = new discord.EmbedBuilder()
-            .setColor('#26ff00')
-            .setTitle('**Novo Commit no Repositório**')
-            .addFields(
-              { name: 'Repositório', value: repositoryName },
-              // { name: 'Hash do Commit', value: latestCommit.hash },
-              //{ name: 'Autor', value: latestCommit.author },
-              //{ name: 'Data/Hora do Commit', value: formatDateToPtBR(new Date(latestCommit.date)) },
-              { name: 'Mensagem do Commit', value: latestCommitMessage }
-            )
-            //.setURL(latestCommit.url)
-            .setTimestamp()
+            // Função para formatar a data em pt-BR
+            function formatDateToPtBR(date) {
+              const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+              return date.toLocaleString('pt-BR', options);
+            }
 
-          channel.send({ embeds: [embed] })
+            const embed = new discord.EmbedBuilder()
+              .setColor('#26ff00')
+              .setTitle('**Novo Commit no Repositório**')
+              .addFields(
+                { name: 'Repositório', value: process.env.GITHUB_REPO },
+                { name: 'Hash do Commit', value: latestCommit.hash },
+                { name: 'Autor', value: latestCommit.author },
+                { name: 'Data/Hora do Commit', value: formatDateToPtBR(new Date(latestCommit.date)) },
+                { name: 'Mensagem do Commit', value: latestCommit.message }
+              )
+              .setURL(latestCommit.url)
+              .setTimestamp()
+
+            channel.send({ embeds: [embed] })
+          }
         }
-      }
-
-      res.status(200).send("OK");
-    });
-
-    app.listen(port, () => {
-      console.log(`Servidor da web está ouvindo na porta ${port}`);
-    });
-
-
-    // const channel = client.channels.cache.get(process.env.CHANNEL_ID)
-
-    // if (channel) {
-    //   setInterval(async () => {
-    //     const latestCommit = await getLatestCommit(process.env.GITHUB_REPO)
-
-    //     if (latestCommit) {
-    //       if (latestCommit !== lastCommitSent) {
-    //         lastCommitSent = latestCommit
-
-    //         // Função para formatar a data em pt-BR
-    //         function formatDateToPtBR(date) {
-    //           const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-    //           return date.toLocaleString('pt-BR', options);
-    //         }
-
-
-    //         const embed = new discord.EmbedBuilder()
-    //           .setColor('#26ff00')
-    //           .setTitle('**Novo Commit no Repositório**')
-    //           .addFields(
-    //             { name: 'Repositório', value: process.env.GITHUB_REPO },
-    //             { name: 'Hash do Commit', value: latestCommit.hash },
-    //             { name: 'Autor', value: latestCommit.author },
-    //             { name: 'Data/Hora do Commit', value: formatDateToPtBR(new Date(latestCommit.date)) },
-    //             { name: 'Mensagem do Commit', value: latestCommit.message }
-    //           )
-    //           .setURL(latestCommit.url)
-    //           .setTimestamp()
-
-    //         channel.send({ embeds: [embed] })
-    //       }
-    //     }
-    //   }, 10000)
-    // } else {
-    //   console.error(`Canal com ID ${process.env.CHANNEL_ID} não encontrado.`)
-    // }
+      }, 10000)
+    } else {
+      console.error(`Canal com ID ${process.env.CHANNEL_ID} não encontrado.`)
+    }
   })
 
-  // let lastCommitSent = ''
+  let lastCommitSent = ''
 
-  // async function getLatestCommit(repo) {
-  //   try {
-  //     const response = await axios.get(`https://api.github.com/repos/${repo}/commits`, {
-  //       headers: {
-  //         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-  //       },
-  //     })
-  //     const latestCommit = response.data[0]
+  async function getLatestCommit(repo) {
+    try {
+      const response = await axios.get(`https://api.github.com/repos/${repo}/commits`, {
+        headers: {
+          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+        },
+      })
+      const latestCommit = response.data[0]
 
-  //     const commitHash = latestCommit.sha
-  //     const commitMessage = latestCommit.commit.message
-  //     const commitAuthor = latestCommit.commit.author.name
-  //     const commitDate = latestCommit.commit.author.date
+      const commitHash = latestCommit.sha
+      const commitMessage = latestCommit.commit.message
+      const commitAuthor = latestCommit.commit.author.name
+      const commitDate = latestCommit.commit.author.date
 
-  //     return {
-  //       hash: commitHash,
-  //       author: commitAuthor,
-  //       date: commitDate,
-  //       message: commitMessage,
-  //       url: latestCommit.html_url,
-  //     }
-  //   } catch (error) {
-  //     console.error('Erro ao buscar o último commit:', error)
-  //     return null
-  //   }
-  // }
+      return {
+        hash: commitHash,
+        author: commitAuthor,
+        date: commitDate,
+        message: commitMessage,
+        url: latestCommit.html_url,
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o último commit:', error)
+      return null
+    }
+  }
 
 
 
