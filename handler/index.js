@@ -1,6 +1,7 @@
 const fs = require("fs");
 const bot = require('../bot.json');
 const chalk = require('chalk');
+const axios = require('axios');
 
 module.exports = async (client) => {
 
