@@ -1,6 +1,7 @@
 const fs = require("fs")
 const bot = require('../bot.json')
 const chalk = require('chalk')
+const axios = require('axios');
 
 
 module.exports = async (client) => {
@@ -71,53 +72,70 @@ module.exports = async (client) => {
       }
 
     }
+
+
+
+    const channel = client.channels.cache.get(process.env.CHANNEL_ID);
+
+    if (channel) {
+      setInterval(async () => {
+        const latestCommit = await getLatestCommit(process.env.GITHUB_REPO);
+
+        if (latestCommit) {
+          if (latestCommit !== lastCommitSent) {
+            lastCommitSent = latestCommit;
+
+            const embed = new MessageEmbed()
+              .setColor('#ff0000')
+              .setTitle('**Novo Commit no Repositório**')
+              .addFields(
+                { name: 'Repositório', value: process.env.GITHUB_REPO },
+                { name: 'Hash do Commit', value: latestCommit.hash },
+                { name: 'Autor', value: latestCommit.author },
+                { name: 'Data do Commit', value: latestCommit.date },
+                { name: 'Mensagem do Commit', value: latestCommit.message }
+              )
+              .setURL(latestCommit.url)
+              .setTimestamp();
+
+            channel.send({ embeds: [embed] });
+          }
+        }
+      }, 60000);
+    } else {
+      console.error(`Canal com ID ${CHANNEL_ID} não encontrado.`);
+    }
   })
 
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  const discord = require('discord.js');
-  const axios = require('axios');
+  let lastCommitSent = '';
 
-  const app = express();
-  const port = 3000; // Escolha a porta que você deseja usar
+  async function getLatestCommit(repo) {
+    try {
+      const response = await axios.get(`https://api.github.com/repos/${repo}/commits`, {
+        headers: {
+          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+        },
+      });
+      const latestCommit = response.data[0];
 
-  app.use(bodyParser.json());
+      const commitHash = latestCommit.sha;
+      const commitMessage = latestCommit.commit.message;
+      const commitAuthor = latestCommit.commit.author.name;
+      const commitDate = latestCommit.commit.author.date;
 
-
-
-  app.post('/github-webhook', (req, res) => {
-    const eventType = req.get('X-GitHub-Event');
-    if (eventType === 'push') {
-      const latestCommit = req.body.head_commit;
-      const embed = new discord.MessageEmbed()
-        .setColor('#ff0000')
-        .setTitle('**Novo Commit no Repositório**')
-        .addFields(
-          { name: 'Repositório', value: process.env.GITHUB_REPO },
-          { name: 'Hash do Commit', value: latestCommit.id },
-          { name: 'Autor', value: latestCommit.author.name },
-          { name: 'Data do Commit', value: latestCommit.timestamp },
-          { name: 'Mensagem do Commit', value: latestCommit.message }
-        )
-        .setURL(latestCommit.url)
-        .setTimestamp();
-
-      // Envie a mensagem para o canal do Discord
-      const channel = client.channels.cache.get(process.env.CHANNEL_ID);
-      if (channel) {
-        channel.send({ embeds: [embed] });
-      }
+      return {
+        hash: commitHash,
+        author: commitAuthor,
+        date: commitDate,
+        message: commitMessage,
+        url: latestCommit.html_url,
+      };
+    } catch (error) {
+      console.error('Erro ao buscar o último commit:', error);
+      return null;
     }
-    res.sendStatus(200);
-  });
+  }
 
-  client.once('ready', () => {
-    // Configure e inicie o bot
-  });
-
-  app.listen(port, () => {
-    console.log(`Servidor ouvindo na porta ${port}`);
-  });
 
 
   //Carregando os eventos.
