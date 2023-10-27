@@ -1,11 +1,7 @@
 const fs = require("fs")
-const discord = require("discord.js")
 const bot = require('../bot.json')
 const chalk = require('chalk')
-const axios = require('axios')
 
-const express = require('express');
-const bodyParser = require('body-parser');
 
 module.exports = async (client) => {
 
@@ -37,49 +33,6 @@ module.exports = async (client) => {
     })
 
   })
-
-
-
-
-
-  const app = express();
-  const port = 3000; // Escolha a porta que você deseja usar
-
-  app.use(bodyParser.json());
-
-  // Inicialize o bot e o canal aqui
-
-  app.post('/github-webhook', (req, res) => {
-    const eventType = req.get('X-GitHub-Event');
-    if (eventType === 'push') {
-      const latestCommit = req.body.head_commit;
-      const embed = new discord.MessageEmbed()
-        .setColor('#ff0000')
-        .setTitle('**Novo Commit no Repositório**')
-        .addFields(
-          { name: 'Repositório', value: process.env.GITHUB_REPO },
-          { name: 'Hash do Commit', value: latestCommit.id },
-          { name: 'Autor', value: latestCommit.author.name },
-          { name: 'Data do Commit', value: latestCommit.timestamp },
-          { name: 'Mensagem do Commit', value: latestCommit.message }
-        )
-        .setURL(latestCommit.url)
-        .setTimestamp();
-
-      // Envie a mensagem para o canal do Discord
-      const channel = client.channels.cache.get(process.env.CHANNEL_ID);
-      if (channel) {
-        channel.send({ embeds: [embed] })
-      }
-    }
-    res.sendStatus(200);
-  });
-
-  app.listen(port, () => {
-    console.log(`Servidor ouvindo na porta ${port}`)
-  });
-
-
 
 
   //Carregando os slash.
