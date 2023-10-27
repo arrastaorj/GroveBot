@@ -84,6 +84,7 @@ module.exports = async (client) => {
     app.post("/github", (req, res) => {
       const payload = req.body; // O payload contém informações sobre o evento do GitHub
 
+      console.log(payload)
       if (payload && payload.action === "created") {
         // Verifique se o evento é um novo commit
         const latestCommitMessage = payload.commits[0].message;
