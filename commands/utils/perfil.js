@@ -245,11 +245,6 @@ module.exports = {
 
 
 
-            let chave = {}
-            chave.create = Canvas.createCanvas(900, 600)
-            chave.context = chave.create.getContext('2d')
-            chave.context.font = '68px tagihan'
-            chave.context.fillStyle = '#F8F8FF'
 
 
             const cmd2 = await perfilID.findOne({
@@ -267,7 +262,13 @@ module.exports = {
 
 
 
-            Canvas.loadImage(foto).then(async (img) => {
+            let chave = {}
+            chave.create = Canvas.createCanvas(900, 600)
+            chave.context = chave.create.getContext('2d')
+            chave.context.font = '68px tagihan'
+            chave.context.fillStyle = '#F8F8FF'
+
+            await Canvas.loadImage(foto).then(async (img) => {
                 chave.context.drawImage(img, 0, 0, 900, 600)
                 chave.context.textAlign = "left"
                 chave.context.font = '37px "aAkhirTahun"'
@@ -540,25 +541,25 @@ module.exports = {
                                         chave.context.save()
                                         await Canvas.loadImage(user.displayAvatarURL({ extension: 'png', size: 1024 })).then(async (interaction) => {
                                             chave.context.beginPath()
-                                            // Calcula as coordenadas e dimensões da imagem e do círculo de recorte deslocados 4 pixels para a esquerda e com tamanho aumentado
-                                            const centerX = 154 - 4; // Coordenada X do centro do círculo deslocada 4 pixels para a esquerda
-                                            const centerY = 150 + 2; // Coordenada Y do centro do círculo deslocada 2 pixels para baixo
-                                            const clipRadius = 115;  // Raio do círculo de recorte (originalmente 115)
+
+                                            const centerX = 154 - 4;
+                                            const centerY = 150 + 2;
+                                            const clipRadius = 115;
                                             const imageWidth = clipRadius * 2;
                                             const imageHeight = clipRadius * 2;
                                             const imageX = centerX - clipRadius;
                                             const imageY = centerY - clipRadius;
 
-                                            // Desenha o círculo de recorte
+
                                             chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2);
                                             chave.context.clip();
 
-                                            // Desenha a imagem dentro do círculo de recorte com o tamanho ajustado
+
                                             chave.context.drawImage(interaction, imageX, imageY, imageWidth, imageHeight);
 
-                                            // Desenha a borda branca ao redor do círculo de recorte
-                                            chave.context.lineWidth = 5; // Espessura da linha
-                                            chave.context.strokeStyle = '101216'; // Cor da borda
+
+                                            chave.context.lineWidth = 5;
+                                            chave.context.strokeStyle = '101216';
                                             chave.context.beginPath();
                                             chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2);
                                             chave.context.stroke();
