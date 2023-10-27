@@ -34,7 +34,7 @@ module.exports = async (client) => {
 
   });
 
-
+  const GITHUB_TOKEN = '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'; // Substitua com seu token de acesso pessoal.
   const GITHUB_REPO = 'arrastaorj/LexaV142023'; // Substitua com o nome do proprietário e repositório GitHub.
   const CHANNEL_ID = '1054128840642920468'; // Substitua pelo ID do canal onde você deseja que os logs de commit sejam enviados.
 
@@ -80,31 +80,32 @@ module.exports = async (client) => {
     const channel = client.channels.cache.get(CHANNEL_ID);
 
     if (channel) {
-      // Use um intervalo para verificar regularmente os commits e enviar atualizações para o canal.
       setInterval(async () => {
         const latestCommit = await getLatestCommit(GITHUB_REPO);
 
         if (latestCommit) {
-          // Verifique se o commit é diferente do último enviado (para evitar spam).
           if (latestCommit !== lastCommitSent) {
             lastCommitSent = latestCommit;
             channel.send(`Novo commit no repositório ${GITHUB_REPO}:\n${latestCommit}`);
           }
         }
-      }, 60000); // Verifica a cada minuto. Você pode ajustar o intervalo conforme necessário.
+      }, 60000);
     } else {
       console.error(`Canal com ID ${CHANNEL_ID} não encontrado.`);
     }
 
-
-
   })
 
-  let lastCommitSent = ''; // Armazena o hash do último commit enviado.
+
+  let lastCommitSent = '';
 
   async function getLatestCommit(repo) {
     try {
-      const response = await axios.get(`https://api.github.com/repos/${repo}/commits`);
+      const response = await axios.get(`https://api.github.com/repos/${repo}/commits`, {
+        headers: {
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+        },
+      });
       const latestCommit = response.data[0];
 
       const commitHash = latestCommit.sha;
