@@ -279,27 +279,27 @@ module.exports = {
                 await Canvas.loadImage(user.displayAvatarURL({ extension: 'png', size: 1024 })).then(async (interaction) => {
                     chave.context.beginPath()
 
-                    const centerX = 154 - 4; // Coordenada X do centro do círculo deslocada 4 pixels para a esquerda
-                    const centerY = 150 + 2; // Coordenada Y do centro do círculo deslocada 2 pixels para baixo
-                    const clipRadius = 115;  // Raio do círculo de recorte (originalmente 115)
-                    const imageWidth = clipRadius * 2;
-                    const imageHeight = clipRadius * 2;
-                    const imageX = centerX - clipRadius;
-                    const imageY = centerY - clipRadius;
+                    const centerX = 154 - 4 // Coordenada X do centro do círculo deslocada 4 pixels para a esquerda
+                    const centerY = 150 + 2 // Coordenada Y do centro do círculo deslocada 2 pixels para baixo
+                    const clipRadius = 115  // Raio do círculo de recorte (originalmente 115)
+                    const imageWidth = clipRadius * 2
+                    const imageHeight = clipRadius * 2
+                    const imageX = centerX - clipRadius
+                    const imageY = centerY - clipRadius
 
                     // Desenha o círculo de recorte
-                    chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2);
-                    chave.context.clip();
+                    chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2)
+                    chave.context.clip()
 
                     // Desenha a imagem dentro do círculo de recorte com o tamanho ajustado
-                    chave.context.drawImage(interaction, imageX, imageY, imageWidth, imageHeight);
+                    chave.context.drawImage(interaction, imageX, imageY, imageWidth, imageHeight)
 
                     // Desenha a borda branca ao redor do círculo de recorte
-                    chave.context.lineWidth = 5; // Espessura da linha
-                    chave.context.strokeStyle = '101216'; // Cor da borda
-                    chave.context.beginPath();
-                    chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2);
-                    chave.context.stroke();
+                    chave.context.lineWidth = 5 // Espessura da linha
+                    chave.context.strokeStyle = '101216' // Cor da borda
+                    chave.context.beginPath()
+                    chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2)
+                    chave.context.stroke()
 
                 })
                 chave.context.restore()
@@ -510,14 +510,6 @@ module.exports = {
                                     }
 
 
-                                    let chave = {};
-                                    chave.create = Canvas.createCanvas(900, 600);
-                                    chave.context = chave.create.getContext('2d');
-                                    chave.context.font = '68px tagihan'; ''
-                                    chave.context.fillStyle = '#F8F8FF';
-
-
-
                                     const cmd2 = await perfilID.findOne({
                                         guildId: interaction.guild.id,
                                         userId: user.id
@@ -531,41 +523,40 @@ module.exports = {
                                     } else { foto = cmd2.Img1 }
 
 
-                                    Canvas.loadImage(foto).then(async (img) => {
-                                        chave.context.drawImage(img, 0, 0, 900, 600);
-                                        chave.context.textAlign = "left";
-                                        chave.context.font = '37px "aAkhirTahun"';
-                                        chave.context.fillText(`${user.username.toUpperCase()}`, 270, 210);
+                                    let chave = {}
+                                    chave.create = Canvas.createCanvas(900, 600)
+                                    chave.context = chave.create.getContext('2d')
+                                    chave.context.font = '68px tagihan'
+                                    chave.context.fillStyle = '#F8F8FF'
+
+                                    await Canvas.loadImage(foto).then(async (img) => {
+                                        chave.context.drawImage(img, 0, 0, 900, 600)
+                                        chave.context.textAlign = "left"
+                                        chave.context.font = '37px "aAkhirTahun"'
+                                        chave.context.fillText(`${user.username.toUpperCase()}`, 270, 210)
 
 
                                         chave.context.save()
                                         await Canvas.loadImage(user.displayAvatarURL({ extension: 'png', size: 1024 })).then(async (interaction) => {
                                             chave.context.beginPath()
-
-                                            const centerX = 154 - 4;
-                                            const centerY = 150 + 2;
-                                            const clipRadius = 115;
-                                            const imageWidth = clipRadius * 2;
-                                            const imageHeight = clipRadius * 2;
-                                            const imageX = centerX - clipRadius;
-                                            const imageY = centerY - clipRadius;
-
-
-                                            chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2);
-                                            chave.context.clip();
-
-
-                                            chave.context.drawImage(interaction, imageX, imageY, imageWidth, imageHeight);
-
-
-                                            chave.context.lineWidth = 5;
-                                            chave.context.strokeStyle = '101216';
-                                            chave.context.beginPath();
-                                            chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2);
-                                            chave.context.stroke();
-
+                                            const centerX = 154 - 4
+                                            const centerY = 150 + 2
+                                            const clipRadius = 115
+                                            const imageWidth = clipRadius * 2
+                                            const imageHeight = clipRadius * 2
+                                            const imageX = centerX - clipRadius
+                                            const imageY = centerY - clipRadius
+                                            chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2)
+                                            chave.context.clip()
+                                            chave.context.drawImage(interaction, imageX, imageY, imageWidth, imageHeight)
+                                            chave.context.lineWidth = 5
+                                            chave.context.strokeStyle = '101216'
+                                            chave.context.beginPath()
+                                            chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2)
+                                            chave.context.stroke()
                                         })
                                         chave.context.restore()
+
 
                                         Saldo = ""
 
@@ -579,7 +570,7 @@ module.exports = {
                                             Saldo = 0
                                         } else { Saldo = money2.saldo }
 
-                                        chave.context.font = '50px "up"';
+                                        chave.context.font = '50px "up"'
                                         chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
@@ -595,11 +586,11 @@ module.exports = {
                                             lvl = 0
                                         } else { lvl = fetchedLevel.level }
 
-                                        chave.context.font = '50px "up"';
+                                        chave.context.font = '50px "up"'
                                         chave.context.fillText(`${lvl}`, 245, 470)
 
-                                        chave.context.textAlign = "center";
-                                        chave.context.font = '45px "up"';
+                                        chave.context.textAlign = "center"
+                                        chave.context.font = '45px "up"'
 
 
                                         rep = ""
@@ -623,19 +614,19 @@ module.exports = {
                                         })
 
 
-                                        chave.context.textAlign = "left";
+                                        chave.context.textAlign = "left"
                                         chave.context.font = '22px "up"'
-                                        chave.context.strokeStyle = "#a7a7a7";
+                                        chave.context.strokeStyle = "#a7a7a7"
                                         chave.context.fillStyle = "#a7a7a7"
-                                        chave.context.fillText(cmdSobre == null ? `${user.username} Não tem o /perfil personalizado \nUse o botom abaixo para personalizado!` : cmdSobre.sobreMim.match(/.{1,45}/g).join("\n"), 450, 395);
+                                        chave.context.fillText(cmdSobre == null ? `${user.username} Não tem o /perfil personalizado \nUse o botom abaixo para personalizado!` : cmdSobre.sobreMim.match(/.{1,45}/g).join("\n"), 450, 395)
 
                                     })
 
-                                    let list = [];
+                                    let list = []
 
                                     const userData = await fetch(`https://discord-arts.asure.dev/user/${user.id}`)
-                                    const { data } = await userData.json();
-                                    const { public_flags_array } = data;
+                                    const { data } = await userData.json()
+                                    const { public_flags_array } = data
 
                                     if (public_flags_array.includes('NITRO')) list.push("NITRO")
                                     if (public_flags_array.includes('BOOSTER_1')) list.push("BOOSTER_1")
@@ -692,7 +683,6 @@ module.exports = {
                                         .replace("DISCORD_CERTIFIED_MODERATOR", `<:9765badgemoderators:1063603971471720458>`)
 
 
-
                                     chave.context.textAlign = "right"
                                     fundo = -3.4
                                     chave.context.strokeStyle = '#0a0a0c'
@@ -704,7 +694,7 @@ module.exports = {
                                     chave.context.textAlign = "right"
                                     chave.context.font = '50px "up"'
 
-                                    await Utils.renderEmoji(chave.context, list.split(",").join(" "), 877, 280);
+                                    await Utils.renderEmoji(chave.context, list.split(",").join(" "), 877, 280)
 
                                     const mensagem2 = new discord.AttachmentBuilder(chave.create.toBuffer(), `${interaction.user.tag}.png`)
 
@@ -777,9 +767,9 @@ module.exports = {
                                         return
                                     }
 
-                                    const usuarioID = i.user.id;
-                                    const guildID = i.guild.id;
-                                    const imagemComprada = attachment.path;
+                                    const usuarioID = i.user.id
+                                    const guildID = i.guild.id
+                                    const imagemComprada = attachment.path
 
                                     const skins = await skin.findOne({
                                         guildId: guildID,
@@ -795,11 +785,11 @@ module.exports = {
                                         skins.Img6 === imagemComprada
                                     )) {
 
-                                        const file = new discord.AttachmentBuilder(attachment.path, `${i.user.tag}.png`);
+                                        const file = new discord.AttachmentBuilder(attachment.path, `${i.user.tag}.png`)
                                         await i.update({ files: [file], components: attachment.component })
 
                                     } else {
-                                        const file = new discord.AttachmentBuilder(attachment.path, `${i.user.tag}.png`);
+                                        const file = new discord.AttachmentBuilder(attachment.path, `${i.user.tag}.png`)
 
                                         await i.update({ files: [file], components: [painel, verific] })
 
@@ -817,50 +807,50 @@ module.exports = {
 
                     async function handleConfirmaButton(customId, image, user, interaction) {
                         if (interaction.customId === customId && interaction.isButton()) {
-                            const attachment = `././img/perfil/${image}.png`;
+                            const attachment = `././img/perfil/${image}.png`
                             await interaction.reply({
                                 content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!\n > \`+\` Clique em <:voltar:1167104944420175984> para visualizá-la.`,
                                 ephemeral: true
-                            });
+                            })
 
                             const teste = await perfilID.findOne({
                                 guildId: interaction.guild.id,
                                 userId: user.id
-                            });
+                            })
 
                             if (!teste) {
                                 const newCmd = {
                                     guildId: interaction.guild.id,
                                     userId: user.id
-                                };
+                                }
                                 if (attachment) {
-                                    newCmd.Img1 = attachment;
+                                    newCmd.Img1 = attachment
                                 }
 
-                                await perfilID.create(newCmd);
+                                await perfilID.create(newCmd)
                             } else {
                                 if (!attachment) {
                                     await perfilID.findOneAndUpdate({
                                         guildId: interaction.guild.id,
                                         userId: user.id
-                                    }, { $unset: { "Img1": "" } });
+                                    }, { $unset: { "Img1": "" } })
                                 } else {
                                     await perfilID.findOneAndUpdate({
                                         guildId: interaction.guild.id,
                                         userId: user.id
-                                    }, { $set: { "Img1": attachment } });
+                                    }, { $set: { "Img1": attachment } })
                                 }
                             }
                         }
                     }
 
                     // Chame a função para cada identificador personalizado
-                    handleConfirmaButton('confirma', 'minecraft', user, i);
-                    handleConfirmaButton('confirma2', 'sett', user, i);
-                    handleConfirmaButton('confirma3', 'vaynearcoceleste', user, i);
-                    handleConfirmaButton('confirma5', 'soulfighter', user, i);
-                    handleConfirmaButton('confirma6', 'jett', user, i);
-                    handleConfirmaButton('confirma7', 'RazerEKillJoyu', user, i);
+                    handleConfirmaButton('confirma', 'minecraft', user, i)
+                    handleConfirmaButton('confirma2', 'sett', user, i)
+                    handleConfirmaButton('confirma3', 'vaynearcoceleste', user, i)
+                    handleConfirmaButton('confirma5', 'soulfighter', user, i)
+                    handleConfirmaButton('confirma6', 'jett', user, i)
+                    handleConfirmaButton('confirma7', 'RazerEKillJoyu', user, i)
 
 
 
@@ -891,7 +881,7 @@ module.exports = {
                             } else { foto = cmd2.Img1 }
 
 
-                            Canvas.loadImage(foto).then(async (img) => {
+                            await Canvas.loadImage(foto).then(async (img) => {
                                 chave.context.drawImage(img, 0, 0, 900, 600)
                                 chave.context.textAlign = "left"
                                 chave.context.font = '37px "aAkhirTahun"'
@@ -902,27 +892,27 @@ module.exports = {
                                 await Canvas.loadImage(user.displayAvatarURL({ extension: 'png', size: 1024 })).then(async (interaction) => {
                                     chave.context.beginPath()
                                     // Calcula as coordenadas e dimensões da imagem e do círculo de recorte deslocados 4 pixels para a esquerda e com tamanho aumentado
-                                    const centerX = 154 - 4; // Coordenada X do centro do círculo deslocada 4 pixels para a esquerda
-                                    const centerY = 150 + 2; // Coordenada Y do centro do círculo deslocada 2 pixels para baixo
-                                    const clipRadius = 115;  // Raio do círculo de recorte (originalmente 115)
-                                    const imageWidth = clipRadius * 2;
-                                    const imageHeight = clipRadius * 2;
-                                    const imageX = centerX - clipRadius;
-                                    const imageY = centerY - clipRadius;
+                                    const centerX = 154 - 4 // Coordenada X do centro do círculo deslocada 4 pixels para a esquerda
+                                    const centerY = 150 + 2 // Coordenada Y do centro do círculo deslocada 2 pixels para baixo
+                                    const clipRadius = 115  // Raio do círculo de recorte (originalmente 115)
+                                    const imageWidth = clipRadius * 2
+                                    const imageHeight = clipRadius * 2
+                                    const imageX = centerX - clipRadius
+                                    const imageY = centerY - clipRadius
 
                                     // Desenha o círculo de recorte
-                                    chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2);
-                                    chave.context.clip();
+                                    chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2)
+                                    chave.context.clip()
 
                                     // Desenha a imagem dentro do círculo de recorte com o tamanho ajustado
-                                    chave.context.drawImage(interaction, imageX, imageY, imageWidth, imageHeight);
+                                    chave.context.drawImage(interaction, imageX, imageY, imageWidth, imageHeight)
 
                                     // Desenha a borda branca ao redor do círculo de recorte
-                                    chave.context.lineWidth = 5; // Espessura da linha
-                                    chave.context.strokeStyle = '101216'; // Cor da borda
-                                    chave.context.beginPath();
-                                    chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2);
-                                    chave.context.stroke();
+                                    chave.context.lineWidth = 5 // Espessura da linha
+                                    chave.context.strokeStyle = '101216' // Cor da borda
+                                    chave.context.beginPath()
+                                    chave.context.arc(centerX, centerY, clipRadius, 0, Math.PI * 2)
+                                    chave.context.stroke()
 
                                 })
                                 chave.context.restore()
@@ -940,7 +930,7 @@ module.exports = {
                                     Saldo = 0
                                 } else { Saldo = money2.saldo }
 
-                                chave.context.font = '50px "up"';
+                                chave.context.font = '50px "up"'
                                 chave.context.fillText(`${Saldo.toLocaleString()}`, 120, 400)
 
 
@@ -1053,7 +1043,6 @@ module.exports = {
                                 .replace("DISCORD_CERTIFIED_MODERATOR", `<:9765badgemoderators:1063603971471720458>`)
 
 
-
                             chave.context.textAlign = "right"
                             fundo = -3.4
                             chave.context.strokeStyle = '#0a0a0c'
@@ -1072,7 +1061,7 @@ module.exports = {
 
                             await i.editReply({ files: [mensagem], components: [btn] })
 
-                            break;
+                            break
                         }
                     }
 
@@ -1082,7 +1071,7 @@ module.exports = {
                     for (const customId of customIds) {
                         if (i.customId === customId) {
                             await i.reply({ content: replyContent, ephemeral: true })
-                            break;
+                            break
                         }
                     }
 
