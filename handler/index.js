@@ -1,12 +1,12 @@
-const fs = require("fs");
-const bot = require('../bot.json');
-const chalk = require('chalk');
-const axios = require('axios');
+const fs = require("fs")
+const bot = require('../bot.json')
+const chalk = require('chalk')
+const axios = require('axios')
 
 module.exports = async (client) => {
 
   //Puxando os comandos em slash!
-  const ArgsScommands = [];
+  const ArgsScommands = []
 
   fs.readdir(`././commands/`, (err, fol) => {
 
@@ -16,13 +16,13 @@ module.exports = async (client) => {
 
         files.forEach(command => {
 
-          if (!command?.endsWith('.js')) return;
+          if (!command?.endsWith('.js')) return
 
-          command = require(`../commands/${subfol}/${command}`);
+          command = require(`../commands/${subfol}/${command}`)
 
-          if (!command?.name) return;
+          if (!command?.name) return
 
-          client.slashCommands.set(command?.name, command);
+          client.slashCommands.set(command?.name, command)
 
           ArgsScommands.push(command)
 
@@ -32,11 +32,11 @@ module.exports = async (client) => {
 
     })
 
-  });
+  })
 
-  const GITHUB_TOKEN = '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'; // Substitua com seu token de acesso pessoal.
-  const GITHUB_REPO = 'arrastaorj/LexaV142023'; // Substitua com o nome do proprietário e repositório GitHub.
-  const CHANNEL_ID = '1054128840642920468'; // Substitua pelo ID do canal onde você deseja que os logs de commit sejam enviados.
+  const GITHUB_TOKEN = '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' // Substitua com seu token de acesso pessoal.
+  const GITHUB_REPO = 'arrastaorj/LexaV142023' // Substitua com o nome do proprietário e repositório GitHub.
+  const CHANNEL_ID = '1054128840642920468' // Substitua pelo ID do canal onde você deseja que os logs de commit sejam enviados.
 
   //Carregando os slash.
   client.on("ready", async () => {
@@ -44,21 +44,21 @@ module.exports = async (client) => {
     //Carregando em 1 servidor.
     if (bot.slash.guild_id) {
 
-      var server = client.guilds.cache.get(bot.slash.guild_id);
+      var server = client.guilds.cache.get(bot.slash.guild_id)
 
       if (!server) {
-        console.log(chalk.hex(`FF0000`).bold(`[commands] > Servidor de carregamento inválido.`));
-        process.exit();
+        console.log(chalk.hex(`FF0000`).bold(`[commands] > Servidor de carregamento inválido.`))
+        process.exit()
       }
 
       try {
 
-        server.commands.set(ArgsScommands);
+        server.commands.set(ArgsScommands)
 
         console.log(chalk.hex(`4169E1`).bold(`[commands] > Os comandos foram carregados em ${server.name}.`))
       } catch (e) {
-        console.log(chalk.hex(`FF0000`).bold(`[commands] > Não foi possível carregar os comandos em ${server.name}.`));
-        process.exit();
+        console.log(chalk.hex(`FF0000`).bold(`[commands] > Não foi possível carregar os comandos em ${server.name}.`))
+        process.exit()
       }
 
     } else {
@@ -66,38 +66,38 @@ module.exports = async (client) => {
 
       try {
 
-        client.application.commands.set(ArgsScommands);
+        client.application.commands.set(ArgsScommands)
 
         console.log(chalk.hex(`4169E1`).bold(`[commands] > Os comandos foram carregados globalmente.`))
       } catch (e) {
-        console.log(chalk.hex(`FF0000`).bold(`[commands] > Não foi possível carregar os comandos globalmente.`));
-        process.exit();
+        console.log(chalk.hex(`FF0000`).bold(`[commands] > Não foi possível carregar os comandos globalmente.`))
+        process.exit()
       }
 
     }
 
 
-    const channel = client.channels.cache.get(CHANNEL_ID);
+    const channel = client.channels.cache.get(CHANNEL_ID)
 
     if (channel) {
       setInterval(async () => {
-        const latestCommit = await getLatestCommit(GITHUB_REPO);
+        const latestCommit = await getLatestCommit(GITHUB_REPO)
 
         if (latestCommit) {
           if (latestCommit !== lastCommitSent) {
-            lastCommitSent = latestCommit;
-            channel.send(`Novo commit no repositório ${GITHUB_REPO}:\n${latestCommit}`);
+            lastCommitSent = latestCommit
+            channel.send(`Novo commit no repositório ${GITHUB_REPO}:\n${latestCommit}`)
           }
         }
-      }, 60000);
+      }, 60000)
     } else {
-      console.error(`Canal com ID ${CHANNEL_ID} não encontrado.`);
+      console.error(`Canal com ID ${CHANNEL_ID} não encontrado.`)
     }
 
   })
 
 
-  let lastCommitSent = '';
+  let lastCommitSent = ''
 
   async function getLatestCommit(repo) {
     try {
@@ -105,18 +105,18 @@ module.exports = async (client) => {
         headers: {
           Authorization: `Bearer ${GITHUB_TOKEN}`,
         },
-      });
-      const latestCommit = response.data[0];
+      })
+      const latestCommit = response.data[0]
 
-      const commitHash = latestCommit.sha;
-      const commitMessage = latestCommit.commit.message;
-      const commitAuthor = latestCommit.commit.author.name;
-      const commitDate = latestCommit.commit.author.date;
+      const commitHash = latestCommit.sha
+      const commitMessage = latestCommit.commit.message
+      const commitAuthor = latestCommit.commit.author.name
+      const commitDate = latestCommit.commit.author.date
 
-      return `Hash do Commit: ${commitHash}\nAutor: ${commitAuthor}\nData do Commit: ${commitDate}\nMensagem do Commit: ${commitMessage}`;
+      return `Hash do Commit: ${commitHash}\nAutor: ${commitAuthor}\nData do Commit: ${commitDate}\nMensagem do Commit: ${commitMessage}`
     } catch (error) {
-      console.error('Erro ao buscar o último commit:', error);
-      return null;
+      console.error('Erro ao buscar o último commit:', error)
+      return null
     }
   }
 
@@ -132,9 +132,9 @@ module.exports = async (client) => {
 
         files.forEach(evnt => {
 
-          if (!evnt.endsWith('.js')) return;
+          if (!evnt.endsWith('.js')) return
 
-          const e = require(`../Eventos/${subfol}/${evnt}`);
+          const e = require(`../Eventos/${subfol}/${evnt}`)
 
           if (e.once) {
             client.once(e.name, (...args) =>
@@ -152,6 +152,6 @@ module.exports = async (client) => {
 
     console.log(chalk.hex(`32CD32`).bold(`[Eventos] > Eventos carregados com sucesso.`))
 
-  });
+  })
 
 }
