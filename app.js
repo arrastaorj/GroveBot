@@ -34,6 +34,8 @@ const messageForNewPRs = "Thanks for opening a new PR! Please follow our contrib
 async function handlePullRequestOpened({ octokit, payload }) {
     console.log(`Received a pull request event for #${payload.pull_request.number}`);
 
+
+
     
     try {
         await octokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/comments", {
