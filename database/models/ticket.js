@@ -12,6 +12,7 @@ const cmd = new db.Schema({
     descrição02: { type: String },
     createdVoicelID: { type: String },
     createdChannelID: { type: String },
+    userId: { type: String },
 
 });
 

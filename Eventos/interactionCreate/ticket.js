@@ -116,6 +116,35 @@ client.on("interactionCreate", async (interaction) => {
                 let categoria = cmd3.categoria
 
 
+                const cmd = await ticket.findOne({
+                    guildId: interaction.guild.id
+                })
+
+
+                if (!cmd) {
+                    const newCmd = {
+                        guildId: interaction.guild.id,
+                    }
+                    if (interaction.user.username) {
+                        newCmd.userId = interaction.user.username
+                    }
+                    await ticket.create(newCmd)
+
+                } else {
+
+                    if (!interaction.user.username) {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "userId": "" } })
+                    } else {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "userId": interaction.user.username } })
+                    }
+
+                }
+
+
                 interaction.guild.channels.create({
                     name: `ticket-${interaction.user.username}`,
                     type: discord.ChannelType.GuildText,
@@ -246,20 +275,32 @@ client.on("interactionCreate", async (interaction) => {
 
             if (!interaction.isButton()) return;
 
-            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
-            let possuido = interaction.guild.channels.cache.find(a => a.name === `voice-`);
+            const cmd = await ticket.findOne({
+                guildId: interaction.guild.id
+            })
 
-            const embed = new discord.EmbedBuilder()
-                .setDescription(`<:erradov3:1152052476401422408> ${interaction.user}, você já possui um **CHAT DE VOZ** criado com protocolo.`)
-                .setColor("#2b2d31");
+            const userVoice = cmd.userId
 
-            if (possuido) return interaction.reply({ embeds: [embed], ephemeral: true, fetchReply: true });
 
-            interaction.deferUpdate();
+            let possuido = interaction.guild.channels.cache.find(a => a.name === `voice-${userVoice}`)
+
+
+            const cmd2 = await ticket.findOne({
+                guildId: interaction.guild.id
+            })
+            const userVoiceId = cmd2.createdVoicelID
+
+
+
+            if (possuido) return interaction.reply({ content: `> \`-\` <a:crime_y_aviso:1168049861459980318> ${interaction.user}, você já possui um **CHAT DE VOZ** criado em <#${userVoiceId}>.`, ephemeral: true, fetchReply: true })
+
+            interaction.deferUpdate()
+
 
             interaction.guild.channels.create({
-                name: `voice-`,
+                name: `voice-${userVoice}`,
                 type: discord.ChannelType.GuildVoice,
                 parent: interaction.channel.parentId,
                 permissionOverwrites: [
@@ -304,29 +345,36 @@ client.on("interactionCreate", async (interaction) => {
 
                 }
 
-                const saira = new discord.EmbedBuilder()
-                    .setDescription(`**CALL** iniciado por **${interaction.user}**. \n\n Segue abaixo diversas **FUNÇÕES** com interação apenas com o **CHAT DE VOZ**.`)
-                    .setFooter({ iconURL: `${interaction.user.displayAvatarURL()}`, text: `**Caso a chamada fique inativa por 2 minutos será excluída.**` })
-                    .setColor("#2b2d31");
+                const callIniciadaEmbed = new discord.EmbedBuilder()
+                    .setTitle("Chamada Iniciada")
+                    .setDescription(`Uma chamada foi iniciada por ${interaction.user}. Abaixo estão várias funções disponíveis com interação apenas no chat de voz.`)
+                    .setColor("#27ae60")
+                    .setFooter({
+                        iconURL: interaction.user.displayAvatarURL(),
+                        text: "A chamada será encerrada após 2 minutos de inatividade."
+                    })
+                    .setTimestamp();
 
                 const row = new discord.ActionRowBuilder()
                     .addComponents(
                         new discord.ButtonBuilder()
                             .setCustomId("EncerrarChamado")
                             .setEmoji('1001951864620859462')
-                            .setLabel('Encerrar Chamado')
+                            .setLabel('Encerrar Chamada de Voz')
                             .setStyle(1),
                     )
 
-                interaction.channel.send({ embeds: [saira], components: [row], ephemeral: true }).then(edit => {
-                    const sair = new discord.EmbedBuilder()
-                        .setDescription(`❕ **CALL** - O suporte por **CALL** foi finalizado por **INATIVIDADE**`)
-                        .setColor("#2b2d31");
+                interaction.channel.send({ embeds: [callIniciadaEmbed], components: [row], ephemeral: true }).then(edit => {
 
+                    const inatividadeEmbed = new discord.EmbedBuilder()
+                        .setTitle("Suporte por Chamada Encerrado")
+                        .setDescription("O suporte por chamada foi encerrado devido à inatividade.")
+                        .setColor("#e74c3c")
+                        .setTimestamp()
                     setTimeout(() => {
                         if (channel.members.size <= 0) {
                             channel.delete().catch(e => null);
-                            edit.edit({ embeds: [sair], ephemeral: true, components: [] }).catch(e => null);
+                            edit.edit({ embeds: [inatividadeEmbed], ephemeral: true, components: [] }).catch(e => null);
                         }
                     }, 120000);
                 });
@@ -339,7 +387,7 @@ client.on("interactionCreate", async (interaction) => {
 
             if (!interaction.isButton()) return;
 
-            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
             const cmd = await ticket.findOne({
                 guildId: interaction.guild.id
@@ -351,21 +399,22 @@ client.on("interactionCreate", async (interaction) => {
 
             fetchedVoice.delete().catch(e => null)
 
-            const sair = new discord.EmbedBuilder()
+            const sairEmbed = new discord.EmbedBuilder()
+                .setTitle("Suporte por Chamada Encerrado")
+                .setDescription(`O suporte por chamada foi encerrado por um membro da equipe.\n\n**Usuário:** ${interaction.user.username}`)
+                .setColor("#3498db")
+                .setTimestamp()
 
-                .setDescription(`❕ **CALL** - O suporte por **CALL** foi finalizado pelo **STAFF** ${interaction.user.username}`)
-                .setColor("#2b2d31")
-            interaction.message.edit({ embeds: [sair], components: [] })
+            interaction.message.edit({ embeds: [sairEmbed], components: [] })
 
         }
 
 
         if (interaction.customId === 'AdicionarMembro') {
 
-
             if (!interaction.isButton()) return;
 
-            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
             const modal = new discord.ModalBuilder()
                 .setCustomId('addmembro')
@@ -388,7 +437,7 @@ client.on("interactionCreate", async (interaction) => {
 
             if (!interaction.isButton()) return;
 
-            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
             const modal = new discord.ModalBuilder()
                 .setCustomId('removermembrotexto')
@@ -429,7 +478,7 @@ client.on("interactionCreate", async (interaction) => {
                 const membersWithRole = role.members;
 
                 if (membersWithRole.size === 0) {
-                    interaction.reply("❌ | Nenhum membro com o cargo encontrado.");
+                    interaction.reply("Nenhum membro com o cargo encontrado.");
                     return;
                 }
 
@@ -444,7 +493,7 @@ client.on("interactionCreate", async (interaction) => {
                 const embed = new discord.EmbedBuilder()
                     .setColor("#3498db") // Cor azul profissional
                     .setTitle("<a:alerta:1163274838111162499> Você foi mencionado em um Ticket!")
-                    .setDescription(`Olá membros com o cargo ${role.name},\n\nAlguém mencionou vocês em um ticket aberto e aguarda uma resposta.\n\nPor favor, verifique o ticket e forneça sua colaboração.`)
+                    .setDescription(`Olá membros com o cargo **${role.name}**,\n\nAlguém mencionou vocês em um ticket aberto e aguarda uma resposta.\n\nPor favor, verifique o ticket e forneça sua colaboração.`)
                     .setFooter({
                         iconURL: interaction.user.displayAvatarURL(),
                         text: `Agradecemos sua colaboração em ${interaction.guild.name}!`
@@ -459,28 +508,22 @@ client.on("interactionCreate", async (interaction) => {
                     }
                 })
 
-                interaction.reply({ content: `✅ | Notificação enviada para membros com o cargo ${role.name}.`, components: [] }).then(msg => {
-                    setTimeout(async () => {
-                        try {
-                            await msg.delete();
-                        } catch (error) {
-                            console.error(`Erro ao excluir a mensagem de resposta: ${error.message}`);
-                        }
-                    }, 3000);
-                });
+                interaction.reply({
+                    content: `> \`+\` <a:alerta:1163274838111162499> Notificação enviada para membros com o cargo <@&${role.id}>. \n\n> \`-\` <a:crime_y_aviso:1168049861459980318> **Evite usar essa função de maneira inadequada, pois isso acarretará penalidades.**`, ephemeral: true
+                })
+
             } else {
-                // Lida com o caso em que o cargo não foi encontrado.
-                interaction.reply("❌ | Cargo não encontrado.");
+
+                interaction.reply({ content: `> \`-\` Cargo não encontrado.`, ephemeral: true })
+
             }
         }
 
 
         if (interaction.customId === 'addmembro') {
 
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
-            if (!interaction.isButton()) return;
-
-            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
             const cmd = await ticket.findOne({
                 guildId: interaction.guild.id
@@ -504,9 +547,7 @@ client.on("interactionCreate", async (interaction) => {
         if (interaction.customId === 'removermembrotexto') {
 
 
-            if (!interaction.isButton()) return;
-
-            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
             const cmd = await ticket.findOne({
                 guildId: interaction.guild.id
@@ -537,7 +578,7 @@ client.on("interactionCreate", async (interaction) => {
 
             if (!interaction.isButton()) return;
 
-            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
             let ticket = interaction.channel.topic
 
@@ -587,7 +628,7 @@ client.on("interactionCreate", async (interaction) => {
 
             if (!interaction.isButton()) return;
 
-            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
             interaction.message.delete()
 
@@ -634,7 +675,7 @@ client.on("interactionCreate", async (interaction) => {
 
             if (!interaction.isButton()) return;
 
-            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
             interaction.message.delete()
 
@@ -645,13 +686,14 @@ client.on("interactionCreate", async (interaction) => {
 
             if (!interaction.isButton()) return;
 
-            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
             const topic = interaction.channel.topic
 
             const channel = interaction.channel
 
             const attachment = await discordTranscripts.createTranscript(channel)
+
 
             interaction.channel.delete()
 
