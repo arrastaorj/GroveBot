@@ -10,6 +10,8 @@ const cmd = new db.Schema({
     cargo: { type: String },
     titulo02: { type: String },
     descrição02: { type: String },
+    createdVoicelID: { type: String },
+    createdChannelID: { type: String },
 
 });
 
