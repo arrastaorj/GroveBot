@@ -694,7 +694,6 @@ client.on("interactionCreate", async (interaction) => {
 
             const attachment = await discordTranscripts.createTranscript(channel)
 
-
             interaction.channel.delete()
 
             let embed = new discord.EmbedBuilder()
