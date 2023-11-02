@@ -3,6 +3,8 @@ const discord = require('discord.js');
 const Canvas = require('canvas');
 const { resolve } = require('path')
 const comandos = require("../../database/models/comandos")
+const { createCanvas, loadImage, registerFont } = require('canvas')
+const canvas = require("canvas")
 
 module.exports = {
     name: 'ship',
@@ -42,14 +44,14 @@ module.exports = {
 
             //Canvas 
             Canvas.registerFont(resolve("./fonts/Pelita.otf"), { family: "Pelita" });
-            const canvas = Canvas.createCanvas(480, 195);
+            const canvas = Canvas.createCanvas(500, 195);
             const ctx = canvas.getContext('2d');
 
             const user1 = interaction.options.getUser('usuários-1');
             const user2 = interaction.options.getUser('usuários-2');
 
             //Imagem De Fundo
-            let ImageLoad = 'https://raw.githubusercontent.com/arrastaorj/flags/main/fundoship.jpg'
+         //   let ImageLoad = 'https://raw.githubusercontent.com/arrastaorj/flags/main/ship2222.png'
 
             const user1Avatar = user1.displayAvatarURL({ extension: 'png', size: 128 });
             const user2Avatar = user2.displayAvatarURL({ extension: 'png', size: 128 });
@@ -58,20 +60,20 @@ module.exports = {
             const shipPercentage = percentage();
 
             //Manipular Imagem
-            const backgroundImage = await Canvas.loadImage(ImageLoad);
-            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            //const backgroundImage = await Canvas.loadImage(ImageLoad);
+            //ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
             //Faixa do Meio
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
 
-            const faixa = await Canvas.loadImage('https://raw.githubusercontent.com/arrastaorj/flags/main/fundoslc.png');
+            // const faixa = await Canvas.loadImage('https://raw.githubusercontent.com/arrastaorj/flags/main/fundoslc.png');
 
-            const faixaWidth = canvas.width - 48;
-            const faixaHeight = 106;
-            const faixaX = centerX - faixaWidth / 2;
-            const faixaY = centerY - faixaHeight / 2.1;
-            ctx.drawImage(faixa, faixaX, faixaY, faixaWidth, faixaHeight);
+            // const faixaWidth = canvas.width - 48;
+            // const faixaHeight = 106;
+            // const faixaX = centerX - faixaWidth / 2;
+            // const faixaY = centerY - faixaHeight / 2.1;
+            // ctx.drawImage(faixa, faixaX, faixaY, faixaWidth, faixaHeight);
 
             //Avatar dos Usuários Mencionados Centralizados
             const user1Image = await Canvas.loadImage(user1Avatar);
@@ -85,6 +87,39 @@ module.exports = {
             ctx.fillStyle = '#ffffff';
             ctx.textAlign = 'center';
             ctx.fillText(`${shipPercentage}%`, canvas.width / 2, canvas.height / 1.6);
+
+            let bar_width = 400; // Largura total da barra reduzida para 200
+            ctx.lineJoin = "round";
+            ctx.lineWidth = 15; // Largura da linha reduzida para 15
+            
+            let whiteStrokeWidth = 1; // Largura da borda branca reduzida para 1
+            let yOffset = 10; // Redução da margem vertical
+            
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 15 + whiteStrokeWidth;
+            ctx.strokeRect(30 - whiteStrokeWidth / 2, 181 - whiteStrokeWidth / 2 - yOffset, bar_width + whiteStrokeWidth, 0);
+            
+            let gradient = ctx.createLinearGradient(30, 0, 30 + bar_width, 0);
+            gradient.addColorStop(0, "#ff0080");
+            gradient.addColorStop(1, "#ff4500");
+            
+            ctx.strokeStyle = gradient;
+            
+            // Ajuste a escala da porcentagem para a largura total da barra
+            let scaledPercentage = (shipPercentage / 100) * bar_width;
+            
+            ctx.lineWidth = 15;
+            ctx.strokeRect(30, 180 - yOffset, scaledPercentage, 0);
+            
+
+
+
+
+
+
+
+
+
 
             const attachment = new discord.AttachmentBuilder(canvas.toBuffer(), { name: 'ship.png' });
 
@@ -110,12 +145,12 @@ module.exports = {
             };
 
             const embed = new discord.EmbedBuilder()
-                .setDescription(`${message}`)
+                //.setDescription(`${message}`)
                 .setColor('df6ccf')
-                .setImage(`attachment://ship.png`);
+            //.setImage(`attachment://ship.png`);
 
 
-            await interaction.reply({ embeds: [embed], files: [attachment], content: `> \`+\` 🔥 | Casal: ${user1} & ${user2}\n🎆 | Nome do Ship: **${combinedUsername}**\n💝 | Compatibilidade: **${shipPercentage}%**` });
+            await interaction.reply({ files: [attachment], content: `🔥 | Casal: ${user1} & ${user2}\n🎆 | Nome do Ship: **${combinedUsername}**\n💝 | Compatibilidade: **${shipPercentage}%**` });
         }
         else
 
