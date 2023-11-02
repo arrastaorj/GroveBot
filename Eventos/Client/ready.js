@@ -5,7 +5,7 @@ const chalk = require("chalk");
 client.on(`ready`, async() => {
 
     let status = [
-        `dsc.gg/lexasupport`
+        `use /config help`
       ],
     
         i = 0

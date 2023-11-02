@@ -145,7 +145,7 @@ module.exports = {
 
         {
             name: 'help',
-            description: 'Aprenda a configure meus comandos.',
+            description: 'configure meus comandos.',
             type: discord.ApplicationCommandOptionType.Subcommand,
         },
 
@@ -801,21 +801,21 @@ module.exports = {
                     .addFields(
                         {
                             name: '**Observação 1:**',
-                            value: `\`\`\`Comandos que necessitam de cargos superiores aos membros não tem canal de texto definidos para uso de comandos.\`\`\``,
+                            value: `Comandos que necessitam de cargos superiores aos membros não tem canal de texto definidos para uso de comandos.`,
                             inline: false,
 
 
                         },
                         {
                             name: '**Observação 2:**',
-                            value: `\`\`\`Recomendamos utilizalos em canal de texto privados.\`\`\``,
+                            value: `Recomendamos utilizalos em canal de texto privados.`,
                             inline: false,
 
 
                         },
                         {
                             name: '**Observação 2:**',
-                            value: `\`\`\`Nas configuraçãoes de cargos do seu servidor arraste a LEXA para o topo de todos os cargos para que todos os comandos funcionem corretamente. Imagem ilustrativa abaixo.\`\`\``,
+                            value: `\Nas configuraçãoes de cargos do seu servidor arraste a LEXA para o topo de todos os cargos para que todos os comandos funcionem corretamente. Imagem ilustrativa abaixo.`,
                             inline: false,
 
 
@@ -833,39 +833,40 @@ module.exports = {
                     .addOptions([{
                         label: 'Painel inicial',
                         description: 'Volte para a pagina inicial.',
-                        emoji: '◀',
+                        emoji: '<:voltar:1167104944420175984>',
                         value: 'home',
                     },
                     {
-                        label: 'meme',
-                        description: 'Aprenda a configurar meu chat de memes.',
-                        emoji: '🔧',
-                        value: 'mod',
-                    },
-                    {
-                        label: 'bem-vindo(a)',
-                        description: 'Aprenda a configurar a menssagem de boas-vindas.',
-                        emoji: '🎉',
+                        label: 'Bem-Vindo(a)',
+                        description: 'configurar a menssagem de boas-vindas.',
+                        emoji: '<:discotoolsxyzicon1:1169631915083583569>',
                         value: 'div',
                     },
                     {
-                        label: 'comandos',
-                        description: 'Aprenda a configurar meu chat de comandos.',
-                        emoji: '📊',
-                        value: 'util',
+                        label: 'Imagem de bem-vindo(a)',
+                        description: 'configurar uma imagem de fundo do Bem-Vindo(a).',
+                        emoji: '<:discotoolsxyzicon3:1169631785261486080>',
+                        value: 'util3',
                     },
                     {
-                        label: 'auto role',
-                        description: 'Aprenda a configurar um cargo automatico para novos membros.',
-                        emoji: '🔄',
+                        label: 'Auto-Roles',
+                        description: 'configurar cargos automatico para novos membros.',
+                        emoji: '<:discotoolsxyzicon5:1169631781604053124>',
                         value: 'util2',
                     },
                     {
-                        label: 'fundo bem-vindo(a)',
-                        description: 'Aprenda a configurar um banner de fundo do bem-vindo.',
-                        emoji: '🤖',
-                        value: 'util3',
+                        label: 'Commandos',
+                        description: 'configurar meu canal de comandos.',
+                        emoji: '<:discotoolsxyzicon2:1169631787106967643>',
+                        value: 'util',
                     },
+                    {
+                        label: 'Memes',
+                        description: 'configurar meu canal de memes.',
+                        emoji: '<:discotoolsxyzicon:1169630230953082991>',
+                        value: 'mod',
+                    },
+
                     ])
                 )
 
@@ -903,10 +904,8 @@ module.exports = {
 
                                 .addFields(
                                     {
-                                        name: `Utilize: \`/setmemes\``,
-                                        value: `Marque o canal de texto ou cole o ID. Após seta o canal de memes somente o comando /meme funcionara nesse canal de texto.
-        
-                                            Para resetar essa configuração apenas apgue o canal setado e começe do 0`,
+                                        name: `Utilize: </config memes:1160583289464176694> `,
+                                        value: `Marque o canal de texto ou cole o ID. Após seta o canal de memes somente o comando /meme funcionara nesse canal de texto.`,
                                         inline: false,
                                     }
                                 )
@@ -933,10 +932,8 @@ module.exports = {
 
                                 .addFields(
                                     {
-                                        name: `Utilize: \`/setbemvindo\``,
-                                        value: `Marque o canal de texto ou cole o ID. Após seta o canal de bem vindo, todos novos usuarios receberam uma saldação especial.
-        
-                                            Para resetar essa configuração apenas apgue o canal setado e começe do 0`,
+                                        name: `Utilize: </config bem-vindo:1160583289464176694>`,
+                                        value: `Marque o canal de texto ou cole o ID. Após seta o canal de bem vindo, todos novos usuarios receberam uma saldação especial.`,
                                         inline: false,
                                     }
                                 )
@@ -965,10 +962,8 @@ module.exports = {
 
                                 .addFields(
                                     {
-                                        name: `Utilize: \`/setcomandos\``,
-                                        value: `Marque o canal de texto ou cole o ID. Após seta o canal de comandos, Todos os meu comandos de interação com o usuário so funcionaram no canal de texto setado.
-                                            
-                                            Para resetar essa configuração apenas apgue o canal setado e começe do 0`,
+                                        name: `Utilize: </config comandos:1160583289464176694>`,
+                                        value: `Marque o canal de texto ou cole o ID. Após seta o canal de comandos, Todos os meu comandos de interação com o usuário so funcionaram no canal de texto setado.`,
                                         inline: false,
                                     },
                                 )
@@ -995,10 +990,8 @@ module.exports = {
 
                                 .addFields(
                                     {
-                                        name: `Utilize: \`/setautorole\``,
-                                        value: `Marque o cargo ou cole o ID. Após seta o cargo, Todos os novos membros receberão um cargo automatico.
-                                            
-                                            Para resetar essa configuração apenas apgue o canal setado e começe do 0`,
+                                        name: `Utilize: </config autorole:1160583289464176694>`,
+                                        value: `Marque o cargo ou cole o ID. Após seta o cargo, Todos os novos membros receberão um cargo automatico.`,
                                         inline: false,
                                     },
                                 )
@@ -1021,8 +1014,8 @@ module.exports = {
 
                                 .addFields(
                                     {
-                                        name: `Utilize: \`/setfb\``,
-                                        value: `Anexa um imagem valida..`,
+                                        name: `Utilize: </config fbv:1160583289464176694>`,
+                                        value: `Anexa um imagem valida.. (PNG/JPEG)`,
                                         inline: false,
                                     },
                                 )
