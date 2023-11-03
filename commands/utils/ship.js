@@ -51,7 +51,7 @@ module.exports = {
             const user2 = interaction.options.getUser('usuários-2');
 
             //Imagem De Fundo
-         //   let ImageLoad = 'https://raw.githubusercontent.com/arrastaorj/flags/main/ship2222.png'
+            let ImageLoad = 'https://raw.githubusercontent.com/arrastaorj/flags/main/aaaaa.png'
 
             const user1Avatar = user1.displayAvatarURL({ extension: 'png', size: 128 });
             const user2Avatar = user2.displayAvatarURL({ extension: 'png', size: 128 });
@@ -60,8 +60,8 @@ module.exports = {
             const shipPercentage = percentage();
 
             //Manipular Imagem
-            //const backgroundImage = await Canvas.loadImage(ImageLoad);
-            //ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            const backgroundImage = await Canvas.loadImage(ImageLoad);
+            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
             //Faixa do Meio
             const centerX = canvas.width / 2;
@@ -91,26 +91,26 @@ module.exports = {
             let bar_width = 400; // Largura total da barra reduzida para 200
             ctx.lineJoin = "round";
             ctx.lineWidth = 15; // Largura da linha reduzida para 15
-            
+
             let whiteStrokeWidth = 1; // Largura da borda branca reduzida para 1
             let yOffset = 10; // Redução da margem vertical
-            
+
             ctx.strokeStyle = "white";
             ctx.lineWidth = 15 + whiteStrokeWidth;
             ctx.strokeRect(30 - whiteStrokeWidth / 2, 181 - whiteStrokeWidth / 2 - yOffset, bar_width + whiteStrokeWidth, 0);
-            
+
             let gradient = ctx.createLinearGradient(30, 0, 30 + bar_width, 0);
             gradient.addColorStop(0, "#ff0080");
             gradient.addColorStop(1, "#ff4500");
-            
+
             ctx.strokeStyle = gradient;
-            
+
             // Ajuste a escala da porcentagem para a largura total da barra
             let scaledPercentage = (shipPercentage / 100) * bar_width;
-            
+
             ctx.lineWidth = 15;
             ctx.strokeRect(30, 180 - yOffset, scaledPercentage, 0);
-            
+
 
 
 
