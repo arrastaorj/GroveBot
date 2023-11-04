@@ -166,46 +166,46 @@ module.exports = {
             //Mensagem aleatória dependendo do resultado do ship
             let message = '';
             if (shipPercentage >= 40 && shipPercentage <= 45) {
-                message = 'A química entre eles é notável, como duas almas gêmeas prestes a se encontrar!';
+                message = 'A química entre eles é notável, como duas almas gêmeas prestes a se encontrar! 🔥❤️';
             } else if (shipPercentage > 45 && shipPercentage <= 50) {
-                message = 'A relação deles parece estar no caminho certo, como um romance em crescimento!';
+                message = 'A relação deles parece estar no caminho certo, como um romance em crescimento! 🌱❤️';
             } else if (shipPercentage >= 1 && shipPercentage <= 5) {
-                message = 'Embora as chances sejam baixas, lembre-se de que o amor pode surgir de surpresas inesperadas. Não perca a esperança!';
+                message = 'Embora as chances sejam baixas, lembre-se de que o amor pode surgir de surpresas inesperadas. Não perca a esperança! 🌦️❤️';
             } else if (shipPercentage > 5 && shipPercentage <= 10) {
-                message = 'O amor pode ser imprevisível, mantenha a chama acesa e veja o que o destino reserva!';
+                message = 'O amor pode ser imprevisível, mantenha a chama acesa e veja o que o destino reserva! 🌟❤️';
             } else if (shipPercentage >= 11 && shipPercentage <= 15) {
-                message = 'Existe um pequeno raio de esperança, uma semente de amor que aguarda o momento certo para florescer!';
+                message = 'Existe um pequeno raio de esperança, uma semente de amor que aguarda o momento certo para florescer! 🌈❤️';
             } else if (shipPercentage > 15 && shipPercentage <= 20) {
-                message = 'O amor está à espreita, pronto para envolver esses corações com ternura e paixão!';
+                message = 'O amor está à espreita, pronto para envolver esses corações com ternura e paixão! ❤️🌟';
             } else if (shipPercentage >= 21 && shipPercentage <= 30) {
-                message = 'Acredito que esses dois têm o potencial para uma bela história de amor, como uma dança harmoniosa do destino!';
+                message = 'Acredito que esses dois têm o potencial para uma bela história de amor, como uma dança harmoniosa do destino! 💃❤️';
             } else if (shipPercentage > 30 && shipPercentage <= 39) {
-                message = 'O amor está no ar, e esses dois podem ser o próximo grande sucesso romântico!';
+                message = 'O amor está no ar, e esses dois podem ser o próximo grande sucesso romântico! 💞❤️';
             } else if (shipPercentage >= 51 && shipPercentage <= 55) {
-                message = `Agora, o destino está nas mãos de ${user2}; estou ansioso para ver o que o futuro reserva para vocês!`;
+                message = `Agora, o destino está nas mãos de ${user2}; estou ansioso para ver o que o futuro reserva para vocês! 🙌❤️`;
             } else if (shipPercentage > 55 && shipPercentage <= 60) {
-                message = `Este casal está em ascensão! Que aventuras românticas aguardam vocês dois no horizonte!`;
+                message = `Este casal está em ascensão! Que aventuras românticas aguardam vocês dois no horizonte! 🚀❤️`;
             } else if (shipPercentage >= 61 && shipPercentage <= 70) {
-                message = 'Um casal incrível! Mal posso esperar para celebrar o seu amor em grande estilo!';
+                message = 'Um casal incrível! Mal posso esperar para celebrar o seu amor em grande estilo! 🎉❤️';
             } else if (shipPercentage > 70 && shipPercentage <= 80) {
-                message = 'Amor verdadeiro floresce! Quando será a data do grande dia? Estou pronto para comemorar com vocês!';
+                message = 'Amor verdadeiro floresce! Quando será a data do grande dia? Estou pronto para comemorar com vocês! 🎊❤️';
             } else if (shipPercentage >= 81 && shipPercentage <= 85) {
-                message = `O amor está no comando! ${user1} & ${user2}, sua jornada amorosa promete ser espetacular!`;
+                message = `O amor está no comando! ${user1} & ${user2}, sua jornada amorosa promete ser espetacular! 💖❤️`;
             } else if (shipPercentage > 85 && shipPercentage <= 90) {
-                message = `Uma história de amor incrível! Mal posso esperar para testemunhar o próximo capítulo de vocês!`;
+                message = `Uma história de amor incrível! Mal posso esperar para testemunhar o próximo capítulo de vocês! 📖❤️`;
             } else if (shipPercentage >= 91 && shipPercentage <= 95) {
-                message = `O amor venceu todos os obstáculos! ${user1} & ${user2}, vocês são uma inspiração para todos nós!`;
+                message = `O amor venceu todos os obstáculos! ${user1} & ${user2}, vocês são uma inspiração para todos nós! 🌟❤️`;
             } else if (shipPercentage > 95 && shipPercentage <= 100) {
-                message = `Uma história de amor épica, digna de conto de fadas! O casamento de ${user1} & ${user2} é um evento que marcará época!`;
+                message = `Uma história de amor épica, digna de conto de fadas! O casamento de ${user1} & ${user2} é um evento que marcará época! 👰🤵❤️`;
             }
-
+            
             const embed = new discord.EmbedBuilder()
                 //.setDescription(`${message}`)
                 .setColor('df6ccf')
             //.setImage(`attachment://ship.png`);
 
 
-            await interaction.reply({ files: [attachment], content: `Casal: ${user1} & ${user2}\nNome do Ship: **${combinedUsername}**\n\n**${message}**` });
+            await interaction.reply({ files: [attachment], content: `💏 Casal: ${user1} & ${user2}\n📝 Nome do Ship: **${combinedUsername}**\n\n**${message}**` });
         }
         else
 
