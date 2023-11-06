@@ -181,12 +181,13 @@ module.exports = {
                         cargo4,
                         cargo5,
                     ]
+
                     for (const cargoList of cargosCurrent) {
                         if (!cargoList) {
-                            continue
+                            continue;
                         }
-                        if (cargoList.managed === true) {
-                            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> AVISO: Todos os cargos configurados devem estar abaixo de mim e não gerenciados.", ephemeral: true })
+                        if (cargoList.position >= botMember.roles.highest.position) {
+                            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> O cargo selecionado está acima ou na mesma posição hierárquica do cargo da Lexa. A Lexa não tem permissão para adicionar esse cargo adicione o cargo da Erza acima desse cargo.", ephemeral: true });
                         }
                     }
 

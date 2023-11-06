@@ -166,10 +166,11 @@ module.exports = {
                 if (!cargoList) {
                     continue;
                 }
-                if (cargoList.managed === true) {
-                    return interaction.reply({ content: "\`\`\`❌ AVISO: Todos os cargos configurados devem estar abaixo de mim e não gerenciados.\`\`\`", ephemeral: true });
+                if (cargoList.position >= botMember.roles.highest.position) {
+                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> O cargo selecionado está acima ou na mesma posição hierárquica do cargo da Lexa. A Lexa não tem permissão para adicionar esse cargo adicione o cargo da Erza acima desse cargo.", ephemeral: true });
                 }
             }
+
 
             const embed = new discord.EmbedBuilder();
             if (descrição) {
@@ -268,7 +269,7 @@ module.exports = {
                 }
 
             })
-            
+
             await interaction.reply({ ephemeral: true, content: `> \`-\` <a:alerta:1163274838111162499> ${interaction.user},\n\n**dropdownRoles**, Enviado com sucesso!\n\n**Canal:** ${chat}\n**Logs:** ${logs}`, })
 
         } else {

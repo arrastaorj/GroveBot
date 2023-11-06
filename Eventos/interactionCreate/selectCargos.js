@@ -4,7 +4,7 @@ const cargos = require("../../database/models/cargos")
 
 client.on("interactionCreate", async (interaction) => {
     const { options, guild, member, customId, message } = interaction
-    
+
     if (interaction.customId === "select2") {
 
         const teste = await cargos.find({
@@ -118,7 +118,8 @@ client.on("interactionCreate", async (interaction) => {
                     return interaction.reply({ content: "Você já tem todos os cargos selecionados", ephemeral: true })
 
                 } catch (error) {
-                    console.error(error)
+
+                    return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Peço desculpas por não poder adicionar seu cargo automaticamente, pois não tenho as permissões necessárias. Recomendo que entre em contato com o administrador do servidor ou acesse nosso servidor de suporte e abra um ticket para obter assistência.`, ephemeral: true })
                 }
             }
         } else {
