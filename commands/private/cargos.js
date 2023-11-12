@@ -167,7 +167,7 @@ module.exports = {
                     continue;
                 }
                 if (cargoList.position >= botMember.roles.highest.position) {
-                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> O cargo selecionado está acima ou na mesma posição hierárquica do cargo da Lexa. A Lexa não tem permissão para adicionar esse cargo adicione o cargo da Erza acima desse cargo.", ephemeral: true });
+                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> O cargo selecionado está acima ou na mesma posição hierárquica do cargo da Lexa. A Lexa não tem permissão para adicionar esse cargo adicione o cargo da Lexa acima desse cargo.", ephemeral: true });
                 }
             }
 
