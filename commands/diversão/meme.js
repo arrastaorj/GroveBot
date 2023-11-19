@@ -14,12 +14,13 @@ module.exports = {
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de memes!`, ephemeral: true})
+        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de memes!`, ephemeral: true })
 
         let cmd1 = cmd.canal1
 
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
+          
             const random = Math.floor(Math.random() * images.length)
             const randomMeme = images[random];
             const embed = new discord.EmbedBuilder()
@@ -28,7 +29,6 @@ module.exports = {
                 .setFooter({ text: `${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL({ dynamic: true, format: "png" }) })
                 .setImage(randomMeme);
             interaction.reply({ embeds: [embed] });
-
         }
         else
 
