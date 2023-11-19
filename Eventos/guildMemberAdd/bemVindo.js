@@ -34,29 +34,32 @@ client.on("guildMemberAdd", async (member) => {
 
 
         const { registerFont } = require('canvas')
-        registerFont('./fonts/florida.otf', { family: 'florida' })
+        registerFont('./fonts/Nexa-Heavy.ttf', { family: 'Nexa-Heavy' })
 
         let chave = {}
         chave.create = Canvas.createCanvas(1024, 500)
         chave.context = chave.create.getContext('2d')
-        chave.context.font = '68px "florida"'
+
         chave.context.fillStyle = '#F8F8FF'
 
         Canvas.loadImage(foto).then(async (img) => {
 
             chave.context.drawImage(img, 0, 0, 1024, 500)
-            chave.context.fillText("Bem-Vindo(a)", 350, 360)
+
+            chave.context.font = '65px "Nexa-Heavy"',
+                chave.context.fillText("Bem-Vindo(a)", 300, 360)
+            chave.context.textAlign = 'center'
+
             chave.context.beginPath()
             chave.context.arc(512, 166, 128, 0, Math.PI * 2, true)
-            chave.context.stroke()
-            chave.context.fill()
 
 
-            chave.context.font = '42px "florida"',
+
+            chave.context.font = '42px "Nexa-Heavy"',
                 chave.context.textAlign = 'center'
             chave.context.fillText(`${member.user.tag.toUpperCase()}`, 512, 410)
             chave.context.textAlign = 'center'
-            chave.context.font = '20px "florida"',
+            chave.context.font = '20px "Nexa-Heavy"',
                 chave.context.fillText(`Você e nosso membro de n°${member.guild.memberCount}`, 512, 455)
             chave.context.textAlign = 'center'
 
