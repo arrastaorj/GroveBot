@@ -41,6 +41,7 @@ module.exports = {
 
             let user2 = await a.getUser(membro.id, client.token)
 
+
             const member = interaction.guild.members.cache.get(user.id)
 
             let AvatarUser = user.displayAvatarURL({ size: 4096, dynamic: true, format: "png" })
