@@ -187,7 +187,7 @@ module.exports = {
                             continue;
                         }
                         if (cargoList.position >= botMember.roles.highest.position) {
-                            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> O cargo selecionado está acima ou na mesma posição hierárquica do cargo da Lexa. A Lexa não tem permissão para adicionar esse cargo adicione o cargo da Lexa acima desse cargo.", ephemeral: true });
+                            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> O cargo selecionado está acima ou na mesma posição hierárquica do cargo da Grove. A Grove não tem permissão para adicionar esse cargo adicione o cargo da Grove acima desse cargo.", ephemeral: true });
                         }
                     }
 
@@ -415,7 +415,7 @@ module.exports = {
 
             case "comandos": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
                 const hasPermission = botMember.permissions.has("Administrator")
@@ -792,7 +792,7 @@ module.exports = {
 
             case "help": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
 
 
                 let HelpEmbed = new discord.EmbedBuilder()
@@ -816,7 +816,7 @@ module.exports = {
                         },
                         {
                             name: '**Observação 2:**',
-                            value: `\Nas configuraçãoes de cargos do seu servidor arraste a LEXA para o topo de todos os cargos para que todos os comandos funcionem corretamente. Imagem ilustrativa abaixo.`,
+                            value: `\Nas configuraçãoes de cargos do seu servidor arraste a Grove para o topo de todos os cargos para que todos os comandos funcionem corretamente. Imagem ilustrativa abaixo.`,
                             inline: false,
 
 
@@ -825,7 +825,7 @@ module.exports = {
                     )
                     .setFooter({ text: `© ${client.user.username} 2022 | ...` })
                     .setThumbnail(`${interaction.user.displayAvatarURL({ dynamic: true })}`)
-                    .setImage(`https://i.imgur.com/fiAnof1.png`)
+                    .setImage(`https://cdn.discordapp.com/attachments/1063231058407079946/1176315644308881539/Captura_de_tela_2023-11-20_211637.png?ex=656e6c50&is=655bf750&hm=1bf9223ae7afbea12aa3525618603318809269d1fe079ee787175665ba1b7b1b&`)
                     .setTimestamp()
 
                 let painel = new discord.ActionRowBuilder().addComponents(new discord.StringSelectMenuBuilder()

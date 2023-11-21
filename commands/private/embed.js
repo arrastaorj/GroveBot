@@ -9,6 +9,9 @@ module.exports = {
     run: async (client, interaction) => {
 
 
+        if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+
+
         const botMember = interaction.member.guild.members.cache.get(client.user.id)
         const hasPermission = botMember.permissions.has("Administrator")
 
