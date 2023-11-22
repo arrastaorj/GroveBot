@@ -2,16 +2,17 @@ const discord = require("discord.js")
 const Canvas = require('canvas')
 const Utils = require("../../plugins/Util")
 const { registerFont } = require("canvas")
+
 registerFont("././fonts/florida.otf", { family: "florida" })
 registerFont("././fonts/up.otf", { family: "up" })
 registerFont("././fonts/sd.ttf", { family: "sd" })
 registerFont("././fonts/aAkhirTahun.ttf", { family: "aAkhirTahun" })
+
 const comandos = require("../../database/models/comandos")
 const perfilID = require("../../database/models/perfil")
 const Level = require('../../database/models/level')
 const repUser = require('../../database/models/rep')
 const sobre = require('../../database/models/sobre')
-
 const skin = require("../../database/models/skin")
 const User = require('../../database/models/economia')
 
@@ -1066,6 +1067,7 @@ module.exports = {
                     }
 
                     const customIds = ['info', 'info2', 'info3', 'info4', 'info5', 'info6', 'info7']
+                    
                     const replyContent = `> \`+\` As skins são a chave para transformar o visual do seu Perfil na Lexa. Não deixe de verificar as novidades na \`/loja\` diária.`
 
                     for (const customId of customIds) {

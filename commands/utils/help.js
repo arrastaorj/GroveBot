@@ -17,6 +17,9 @@ module.exports = {
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
 
+
+
+            
             const optionsArr = []
 
             const commandsFolder = fs.readdirSync('./commands')
