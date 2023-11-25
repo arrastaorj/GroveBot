@@ -29,7 +29,10 @@ require('./handler')(client)
 const connectiondb = require("./database/connect")
 connectiondb.start()
 
-client.login(process.env.token)
+
+//tokenGrove
+//tokenTest
+client.login(process.env.tokenTest)
 
 
 process.on('unhandRejection', (reason, promise) => {

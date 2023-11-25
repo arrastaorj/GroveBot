@@ -1,8 +1,8 @@
 const discord = require("discord.js")
 
 module.exports = {
-    name: 'criador',
-    description: 'Sem descrição',
+    name: 'anunciar',
+    description: 'Crie um anúncio utilizando um formato de incorporação personalizável',
     type: discord.ApplicationCommandType.ChatInput,
 
 

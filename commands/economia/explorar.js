@@ -13,7 +13,7 @@ module.exports = {
 
     run: async (client, interaction, args) => {
 
-
+        await interaction.deferReply({ fetchReply: true })
 
         const amount = Math.floor(800)
         const amount2 = Math.floor(1000 + 4000)
@@ -72,7 +72,7 @@ module.exports = {
 
                 ])
 
-                return interaction.reply({ files: [at], components: [btn2] })
+                return interaction.editReply({ files: [at], components: [btn2] })
 
             } else {
 
@@ -91,7 +91,7 @@ module.exports = {
 
                     ])
 
-                    return interaction.reply({ files: [at], components: [btn3] })
+                    return interaction.editReply({ files: [at], components: [btn3] })
                 }
             }
 
@@ -99,7 +99,7 @@ module.exports = {
 
 
 
-        const m = await interaction.reply({ files: [at], components: [btn1], fetchReply: true })
+        const m = await interaction.editReply({ files: [at], components: [btn1] })
 
         const collector = m.createMessageComponentCollector({ time: 10 * 9000000 });
 
