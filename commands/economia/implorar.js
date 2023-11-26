@@ -44,7 +44,7 @@ module.exports = {
                     data.begTimeout = Date.now()
                     data.wallet += amount * 1
                     await data.save()
-                    await interaction.reply({ content: `${interaction.user}\n> \`+\`Você implorou e recebeu **<:LexaCoins:1167100813634719866> ${amount.toLocaleString()} GroveCoins**` })
+                    await interaction.reply({ content: `${interaction.user}\n> \`+\`Você implorou e recebeu **<:dollar_9729309:1178199735799119892> ${amount.toLocaleString()} GroveCoins**` })
                 }
 
             }

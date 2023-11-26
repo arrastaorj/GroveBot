@@ -42,7 +42,7 @@ module.exports = {
 
                 if (user2) {
 
-                    await interaction.reply({ content: `${user}\n> \`+\` <:withdraw_8378797:1162537287188496434> Carteira: <:Lecoin:1059125860524900402> **${user2.saldo.toLocaleString()} LexaCoins** \n> \`+\` <:bank_7407955:1162534093997752420> Banco: <:Lecoin:1059125860524900402> **${user2.bank.toLocaleString()} GroveCoins**\n\n> \`+\` Membros <:star_4066310:1162534911211737098> **LC Primer** recebem **GroveCoins** em Dobro!` })
+                    await interaction.reply({ content: `${user}\n> \`+\` <:withdraw_8378797:1162537287188496434> Carteira: <:dollar_9729309:1178199735799119892> **${user2.saldo.toLocaleString()} LexaCoins** \n> \`+\` <:bank_7407955:1162534093997752420> Banco: <:dollar_9729309:1178199735799119892> **${user2.bank.toLocaleString()} GroveCoins**\n\n> \`+\` Membros <:star_4066310:1162534911211737098> **LC Primer** recebem **GroveCoins** em Dobro!` })
 
                 } else {
                     const newUser = new User({
@@ -62,7 +62,7 @@ module.exports = {
                     const user2 = await User.findOne(query)
 
 
-                    await interaction.reply({ content: `${user}\n> \`+\` <:withdraw_8378797:1162537287188496434> Carteira: <:Lecoin:1059125860524900402> **${user2.saldo.toLocaleString()} GroveCoins** \n> \`+\` <:bank_7407955:1162534093997752420> Banco: <:Lecoin:1059125860524900402> **${user2.bank.toLocaleString()} GroveCoins**\n\n> \`+\` Membros <:star_4066310:1162534911211737098> **LC Primer** recebem **GroveCoins** em Dobro!` })
+                    await interaction.reply({ content: `${user}\n> \`+\` <:withdraw_8378797:1162537287188496434> Carteira: <:dollar_9729309:1178199735799119892> **${user2.saldo.toLocaleString()} GroveCoins** \n> \`+\` <:bank_7407955:1162534093997752420> Banco: <:dollar_9729309:1178199735799119892> **${user2.bank.toLocaleString()} GroveCoins**\n\n> \`+\` Membros <:star_4066310:1162534911211737098> **LC Primer** recebem **GroveCoins** em Dobro!` })
 
 
 

@@ -52,7 +52,7 @@ module.exports = {
 
                         await data.save()
 
-                        await interaction.reply({ content: `${interaction.user}\n> \`+\` <:profits_2936758:1162527940022644916> Valor depositado com sucesso **<:LexaCoins:1167100813634719866> ${depositAmount.toLocaleString()} GroveCoins**` })
+                        await interaction.reply({ content: `${interaction.user}\n> \`+\` <:profits_2936758:1162527940022644916> Valor depositado com sucesso **<:dollar_9729309:1178199735799119892> ${depositAmount.toLocaleString()} GroveCoins**` })
                     }
 
                 }
