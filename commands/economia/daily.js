@@ -61,7 +61,7 @@ module.exports = {
                 user.saldo += amount * 1
                 await user.save()
 
-                interaction.reply({ content: `${interaction.user}\n> \`+\` Você regatou **<:Lecoin:1059125860524900402> ${amount.toLocaleString()} LexaCoins**` })
+                interaction.reply({ content: `${interaction.user}\n> \`+\` Você regatou **<:LexaCoins:1167100813634719866> ${amount.toLocaleString()} GroveCoins**` })
 
 
             } catch (error) {

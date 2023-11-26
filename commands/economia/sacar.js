@@ -60,7 +60,7 @@ module.exports = {
 
                     await interaction.reply({
 
-                        content: `${interaction.user}\n> \`+\` <:download_9906560:1162869267591602327> Operação realizada com sucesso.\n> \`+\` Valor do saque: **<:Lecoin:1059125860524900402> ${withdrawAmount.toLocaleString()} LexaCoins**`,
+                        content: `${interaction.user}\n> \`+\` <:download_9906560:1162869267591602327> Operação realizada com sucesso.\n> \`+\` Valor do saque: **<:LexaCoins:1167100813634719866> ${withdrawAmount.toLocaleString()} GroveCoins**`,
 
                     })
                 }

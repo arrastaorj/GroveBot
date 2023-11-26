@@ -259,7 +259,7 @@ module.exports = {
                         }
 
                         if (data.saldo < cost) {
-                            await i.followUp({ content: `> \`-\` ${interaction.user} Você não tem <:LexaCoins:1167100813634719866> LexaCoins suficientes para essa compra.`, ephemeral: true });
+                            await i.followUp({ content: `> \`-\` ${interaction.user} Você não tem <:LexaCoins:1167100813634719866> GroveCoins suficientes para essa compra.`, ephemeral: true });
                         } else {
                             await i.followUp({ content: `> \`+\` ${interaction.user} Parabéns, você acabou de adquirir um item! Visualize e use no seu \`/perfil\`.`, ephemeral: true });
 
@@ -318,7 +318,7 @@ module.exports = {
 
                     for (const customId of customIds) {
                         if (i.customId === customId) {
-                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária da Lexa, onde você pode aprimorar seu \`/perfil\` com as <:LexaCoins:1167100813634719866> LexaCoins.`, ephemeral: true })
+                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária do Grove, onde você pode aprimorar seu \`/perfil\` com as <:LexaCoins:1167100813634719866> GroveCoins.`, ephemeral: true })
                             break;
                         }
                     }
@@ -410,7 +410,7 @@ module.exports = {
                         }
 
                         if (data.saldo < cost) {
-                            await i.followUp({ content: `> \`-\` ${interaction.user} Você não tem <:LexaCoins:1167100813634719866> LexaCoins suficientes para essa compra.`, ephemeral: true });
+                            await i.followUp({ content: `> \`-\` ${interaction.user} Você não tem <:LexaCoins:1167100813634719866> GroveCoins suficientes para essa compra.`, ephemeral: true });
                         } else {
                             await i.followUp({ content: `> \`+\` ${interaction.user} Parabéns, você acabou de adquirir um item! Visualize e use no seu \`/perfil\`.`, ephemeral: true });
 
@@ -468,7 +468,7 @@ module.exports = {
 
                     for (const customId of customIds) {
                         if (i.customId === customId) {
-                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária da Lexa, onde você pode aprimorar seu \`/perfil\` com as <:LexaCoins:1167100813634719866> LexaCoins.`, ephemeral: true })
+                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária do Grove, onde você pode aprimorar seu \`/perfil\` com as <:LexaCoins:1167100813634719866> GroveCoins.`, ephemeral: true })
                             break;
                         }
                     }

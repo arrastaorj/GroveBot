@@ -112,7 +112,7 @@ module.exports = {
 
                 case `ex`:
 
-                    i.reply({ content: `> \`+\` Você acabou explorar a Galáxia de Andrômeda, Em recompensar por isso estou te dando um tesouro de <:LexaCoins:1167100813634719866> **${amount.toLocaleString()} LexaCoins e <:eXP1:1059132345774510100> 10 EXP**`, ephemeral: true })
+                    i.reply({ content: `> \`+\` Você acabou explorar a Galáxia de Andrômeda, Em recompensar por isso estou te dando um tesouro de <:LexaCoins:1167100813634719866> **${amount.toLocaleString()} GroveCoins e <:eXP1:1059132345774510100> 10 EXP**`, ephemeral: true })
 
                     let btn3 = new discord.ActionRowBuilder().addComponents([
                         new discord.ButtonBuilder()
@@ -164,7 +164,7 @@ module.exports = {
 
                 case `exc`:
 
-                    i.reply({ content: `> \`+\` Você acabou explorar a Galáxia do Rodamoinho, Em recompensar por isso estou te dando um tesouro de <:LexaCoins:1167100813634719866> **${amount2.toLocaleString()} LexaCoins e <:eXP1:1059132345774510100> 30 EXP**`, ephemeral: true })
+                    i.reply({ content: `> \`+\` Você acabou explorar a Galáxia do Rodamoinho, Em recompensar por isso estou te dando um tesouro de <:LexaCoins:1167100813634719866> **${amount2.toLocaleString()} GroveCoins e <:eXP1:1059132345774510100> 30 EXP**`, ephemeral: true })
 
                     let btn4 = new discord.ActionRowBuilder().addComponents([
                         new discord.ButtonBuilder()
