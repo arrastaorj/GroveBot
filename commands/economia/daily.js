@@ -6,7 +6,7 @@ const comandos = require("../../database/models/comandos")
 
 module.exports = {
     name: 'daily',
-    description: 'Collect your dailies!',
+    description: 'Colete seus GroveCoins diários',
 
 
     run: async (client, interaction) => {

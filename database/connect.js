@@ -2,6 +2,8 @@ const { connect } = require("mongoose");
 const mongoose = require('mongoose');
 const chalk = require("chalk");
 
+const colors = require('colors')
+
 module.exports = {
   start() {
     mongoose.set('strictQuery', false);
@@ -11,7 +13,8 @@ module.exports = {
         useUnifiedTopology: true,
       });
 
-      console.log(chalk.hex(`32CD32`).bold(`[MongoDB] > Conectado ao Banco de Dados.`));
+      console.log("[MongoDB]".bgGreen, "Conectado ao Banco de Dados.".green)
+      
     } catch (err) {
       if (err) return console.log(`🚨 | [MongoDB]:`, err);
     }

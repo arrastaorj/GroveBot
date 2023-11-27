@@ -3,7 +3,7 @@ const comandos = require("../../database/models/comandos")
 const User = require('../../database/models/economia')
 
 module.exports = {
-    name: 'deposit',
+    name: 'depositar',
     description: 'Deposite suas moedas no banco',
     options: [
         {
