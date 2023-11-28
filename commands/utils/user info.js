@@ -1,6 +1,10 @@
 const discord = require("discord.js");
 const a = require('../../plugins/getUser')
 const comandos = require("../../database/models/comandos")
+const dayjs = require('dayjs')
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+
 
 module.exports = {
     name: "user",
@@ -25,6 +29,8 @@ module.exports = {
 
     async run(client, interaction, args) {
 
+
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
@@ -48,64 +54,125 @@ module.exports = {
 
             let list = []
 
-            const userData = await fetch(`https://discord-arts.asure.dev/user/${user.id}`)
-            const { data } = await userData.json()
-            const { public_flags_array } = data
+
+            const userDataResponse = await fetch(`https://groveapi.discloud.app/user/${user.id}`);
+            const
+                {
+                    user: { globalName: userDataNameGlobal, premiumSince: nitroData },
+                    profile: { badgesArray: badgesArrayUser, aboutMe: sobreMim },
+                    boost: { boost, boostDate, nextBoost }
+
+                } = await userDataResponse.json()
 
 
-            if (public_flags_array.includes('NITRO')) list.push("NITRO")
-            if (public_flags_array.includes('BOOSTER_1')) list.push("BOOSTER_1")
-            if (public_flags_array.includes('BOOSTER_2')) list.push("BOOSTER_2")
-            if (public_flags_array.includes('BOOSTER_3')) list.push("BOOSTER_3")
-            if (public_flags_array.includes('BOOSTER_6')) list.push("BOOSTER_6")
-            if (public_flags_array.includes('BOOSTER_9')) list.push("BOOSTER_9")
-            if (public_flags_array.includes('BOOSTER_12')) list.push("BOOSTER_12")
-            if (public_flags_array.includes('BOOSTER_15')) list.push("BOOSTER_15")
-            if (public_flags_array.includes('BOOSTER_18')) list.push("BOOSTER_18")
-            if (public_flags_array.includes('BOOSTER_24')) list.push("BOOSTER_24")
+
+            function convertBoostLevel(boost, nextBoost) {
+                return `Boost Level ${boost.replace(/\D/g, '')}`;
+            }
+
+            function convertNextBoostLevel(nextBoost) {
+                return `Boost Level ${nextBoost.replace(/\D/g, '')}`;
+            }
 
 
-            if (public_flags_array.includes('HOUSE_BALANCE')) list.push("HOUSE_BALANCE")
-            if (public_flags_array.includes('HOUSE_BRAVERY')) list.push("HOUSE_BRAVERY")
-            if (public_flags_array.includes('HOUSE_BRILLIANCE')) list.push("HOUSE_BRILLIANCE")
+
+
+            function getBoostEmoji(boostLevel) {
+                const emojiMap = {
+                    BoostLevel1: 'discordboost1:1178527220474576957',
+                    BoostLevel2: 'discordboost2:1178527223683240006',
+                    BoostLevel3: 'discordboost3:1178527224832466965',
+                    BoostLevel4: 'discordboost4:1178527227730739210',
+                    BoostLevel5: 'discordboost5:1178527229391675472',
+                    BoostLevel6: 'discordboost6:1178527232260579430',
+                    BoostLevel7: 'discordboost7:1178527233791504454',
+                    BoostLevel8: 'discordboost8:1178527236211617874',
+                    BoostLevel9: 'discordboost9:1178527237734137916',
+                };
+
+                return emojiMap[boostLevel] ? `<:${emojiMap[boostLevel]}>` : '❌';
+            }
+
+            let emoji = getBoostEmoji(boost);
+            let emoji2 = getBoostEmoji(nextBoost);
+
+
+
+            let descricaoUsuario = sobreMim
+            if (sobreMim == null) descricaoUsuario = "⠀⠀"
+
+
+
+            if (badgesArrayUser.includes('Nitro')) list.push("Nitro")
+            if (badgesArrayUser.includes('BoostLevel1')) list.push("BoostLevel1")
+            if (badgesArrayUser.includes('BoostLevel2')) list.push("BoostLevel2")
+            if (badgesArrayUser.includes('BoostLevel3')) list.push("BoostLevel3")
+            if (badgesArrayUser.includes('BoostLevel4')) list.push("BoostLevel4")
+            if (badgesArrayUser.includes('BoostLevel5')) list.push("BoostLevel5")
+            if (badgesArrayUser.includes('BoostLevel6')) list.push("BoostLevel6")
+            if (badgesArrayUser.includes('BoostLevel7')) list.push("BoostLevel7")
+            if (badgesArrayUser.includes('BoostLevel8')) list.push("BoostLevel8")
+            if (badgesArrayUser.includes('BoostLevel9')) list.push("BoostLevel9")
+
+
+            if (badgesArrayUser.includes('HypeSquadOnlineHouse1')) list.push("HypeSquadOnlineHouse1")
+            if (badgesArrayUser.includes('HypeSquadOnlineHouse2')) list.push("HypeSquadOnlineHouse2")
+            if (badgesArrayUser.includes('HypeSquadOnlineHouse3')) list.push("HypeSquadOnlineHouse3")
+
+
+            if (badgesArrayUser.includes('ActiveDeveloper')) list.push("ActiveDeveloper")//desenvolvedor ativo
+            if (badgesArrayUser.includes('PremiumEarlySupporter')) list.push("PremiumEarlySupporter")//apoiador inicial
+            if (badgesArrayUser.includes('VerifiedDeveloper')) list.push("VerifiedDeveloper")//desenvolvedor verificado de bots pioneiro
+            if (badgesArrayUser.includes('CertifiedModerator')) list.push("CertifiedModerator")//ex moderador do discord
+
+
+            if (badgesArrayUser.includes('VerifiedBot')) list.push("VerifiedBot")//bot verificado
+            if (badgesArrayUser.includes('ApplicationCommandBadge')) list.push("ApplicationCommandBadge") //compativel com comandos
+            if (badgesArrayUser.includes('ApplicationAutoModerationRuleCreateBadge')) list.push("ApplicationAutoModerationRuleCreateBadge") //usa autoMod
+
 
 
             if (!user.discriminator || user.discriminator === 0 || user.tag === `${user.username}#0`) {
-
                 list.push("TAG")
             }
-
-            if (public_flags_array.includes('ACTIVE_DEVELOPER')) list.push("ACTIVE_DEVELOPER")//desenvolvedor ativo
-            if (public_flags_array.includes('EARLY_SUPPORTER')) list.push("EARLY_SUPPORTER")//apoiador inicial
-            if (public_flags_array.includes('EARLY_VERIFIED_BOT_DEVELOPER')) list.push("EARLY_VERIFIED_BOT_DEVELOPER")//desenvolvedor verificado de bots pioneiro
-            if (public_flags_array.includes('VERIFIED_BOT')) list.push("VERIFIED_BOT")//bot verificado
-            if (public_flags_array.includes('DISCORD_CERTIFIED_MODERATOR')) list.push("DISCORD_CERTIFIED_MODERATOR")//ex moderador do discord
 
 
             list = list
                 .join(",")
-                .replace("BOOSTER_1", "<:image:1061728732903133359>")
-                .replace("BOOSTER_2", "<:image4:1061732682599514313>")
-                .replace("BOOSTER_3", "<:image6:1061732685246107749>")
-                .replace("BOOSTER_6", "<:image7:1061732687255179365>")
-                .replace("BOOSTER_9", "<:image8:1061732688869998612>")
-                .replace("BOOSTER_12", "<:image1:1061732675938955384>")
-                .replace("BOOSTER_15", "<:image2:1061732678522638438>")
-                .replace("BOOSTER_18", "<:image3:1061732680154235000>")
-                .replace("BOOSTER_24", "<:image5:1061732683903938640>")
-                .replace("NITRO", "<:4306subscribernitro:1061715332378673203>")
 
 
-                .replace("HOUSE_BALANCE", `<:5242hypesquadbalance:1061274091623034881>`)
-                .replace("HOUSE_BRAVERY", `<:6601hypesquadbravery:1061274089609760908>`)
-                .replace("HOUSE_BRILLIANCE", `<:6936hypesquadbrilliance:1061274087193854042>`)
 
+                //Badges NITRO
+                .replace("Nitro", "<:discordnitro:1178827913106305024>")
+                .replace("BoostLevel1", "<:discordboost1:1178527220474576957>")
+                .replace("BoostLevel2", "<:discordboost2:1178527223683240006>")
+                .replace("BoostLevel3", "<:discordboost3:1178527224832466965>")
+                .replace("BoostLevel4", "<:discordboost4:1178527227730739210>")
+                .replace("BoostLevel5", "<:discordboost5:1178527229391675472>")
+                .replace("BoostLevel6", "<:discordboost6:1178527232260579430>")
+                .replace("BoostLevel7", "<:discordboost7:1178527233791504454>")
+                .replace("BoostLevel8", "<:discordboost8:1178527236211617874>")
+                .replace("BoostLevel9", "<:discordboost9:1178527237734137916>")
+
+
+
+                //Badges USER
+                .replace("HypeSquadOnlineHouse1", `<:hypesquadbravery:1178528159503757443>`)
+                .replace("HypeSquadOnlineHouse2", `<:hypesquadbrilliance:1178528160711716934>`)
+                .replace("HypeSquadOnlineHouse3", `<:hypesquadbalance:1178528157368852480>`)
+                .replace("ActiveDeveloper", `<:activedeveloper:1178827904889667744>`)
+                .replace("PremiumEarlySupporter", `<:discordearlysupporter:1178827909683744788>`)
+                .replace("VerifiedDeveloper", `<:discordbotdev:1178827908391915622>`)
+                .replace("CertifiedModerator", `<:discordmod:1178827911667646544>`)
                 .replace("TAG", `<:username:1161109720870948884>`)
-                .replace("ACTIVE_DEVELOPER", `<:7011activedeveloperbadge:1061277829255413781>`)
-                .replace("EARLY_SUPPORTER", `<:Early_Supporter:1063599098135060590>`)
-                .replace("EARLY_VERIFIED_BOT_DEVELOPER", `<:Early_Verified_Bot_Developer:1063599974098665592>`)
-                .replace("VERIFIED_BOT", `<:verifiedbotbadge:1063600609699311676>`)
-                .replace("DISCORD_CERTIFIED_MODERATOR", `<:9765badgemoderators:1063603971471720458>`)
+
+
+                //Badges BOT
+                .replace("VerifiedBot", `<:VerifiedBot:1178828214039236668>`)
+                .replace("ApplicationCommandBadge", `<:supportscommands:1178827914603659336>`)
+                .replace("ApplicationAutoModerationRuleCreateBadge", `<:automod:1178827907095875604>`)
+
+
 
 
 
@@ -198,11 +265,26 @@ module.exports = {
             ])
 
 
+
+            const stringData = nitroData
+            const data = new Date(stringData)
+            const boostDateTemp = data.getTime()
+
+
+
+            const stringData2 = boostDate
+            const data2 = new Date(stringData2)
+            const nextBoostDateTemp = data2.getTime()
+
+
+
+
             const embed = new discord.EmbedBuilder()
                 .setColor("#41b2b0")
                 .setTitle(list.split(",").join(" "))
-                .setAuthor({ name: `${data.global_name}` })
+                .setAuthor({ name: `${userDataNameGlobal}` })
                 .setThumbnail(AvatarUser)
+                .setFooter({ text: `${descricaoUsuario}` })
                 .setFields(
                     {
                         name: '<:3310profile:1167220206607810600> Tag',
@@ -223,6 +305,30 @@ module.exports = {
                         name: '<:data:1026580769503723550> Entrou em',
                         value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
                         inline: false
+                    },
+
+
+                    {
+                        name: '<:discordnitro:1178827913106305024> Assinante Nitro desde',
+                        value: `<t:${~~(boostDateTemp / 1000)}:f> (<t:${~~(boostDateTemp / 1000)}:R>)`,
+                        inline: false
+                    },
+                    {
+                        name: '<:discordboost1:1178527220474576957> Impulsionando servidor desde',
+                        value: `<t:${~~(nextBoostDateTemp / 1000)}:f> (<t:${~~(nextBoostDateTemp / 1000)}:R>)`,
+                        inline: false
+                    },
+
+
+                    {
+                        name: ' Nível atual',
+                        value: `${emoji} ${convertBoostLevel(boost)}`,
+                        inline: true
+                    },
+                    {
+                        name: ' Próximo Nível',
+                        value: `${emoji2} ${convertNextBoostLevel(nextBoost)}`,
+                        inline: true
                     }
                 )
 
