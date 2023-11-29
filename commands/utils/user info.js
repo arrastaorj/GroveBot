@@ -260,7 +260,7 @@ module.exports = {
                             inline: true
                         },
                         {
-                            name: '<:crvt:1179215965792256030> ID',
+                            name: '<:crvt:1179554534301896764> ID',
                             value: `\`\`\`${member.user.id}\`\`\``,
                             inline: true
                         },
@@ -598,7 +598,7 @@ module.exports = {
                             inline: true
                         },
                         {
-                            name: '<:crvt:1179215965792256030> ID',
+                            name: '<:crvt:1179554534301896764> ID',
                             value: `\`\`\`${member.user.id}\`\`\``,
                             inline: true
                         },
@@ -911,7 +911,7 @@ module.exports = {
                             inline: true
                         },
                         {
-                            name: '<:crvt:1179215965792256030> ID',
+                            name: '<:crvt:1179554534301896764> ID',
                             value: `\`\`\`${member.user.id}\`\`\``,
                             inline: true
                         },
