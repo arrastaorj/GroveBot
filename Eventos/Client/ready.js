@@ -3,7 +3,9 @@ const discord = require("discord.js")
 const chalk = require("chalk");
 const { bgCyan } = require('colors');
 
+
 client.on(`ready`, async () => {
+
 
   let status = [
     `use /config help`
@@ -20,4 +22,4 @@ client.on(`ready`, async () => {
   client.user.setStatus('online')
 
   console.log("[Bot-Status]".bgBlue, `> Estou online como: ${client.user.username}`.blue)
-});
+})
