@@ -55,8 +55,6 @@ client.riffy = new Riffy.Riffy(client, nodes, {
 async function loadRiffy() {
 
 
-  console.log("\n🟦 Carregando eventos de riffy...")
-
   readdirSync('./structures/riffy/').forEach(async dir => {
     const lavalink = readdirSync(`./structures/riffy/${dir}`).filter(file => file.endsWith('.js'));
 
@@ -72,7 +70,6 @@ async function loadRiffy() {
 
         pull.name = pull.name || file.replace('.js', '');
 
-        console.log(`🟩 Loaded riffy event : ${pull.name}`)
       } catch (err) {
         console.log(`🟥 Não foi possível carregar o evento riffy ${file}, error: ${err}`)
         console.log(err)

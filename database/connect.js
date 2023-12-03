@@ -9,7 +9,7 @@ module.exports = {
       connect(process.env.mongourl, {
       })
 
-      console.log("[MongoDB]".bgGreen, "Conectado ao Banco de Dados.".green)
+      console.log("[MongoDB]".bgGreen, "> Conectado ao Banco de Dados.".green)
 
     } catch (err) {
       if (err) return console.log(`🚨 | [MongoDB]:`, err)
