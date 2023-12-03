@@ -2,6 +2,13 @@ const discord = require("discord.js")
 const { GatewayIntentBits, Partials } = require('discord.js')
 require('dotenv').config()
 
+
+const { readdirSync } = require("fs")
+const Riffy = require("riffy")
+const { nodes } = require("./structures/configuration/index")
+
+
+
 const client = new discord.Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -27,6 +34,59 @@ require('./handler')(client)
 
 const connectiondb = require("./database/connect")
 connectiondb.start()
+
+
+
+client.riffy = new Riffy.Riffy(client, nodes, {
+  send: (payload) => {
+    const guild = client.guilds.cache.get(payload.d.guild_id);
+    if (guild) guild.shard.send(payload);
+  },
+  defaultSearchPlatform: "ytmsearch",
+  restVersion: "v3"
+});
+
+
+(async () => {
+  await loadRiffy();
+})()
+
+
+async function loadRiffy() {
+
+
+  console.log("\n🟦 Carregando eventos de riffy...")
+
+  readdirSync('./structures/riffy/').forEach(async dir => {
+    const lavalink = readdirSync(`./structures/riffy/${dir}`).filter(file => file.endsWith('.js'));
+
+
+    for (let file of lavalink) {
+      try {
+        let pull = require(`./structures/riffy/${dir}/${file}`);
+
+        if (pull.name && typeof pull.name !== 'string') {
+          console.log(`🟥 Não foi possível carregar o evento riffy ${file}, error: O evento de propriedade deve ser uma string.`)
+          continue;
+        }
+
+        pull.name = pull.name || file.replace('.js', '');
+
+        console.log(`🟩 Loaded riffy event : ${pull.name}`)
+      } catch (err) {
+        console.log(`🟥 Não foi possível carregar o evento riffy ${file}, error: ${err}`)
+        console.log(err)
+        continue;
+      }
+    }
+  })
+}
+
+
+
+
+
+
 
 
 

@@ -5,6 +5,7 @@ require('colors')
 
 client.on(`ready`, async () => {
 
+  client.riffy.init(client.user.id)
 
   let status = [
     `use /config help`
