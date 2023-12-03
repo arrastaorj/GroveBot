@@ -1,7 +1,6 @@
-const client = require('../../index');
-const discord = require("discord.js")
-const chalk = require("chalk");
-const { bgCyan } = require('colors');
+const client = require('../../index')
+
+require('colors')
 
 
 client.on(`ready`, async () => {

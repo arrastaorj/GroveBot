@@ -1,5 +1,4 @@
 const discord = require("discord.js")
-
 const { GatewayIntentBits, Partials } = require('discord.js')
 require('dotenv').config()
 
@@ -28,6 +27,8 @@ require('./handler')(client)
 
 const connectiondb = require("./database/connect")
 connectiondb.start()
+
+
 
 
 //tokenGrove

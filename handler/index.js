@@ -1,10 +1,6 @@
 const fs = require("fs")
 const bot = require('../bot.json')
-const chalk = require('chalk')
-const discord = require("discord.js")
-const axios = require('axios')
-const colors = require('colors')
-
+require('colors')
 module.exports = async (client) => {
 
 

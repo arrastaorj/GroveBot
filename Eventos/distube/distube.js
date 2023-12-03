@@ -89,161 +89,214 @@ const button2 = new discord.ActionRowBuilder().addComponents([
 
 
 
+try {
 
-distube.on("finish", async (queue) => {
+    const nowPlaying = new Map()
 
+    distube.on("playSong", async (queue) => {
+        const song = queue.songs[0]
+        const textChannel = queue.textChannel
 
-})
-
-
-const nowPlaying = new Map()
-
-distube.on("playSong", async (queue) => {
-    const song = queue.songs[0]
-    const textChannel = queue.textChannel
-
-    const songInfo = {
-        name: song.name,
-        uploader: {
-            name: song.uploader.name,
-        },
-        thumbnail: song.thumbnail,
-        formattedDuration: song.formattedDuration,
-    }
-
-    const card = new musicCard()
-        .setName(songInfo.name)
-        .setAuthor(songInfo.uploader.name)
-        .setColor("auto")
-        .setTheme("classic")
-        .setBrightness(50)
-        .setThumbnail(songInfo.thumbnail)
-        .setProgress()
-        .setStartTime()
-        .setEndTime()
-
-    const formattedDurationArray = songInfo.formattedDuration.split(":")
-    const totalSeconds = parseInt(formattedDurationArray[0]) * 60 + parseInt(formattedDurationArray[1])
-    const updateInterval = 1000
-
-    let guildInfo = nowPlaying.get(textChannel.guild.id)
-
-    if (!guildInfo) {
-        guildInfo = {
-            songInfo,
-            card,
-            textChannel,
-            currentMessage: null,
-            startTime: Date.now(),
-            intervalId: null,
-            buttonChanged: false,
+        const songInfo = {
+            name: song.name,
+            uploader: {
+                name: song.uploader.name,
+            },
+            thumbnail: song.thumbnail,
+            formattedDuration: song.formattedDuration,
         }
 
-        nowPlaying.set(textChannel.guild.id, guildInfo)
+        const card = new musicCard()
+            .setName(songInfo.name)
+            .setAuthor(songInfo.uploader.name)
+            .setColor("auto")
+            .setTheme("classic")
+            .setBrightness(50)
+            .setThumbnail(songInfo.thumbnail)
+            .setProgress()
+            .setStartTime()
+            .setEndTime()
 
-        const cardBuffer = await card.build()
-        const sentMessage = await textChannel.send({ files: [cardBuffer], components: [button] })
-        guildInfo.currentMessage = sentMessage.id
-    }
+        const formattedDurationArray = songInfo.formattedDuration.split(":")
+        const totalSeconds = parseInt(formattedDurationArray[0]) * 60 + parseInt(formattedDurationArray[1])
+        const updateInterval = 1000
 
-    clearInterval(guildInfo.intervalId)
+        let guildInfo = nowPlaying.get(textChannel.guild.id)
 
-    guildInfo.startTime = Date.now()
-    guildInfo.buttonChanged = false
+        if (!guildInfo) {
+            guildInfo = {
+                songInfo,
+                card,
+                textChannel,
+                currentMessage: null,
+                startTime: Date.now(),
+                intervalId: null,
+                buttonChanged: false,
+            }
 
-    const updateCard = async () => {
-        const elapsedTime = Date.now() - guildInfo.startTime
+            nowPlaying.set(textChannel.guild.id, guildInfo)
 
-        if (totalSeconds > 0) {
-            const newProgress = (elapsedTime / (totalSeconds * 1000)) * 100
-            const roundedProgress = Math.min(Math.floor(newProgress), 100)
+            const cardBuffer = await card.build()
+            const sentMessage = await textChannel.send({ files: [cardBuffer], components: [button] })
+            guildInfo.currentMessage = sentMessage.id
+        }
 
-            const elapsedMinutes = Math.floor(elapsedTime / 60000)
-            const elapsedSeconds = Math.floor((elapsedTime % 60000) / 1000)
+        clearInterval(guildInfo.intervalId)
 
-            const formattedMinutes = String(elapsedMinutes).padStart(2, '0')
-            const formattedSeconds = String(elapsedSeconds).padStart(2, '0')
+        guildInfo.startTime = Date.now()
+        guildInfo.buttonChanged = false
 
-            guildInfo.card.setName(songInfo.name)
-            guildInfo.card.setAuthor(songInfo.uploader.name)
-            guildInfo.card.setThumbnail(songInfo.thumbnail)
-            guildInfo.card.setEndTime(songInfo.formattedDuration)
-            guildInfo.card.setStartTime(`${formattedMinutes}:${formattedSeconds}`)
-            guildInfo.card.setProgress(roundedProgress)
+        const updateCard = async () => {
+            const elapsedTime = Date.now() - guildInfo.startTime
 
-            const updatedCardBuffer = await guildInfo.card.build()
-            const message = await guildInfo.textChannel.messages.fetch(guildInfo.currentMessage)
+            if (totalSeconds > 0) {
+                const newProgress = (elapsedTime / (totalSeconds * 1000)) * 100
+                const roundedProgress = Math.min(Math.floor(newProgress), 100)
 
-            if (roundedProgress >= 100 && !guildInfo.buttonChanged) {
-                clearInterval(guildInfo.intervalId)
-                guildInfo.buttonChanged = true
-                message.edit({ files: [updatedCardBuffer], components: [button2] })
-            } else {
-                message.edit({ files: [updatedCardBuffer], components: [button] })
+                const elapsedMinutes = Math.floor(elapsedTime / 60000)
+                const elapsedSeconds = Math.floor((elapsedTime % 60000) / 1000)
+
+                const formattedMinutes = String(elapsedMinutes).padStart(2, '0')
+                const formattedSeconds = String(elapsedSeconds).padStart(2, '0')
+
+                guildInfo.card.setName(songInfo.name)
+                guildInfo.card.setAuthor(songInfo.uploader.name)
+                guildInfo.card.setThumbnail(songInfo.thumbnail)
+                guildInfo.card.setEndTime(songInfo.formattedDuration)
+                guildInfo.card.setStartTime(`${formattedMinutes}:${formattedSeconds}`)
+                guildInfo.card.setProgress(roundedProgress)
+
+                const updatedCardBuffer = await guildInfo.card.build()
+                const message = await guildInfo.textChannel.messages.fetch(guildInfo.currentMessage)
+
+                if (roundedProgress >= 100 && !guildInfo.buttonChanged) {
+                    clearInterval(guildInfo.intervalId)
+                    guildInfo.buttonChanged = true
+                    message.edit({ files: [updatedCardBuffer], components: [button2] })
+                } else {
+                    message.edit({ files: [updatedCardBuffer], components: [button] })
+                }
             }
         }
-    }
 
-    const intervalId = setInterval(updateCard, updateInterval)
-    guildInfo.intervalId = intervalId
-})
-
+        const intervalId = setInterval(updateCard, updateInterval)
+        guildInfo.intervalId = intervalId
+    })
 
 
+    distube.on("addSong", (queue, song) => {
+
+        queue.textChannel
+            .send({
+                embeds: [
+                    new discord.EmbedBuilder()
+
+                        .setAuthor({ name: `Adicionado à fila`, iconURL: song.user.displayAvatarURL({ dynamic: true }), url: song.url, })
+                        .setThumbnail(song.thumbnail)
+                        .setImage("https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif")
+                        .setDescription(`[${song.name}](${song.url})`)
+                        .addFields([
+                            {
+                                name: `Requerido por`,
+                                value: `<@${song.user.id}>`,
+                                inline: true,
+                            },
+                            {
+                                name: `**Gravadora / Artista**`,
+                                value: `**${song.uploader.name}**`,
+                                inline: true,
+                            },
+                            {
+                                name: `Duração`,
+                                value: `\`${song.formattedDuration}\``,
+                                inline: true,
+                            },
+                        ])
+                ],
+            })
+            .then((msg) => {
+                setTimeout(() => {
+                    msg.delete().catch((e) => null)
+                }, 8000)
+            })
+
+    })
+
+    distube.on("addList", async (queue, playlist) => {
+
+
+       
+        queue.textChannel
+            .send({
+                embeds: [
+                    new discord.EmbedBuilder()
+                        .setAuthor({
+                            name: `Lista de reprodução adicionada à fila`,
+                            iconURL: playlist.user.displayAvatarURL({ dynamic: true }),
+                            url: playlist.url,
+                        })
+                        .setImage("https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif")
+                        .setThumbnail(playlist.thumbnail)
+                        .setDescription(`** ${playlist.name} / ${playlist.url} **`)
+                        .addFields([
+                            {
+                                name: `Requerido por`,
+                                value: `<@${playlist.user.id}>`,
+                                inline: true,
+                            },
+                            {
+                                name: `Songs`,
+                                value: `**${playlist.songs.length}**`,
+                                inline: true,
+                            },
+                            {
+                                name: `Duração`,
+                                value: `\`${playlist.formattedDuration}\``,
+                                inline: true,
+                            },
+                        ])
+                ],
+            })
+            .then((msg) => {
+                setTimeout(() => {
+                    msg.delete().catch((e) => null)
+                }, 8000)
+            })
+    })
 
 
 
-distube.on("addSong", (queue, song) => {
+    distube.on('disconnect', async (queue) => {
 
-    queue.textChannel
-        .send({
-            embeds: [
-                new discord.EmbedBuilder()
+        if (queue.currentMessage) {
+            queue.textChannel.messages.fetch(queue.currentMessage).then((message) => {
+                message.edit({ components: [button2] })
+            })
+        }
 
-                    .setAuthor({ name: `Adicionado à fila`, iconURL: song.user.displayAvatarURL({ dynamic: true }), url: song.url, })
-                    .setThumbnail(song.thumbnail)
-                    .setImage("https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif")
-                    .setDescription(`[${song.name}](${song.url})`)
-                    .addFields([
-                        {
-                            name: `Requerido por`,
-                            value: `<@${song.user.id}>`,
-                            inline: true,
-                        },
-                        {
-                            name: `**Gravadora / Artista**`,
-                            value: `**${song.uploader.name}**`,
-                            inline: true,
-                        },
-                        {
-                            name: `Duração`,
-                            value: `\`${song.formattedDuration}\``,
-                            inline: true,
-                        },
-                    ])
-            ],
-        })
-        .then((msg) => {
-            setTimeout(() => {
-                msg.delete().catch((e) => null)
-            }, 8000)
-        })
+    })
 
-})
+    distube.on("finish", async (queue) => {
 
 
-distube.on("addList", (queue, plalist) => {
+    })
 
 
-})
+} catch (e) {
 
-
-distube.on('disconnect', async (queue) => {
-
-    if (queue.currentMessage) {
-        queue.textChannel.messages.fetch(queue.currentMessage).then((message) => {
-            message.edit({ components: [button2] })
-        })
-    }
-
-})
+    distube.on("error", async (channel, error) => {
+        channel
+            .send({
+                embeds: [
+                    new discord.EmbedBuilder()
+                        .setTitle(`Encontrou um erro...`)
+                        .setDescription(String(error).substring(0, 3000)),
+                ],
+            })
+            .then((msg) => {
+                setTimeout(() => {
+                    msg.delete().catch((e) => null)
+                }, 5000)
+            })
+    })
+}
