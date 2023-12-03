@@ -33,11 +33,13 @@ client.on("ready", () => {
 
 
 const button = new discord.ActionRowBuilder().addComponents([
-    new discord.ButtonBuilder()
-        .setStyle("Secondary")
-        .setLabel("Pause/Resume")
-        .setCustomId("pause")
-        .setEmoji("<:playarrow_5398599:1180472208297046016>"),
+    // new discord.ButtonBuilder()
+    //     .setStyle("Secondary")
+    //     .setLabel("Pause/Resume")
+    //     .setCustomId("pause")
+    //     .setEmoji("<:playarrow_5398599:1180472208297046016>"),
+
+
     new discord.ButtonBuilder()
         .setStyle("Secondary")
         .setLabel("Skip")
@@ -56,12 +58,12 @@ const button = new discord.ActionRowBuilder().addComponents([
 ])
 
 const button2 = new discord.ActionRowBuilder().addComponents([
-    new discord.ButtonBuilder()
-        .setStyle("Secondary")
-        .setLabel("Pause/Resume")
-        .setCustomId("pause")
-        .setDisabled(true)
-        .setEmoji("<:playarrow_5398599:1180472208297046016>"),
+    // new discord.ButtonBuilder()
+    //     .setStyle("Secondary")
+    //     .setLabel("Pause/Resume")
+    //     .setCustomId("pause")
+    //     .setDisabled(true)
+    //     .setEmoji("<:playarrow_5398599:1180472208297046016>"),
     new discord.ButtonBuilder()
         .setStyle("Secondary")
         .setLabel("Skip")

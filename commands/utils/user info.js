@@ -280,7 +280,7 @@ module.exports = {
                             inline: false
                         },
                         {
-                            name: '<:discordboost1:1178527220474576957> Impulsionando servidor desde',
+                            name: '<:1592wumpuswaveboost:1180830275182276658> Impulsionando servidor desde',
                             value: `<t:${~~(nextBoostDateTemp / 1000)}:f> (<t:${~~(nextBoostDateTemp / 1000)}:R>)`,
                             inline: false
                         },
