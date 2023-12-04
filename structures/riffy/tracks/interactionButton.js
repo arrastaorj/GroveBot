@@ -1,24 +1,24 @@
-const client = require("../../../index");
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const client = require("../../../index")
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js")
 
-const { pauseRow, playRow, skipRowDisabled, disconnectRow } = require("./buttons.js");
+const { pauseRow, playRow, skipRowDisabled, disconnectRow } = require("./buttons.js")
 
 client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isButton()) return;
+    if (!interaction.isButton()) return
 
-    const player = client.riffy.players.get(interaction.guild.id);
+    const player = client.riffy.players.get(interaction.guild.id)
+
 
     switch (interaction.customId) {
         case 'pause':
-            await interaction.deferUpdate();
+            await interaction.deferUpdate()
 
             if (!player) return interaction.followUp({
                 content: `> \`-\` Não há música reproduzindo atualmente.`,
                 ephemeral: true
-            });
+            })
 
-            player.pause(true);
-
+            player.pause(true)
             await interaction.message.edit({
                 components: [pauseRow]
             }).then(
@@ -26,18 +26,18 @@ client.on('interactionCreate', async (interaction) => {
                     content: `> \`+\` A reprodução da música foi pausada.`,
                     ephemeral: true,
                 })
-            );
-            break;
+            )
+            break
 
         case 'play':
-            await interaction.deferUpdate();
+            await interaction.deferUpdate()
 
             if (!player) return interaction.followUp({
                 content: `> \`-\` Não há música reproduzindo atualmente.`,
                 ephemeral: true
-            });
+            })
 
-            player.pause(false);
+            player.pause(false)
 
             await interaction.message.edit({
                 components: [playRow]
@@ -46,18 +46,19 @@ client.on('interactionCreate', async (interaction) => {
                     content: `> \`+\` A reprodução da música foi retomada.`,
                     ephemeral: true,
                 })
-            );
-            break;
+            )
+            break
 
         case 'skip':
-            await interaction.deferUpdate();
+
+            await interaction.deferUpdate()
 
             if (!player) return interaction.followUp({
                 content: `> \`-\` Não há música reproduzindo atualmente.`,
                 ephemeral: true
-            });
+            })
 
-            player.stop();
+            player.stop()
 
             await interaction.message.edit({
                 components: [skipRowDisabled]
@@ -66,18 +67,18 @@ client.on('interactionCreate', async (interaction) => {
                     content: `> \`+\` A música atual foi pulada.`,
                     ephemeral: true,
                 })
-            );
-            break;
+            )
+            break
 
         case 'disconnect':
-            await interaction.deferUpdate();
+            await interaction.deferUpdate()
 
             if (!player) return interaction.followUp({
                 content: `> \`-\` Não há música reproduzindo atualmente.`,
                 ephemeral: true
-            });
+            })
 
-            player.destroy();
+            player.destroy()
 
             await interaction.message.edit({
                 components: [disconnectRow]
@@ -86,10 +87,10 @@ client.on('interactionCreate', async (interaction) => {
                     content: `> \`+\` A reprodução da música foi interrompida e o bot desconectado.`,
                     ephemeral: true,
                 })
-            );
-            break;
+            )
+            break
 
         default:
-            break;
+            break
     }
-});
+})

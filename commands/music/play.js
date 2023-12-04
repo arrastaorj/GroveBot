@@ -68,7 +68,7 @@ module.exports = {
                 .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
 
 
-                .setDescription(`[${track.info.title}](${track.info.uri})`)
+                .setDescription(`<a:1175252154534072434:1181038557515743253> [${track.info.title}](${track.info.uri})`)
                 .addFields([
                     {
                         name: 'Requerido por',
@@ -94,7 +94,7 @@ module.exports = {
                 }, 8000)
             })
 
-            
+
             if (!player.playing && !player.paused) return player.play()
 
         } else {
