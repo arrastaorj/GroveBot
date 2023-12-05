@@ -66,12 +66,10 @@ module.exports = {
                 })
                 .setThumbnail(track.thumbnail)
                 .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
-
-
-                .setDescription(`<a:1175252154534072434:1181038557515743253> [${track.info.title}](${track.info.uri})`)
+                .setDescription(`[${track.info.title}](${track.info.uri})`)
                 .addFields([
                     {
-                        name: 'Requerido por',
+                        name: 'Adicionado por',
                         value: `<@${track.info.requester.id}>`,
                         inline: true,
                     },
@@ -82,7 +80,7 @@ module.exports = {
                     },
                     {
                         name: 'Duração',
-                        value: `\`${formattedLength}\``,
+                        value: `**${formattedLength}**`,
                         inline: true,
                     },
                 ])
@@ -91,15 +89,15 @@ module.exports = {
             await interaction.reply({ embeds: [embed] }).then((msg) => {
                 setTimeout(() => {
                     msg.delete().catch((e) => null)
-                }, 8000)
+                }, 10000)
             })
-
 
             if (!player.playing && !player.paused) return player.play()
 
         } else {
-            return interaction.reply('Não foram encontrados resultados para sua consulta.')
-        }
 
+            return interaction.reply('Não foram encontrados resultados para sua consulta.')
+
+        }
     }
 }

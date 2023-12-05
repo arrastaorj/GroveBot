@@ -1,5 +1,4 @@
 const discord = require("discord.js");
-const a = require('../../plugins/getUser')
 const comandos = require("../../database/models/comandos")
 
 
@@ -43,7 +42,7 @@ module.exports = {
             let membro = interaction.options.getUser('usuario') || interaction.user
             let user = interaction.guild.members.cache.get(membro.id)
 
-            let user2 = await a.getUser(membro.id, client.token)
+
 
             const member = interaction.guild.members.cache.get(user.id)
 
@@ -56,7 +55,10 @@ module.exports = {
 
 
 
-            if (userData.user && userData.profile && userData.boost) {
+
+
+
+            if (userData.user.premiumSince && userData.boost) {
 
                 const {
                     user: { globalName: userDataNameGlobal, premiumSince: nitroData },
@@ -203,7 +205,25 @@ module.exports = {
                 }
 
 
-                let btn1 = new discord.ActionRowBuilder().addComponents([
+
+                let btnInfo = new discord.ActionRowBuilder().addComponents([
+                    new discord.ButtonBuilder()
+                        .setStyle("Primary")
+                        .setLabel("Mais Informação")
+                        .setCustomId("infos"),
+                ])
+
+
+
+                let btnPaginaInicial = new discord.ActionRowBuilder().addComponents([
+                    new discord.ButtonBuilder()
+                        .setStyle("Secondary")
+                        .setLabel("Pagina Inicial")
+                        .setCustomId("inicial"),
+                ])
+
+
+                let btnAvatarBannerPermissão = new discord.ActionRowBuilder().addComponents([
 
                     new discord.ButtonBuilder()
                         .setStyle("Primary")
@@ -217,23 +237,22 @@ module.exports = {
 
                     new discord.ButtonBuilder()
                         .setLabel('Permissões do Membro')
-                        .setEmoji("<:9081settings:1167219166898557029>")
-                        .setStyle("Success")
+                        .setStyle("Danger")
                         .setCustomId('verPerms')
 
                 ]);
 
-                let btn2 = new discord.ActionRowBuilder().addComponents([
+                let btnVoltar = new discord.ActionRowBuilder().addComponents([
 
                     new discord.ButtonBuilder()
                         .setStyle("Secondary")
-                        .setLabel("Pagina inicial")
-                        .setCustomId("inicial"),
+                        .setLabel("Voltar")
+                        .setCustomId("voltar"),
 
                 ])
 
-                let btn3 = new discord.ActionRowBuilder().addComponents([
 
+                let btnAvatarPermissão = new discord.ActionRowBuilder().addComponents([
                     new discord.ButtonBuilder()
                         .setStyle("Primary")
                         .setLabel("Avatar")
@@ -242,9 +261,10 @@ module.exports = {
                     new discord.ButtonBuilder()
                         .setLabel('Permissões do Membro')
                         .setEmoji("<:9081settings:1167219166898557029>")
-                        .setStyle("Success")
+                        .setStyle("Danger")
                         .setCustomId('verPerms')
                 ])
+
 
 
                 const embed = new discord.EmbedBuilder()
@@ -325,7 +345,7 @@ module.exports = {
                         )
 
 
-                    const m = await interaction.reply({ embeds: [embed], components: [btn1], fetchReply: true })
+                    const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
 
                     const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
 
@@ -337,22 +357,30 @@ module.exports = {
                         i.deferUpdate()
                         switch (i.customId) {
 
-
-                            case `avatar`:
-                                m.edit({ embeds: [avatar], components: [btn2] })
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
                                 break;
 
-                            case `inicial`:
-                                m.edit({ embeds: [embed], components: [btn1] })
+                            case `avatar`:
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                break;
+
+
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
                                 break;
 
 
                             case `banner`:
-                                m.edit({ embeds: [banner], components: [btn2] })
+                                m.edit({ embeds: [banner], components: [btnVoltar] })
                                 break;
 
                             case `verPerms`:
-                                m.edit({ embeds: [embedPerms], components: [btn2] })
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
                                 break;
 
 
@@ -383,7 +411,7 @@ module.exports = {
                         .setImage(AvatarUser)
                         .setColor("#41b2b0")
 
-                    const m = await interaction.reply({ embeds: [embed], components: [btn3], fetchReply: true })
+                    const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
 
 
 
@@ -398,25 +426,33 @@ module.exports = {
                         switch (i.customId) {
 
 
+
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                break;
+
                             case `avatar`:
-                                m.edit({ embeds: [avatar], components: [btn2] })
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
                                 break;
 
-
-                            case `inicial`:
-                                m.edit({ embeds: [embed], components: [btn3] })
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
                                 break;
-
 
                             case `verPerms`:
-                                m.edit({ embeds: [embedPerms], components: [btn2] })
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
                                 break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
+                                break;
+
+
 
                             case `fechar`:
                         }
                     })
                 }
-
 
 
             } else if (userData.user.premiumSince) {
@@ -441,6 +477,8 @@ module.exports = {
 
                 let descricaoUsuario = sobreMim
                 if (sobreMim == null) descricaoUsuario = "⠀⠀"
+
+                let list = []
 
                 if (badgesArrayUser.includes('Nitro')) list.push("Nitro")
                 if (badgesArrayUser.includes('BoostLevel1')) list.push("BoostLevel1")
@@ -541,7 +579,24 @@ module.exports = {
                 }
 
 
-                let btn1 = new discord.ActionRowBuilder().addComponents([
+                let btnInfo = new discord.ActionRowBuilder().addComponents([
+                    new discord.ButtonBuilder()
+                        .setStyle("Primary")
+                        .setLabel("Mais Informação")
+                        .setCustomId("infos"),
+                ])
+
+
+
+                let btnPaginaInicial = new discord.ActionRowBuilder().addComponents([
+                    new discord.ButtonBuilder()
+                        .setStyle("Secondary")
+                        .setLabel("Pagina Inicial")
+                        .setCustomId("inicial"),
+                ])
+
+
+                let btnAvatarBannerPermissão = new discord.ActionRowBuilder().addComponents([
 
                     new discord.ButtonBuilder()
                         .setStyle("Primary")
@@ -555,23 +610,21 @@ module.exports = {
 
                     new discord.ButtonBuilder()
                         .setLabel('Permissões do Membro')
-                        .setEmoji("<:9081settings:1167219166898557029>")
-                        .setStyle("Success")
+                        .setStyle("Danger")
                         .setCustomId('verPerms')
 
                 ]);
 
-                let btn2 = new discord.ActionRowBuilder().addComponents([
+                let btnVoltar = new discord.ActionRowBuilder().addComponents([
 
                     new discord.ButtonBuilder()
                         .setStyle("Secondary")
-                        .setLabel("Pagina inicial")
-                        .setCustomId("inicial"),
+                        .setLabel("Voltar")
+                        .setCustomId("voltar"),
 
                 ])
 
-                let btn3 = new discord.ActionRowBuilder().addComponents([
-
+                let btnAvatarPermissão = new discord.ActionRowBuilder().addComponents([
                     new discord.ButtonBuilder()
                         .setStyle("Primary")
                         .setLabel("Avatar")
@@ -580,7 +633,7 @@ module.exports = {
                     new discord.ButtonBuilder()
                         .setLabel('Permissões do Membro')
                         .setEmoji("<:9081settings:1167219166898557029>")
-                        .setStyle("Success")
+                        .setStyle("Danger")
                         .setCustomId('verPerms')
                 ])
 
@@ -622,14 +675,10 @@ module.exports = {
 
                 if (userBanner) {
 
-
-
                     let avatar = new discord.EmbedBuilder()
-
                         .setImage(AvatarUser)
                         .setColor("#41b2b0")
                     let banner = new discord.EmbedBuilder()
-
                         .setImage(userBanner)
                         .setColor("#41b2b0")
 
@@ -650,7 +699,7 @@ module.exports = {
                         )
 
 
-                    const m = await interaction.reply({ embeds: [embed], components: [btn1], fetchReply: true })
+                    const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
 
                     const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
 
@@ -663,21 +712,28 @@ module.exports = {
                         switch (i.customId) {
 
 
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                break;
+
                             case `avatar`:
-                                m.edit({ embeds: [avatar], components: [btn2] })
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
                                 break;
 
-                            case `inicial`:
-                                m.edit({ embeds: [embed], components: [btn1] })
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
                                 break;
-
 
                             case `banner`:
-                                m.edit({ embeds: [banner], components: [btn2] })
+                                m.edit({ embeds: [banner], components: [btnVoltar] })
                                 break;
 
                             case `verPerms`:
-                                m.edit({ embeds: [embedPerms], components: [btn2] })
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
                                 break;
 
 
@@ -707,7 +763,7 @@ module.exports = {
                     let avatar = new discord.EmbedBuilder()
                         .setImage(AvatarUser)
                         .setColor("#41b2b0")
-                    const m = await interaction.reply({ embeds: [embed], components: [btn3], fetchReply: true })
+                    const m = await interaction.reply({ embeds: [embed], components: [btnAvatarPermissão], fetchReply: true })
 
 
 
@@ -721,19 +777,24 @@ module.exports = {
                         i.deferUpdate()
                         switch (i.customId) {
 
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                break;
 
                             case `avatar`:
-                                m.edit({ embeds: [avatar], components: [btn2] })
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
                                 break;
 
-
-                            case `inicial`:
-                                m.edit({ embeds: [embed], components: [btn3] })
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
                                 break;
-
 
                             case `verPerms`:
-                                m.edit({ embeds: [embedPerms], components: [btn2] })
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
                                 break;
 
                             case `fechar`:
@@ -741,18 +802,52 @@ module.exports = {
                     })
                 }
 
-
-
-            } else {
+            } else if (userData.boost) {
 
                 const {
-                    user: { globalName: userDataNameGlobal, },
+                    user: { globalName: userDataNameGlobal, premiumSince: nitroData },
                     profile: { badgesArray: badgesArrayUser, aboutMe: sobreMim, bannerUrl: userBanner },
+                    boost: { boost, boostDate, nextBoost }
                 } = userData;
 
+                function convertBoostLevel(boost) {
+                    return `Boost Level ${boost.replace(/\D/g, '')}`;
+                }
+
+                function convertNextBoostLevel(nextBoost) {
+                    return `Boost Level ${nextBoost.replace(/\D/g, '')}`;
+                }
+
+
+                const stringData2 = boostDate
+                const data2 = new Date(stringData2)
+                const nextBoostDateTemp = data2.getTime()
+
+
+                function getBoostEmoji(boostLevel) {
+                    const emojiMap = {
+                        BoostLevel1: 'discordboost1:1178527220474576957',
+                        BoostLevel2: 'discordboost2:1178527223683240006',
+                        BoostLevel3: 'discordboost3:1178527224832466965',
+                        BoostLevel4: 'discordboost4:1178527227730739210',
+                        BoostLevel5: 'discordboost5:1178527229391675472',
+                        BoostLevel6: 'discordboost6:1178527232260579430',
+                        BoostLevel7: 'discordboost7:1178527233791504454',
+                        BoostLevel8: 'discordboost8:1178527236211617874',
+                        BoostLevel9: 'discordboost9:1178527237734137916',
+                    };
+
+                    return emojiMap[boostLevel] ? `<:${emojiMap[boostLevel]}>` : '❌';
+                }
+
+                let emoji = getBoostEmoji(boost);
+                let emoji2 = getBoostEmoji(nextBoost);
 
                 let descricaoUsuario = sobreMim
                 if (sobreMim == null) descricaoUsuario = "⠀⠀"
+
+
+                let list = []
 
                 if (badgesArrayUser.includes('Nitro')) list.push("Nitro")
                 if (badgesArrayUser.includes('BoostLevel1')) list.push("BoostLevel1")
@@ -781,7 +876,6 @@ module.exports = {
                     list.push("TAG")
                 }
 
-
                 list = list
                     .join(",")
                     //Badges NITRO
@@ -808,7 +902,6 @@ module.exports = {
                     .replace("VerifiedBot", `<:VerifiedBot:1178828214039236668>`)
                     .replace("ApplicationCommandBadge", `<:supportscommands:1178827914603659336>`)
                     .replace("ApplicationAutoModerationRuleCreateBadge", `<:automod:1178827907095875604>`)
-
 
                 const permsObj = {
                     CreateInstantInvite: '\`Criar convite instantâneo\`',
@@ -855,7 +948,25 @@ module.exports = {
                 }
 
 
-                let btn1 = new discord.ActionRowBuilder().addComponents([
+
+                let btnInfo = new discord.ActionRowBuilder().addComponents([
+                    new discord.ButtonBuilder()
+                        .setStyle("Primary")
+                        .setLabel("Mais Informação")
+                        .setCustomId("infos"),
+                ])
+
+
+
+                let btnPaginaInicial = new discord.ActionRowBuilder().addComponents([
+                    new discord.ButtonBuilder()
+                        .setStyle("Secondary")
+                        .setLabel("Pagina Inicial")
+                        .setCustomId("inicial"),
+                ])
+
+
+                let btnAvatarBannerPermissão = new discord.ActionRowBuilder().addComponents([
 
                     new discord.ButtonBuilder()
                         .setStyle("Primary")
@@ -870,21 +981,21 @@ module.exports = {
                     new discord.ButtonBuilder()
                         .setLabel('Permissões do Membro')
                         .setEmoji("<:9081settings:1167219166898557029>")
-                        .setStyle("Success")
+                        .setStyle("Danger")
                         .setCustomId('verPerms')
 
                 ]);
 
-                let btn2 = new discord.ActionRowBuilder().addComponents([
+                let btnVoltar = new discord.ActionRowBuilder().addComponents([
 
                     new discord.ButtonBuilder()
                         .setStyle("Secondary")
-                        .setLabel("Pagina inicial")
-                        .setCustomId("inicial"),
+                        .setLabel("Voltar")
+                        .setCustomId("voltar"),
 
                 ])
 
-                let btn3 = new discord.ActionRowBuilder().addComponents([
+                let btnAvatarPermissão = new discord.ActionRowBuilder().addComponents([
 
                     new discord.ButtonBuilder()
                         .setStyle("Primary")
@@ -894,9 +1005,11 @@ module.exports = {
                     new discord.ButtonBuilder()
                         .setLabel('Permissões do Membro')
                         .setEmoji("<:9081settings:1167219166898557029>")
-                        .setStyle("Success")
+                        .setStyle("Danger")
                         .setCustomId('verPerms')
                 ])
+
+
 
                 const embed = new discord.EmbedBuilder()
                     .setColor("#41b2b0")
@@ -925,11 +1038,26 @@ module.exports = {
                             value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
                             inline: false
                         },
+
+                        {
+                            name: '<:1592wumpuswaveboost:1180830275182276658> Impulsionando servidor desde',
+                            value: `<t:${~~(nextBoostDateTemp / 1000)}:f> (<t:${~~(nextBoostDateTemp / 1000)}:R>)`,
+                            inline: false
+                        },
+                        {
+                            name: ' Nível atual',
+                            value: `${emoji} ${convertBoostLevel(boost)}`,
+                            inline: true
+                        },
+                        {
+                            name: ' Próximo Nível',
+                            value: `${emoji2} ${convertNextBoostLevel(nextBoost)}`,
+                            inline: true
+                        }
                     )
 
 
                 if (userBanner) {
-
 
                     let avatar = new discord.EmbedBuilder()
 
@@ -957,7 +1085,7 @@ module.exports = {
                         )
 
 
-                    const m = await interaction.reply({ embeds: [embed], components: [btn1], fetchReply: true })
+                    const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
 
                     const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
 
@@ -969,22 +1097,30 @@ module.exports = {
                         i.deferUpdate()
                         switch (i.customId) {
 
-
-                            case `avatar`:
-                                m.edit({ embeds: [avatar], components: [btn2] })
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
                                 break;
 
-                            case `inicial`:
-                                m.edit({ embeds: [embed], components: [btn1] })
+                            case `avatar`:
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                break;
+
+
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
                                 break;
 
 
                             case `banner`:
-                                m.edit({ embeds: [banner], components: [btn2] })
+                                m.edit({ embeds: [banner], components: [btnVoltar] })
                                 break;
 
                             case `verPerms`:
-                                m.edit({ embeds: [embedPerms], components: [btn2] })
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
                                 break;
 
 
@@ -1014,9 +1150,14 @@ module.exports = {
                     let avatar = new discord.EmbedBuilder()
                         .setImage(AvatarUser)
                         .setColor("#41b2b0")
-                    const m = await interaction.reply({ embeds: [embed], components: [btn3], fetchReply: true })
+
+                    const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+
 
                     const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
                     collector.on('collect', async (i) => {
 
                         if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
@@ -1024,28 +1165,39 @@ module.exports = {
                         i.deferUpdate()
                         switch (i.customId) {
 
+
+
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                break;
+
                             case `avatar`:
-                                m.edit({ embeds: [avatar], components: [btn2] })
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
                                 break;
 
-
-                            case `inicial`:
-                                m.edit({ embeds: [embed], components: [btn3] })
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
                                 break;
-
 
                             case `verPerms`:
-                                m.edit({ embeds: [embedPerms], components: [btn2] })
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
                                 break;
 
                             case `fechar`:
                         }
                     })
                 }
+
             }
+
+
         }
-        else
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+
+        else if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
     }
 }
 
