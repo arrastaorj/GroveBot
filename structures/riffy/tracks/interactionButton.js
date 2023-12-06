@@ -1,7 +1,7 @@
 const client = require("../../../index")
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js")
 
-const { pauseRow, playRow, skipRowDisabled, disconnectRow } = require("./buttons.js")
+const { pauseRow, playRow, skipRowDisabled, disconnectRow } = require("../../../buttons/musicButtons")
 
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isButton()) return

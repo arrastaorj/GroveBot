@@ -1,7 +1,7 @@
 const discord = require("discord.js");
 const comandos = require("../../database/models/comandos")
 
-
+const { btnInfo, btnPaginaInicial, btnAvatarBannerPermissão, btnVoltar, btnAvatarPermissão } = require("../../buttons/userButtons")
 
 module.exports = {
     name: "user",
@@ -206,65 +206,6 @@ module.exports = {
 
 
 
-                let btnInfo = new discord.ActionRowBuilder().addComponents([
-                    new discord.ButtonBuilder()
-                        .setStyle("Primary")
-                        .setLabel("Mais Informação")
-                        .setCustomId("infos"),
-                ])
-
-
-
-                let btnPaginaInicial = new discord.ActionRowBuilder().addComponents([
-                    new discord.ButtonBuilder()
-                        .setStyle("Secondary")
-                        .setLabel("Pagina Inicial")
-                        .setCustomId("inicial"),
-                ])
-
-
-                let btnAvatarBannerPermissão = new discord.ActionRowBuilder().addComponents([
-
-                    new discord.ButtonBuilder()
-                        .setStyle("Primary")
-                        .setLabel("Avatar")
-                        .setCustomId("avatar"),
-
-                    new discord.ButtonBuilder()
-                        .setStyle("Secondary")
-                        .setLabel("Banner")
-                        .setCustomId("banner"),
-
-                    new discord.ButtonBuilder()
-                        .setLabel('Permissões do Membro')
-                        .setStyle("Danger")
-                        .setCustomId('verPerms')
-
-                ]);
-
-                let btnVoltar = new discord.ActionRowBuilder().addComponents([
-
-                    new discord.ButtonBuilder()
-                        .setStyle("Secondary")
-                        .setLabel("Voltar")
-                        .setCustomId("voltar"),
-
-                ])
-
-
-                let btnAvatarPermissão = new discord.ActionRowBuilder().addComponents([
-                    new discord.ButtonBuilder()
-                        .setStyle("Primary")
-                        .setLabel("Avatar")
-                        .setCustomId("avatar"),
-
-                    new discord.ButtonBuilder()
-                        .setLabel('Permissões do Membro')
-                        .setEmoji("<:9081settings:1167219166898557029>")
-                        .setStyle("Danger")
-                        .setCustomId('verPerms')
-                ])
-
 
 
                 const embed = new discord.EmbedBuilder()
@@ -428,7 +369,7 @@ module.exports = {
 
 
                             case `infos`:
-                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
                                 break;
 
                             case `avatar`:
@@ -436,7 +377,7 @@ module.exports = {
                                 break;
 
                             case `voltar`:
-                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
                                 break;
 
                             case `verPerms`:
@@ -579,63 +520,6 @@ module.exports = {
                 }
 
 
-                let btnInfo = new discord.ActionRowBuilder().addComponents([
-                    new discord.ButtonBuilder()
-                        .setStyle("Primary")
-                        .setLabel("Mais Informação")
-                        .setCustomId("infos"),
-                ])
-
-
-
-                let btnPaginaInicial = new discord.ActionRowBuilder().addComponents([
-                    new discord.ButtonBuilder()
-                        .setStyle("Secondary")
-                        .setLabel("Pagina Inicial")
-                        .setCustomId("inicial"),
-                ])
-
-
-                let btnAvatarBannerPermissão = new discord.ActionRowBuilder().addComponents([
-
-                    new discord.ButtonBuilder()
-                        .setStyle("Primary")
-                        .setLabel("Avatar")
-                        .setCustomId("avatar"),
-
-                    new discord.ButtonBuilder()
-                        .setStyle("Secondary")
-                        .setLabel("Banner")
-                        .setCustomId("banner"),
-
-                    new discord.ButtonBuilder()
-                        .setLabel('Permissões do Membro')
-                        .setStyle("Danger")
-                        .setCustomId('verPerms')
-
-                ]);
-
-                let btnVoltar = new discord.ActionRowBuilder().addComponents([
-
-                    new discord.ButtonBuilder()
-                        .setStyle("Secondary")
-                        .setLabel("Voltar")
-                        .setCustomId("voltar"),
-
-                ])
-
-                let btnAvatarPermissão = new discord.ActionRowBuilder().addComponents([
-                    new discord.ButtonBuilder()
-                        .setStyle("Primary")
-                        .setLabel("Avatar")
-                        .setCustomId("avatar"),
-
-                    new discord.ButtonBuilder()
-                        .setLabel('Permissões do Membro')
-                        .setEmoji("<:9081settings:1167219166898557029>")
-                        .setStyle("Danger")
-                        .setCustomId('verPerms')
-                ])
 
 
                 const embed = new discord.EmbedBuilder()
@@ -778,7 +662,7 @@ module.exports = {
                         switch (i.customId) {
 
                             case `infos`:
-                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
                                 break;
 
                             case `avatar`:
@@ -786,7 +670,7 @@ module.exports = {
                                 break;
 
                             case `voltar`:
-                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
                                 break;
 
                             case `verPerms`:
@@ -949,65 +833,6 @@ module.exports = {
 
 
 
-                let btnInfo = new discord.ActionRowBuilder().addComponents([
-                    new discord.ButtonBuilder()
-                        .setStyle("Primary")
-                        .setLabel("Mais Informação")
-                        .setCustomId("infos"),
-                ])
-
-
-
-                let btnPaginaInicial = new discord.ActionRowBuilder().addComponents([
-                    new discord.ButtonBuilder()
-                        .setStyle("Secondary")
-                        .setLabel("Pagina Inicial")
-                        .setCustomId("inicial"),
-                ])
-
-
-                let btnAvatarBannerPermissão = new discord.ActionRowBuilder().addComponents([
-
-                    new discord.ButtonBuilder()
-                        .setStyle("Primary")
-                        .setLabel("Avatar")
-                        .setCustomId("avatar"),
-
-                    new discord.ButtonBuilder()
-                        .setStyle("Secondary")
-                        .setLabel("Banner")
-                        .setCustomId("banner"),
-
-                    new discord.ButtonBuilder()
-                        .setLabel('Permissões do Membro')
-                        .setEmoji("<:9081settings:1167219166898557029>")
-                        .setStyle("Danger")
-                        .setCustomId('verPerms')
-
-                ]);
-
-                let btnVoltar = new discord.ActionRowBuilder().addComponents([
-
-                    new discord.ButtonBuilder()
-                        .setStyle("Secondary")
-                        .setLabel("Voltar")
-                        .setCustomId("voltar"),
-
-                ])
-
-                let btnAvatarPermissão = new discord.ActionRowBuilder().addComponents([
-
-                    new discord.ButtonBuilder()
-                        .setStyle("Primary")
-                        .setLabel("Avatar")
-                        .setCustomId("avatar"),
-
-                    new discord.ButtonBuilder()
-                        .setLabel('Permissões do Membro')
-                        .setEmoji("<:9081settings:1167219166898557029>")
-                        .setStyle("Danger")
-                        .setCustomId('verPerms')
-                ])
 
 
 
@@ -1168,7 +993,7 @@ module.exports = {
 
 
                             case `infos`:
-                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
                                 break;
 
                             case `avatar`:
@@ -1176,7 +1001,7 @@ module.exports = {
                                 break;
 
                             case `voltar`:
-                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
                                 break;
 
                             case `verPerms`:
@@ -1192,13 +1017,511 @@ module.exports = {
                     })
                 }
 
+            } else if (!userData.user.premiumSince || !userData.boost.boost) {
+
+
+                const {
+                    user: { globalName: userDataNameGlobal, legacyUsername: nameOrifinal },
+                    profile: { badgesArray: badgesArrayUser, aboutMe: sobreMim, bannerUrl: userBanner },
+
+                } = userData;
+
+
+
+
+
+                let descricaoUsuario = sobreMim
+                if (sobreMim == null) descricaoUsuario = "⠀⠀"
+
+                let list = []
+
+                if (Array.isArray(badgesArrayUser)) {
+                    if (badgesArrayUser.includes('HypeSquadOnlineHouse1')) list.push("HypeSquadOnlineHouse1");
+                    if (badgesArrayUser.includes('HypeSquadOnlineHouse2')) list.push("HypeSquadOnlineHouse2");
+                    if (badgesArrayUser.includes('HypeSquadOnlineHouse3')) list.push("HypeSquadOnlineHouse3");
+                    if (badgesArrayUser.includes('ActiveDeveloper')) list.push("ActiveDeveloper");
+                    if (badgesArrayUser.includes('PremiumEarlySupporter')) list.push("PremiumEarlySupporter");
+                    if (badgesArrayUser.includes('VerifiedDeveloper')) list.push("VerifiedDeveloper");
+                    if (badgesArrayUser.includes('CertifiedModerator')) list.push("CertifiedModerator");
+                    if (badgesArrayUser.includes('VerifiedBot')) list.push("VerifiedBot");
+                    if (badgesArrayUser.includes('ApplicationCommandBadge')) list.push("ApplicationCommandBadge");
+                    if (badgesArrayUser.includes('ApplicationAutoModerationRuleCreateBadge')) list.push("ApplicationAutoModerationRuleCreateBadge");
+                }
+
+
+                if (nameOrifinal !== null) {
+                    list.push("TAG");
+                }
+
+                if (list.length > 0) {
+
+                    list = list
+                        .join(",")
+                        .replace("HypeSquadOnlineHouse1", `<:hypesquadbravery:1178528159503757443>`)
+                        .replace("HypeSquadOnlineHouse2", `<:hypesquadbrilliance:1178528160711716934>`)
+                        .replace("HypeSquadOnlineHouse3", `<:hypesquadbalance:1178528157368852480>`)
+                        .replace("ActiveDeveloper", `<:activedeveloper:1178827904889667744>`)
+                        .replace("PremiumEarlySupporter", `<:discordearlysupporter:1178827909683744788>`)
+                        .replace("VerifiedDeveloper", `<:discordbotdev:1178827908391915622>`)
+                        .replace("CertifiedModerator", `<:discordmod:1178827911667646544>`)
+                        .replace("TAG", `<:username:1161109720870948884>`)
+                        //Badges BOT
+                        .replace("VerifiedBot", `<:VerifiedBot:1178828214039236668>`)
+                        .replace("ApplicationCommandBadge", `<:supportscommands:1178827914603659336>`)
+                        .replace("ApplicationAutoModerationRuleCreateBadge", `<:automod:1178827907095875604>`)
+
+
+
+                    const permsObj = {
+                        CreateInstantInvite: '\`Criar convite instantâneo\`',
+                        KickMembers: '\`Expulsar membros\`',
+                        BanMembers: '\`Banir membros\`',
+                        Administrator: '\`Administrador\`',
+                        ManageChannels: '\`Gerenciar canais\`',
+                        ManageGuild: '\`Gerenciar servidor\`',
+                        AddReactions: '\`Adicionar reações\`',
+                        ViewAuditLog: '\`Ver registro de auditoria\`',
+                        PrioritySpeaker: '\`Voz Prioritária\`',
+                        Stream: '\`Ao vivo\`',
+                        ViewChannel: '\`Ver canais\`',
+                        SendMessages: '\`Enviar mensagens\`',
+                        SendTTSMessages: '\`Enviar mensagens em tts\`',
+                        ManageMessages: '\`Gerenciar mensagens\`',
+                        EmbedLinks: '\`Enviar links\`',
+                        AttachFiles: '\`Enviar anexos\`',
+                        ReadMessageHistory: '\`Ver histórico de mensagens\`',
+                        MentionEveryone: '\`Mencionar everyone e cargos\`',
+                        UseExternalEmojis: '\`Usar emojis externos\`',
+                        UseExternalStickers: '\`Usar figurinhas externas\`',
+                        ViewGuildInsights: '\`Ver análises do servidor\`',
+                        Connect: "\`Conectar em call's\`",
+                        Speak: `\`Falar em call's\``,
+                        MuteMembers: `\`Mutar membros\``,
+                        DeafenMembers: `\`Ensurdecer membros\``,
+                        MoveMembers: `\`Mover membros\``,
+                        UseVAD: `\`Utilizar detecção de voz\``,
+                        ChangeNickname: `\`Alterar apelido\``,
+                        ManageNicknames: `\`Gerenciar apelidos\``,
+                        ManageRoles: `\`Gerenciar cargos\``,
+                        ManageWebhooks: `\`Gerenciar webhooks\``,
+                        ManageEmojisAndStickers: `\`Gerenciar emojis e figurinhas\``,
+                        UseApplicationCommands: `\`Utilizar comandos slashs (/)\``,
+                        RequestToSpeak: `\`Pedir para falar\``,
+                        ManageEvents: `\`Gerenciar eventos\``,
+                        ManageThreads: `\`Gerenciar threads\``,
+                        CreatePublicThreads: `\`Criar threads públicas\``,
+                        CreatePrivateThreads: `\`Criar threads privadas\``,
+                        SendMessagesInThreads: `\`Falar em threads\``,
+                        UseEmbeddedActivities: `\`Iniciar atividades\``,
+                        ModerateMembers: `\`Gerenciar moderação do servidor\``
+                    }
+
+
+
+
+                    const embed = new discord.EmbedBuilder()
+                        .setColor("#41b2b0")
+                        .setTitle(`${list.split(",").join(" ")}`)
+                        .setAuthor({ name: `${userDataNameGlobal}` })
+                        .setThumbnail(AvatarUser)
+                        .setFooter({ text: `Sobre mim: ${descricaoUsuario}` })
+                        .setFields(
+                            {
+                                name: '<:crvt:1179217380715544668> Tag',
+                                value: `\`\`\`${member.user.tag}\`\`\``,
+                                inline: true
+                            },
+                            {
+                                name: '<:crvt:1179554534301896764> ID',
+                                value: `\`\`\`${member.user.id}\`\`\``,
+                                inline: true
+                            },
+                            {
+                                name: '<:crvt:1179215960754896977> Data de criação da conta',
+                                value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
+                                inline: false
+                            },
+                            {
+                                name: '<:crvt:1179215962839453817> Entrou em',
+                                value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
+                                inline: false
+                            },
+                        )
+
+
+                    if (userBanner) {
+
+                        let avatar = new discord.EmbedBuilder()
+
+                            .setImage(AvatarUser)
+                            .setColor("#41b2b0")
+                        let banner = new discord.EmbedBuilder()
+
+                            .setImage(userBanner)
+                            .setColor("#41b2b0")
+
+                        const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                        const embedPerms = new discord.EmbedBuilder()
+                            .setColor('#41b2b0')
+                            .addFields(
+                                {
+                                    name: 'Maior Cargo:',
+                                    value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                    inline: false
+                                },
+                                {
+                                    name: `Permissões de ${membro.username}`,
+                                    value: `${permsArray.join(', ')}`
+                                }
+                            )
+
+
+                        const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+                        const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                        collector.on('collect', async (i) => {
+
+                            if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+
+                            i.deferUpdate()
+                            switch (i.customId) {
+
+                                case `infos`:
+                                    m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                    break;
+
+                                case `avatar`:
+                                    m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                    break;
+
+
+                                case `voltar`:
+                                    m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                    break;
+
+
+                                case `banner`:
+                                    m.edit({ embeds: [banner], components: [btnVoltar] })
+                                    break;
+
+                                case `verPerms`:
+                                    m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                    break;
+
+                                case `inicial`:
+                                    m.edit({ embeds: [embed], components: [btnInfo] })
+                                    break;
+
+
+                                case `fechar`:
+                            }
+                        })
+
+                    } else {
+
+                        const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                        const embedPerms = new discord.EmbedBuilder()
+                            .setColor('#41b2b0')
+                            .addFields(
+                                {
+                                    name: 'Maior Cargo:',
+                                    value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                    inline: false
+                                },
+                                {
+                                    name: `Permissões de ${membro.username}`,
+                                    value: `${permsArray.join(', ')}`
+                                }
+                            )
+
+
+                        let avatar = new discord.EmbedBuilder()
+                            .setImage(AvatarUser)
+                            .setColor("#41b2b0")
+
+                        const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+
+
+                        const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                        collector.on('collect', async (i) => {
+
+                            if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+
+                            i.deferUpdate()
+                            switch (i.customId) {
+
+
+
+                                case `infos`:
+                                    m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                    break;
+
+                                case `avatar`:
+                                    m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                    break;
+
+                                case `voltar`:
+                                    m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                    break;
+
+                                case `verPerms`:
+                                    m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                    break;
+
+                                case `inicial`:
+                                    m.edit({ embeds: [embed], components: [btnInfo] })
+                                    break;
+
+
+
+                                case `fechar`:
+                            }
+                        })
+                    }
+
+                } else {
+
+
+                    const {
+                        user: { globalName: userDataNameGlobal },
+                        profile: { aboutMe: sobreMim, bannerUrl: userBanner },
+
+                    } = userData;
+
+
+
+
+
+                    let descricaoUsuario = sobreMim
+                    if (sobreMim == null) descricaoUsuario = "⠀⠀"
+
+
+                    const permsObj = {
+                        CreateInstantInvite: '\`Criar convite instantâneo\`',
+                        KickMembers: '\`Expulsar membros\`',
+                        BanMembers: '\`Banir membros\`',
+                        Administrator: '\`Administrador\`',
+                        ManageChannels: '\`Gerenciar canais\`',
+                        ManageGuild: '\`Gerenciar servidor\`',
+                        AddReactions: '\`Adicionar reações\`',
+                        ViewAuditLog: '\`Ver registro de auditoria\`',
+                        PrioritySpeaker: '\`Voz Prioritária\`',
+                        Stream: '\`Ao vivo\`',
+                        ViewChannel: '\`Ver canais\`',
+                        SendMessages: '\`Enviar mensagens\`',
+                        SendTTSMessages: '\`Enviar mensagens em tts\`',
+                        ManageMessages: '\`Gerenciar mensagens\`',
+                        EmbedLinks: '\`Enviar links\`',
+                        AttachFiles: '\`Enviar anexos\`',
+                        ReadMessageHistory: '\`Ver histórico de mensagens\`',
+                        MentionEveryone: '\`Mencionar everyone e cargos\`',
+                        UseExternalEmojis: '\`Usar emojis externos\`',
+                        UseExternalStickers: '\`Usar figurinhas externas\`',
+                        ViewGuildInsights: '\`Ver análises do servidor\`',
+                        Connect: "\`Conectar em call's\`",
+                        Speak: `\`Falar em call's\``,
+                        MuteMembers: `\`Mutar membros\``,
+                        DeafenMembers: `\`Ensurdecer membros\``,
+                        MoveMembers: `\`Mover membros\``,
+                        UseVAD: `\`Utilizar detecção de voz\``,
+                        ChangeNickname: `\`Alterar apelido\``,
+                        ManageNicknames: `\`Gerenciar apelidos\``,
+                        ManageRoles: `\`Gerenciar cargos\``,
+                        ManageWebhooks: `\`Gerenciar webhooks\``,
+                        ManageEmojisAndStickers: `\`Gerenciar emojis e figurinhas\``,
+                        UseApplicationCommands: `\`Utilizar comandos slashs (/)\``,
+                        RequestToSpeak: `\`Pedir para falar\``,
+                        ManageEvents: `\`Gerenciar eventos\``,
+                        ManageThreads: `\`Gerenciar threads\``,
+                        CreatePublicThreads: `\`Criar threads públicas\``,
+                        CreatePrivateThreads: `\`Criar threads privadas\``,
+                        SendMessagesInThreads: `\`Falar em threads\``,
+                        UseEmbeddedActivities: `\`Iniciar atividades\``,
+                        ModerateMembers: `\`Gerenciar moderação do servidor\``
+                    }
+
+
+
+
+
+                    const embed = new discord.EmbedBuilder()
+                        .setColor("#41b2b0")
+                        // .setTitle(`${list.split(",").join(" ")}`)
+                        .setAuthor({ name: `${userDataNameGlobal}` })
+                        .setThumbnail(AvatarUser)
+                        .setFooter({ text: `Sobre mim: ${descricaoUsuario}` })
+                        .setFields(
+                            {
+                                name: '<:crvt:1179217380715544668> Tag',
+                                value: `\`\`\`${member.user.tag}\`\`\``,
+                                inline: true
+                            },
+                            {
+                                name: '<:crvt:1179554534301896764> ID',
+                                value: `\`\`\`${member.user.id}\`\`\``,
+                                inline: true
+                            },
+                            {
+                                name: '<:crvt:1179215960754896977> Data de criação da conta',
+                                value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
+                                inline: false
+                            },
+                            {
+                                name: '<:crvt:1179215962839453817> Entrou em',
+                                value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
+                                inline: false
+                            },
+                        )
+
+
+                    if (userBanner) {
+
+                        let avatar = new discord.EmbedBuilder()
+
+                            .setImage(AvatarUser)
+                            .setColor("#41b2b0")
+                        let banner = new discord.EmbedBuilder()
+
+                            .setImage(userBanner)
+                            .setColor("#41b2b0")
+
+                        const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                        const embedPerms = new discord.EmbedBuilder()
+                            .setColor('#41b2b0')
+                            .addFields(
+                                {
+                                    name: 'Maior Cargo:',
+                                    value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                    inline: false
+                                },
+                                {
+                                    name: `Permissões de ${membro.username}`,
+                                    value: `${permsArray.join(', ')}`
+                                }
+                            )
+
+
+                        const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+                        const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                        collector.on('collect', async (i) => {
+
+                            if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+
+                            i.deferUpdate()
+                            switch (i.customId) {
+
+                                case `infos`:
+                                    m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                    break;
+
+                                case `avatar`:
+                                    m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                    break;
+
+
+                                case `voltar`:
+                                    m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                    break;
+
+
+                                case `banner`:
+                                    m.edit({ embeds: [banner], components: [btnVoltar] })
+                                    break;
+
+                                case `verPerms`:
+                                    m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                    break;
+
+                                case `inicial`:
+                                    m.edit({ embeds: [embed], components: [btnInfo] })
+                                    break;
+
+
+                                case `fechar`:
+                            }
+                        })
+
+                    } else {
+
+
+
+                        const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                        const embedPerms = new discord.EmbedBuilder()
+                            .setColor('#41b2b0')
+                            .addFields(
+                                {
+                                    name: 'Maior Cargo:',
+                                    value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                    inline: false
+                                },
+                                {
+                                    name: `Permissões de ${membro.username}`,
+                                    value: `${permsArray.join(', ')}`
+                                }
+                            )
+
+
+                        let avatar = new discord.EmbedBuilder()
+                            .setImage(AvatarUser)
+                            .setColor("#41b2b0")
+
+                        const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+
+
+                        const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                        collector.on('collect', async (i) => {
+
+                            if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+
+                            i.deferUpdate()
+                            switch (i.customId) {
+
+
+                                case `infos`:
+                                    m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                    break;
+
+                                case `avatar`:
+                                    m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                    break;
+
+                                case `voltar`:
+                                    m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                    break;
+
+                                case `verPerms`:
+                                    m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                    break;
+
+                                case `inicial`:
+                                    m.edit({ embeds: [embed], components: [btnInfo] })
+                                    break;
+
+
+
+                                case `fechar`:
+                            }
+                        })
+                    }
+                }
             }
-
-
         }
 
         else if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
     }
 }
-
-
