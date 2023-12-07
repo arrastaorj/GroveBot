@@ -8,7 +8,6 @@ client.on('interactionCreate', async (interaction) => {
 
     const player = client.riffy.players.get(interaction.guild.id)
 
-    console.log(player)
 
     switch (interaction.customId) {
         case 'pause':

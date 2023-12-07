@@ -1,6 +1,7 @@
 const discord = require("discord.js");
 const comandos = require("../../database/models/comandos")
-
+const badgesModule = require('../../functionUserInfo/badges')
+const badgeFormatter = require('../../functionUserInfo/badges')
 const { btnInfo, btnPaginaInicial, btnAvatarBannerPermissão, btnVoltar, btnAvatarPermissão } = require("../../buttons/userButtons")
 
 module.exports = {
@@ -48,20 +49,16 @@ module.exports = {
 
             let AvatarUser = user.displayAvatarURL({ size: 4096, dynamic: true, format: "png" })
 
-            let list = []
+
 
             const userDataResponse = await fetch(`https://groveapi.discloud.app/user/${user.id}`);
             const userData = await userDataResponse.json();
 
 
-
-
-
-
             if (userData.user.premiumSince && userData.boost) {
 
                 const {
-                    user: { globalName: userDataNameGlobal, premiumSince: nitroData },
+                    user: { globalName: userDataNameGlobal, premiumSince: nitroData, legacyUsername: nameOrifinal },
                     profile: { badgesArray: badgesArrayUser, aboutMe: sobreMim, bannerUrl: userBanner },
                     boost: { boost, boostDate, nextBoost }
                 } = userData;
@@ -106,59 +103,34 @@ module.exports = {
                 let descricaoUsuario = sobreMim
                 if (sobreMim == null) descricaoUsuario = "⠀⠀"
 
-                if (badgesArrayUser.includes('Nitro')) list.push("Nitro")
-                if (badgesArrayUser.includes('BoostLevel1')) list.push("BoostLevel1")
-                if (badgesArrayUser.includes('BoostLevel2')) list.push("BoostLevel2")
-                if (badgesArrayUser.includes('BoostLevel3')) list.push("BoostLevel3")
-                if (badgesArrayUser.includes('BoostLevel4')) list.push("BoostLevel4")
-                if (badgesArrayUser.includes('BoostLevel5')) list.push("BoostLevel5")
-                if (badgesArrayUser.includes('BoostLevel6')) list.push("BoostLevel6")
-                if (badgesArrayUser.includes('BoostLevel7')) list.push("BoostLevel7")
-                if (badgesArrayUser.includes('BoostLevel8')) list.push("BoostLevel8")
-                if (badgesArrayUser.includes('BoostLevel9')) list.push("BoostLevel9")
-                if (badgesArrayUser.includes('HypeSquadOnlineHouse1')) list.push("HypeSquadOnlineHouse1")
-                if (badgesArrayUser.includes('HypeSquadOnlineHouse2')) list.push("HypeSquadOnlineHouse2")
-                if (badgesArrayUser.includes('HypeSquadOnlineHouse3')) list.push("HypeSquadOnlineHouse3")
-                if (badgesArrayUser.includes('ActiveDeveloper')) list.push("ActiveDeveloper")//desenvolvedor ativo
-                if (badgesArrayUser.includes('PremiumEarlySupporter')) list.push("PremiumEarlySupporter")//apoiador inicial
-                if (badgesArrayUser.includes('VerifiedDeveloper')) list.push("VerifiedDeveloper")//desenvolvedor verificado de bots pioneiro
-                if (badgesArrayUser.includes('CertifiedModerator')) list.push("CertifiedModerator")//ex moderador do discord
-                if (badgesArrayUser.includes('VerifiedBot')) list.push("VerifiedBot")//bot verificado
-                if (badgesArrayUser.includes('ApplicationCommandBadge')) list.push("ApplicationCommandBadge") //compativel com comandos
-                if (badgesArrayUser.includes('ApplicationAutoModerationRuleCreateBadge')) list.push("ApplicationAutoModerationRuleCreateBadge") //usa autoMod
+
+                let list = []
+
+                const desiredBadges = [
+                    'Nitro', 'BoostLevel1', 'BoostLevel2', 'BoostLevel3', 'BoostLevel4',
+                    'BoostLevel5', 'BoostLevel6', 'BoostLevel7', 'BoostLevel8', 'BoostLevel9',
+                    'HypeSquadOnlineHouse1', 'HypeSquadOnlineHouse2', 'HypeSquadOnlineHouse3',
+                    'ActiveDeveloper', 'PremiumEarlySupporter', 'VerifiedDeveloper',
+                    'CertifiedModerator', 'VerifiedBot', 'ApplicationCommandBadge',
+                    'ApplicationAutoModerationRuleCreateBadge'
+                ];
 
 
+                desiredBadges.forEach(badge => {
+                    if (badgesModule.hasBadge(badgesArrayUser, badge)) {
+                        list.push(badge);
+                    }
+                })
 
-                if (!user.discriminator || user.discriminator === 0 || user.tag === `${user.username}#0`) {
-                    list.push("TAG")
+                if (nameOrifinal !== null && nameOrifinal !== undefined) {
+                    list.push("TAG");
                 }
 
                 list = list
-                    .join(",")
-                    //Badges NITRO
-                    .replace("Nitro", "<:discordnitro:1178827913106305024>")
-                    .replace("BoostLevel1", "<:discordboost1:1178527220474576957>")
-                    .replace("BoostLevel2", "<:discordboost2:1178527223683240006>")
-                    .replace("BoostLevel3", "<:discordboost3:1178527224832466965>")
-                    .replace("BoostLevel4", "<:discordboost4:1178527227730739210>")
-                    .replace("BoostLevel5", "<:discordboost5:1178527229391675472>")
-                    .replace("BoostLevel6", "<:discordboost6:1178527232260579430>")
-                    .replace("BoostLevel7", "<:discordboost7:1178527233791504454>")
-                    .replace("BoostLevel8", "<:discordboost8:1178527236211617874>")
-                    .replace("BoostLevel9", "<:discordboost9:1178527237734137916>")
-                    //Badges USER
-                    .replace("HypeSquadOnlineHouse1", `<:hypesquadbravery:1178528159503757443>`)
-                    .replace("HypeSquadOnlineHouse2", `<:hypesquadbrilliance:1178528160711716934>`)
-                    .replace("HypeSquadOnlineHouse3", `<:hypesquadbalance:1178528157368852480>`)
-                    .replace("ActiveDeveloper", `<:activedeveloper:1178827904889667744>`)
-                    .replace("PremiumEarlySupporter", `<:discordearlysupporter:1178827909683744788>`)
-                    .replace("VerifiedDeveloper", `<:discordbotdev:1178827908391915622>`)
-                    .replace("CertifiedModerator", `<:discordmod:1178827911667646544>`)
-                    .replace("TAG", `<:username:1161109720870948884>`)
-                    //Badges BOT
-                    .replace("VerifiedBot", `<:VerifiedBot:1178828214039236668>`)
-                    .replace("ApplicationCommandBadge", `<:supportscommands:1178827914603659336>`)
-                    .replace("ApplicationAutoModerationRuleCreateBadge", `<:automod:1178827907095875604>`)
+                    .map(badge => badgesModule.getFormattedBadge(badge))
+                    .join(',');
+
+
 
                 const permsObj = {
                     CreateInstantInvite: '\`Criar convite instantâneo\`',
@@ -399,7 +371,7 @@ module.exports = {
             } else if (userData.user.premiumSince) {
 
                 const {
-                    user: { globalName: userDataNameGlobal, premiumSince: nitroData },
+                    user: { globalName: userDataNameGlobal, premiumSince: nitroData, legacyUsername: nameOrifinal },
                     profile: { badgesArray: badgesArrayUser, aboutMe: sobreMim, bannerUrl: userBanner },
                 } = userData;
 
@@ -421,59 +393,30 @@ module.exports = {
 
                 let list = []
 
-                if (badgesArrayUser.includes('Nitro')) list.push("Nitro")
-                if (badgesArrayUser.includes('BoostLevel1')) list.push("BoostLevel1")
-                if (badgesArrayUser.includes('BoostLevel2')) list.push("BoostLevel2")
-                if (badgesArrayUser.includes('BoostLevel3')) list.push("BoostLevel3")
-                if (badgesArrayUser.includes('BoostLevel4')) list.push("BoostLevel4")
-                if (badgesArrayUser.includes('BoostLevel5')) list.push("BoostLevel5")
-                if (badgesArrayUser.includes('BoostLevel6')) list.push("BoostLevel6")
-                if (badgesArrayUser.includes('BoostLevel7')) list.push("BoostLevel7")
-                if (badgesArrayUser.includes('BoostLevel8')) list.push("BoostLevel8")
-                if (badgesArrayUser.includes('BoostLevel9')) list.push("BoostLevel9")
-                if (badgesArrayUser.includes('HypeSquadOnlineHouse1')) list.push("HypeSquadOnlineHouse1")
-                if (badgesArrayUser.includes('HypeSquadOnlineHouse2')) list.push("HypeSquadOnlineHouse2")
-                if (badgesArrayUser.includes('HypeSquadOnlineHouse3')) list.push("HypeSquadOnlineHouse3")
-                if (badgesArrayUser.includes('ActiveDeveloper')) list.push("ActiveDeveloper")//desenvolvedor ativo
-                if (badgesArrayUser.includes('PremiumEarlySupporter')) list.push("PremiumEarlySupporter")//apoiador inicial
-                if (badgesArrayUser.includes('VerifiedDeveloper')) list.push("VerifiedDeveloper")//desenvolvedor verificado de bots pioneiro
-                if (badgesArrayUser.includes('CertifiedModerator')) list.push("CertifiedModerator")//ex moderador do discord
-                if (badgesArrayUser.includes('VerifiedBot')) list.push("VerifiedBot")//bot verificado
-                if (badgesArrayUser.includes('ApplicationCommandBadge')) list.push("ApplicationCommandBadge") //compativel com comandos
-                if (badgesArrayUser.includes('ApplicationAutoModerationRuleCreateBadge')) list.push("ApplicationAutoModerationRuleCreateBadge") //usa autoMod
+                const desiredBadges = [
+                    'Nitro', 'BoostLevel1', 'BoostLevel2', 'BoostLevel3', 'BoostLevel4',
+                    'BoostLevel5', 'BoostLevel6', 'BoostLevel7', 'BoostLevel8', 'BoostLevel9',
+                    'HypeSquadOnlineHouse1', 'HypeSquadOnlineHouse2', 'HypeSquadOnlineHouse3',
+                    'ActiveDeveloper', 'PremiumEarlySupporter', 'VerifiedDeveloper',
+                    'CertifiedModerator', 'VerifiedBot', 'ApplicationCommandBadge',
+                    'ApplicationAutoModerationRuleCreateBadge'
+                ];
 
 
+                desiredBadges.forEach(badge => {
+                    if (badgesModule.hasBadge(badgesArrayUser, badge)) {
+                        list.push(badge);
+                    }
+                })
 
-                if (!user.discriminator || user.discriminator === 0 || user.tag === `${user.username}#0`) {
-                    list.push("TAG")
+                if (nameOrifinal !== null && nameOrifinal !== undefined) {
+                    list.push("TAG");
                 }
 
                 list = list
-                    .join(",")
-                    //Badges NITRO
-                    .replace("Nitro", "<:discordnitro:1178827913106305024>")
-                    .replace("BoostLevel1", "<:discordboost1:1178527220474576957>")
-                    .replace("BoostLevel2", "<:discordboost2:1178527223683240006>")
-                    .replace("BoostLevel3", "<:discordboost3:1178527224832466965>")
-                    .replace("BoostLevel4", "<:discordboost4:1178527227730739210>")
-                    .replace("BoostLevel5", "<:discordboost5:1178527229391675472>")
-                    .replace("BoostLevel6", "<:discordboost6:1178527232260579430>")
-                    .replace("BoostLevel7", "<:discordboost7:1178527233791504454>")
-                    .replace("BoostLevel8", "<:discordboost8:1178527236211617874>")
-                    .replace("BoostLevel9", "<:discordboost9:1178527237734137916>")
-                    //Badges USER
-                    .replace("HypeSquadOnlineHouse1", `<:hypesquadbravery:1178528159503757443>`)
-                    .replace("HypeSquadOnlineHouse2", `<:hypesquadbrilliance:1178528160711716934>`)
-                    .replace("HypeSquadOnlineHouse3", `<:hypesquadbalance:1178528157368852480>`)
-                    .replace("ActiveDeveloper", `<:activedeveloper:1178827904889667744>`)
-                    .replace("PremiumEarlySupporter", `<:discordearlysupporter:1178827909683744788>`)
-                    .replace("VerifiedDeveloper", `<:discordbotdev:1178827908391915622>`)
-                    .replace("CertifiedModerator", `<:discordmod:1178827911667646544>`)
-                    .replace("TAG", `<:username:1161109720870948884>`)
-                    //Badges BOT
-                    .replace("VerifiedBot", `<:VerifiedBot:1178828214039236668>`)
-                    .replace("ApplicationCommandBadge", `<:supportscommands:1178827914603659336>`)
-                    .replace("ApplicationAutoModerationRuleCreateBadge", `<:automod:1178827907095875604>`)
+                    .map(badge => badgesModule.getFormattedBadge(badge))
+                    .join(',');
+
 
                 const permsObj = {
                     CreateInstantInvite: '\`Criar convite instantâneo\`',
@@ -689,7 +632,7 @@ module.exports = {
             } else if (userData.boost) {
 
                 const {
-                    user: { globalName: userDataNameGlobal, premiumSince: nitroData },
+                    user: { globalName: userDataNameGlobal, legacyUsername: nameOrifinal },
                     profile: { badgesArray: badgesArrayUser, aboutMe: sobreMim, bannerUrl: userBanner },
                     boost: { boost, boostDate, nextBoost }
                 } = userData;
@@ -733,59 +676,30 @@ module.exports = {
 
                 let list = []
 
-                if (badgesArrayUser.includes('Nitro')) list.push("Nitro")
-                if (badgesArrayUser.includes('BoostLevel1')) list.push("BoostLevel1")
-                if (badgesArrayUser.includes('BoostLevel2')) list.push("BoostLevel2")
-                if (badgesArrayUser.includes('BoostLevel3')) list.push("BoostLevel3")
-                if (badgesArrayUser.includes('BoostLevel4')) list.push("BoostLevel4")
-                if (badgesArrayUser.includes('BoostLevel5')) list.push("BoostLevel5")
-                if (badgesArrayUser.includes('BoostLevel6')) list.push("BoostLevel6")
-                if (badgesArrayUser.includes('BoostLevel7')) list.push("BoostLevel7")
-                if (badgesArrayUser.includes('BoostLevel8')) list.push("BoostLevel8")
-                if (badgesArrayUser.includes('BoostLevel9')) list.push("BoostLevel9")
-                if (badgesArrayUser.includes('HypeSquadOnlineHouse1')) list.push("HypeSquadOnlineHouse1")
-                if (badgesArrayUser.includes('HypeSquadOnlineHouse2')) list.push("HypeSquadOnlineHouse2")
-                if (badgesArrayUser.includes('HypeSquadOnlineHouse3')) list.push("HypeSquadOnlineHouse3")
-                if (badgesArrayUser.includes('ActiveDeveloper')) list.push("ActiveDeveloper")//desenvolvedor ativo
-                if (badgesArrayUser.includes('PremiumEarlySupporter')) list.push("PremiumEarlySupporter")//apoiador inicial
-                if (badgesArrayUser.includes('VerifiedDeveloper')) list.push("VerifiedDeveloper")//desenvolvedor verificado de bots pioneiro
-                if (badgesArrayUser.includes('CertifiedModerator')) list.push("CertifiedModerator")//ex moderador do discord
-                if (badgesArrayUser.includes('VerifiedBot')) list.push("VerifiedBot")//bot verificado
-                if (badgesArrayUser.includes('ApplicationCommandBadge')) list.push("ApplicationCommandBadge") //compativel com comandos
-                if (badgesArrayUser.includes('ApplicationAutoModerationRuleCreateBadge')) list.push("ApplicationAutoModerationRuleCreateBadge") //usa autoMod
+                const desiredBadges = [
+                    'Nitro', 'BoostLevel1', 'BoostLevel2', 'BoostLevel3', 'BoostLevel4',
+                    'BoostLevel5', 'BoostLevel6', 'BoostLevel7', 'BoostLevel8', 'BoostLevel9',
+                    'HypeSquadOnlineHouse1', 'HypeSquadOnlineHouse2', 'HypeSquadOnlineHouse3',
+                    'ActiveDeveloper', 'PremiumEarlySupporter', 'VerifiedDeveloper',
+                    'CertifiedModerator', 'VerifiedBot', 'ApplicationCommandBadge',
+                    'ApplicationAutoModerationRuleCreateBadge'
+                ];
 
 
+                desiredBadges.forEach(badge => {
+                    if (badgesModule.hasBadge(badgesArrayUser, badge)) {
+                        list.push(badge);
+                    }
+                })
 
-                if (!user.discriminator || user.discriminator === 0 || user.tag === `${user.username}#0`) {
-                    list.push("TAG")
+                if (nameOrifinal !== null && nameOrifinal !== undefined) {
+                    list.push("TAG");
                 }
 
                 list = list
-                    .join(",")
-                    //Badges NITRO
-                    .replace("Nitro", "<:discordnitro:1178827913106305024>")
-                    .replace("BoostLevel1", "<:discordboost1:1178527220474576957>")
-                    .replace("BoostLevel2", "<:discordboost2:1178527223683240006>")
-                    .replace("BoostLevel3", "<:discordboost3:1178527224832466965>")
-                    .replace("BoostLevel4", "<:discordboost4:1178527227730739210>")
-                    .replace("BoostLevel5", "<:discordboost5:1178527229391675472>")
-                    .replace("BoostLevel6", "<:discordboost6:1178527232260579430>")
-                    .replace("BoostLevel7", "<:discordboost7:1178527233791504454>")
-                    .replace("BoostLevel8", "<:discordboost8:1178527236211617874>")
-                    .replace("BoostLevel9", "<:discordboost9:1178527237734137916>")
-                    //Badges USER
-                    .replace("HypeSquadOnlineHouse1", `<:hypesquadbravery:1178528159503757443>`)
-                    .replace("HypeSquadOnlineHouse2", `<:hypesquadbrilliance:1178528160711716934>`)
-                    .replace("HypeSquadOnlineHouse3", `<:hypesquadbalance:1178528157368852480>`)
-                    .replace("ActiveDeveloper", `<:activedeveloper:1178827904889667744>`)
-                    .replace("PremiumEarlySupporter", `<:discordearlysupporter:1178827909683744788>`)
-                    .replace("VerifiedDeveloper", `<:discordbotdev:1178827908391915622>`)
-                    .replace("CertifiedModerator", `<:discordmod:1178827911667646544>`)
-                    .replace("TAG", `<:username:1161109720870948884>`)
-                    //Badges BOT
-                    .replace("VerifiedBot", `<:VerifiedBot:1178828214039236668>`)
-                    .replace("ApplicationCommandBadge", `<:supportscommands:1178827914603659336>`)
-                    .replace("ApplicationAutoModerationRuleCreateBadge", `<:automod:1178827907095875604>`)
+                    .map(badge => badgesModule.getFormattedBadge(badge))
+                    .join(',');
+
 
                 const permsObj = {
                     CreateInstantInvite: '\`Criar convite instantâneo\`',
@@ -1033,43 +947,32 @@ module.exports = {
                 let descricaoUsuario = sobreMim
                 if (sobreMim == null) descricaoUsuario = "⠀⠀"
 
-                let list = []
+                let list = [];
 
                 if (Array.isArray(badgesArrayUser)) {
-                    if (badgesArrayUser.includes('HypeSquadOnlineHouse1')) list.push("HypeSquadOnlineHouse1");
-                    if (badgesArrayUser.includes('HypeSquadOnlineHouse2')) list.push("HypeSquadOnlineHouse2");
-                    if (badgesArrayUser.includes('HypeSquadOnlineHouse3')) list.push("HypeSquadOnlineHouse3");
-                    if (badgesArrayUser.includes('ActiveDeveloper')) list.push("ActiveDeveloper");
-                    if (badgesArrayUser.includes('PremiumEarlySupporter')) list.push("PremiumEarlySupporter");
-                    if (badgesArrayUser.includes('VerifiedDeveloper')) list.push("VerifiedDeveloper");
-                    if (badgesArrayUser.includes('CertifiedModerator')) list.push("CertifiedModerator");
-                    if (badgesArrayUser.includes('VerifiedBot')) list.push("VerifiedBot");
-                    if (badgesArrayUser.includes('ApplicationCommandBadge')) list.push("ApplicationCommandBadge");
-                    if (badgesArrayUser.includes('ApplicationAutoModerationRuleCreateBadge')) list.push("ApplicationAutoModerationRuleCreateBadge");
+                    const desiredBadges = [
+
+                        'HypeSquadOnlineHouse1', 'HypeSquadOnlineHouse2', 'HypeSquadOnlineHouse3',
+                        'ActiveDeveloper', 'PremiumEarlySupporter', 'VerifiedDeveloper', 'CertifiedModerator',
+                        'VerifiedBot', 'ApplicationCommandBadge', 'ApplicationAutoModerationRuleCreateBadge'
+
+                    ]
+
+                    desiredBadges.forEach(badge => {
+                        if (badgesArrayUser.includes(badge)) {
+                            list.push(badge)
+                        }
+                    });
                 }
 
-
-                if (nameOrifinal !== null) {
-                    list.push("TAG");
+                if (nameOrifinal !== null && nameOrifinal !== undefined) {
+                    list.push("TAG")
                 }
 
                 if (list.length > 0) {
-
                     list = list
+                        .map(badge => badgeFormatter.formatBadge(badge))
                         .join(",")
-                        .replace("HypeSquadOnlineHouse1", `<:hypesquadbravery:1178528159503757443>`)
-                        .replace("HypeSquadOnlineHouse2", `<:hypesquadbrilliance:1178528160711716934>`)
-                        .replace("HypeSquadOnlineHouse3", `<:hypesquadbalance:1178528157368852480>`)
-                        .replace("ActiveDeveloper", `<:activedeveloper:1178827904889667744>`)
-                        .replace("PremiumEarlySupporter", `<:discordearlysupporter:1178827909683744788>`)
-                        .replace("VerifiedDeveloper", `<:discordbotdev:1178827908391915622>`)
-                        .replace("CertifiedModerator", `<:discordmod:1178827911667646544>`)
-                        .replace("TAG", `<:username:1161109720870948884>`)
-                        //Badges BOT
-                        .replace("VerifiedBot", `<:VerifiedBot:1178828214039236668>`)
-                        .replace("ApplicationCommandBadge", `<:supportscommands:1178827914603659336>`)
-                        .replace("ApplicationAutoModerationRuleCreateBadge", `<:automod:1178827907095875604>`)
-
 
 
                     const permsObj = {
@@ -1293,9 +1196,7 @@ module.exports = {
                         user: { globalName: userDataNameGlobal },
                         profile: { aboutMe: sobreMim, bannerUrl: userBanner },
 
-                    } = userData;
-
-
+                    } = userData
 
 
 
