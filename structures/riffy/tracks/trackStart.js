@@ -26,7 +26,11 @@ client.riffy.on('trackStart', async (player, track) => {
             new ButtonBuilder()
                 .setCustomId('disconnect')
                 .setStyle(ButtonStyle.Secondary)
-                .setEmoji('<:circle_10238169:1181029869040181319>'),
+                .setEmoji('<:stop:1182489697327525889>'),
+            new ButtonBuilder()
+                .setCustomId('autoplay')
+                .setStyle(ButtonStyle.Secondary)
+                .setEmoji('<:autoplay:1182488248019329104>'),
 
         )
 
@@ -49,7 +53,7 @@ client.riffy.on('trackStart', async (player, track) => {
         .setName(track.info.title)
         .setAuthor(track.info.author)
         .setColor("auto")
-        .setTheme("classic")
+        .setTheme("dynamic")
         .setBrightness(100)
         .setThumbnail(track.info.thumbnail)
         .setProgress(0)
@@ -104,8 +108,14 @@ client.riffy.on("queueEnd", async (player) => {
             new ButtonBuilder()
                 .setCustomId('disconnect')
                 .setStyle(ButtonStyle.Secondary)
-                .setEmoji('<:circle_10238169:1181029869040181319>')
+                .setEmoji('<:stop:1182489697327525889>')
                 .setDisabled(true),
+            new ButtonBuilder()
+                .setCustomId('autoplay')
+                .setStyle(ButtonStyle.Secondary)
+                .setEmoji('<:autoplay:1182488248019329104>')
+                .setDisabled(true),
+
         )
 
 
@@ -141,7 +151,6 @@ client.riffy.on("queueEnd", async (player) => {
         player.autoplay(player)
     } else {
         player.stop()
-
     }
 })
 

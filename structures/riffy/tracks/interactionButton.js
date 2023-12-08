@@ -90,6 +90,31 @@ client.on('interactionCreate', async (interaction) => {
             )
             break
 
+        case 'autoplay':
+
+            await interaction.deferUpdate()
+
+            if (!player) return interaction.followUp({
+                content: `> \`-\` Não há música reproduzindo atualmente.`,
+                ephemeral: true
+            })
+
+            const currentAutoplayStatus = player.isAutoplay
+
+            if (currentAutoplayStatus) {
+                player.autoplay(false)
+                await interaction.followUp({
+                    content: `> \`-\` O AutoPlay foi desativado.`,
+                    ephemeral: true,
+                });
+            } else {
+                player.autoplay(true)
+                await interaction.followUp({
+                    content: `> \`+\` O AutoPlay está Ativo.`,
+                    ephemeral: true,
+                });
+            }
+            break
         default:
             break
     }
