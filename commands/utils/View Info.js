@@ -3,7 +3,6 @@ const comandos = require("../../database/models/comandos")
 const badgesModule = require('../../functionUserInfo/badges')
 const badgeFormatter = require('../../functionUserInfo/badges')
 const idioma = require("../../database/models/language")
-const { btnInfo, btnPaginaInicial, btnAvatarBannerPermissão, btnVoltar, btnAvatarPermissão } = require("../../buttons/userButtons")
 
 
 module.exports = {
@@ -26,6 +25,59 @@ module.exports = {
             lang = { language: client.language };
         }
         lang = require(`../../languages/${lang.language}.js`)
+
+
+        const btnInfo = new ActionRowBuilder().addComponents([
+            new ButtonBuilder()
+                .setStyle(ButtonStyle.Primary)
+                .setLabel(`${lang.msg246}`)
+                .setCustomId("infos"),
+        ])
+        const btnPaginaInicial = new ActionRowBuilder().addComponents([
+            new ButtonBuilder()
+                .setStyle(ButtonStyle.Secondary)
+                .setLabel(`${lang.msg247}`)
+                .setCustomId("inicial"),
+        ])
+        const btnAvatarBannerPermissão = new ActionRowBuilder().addComponents([
+
+            new ButtonBuilder()
+                .setStyle(ButtonStyle.Primary)
+                .setLabel(`${lang.msg248}`)
+                .setCustomId("avatar"),
+
+            new ButtonBuilder()
+                .setStyle(ButtonStyle.Secondary)
+                .setLabel(`${lang.msg249}`)
+                .setCustomId("banner"),
+
+            new ButtonBuilder()
+                .setLabel(`${lang.msg250}`)
+                .setEmoji("<:9081settings:1167219166898557029>")
+                .setStyle(ButtonStyle.Danger)
+                .setCustomId('verPerms')
+
+        ])
+        const btnVoltar = new ActionRowBuilder().addComponents([
+
+            new ButtonBuilder()
+                .setStyle(ButtonStyle.Secondary)
+                .setLabel(`${lang.msg251}`)
+                .setCustomId("voltar"),
+
+        ])
+        const btnAvatarPermissão = new ActionRowBuilder().addComponents([
+            new ButtonBuilder()
+                .setStyle(ButtonStyle.Primary)
+                .setLabel(`${lang.msg248}`)
+                .setCustomId("avatar"),
+
+            new ButtonBuilder()
+                .setLabel(`${lang.msg250}`)
+                .setEmoji("<:9081settings:1167219166898557029>")
+                .setStyle(ButtonStyle.Danger)
+                .setCustomId('verPerms')
+        ])
 
 
 
