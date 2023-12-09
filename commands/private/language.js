@@ -1,6 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const db = require("../../database/models/language")
-
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: "linguagem",
@@ -8,6 +7,11 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+        let lang = await idioma.findOne({ guildId: interaction.guild.id });
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`);
 
 
         let buttons = new ActionRowBuilder().addComponents(
@@ -49,7 +53,6 @@ module.exports = {
         )
 
 
-
         let embed = new EmbedBuilder()
             .setTitle("Selecione um idioma")
             .setDescription("Escolha o idioma desejado para a comunicação.")
@@ -68,7 +71,7 @@ module.exports = {
 
 
                     case 'pt':
-                        await db.findOneAndUpdate(
+                        await idioma.findOneAndUpdate(
                             { guildId: interaction.guild.id },
                             { $set: { language: 'pt' } },
                             { upsert: true }
@@ -89,7 +92,7 @@ module.exports = {
                         break;
 
                     case 'en':
-                        await db.findOneAndUpdate(
+                        await idioma.findOneAndUpdate(
                             { guildId: interaction.guild.id },
                             { $set: { language: 'en' } },
                             { upsert: true }
@@ -124,15 +127,14 @@ module.exports = {
 
                     embed = new EmbedBuilder()
 
-                        .setTitle("Time ended, please try again.")
+                        .setTitle("O tempo terminou. Tente novamente")
                         .setTimestamp()
-                        .setFooter({ text: `MusicMaker ❤️` })
+                        .setFooter({ text: `Grove` })
 
                     await interaction.editReply({ embeds: [embed], components: [buttons] }).catch(e => { })
                 }
             })
         }).catch(e => { })
-
 
     }
 }
