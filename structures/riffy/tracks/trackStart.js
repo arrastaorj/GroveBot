@@ -4,15 +4,11 @@ const client = require("../../../index")
 
 
 
-
-const activeMessages = new Map()
+const activeMessages = new Map();
 
 client.riffy.on('trackStart', async (player, track) => {
-
-
     const row = new ActionRowBuilder()
         .addComponents(
-
             new ButtonBuilder()
                 .setCustomId('pause')
                 .setStyle(ButtonStyle.Secondary)
@@ -27,27 +23,23 @@ client.riffy.on('trackStart', async (player, track) => {
                 .setCustomId('disconnect')
                 .setStyle(ButtonStyle.Secondary)
                 .setEmoji('<:stop:1182489697327525889>'),
+
             new ButtonBuilder()
                 .setCustomId('autoplay')
                 .setStyle(ButtonStyle.Secondary)
                 .setEmoji('<:autoplay:1182488248019329104>'),
+        );
 
-        )
-
-
-
-
-    const channel = client.channels.cache.get(player.textChannel)
+    const channel = client.channels.cache.get(player.textChannel);
 
     function formatTime(time) {
-        const minutes = Math.floor(time / 60)
-        const seconds = Math.floor(time % 60)
-        return minutes + ":" + (seconds < 10 ? "0" : "") + seconds
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     }
 
-    const musicLength = track.info.length
-    const formattedLength = formatTime(Math.round(musicLength / 1000))
-
+    const musicLength = track.info.length;
+    const formattedLength = formatTime(Math.round(musicLength / 1000));
 
     const card = new musicCard()
         .setName(track.info.title)
@@ -58,33 +50,39 @@ client.riffy.on('trackStart', async (player, track) => {
         .setThumbnail(track.info.thumbnail)
         .setProgress(0)
         .setStartTime("0:00")
-        .setEndTime(formattedLength)
+        .setEndTime(formattedLength);
 
+    const buffer = await card.build();
+    const attachment = new AttachmentBuilder(buffer, { name: `musicard.png` });
 
-    const buffer = await card.build()
-    const attachment = new AttachmentBuilder(buffer, { name: `musicard.png` })
+    const existingMessage = activeMessages.get(channel.id);
 
-    const existingMessage = activeMessages.get(channel.id)
-
-    if (existingMessage) {
-        const { msg, row } = existingMessage
-
-        await msg.edit({
-            files: [attachment],
-            components: [row]
-        })
-
-    } else {
-
+    try {
+        if (existingMessage) {
+            const { msg, row } = existingMessage;
+            await msg.edit({
+                files: [attachment],
+                components: [row],
+            });
+        } else {
+            const msg = await channel.send({
+                files: [attachment],
+                components: [row],
+            });
+            activeMessages.set(channel.id, { msg, row });
+        }
+    } catch (error) {
+        // Se ocorrer um erro ao editar a mensagem existente ou a mensagem foi apagada,
+        // envie uma nova mensagem e remova a entrada do mapa
         const msg = await channel.send({
             files: [attachment],
-            components: [row]
-        })
-
-        activeMessages.set(channel.id, { msg, row })
+            components: [row],
+        });
+        activeMessages.delete(channel.id);
+        activeMessages.set(channel.id, { msg, row });
     }
+});
 
-})
 
 
 
@@ -134,16 +132,21 @@ client.riffy.on("queueEnd", async (player) => {
     const buffer = await card.build()
     const attachment = new AttachmentBuilder(buffer, { name: `musicard.png` })
 
+    try {
 
-    const channel = client.channels.cache.get(player.textChannel)
-    const existingMessage = activeMessages.get(channel.id)
+        const channel = client.channels.cache.get(player.textChannel)
+        const existingMessage = activeMessages.get(channel.id)
 
-    if (existingMessage) {
-        const { msg } = existingMessage
+        if (existingMessage) {
+            const { msg } = existingMessage
 
-        await msg.edit({
-            files: [attachment], components: [rowDisabled]
-        })
+            await msg.edit({
+                files: [attachment], components: [rowDisabled]
+            })
+        }
+
+    } catch (error) {
+        return
     }
 
 

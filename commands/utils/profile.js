@@ -31,6 +31,9 @@ module.exports = {
             await interaction.deferReply()
 
 
+            logCommand(interaction);
+
+
             const userId = interaction.options.getUser("user").id || interaction.user
             const bufferImg = await profileImage(userId)
             const imgAttachment = new AttachmentBuilder(bufferImg, { name: "profile.png" });
@@ -40,5 +43,46 @@ module.exports = {
         else
 
             if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+    }
+}
+
+function logCommand(interaction) {
+    const guildId = interaction.guild.name;
+    const channelId = '1182895176004423730'; // Substitua pelo ID do canal de logs desejado
+    const commandName = interaction.commandName;
+    const executor = interaction.member.user.tag;
+    const argsUsed = interaction.options.data.map(option => `${option.name}: ${option.value}`).join(', ');
+
+    const channel = interaction.guild.channels.cache.get(channelId);
+
+    if (channel) {
+        const logEmbed = new discord.EmbedBuilder()
+            .setTitle('Imput Logs')
+            .setColor("#6dfef2")
+            .addFields(
+                {
+                    name: "Comando",
+                    value: `┕ \`${commandName}\``,
+                    inline: false,
+                },
+                {
+                    name: "Executor",
+                    value: `┕ \`${executor}\``,
+                    inline: false,
+                },
+                {
+                    name: "Servidor",
+                    value: `┕ \`${guildId}\``,
+                    inline: false,
+                },
+                {
+                    name: "Argumentos",
+                    value: `┕ \`${argsUsed}\``,
+                    inline: false,
+                },
+            )
+            .setTimestamp()
+
+        channel.send({ embeds: [logEmbed] });
     }
 }

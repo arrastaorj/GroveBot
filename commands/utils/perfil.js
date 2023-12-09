@@ -47,6 +47,9 @@ module.exports = {
             const user = interaction.options.getUser("usuario") || interaction.user
 
 
+            logCommand(interaction);
+
+
             const membro = interaction.guild.members.cache.get(user.id)
 
             let btn = new discord.ActionRowBuilder().addComponents([
@@ -1067,7 +1070,7 @@ module.exports = {
                     }
 
                     const customIds = ['info', 'info2', 'info3', 'info4', 'info5', 'info6', 'info7']
-                    
+
                     const replyContent = `> \`+\` As skins são a chave para transformar o visual do seu Perfil na Lexa. Não deixe de verificar as novidades na \`/loja\` diária.`
 
                     for (const customId of customIds) {
@@ -1091,5 +1094,46 @@ module.exports = {
 
             if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
 
+    }
+}
+
+function logCommand(interaction) {
+    const guildId = interaction.guild.name;
+    const channelId = '1182895176004423730'; // Substitua pelo ID do canal de logs desejado
+    const commandName = interaction.commandName;
+    const executor = interaction.member.user.tag;
+    const argsUsed = interaction.options.data.map(option => `${option.name}: ${option.value}`).join(', ');
+
+    const channel = interaction.guild.channels.cache.get(channelId);
+
+    if (channel) {
+        const logEmbed = new discord.EmbedBuilder()
+            .setTitle('Imput Logs')
+            .setColor("#6dfef2")
+            .addFields(
+                {
+                    name: "Comando",
+                    value: `┕ \`${commandName}\``,
+                    inline: false,
+                },
+                {
+                    name: "Executor",
+                    value: `┕ \`${executor}\``,
+                    inline: false,
+                },
+                {
+                    name: "Servidor",
+                    value: `┕ \`${guildId}\``,
+                    inline: false,
+                },
+                {
+                    name: "Argumentos",
+                    value: `┕ \`${argsUsed}\``,
+                    inline: false,
+                },
+            )
+            .setTimestamp()
+
+        channel.send({ embeds: [logEmbed] });
     }
 }

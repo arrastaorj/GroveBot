@@ -52,7 +52,6 @@ module.exports = {
         const { guild, options } = interaction
         const sub = options.getSubcommand()
 
-
         if (!interaction.member.permissions.has(discord.PermissionsBitField.Flags.Administrator)) return await interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você não tem permissão para configurar o automod neste servidor`, ephemeral: true })
 
 
@@ -82,13 +81,13 @@ module.exports = {
                                 metadata: {
                                     channel: interaction.channel,
                                     durationSeconds: 10,
-                                    customMessage: 'Esta mensagem foi evitada pela LexaAutoMod!'
+                                    customMessage: 'Esta mensagem foi evitada pela GroveAutoMod!'
                                 }
                             }
                         ]
                     }).catch(async err => {
                         setTimeout(async () => {
-                            return await interaction.editReply({ content: `${err}` })
+                            return await interaction.editReply({ content: `> \`-\` <a:alerta:1163274838111162499> Você atingiu o número máximo de regras do AutoMod!`, ephemeral: true })
                         }, 2000)
                     })
 
@@ -96,7 +95,7 @@ module.exports = {
                         if (!mod1) return
 
                         const embed = new discord.EmbedBuilder()
-                            .setColor("#e6124b")
+                            .setColor("#6dfef2")
                             .setTimestamp()
                             .setAuthor({ name: `Ferramenta do AutoMod` })
                             .addFields({ name: `• Regra do AutoMod`, value: `> Palavras ofencivas adicionada` })
@@ -128,14 +127,14 @@ module.exports = {
                                 metadata: {
                                     channel: interaction.channel,
                                     durationSeconds: 10,
-                                    customMessage: 'Esta mensagem foi evitada pela LexaAutoMod'
+                                    customMessage: 'Esta mensagem foi evitada pela GroveAutoMod'
                                 }
                             }
                         ]
                     }).catch(async err => {
                         setTimeout(async () => {
-                            console.log(err)
-                            await interaction.editReply({ content: `${err}` })
+
+                            return await interaction.editReply({ content: `> \`-\` <a:alerta:1163274838111162499> Você atingiu o número máximo de regras do AutoMod!`, ephemeral: true })
                         }, 2000)
                     })
 
@@ -143,7 +142,7 @@ module.exports = {
                         if (!mod2) return
 
                         const embed = new discord.EmbedBuilder()
-                            .setColor("#e6124b")
+                            .setColor("#6dfef2")
                             .setTimestamp()
                             .setAuthor({ name: `Ferramenta do AutoMod` })
                             .addFields({ name: `• Regra do AutoMod`, value: `> palavra-chave adicionada` })
@@ -175,14 +174,14 @@ module.exports = {
                                 metadata: {
                                     channel: interaction.channel,
                                     durationSeconds: 10,
-                                    customMessage: 'Esta mensagem foi evitada pela LexaAutoMod'
+                                    customMessage: 'Esta mensagem foi evitada pela GroveAutoMod'
                                 }
                             }
                         ]
                     }).catch(async err => {
                         setTimeout(async () => {
-                            console.log(err)
-                            await interaction.editReply({ content: `${err}` })
+
+                            return await interaction.editReply({ content: `> \`-\` <a:alerta:1163274838111162499> Você atingiu o número máximo de regras do AutoMod!`, ephemeral: true })
                         }, 2000)
                     })
 
@@ -190,7 +189,7 @@ module.exports = {
                         if (!mod3) return
 
                         const embed = new discord.EmbedBuilder()
-                            .setColor("#e6124b")
+                            .setColor("#6dfef2")
                             .setTimestamp()
                             .setAuthor({ name: `Ferramenta do AutoMod` })
                             .addFields({ name: `• Regra do AutoMod`, value: `> spam-mensagens adicionada` })
@@ -224,14 +223,14 @@ module.exports = {
                                 metadata: {
                                     channel: interaction.channel,
                                     durationSeconds: 10,
-                                    customMessage: 'Esta mensagem foi evitada pela LexaAutoMod'
+                                    customMessage: 'Esta mensagem foi evitada pela GroveAutoMod'
                                 }
                             }
                         ]
                     }).catch(async err => {
                         setTimeout(async () => {
-                            console.log(err)
-                            await interaction.editReply({ content: `${err}` })
+
+                            return await interaction.editReply({ content: `> \`-\` <a:alerta:1163274838111162499> Você atingiu o número máximo de regras do AutoMod!`, ephemeral: true })
                         }, 2000)
                     })
 
@@ -239,7 +238,7 @@ module.exports = {
                         if (!mod4) return
 
                         const embed = new discord.EmbedBuilder()
-                            .setColor("#e6124b")
+                            .setColor("#6dfef2")
                             .setTimestamp()
                             .setAuthor({ name: `Ferramenta do AutoMod` })
                             .addFields({ name: `• Regra do AutoMod`, value: `> menção-spam adicionada` })
@@ -247,7 +246,12 @@ module.exports = {
 
                         await interaction.editReply({ content: ``, embeds: [embed] })
                     }, 3000)
+
+                    logCommand(interaction);
+
             }
+
+    
 
         } else {
 
@@ -256,5 +260,46 @@ module.exports = {
 
 
 
+    }
+}
+
+function logCommand(interaction) {
+    const guildId = interaction.guild.name;
+    const channelId = '1182895176004423730'; // Substitua pelo ID do canal de logs desejado
+    const commandName = interaction.commandName;
+    const executor = interaction.member.user.tag;
+    const argsUsed = interaction.options.data.map(option => `${option.name}: ${option.value}`).join(', ');
+
+    const channel = interaction.guild.channels.cache.get(channelId);
+
+    if (channel) {
+        const logEmbed = new discord.EmbedBuilder()
+            .setTitle('Imput Logs')
+            .setColor("#6dfef2")
+            .addFields(
+                {
+                    name: "Comando",
+                    value: `┕ \`${commandName}\``,
+                    inline: false,
+                },
+                {
+                    name: "Executor",
+                    value: `┕ \`${executor}\``,
+                    inline: false,
+                },
+                {
+                    name: "Servidor",
+                    value: `┕ \`${guildId}\``,
+                    inline: false,
+                },
+                {
+                    name: "Argumentos",
+                    value: `┕ \`${argsUsed}\``,
+                    inline: false,
+                },
+            )
+            .setTimestamp()
+
+        channel.send({ embeds: [logEmbed] });
     }
 }
