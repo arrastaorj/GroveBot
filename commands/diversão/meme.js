@@ -1,7 +1,6 @@
 const discord = require("discord.js");
 const { images } = require("../../plugins/images.json")
 const meme = require("../../database/models/meme")
-
 const idioma = require("../../database/models/language")
 
 module.exports = {

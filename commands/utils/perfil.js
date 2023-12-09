@@ -15,7 +15,7 @@ const repUser = require('../../database/models/rep')
 const sobre = require('../../database/models/sobre')
 const skin = require("../../database/models/skin")
 const User = require('../../database/models/economia')
-
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: "perfil",
@@ -32,11 +32,25 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos.`, ephemeral: true })
+        if (!cmd) return interaction.reply({
+            content: `${lang.alertCommandos}`,
+            ephemeral: true
+        })
 
         let cmd1 = cmd.canal1
 
@@ -46,8 +60,6 @@ module.exports = {
 
             const user = interaction.options.getUser("usuario") || interaction.user
 
-
-         
 
 
             const membro = interaction.guild.members.cache.get(user.id)
@@ -60,7 +72,7 @@ module.exports = {
                     .setCustomId("sk"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Secondary)
-                    .setLabel("Sobre Mim")
+                    .setLabel(`${lang.msg189}`)
                     .setEmoji("<:pencil_3214372:1162580535139373097>")
                     .setCustomId("sms"),
             ])
@@ -73,7 +85,7 @@ module.exports = {
                     .setCustomId("volta"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Success)
-                    .setLabel("Selecionar Skin")
+                    .setLabel(`${lang.msg190}`)
                     //.setEmoji("<:enviar:1065758776348647495>")
                     .setCustomId("confirma"),
                 new discord.ButtonBuilder()
@@ -91,7 +103,7 @@ module.exports = {
                     .setCustomId("volta2"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Success)
-                    .setLabel("Selecionar Skin")
+                    .setLabel(`${lang.msg190}`)
                     .setCustomId("confirma2"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Secondary)
@@ -106,7 +118,7 @@ module.exports = {
                     .setCustomId("volta3"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Success)
-                    .setLabel("Selecionar Skin")
+                    .setLabel(`${lang.msg190}`)
                     .setCustomId("confirma3"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Secondary)
@@ -132,7 +144,7 @@ module.exports = {
                     .setCustomId("volta5"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Success)
-                    .setLabel("Selecionar Skin")
+                    .setLabel(`${lang.msg190}`)
                     .setCustomId("confirma5"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Secondary)
@@ -148,7 +160,7 @@ module.exports = {
                     .setCustomId("volta6"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Success)
-                    .setLabel("Selecionar Skin")
+                    .setLabel(`${lang.msg190}`)
                     .setCustomId("confirma6"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Secondary)
@@ -163,7 +175,7 @@ module.exports = {
                     .setCustomId("volta7"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Success)
-                    .setLabel("Selecionar Skin")
+                    .setLabel(`${lang.msg190}`)
                     .setCustomId("confirma7"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Secondary)
@@ -179,7 +191,7 @@ module.exports = {
                     .setCustomId("voltaa"),
                 new discord.ButtonBuilder()
                     .setStyle(discord.ButtonStyle.Secondary)
-                    .setLabel("Não Habilitada")
+                    .setLabel(`${lang.msg191}`)
                     .setCustomId("nao")
                     .setDisabled(true),
                 new discord.ButtonBuilder()
@@ -192,12 +204,12 @@ module.exports = {
 
             const modal = new discord.ModalBuilder()
                 .setCustomId('sm')
-                .setTitle('Alterar Biografia de Perfil')
+                .setTitle(`${lang.msg192}`)
                 .setComponents(
                     new discord.ActionRowBuilder().setComponents(
                         new discord.TextInputBuilder()
                             .setCustomId('sobremim')
-                            .setLabel("SOBRE MIM:")
+                            .setLabel(`${lang.msg193}`)
                             .setMaxLength(337)
                             .setMinLength(1)
                             .setStyle(discord.TextInputStyle.Paragraph)
@@ -206,7 +218,7 @@ module.exports = {
 
             let painel = new discord.ActionRowBuilder().addComponents(new discord.StringSelectMenuBuilder()
                 .setCustomId('menu')
-                .setPlaceholder('Selecione uma skin...')
+                .setPlaceholder(`${lang.msg194}`)
                 .addOptions([
                     {
                         label: 'Minecraft',
@@ -361,7 +373,7 @@ module.exports = {
                 chave.context.font = '22px "up"'
                 chave.context.strokeStyle = "#a7a7a7"
                 chave.context.fillStyle = "#a7a7a7"
-                chave.context.fillText(cmdSobre == null ? `${user.username} Não tem o /perfil personalizado \nUse o botom abaixo para personalizado!` : cmdSobre.sobreMim.match(/.{1,45}/g).join("\n"), 450, 395)
+                chave.context.fillText(cmdSobre == null ? `${user.username} \n${lang.msg195}` : cmdSobre.sobreMim.match(/.{1,45}/g).join("\n"), 450, 395)
 
             })
 
@@ -453,7 +465,11 @@ module.exports = {
             } else {
 
 
-                const m = await interaction.reply({ files: [mensagem], components: [btn], fetchReply: true })
+                const m = await interaction.reply({
+                    files: [mensagem],
+                    components: [btn],
+                    fetchReply: true
+                })
 
                 const filtro = (i) => i.user.id === interaction.user.id
 
@@ -461,7 +477,11 @@ module.exports = {
 
                 collector.on('collect', async (i) => {
 
-                    if (i.user != user) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/perfil\`\` para vizualizar seu perfil.`, ephemeral: true })
+                    if (i.user != user)
+                        return i.reply({
+                            content: `${lang.msg196} ${user}\n${lang.msg197}`,
+                            ephemeral: true
+                        })
 
 
                     if (i.customId === 'sms') {
@@ -622,7 +642,7 @@ module.exports = {
                                         chave.context.font = '22px "up"'
                                         chave.context.strokeStyle = "#a7a7a7"
                                         chave.context.fillStyle = "#a7a7a7"
-                                        chave.context.fillText(cmdSobre == null ? `${user.username} Não tem o /perfil personalizado \nUse o botom abaixo para personalizado!` : cmdSobre.sobreMim.match(/.{1,45}/g).join("\n"), 450, 395)
+                                        chave.context.fillText(cmdSobre == null ? `${user.username} ${lang.msg195}` : cmdSobre.sobreMim.match(/.{1,45}/g).join("\n"), 450, 395)
 
                                     })
 
@@ -813,7 +833,7 @@ module.exports = {
                         if (interaction.customId === customId && interaction.isButton()) {
                             const attachment = `././img/perfil/${image}.png`
                             await interaction.reply({
-                                content: `> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!\n > \`+\` Clique em <:voltar:1167104944420175984> para visualizá-la.`,
+                                content: `${lang.msg198}\n ${lang.msg199}`,
                                 ephemeral: true
                             })
 
@@ -982,7 +1002,7 @@ module.exports = {
                                 chave.context.font = '22px "up"'
                                 chave.context.strokeStyle = "#a7a7a7"
                                 chave.context.fillStyle = "#a7a7a7"
-                                chave.context.fillText(cmdSobre == null ? `${user.username} Não tem o /perfil personalizado \nUse o botom abaixo para personalizado!` : cmdSobre.sobreMim.match(/.{1,45}/g).join("\n"), 450, 395)
+                                chave.context.fillText(cmdSobre == null ? `${user.username} ${lang.msg195}` : cmdSobre.sobreMim.match(/.{1,45}/g).join("\n"), 450, 395)
 
 
                             })
@@ -1071,7 +1091,7 @@ module.exports = {
 
                     const customIds = ['info', 'info2', 'info3', 'info4', 'info5', 'info6', 'info7']
 
-                    const replyContent = `> \`+\` As skins são a chave para transformar o visual do seu Perfil na Lexa. Não deixe de verificar as novidades na \`/loja\` diária.`
+                    const replyContent = `${lang.msg200}`
 
                     for (const customId of customIds) {
                         if (i.customId === customId) {
@@ -1082,7 +1102,10 @@ module.exports = {
 
                     if (i.customId === 'infoVerif') {
                         if (interaction.isButton()) return
-                        await i.reply({ content: `> \`+\` A skin ainda não está disponível em seu inventário. Para visualizá-la, basta digitar \`/loja\` e conferir as ofertas diárias da Lexa.`, ephemeral: true })
+                        await i.reply({
+                            content: `${lang.msg201}`,
+                            ephemeral: true
+                        })
 
                     }
 
@@ -1090,9 +1113,11 @@ module.exports = {
 
             }
         }
-        else
-
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
-
+        else if (interaction.channel.id !== cmd1) {
+            interaction.reply({
+                content: `${lang.alertCanalErrado} <#${cmd1}>.`,
+                ephemeral: true
+            })
+        }
     }
 }

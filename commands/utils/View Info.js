@@ -1,8 +1,9 @@
-const discord = require("discord.js")
-const { ContextMenuCommandInteraction, ButtonStyle, ActionRowBuilder, ButtonBuilder, ApplicationCommandType, EmbedBuilder } = require("discord.js")
-const a = require('../../plugins/getUser')
+const discord = require("discord.js");
 const comandos = require("../../database/models/comandos")
-
+const badgesModule = require('../../functionUserInfo/badges')
+const badgeFormatter = require('../../functionUserInfo/badges')
+const idioma = require("../../database/models/language")
+const { btnInfo, btnPaginaInicial, btnAvatarBannerPermissão, btnVoltar, btnAvatarPermissão } = require("../../buttons/userButtons")
 
 
 module.exports = {
@@ -16,339 +17,1536 @@ module.exports = {
 
     async run(client, interaction, args) {
 
+
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd)
+            return interaction.reply({
+                content: `${lang.alertCommandos}`,
+                ephemeral: true
+            })
 
 
         let cmd1 = cmd.canal1
 
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
-
-
-            let membro = interaction.guild.members.cache.get(interaction.targetId) || client.users.cache.get(interaction.targetId);
-
+            let membro = interaction.options.getUser('usuario') || interaction.user
             let user = interaction.guild.members.cache.get(membro.id)
 
-            let user2 = await a.getUser(membro.id, client.token)
+
+
 
             const member = interaction.guild.members.cache.get(user.id)
 
             let AvatarUser = user.displayAvatarURL({ size: 4096, dynamic: true, format: "png" })
 
-            let list = []
-
-            const userData = await fetch(`https://discord-arts.asure.dev/user/${user.id}`)
-            const { data } = await userData.json()
-            const { public_flags_array } = data
 
 
-            if (public_flags_array.includes('NITRO')) list.push("NITRO")
-            if (public_flags_array.includes('BOOSTER_1')) list.push("BOOSTER_1")
-            if (public_flags_array.includes('BOOSTER_2')) list.push("BOOSTER_2")
-            if (public_flags_array.includes('BOOSTER_3')) list.push("BOOSTER_3")
-            if (public_flags_array.includes('BOOSTER_6')) list.push("BOOSTER_6")
-            if (public_flags_array.includes('BOOSTER_9')) list.push("BOOSTER_9")
-            if (public_flags_array.includes('BOOSTER_12')) list.push("BOOSTER_12")
-            if (public_flags_array.includes('BOOSTER_15')) list.push("BOOSTER_15")
-            if (public_flags_array.includes('BOOSTER_18')) list.push("BOOSTER_18")
-            if (public_flags_array.includes('BOOSTER_24')) list.push("BOOSTER_24")
+            const userDataResponse = await fetch(`https://groveapi.discloud.app/user/${user.id}`);
+            const userData = await userDataResponse.json();
 
 
-            if (public_flags_array.includes('HOUSE_BALANCE')) list.push("HOUSE_BALANCE")
-            if (public_flags_array.includes('HOUSE_BRAVERY')) list.push("HOUSE_BRAVERY")
-            if (public_flags_array.includes('HOUSE_BRILLIANCE')) list.push("HOUSE_BRILLIANCE")
+            if (userData.user.premiumSince && userData.boost) {
+
+                const {
+                    user: { globalName: userDataNameGlobal, premiumSince: nitroData, legacyUsername: nameOrifinal },
+                    profile: { badgesArray: badgesArrayUser, aboutMe: sobreMim, bannerUrl: userBanner },
+                    boost: { boost, boostDate, nextBoost }
+                } = userData;
+
+                function convertBoostLevel(boost) {
+                    return `Boost Level ${boost.replace(/\D/g, '')}`;
+                }
+
+                function convertNextBoostLevel(nextBoost) {
+                    return `Boost Level ${nextBoost.replace(/\D/g, '')}`;
+                }
+
+                const stringData = nitroData
+                const data = new Date(stringData)
+                const boostDateTemp = data.getTime()
 
 
-            if (!user.discriminator || user.discriminator === 0 || user.tag === `${user.username}#0`) {
-
-                list.push("TAG")
-            }
-
-            if (public_flags_array.includes('ACTIVE_DEVELOPER')) list.push("ACTIVE_DEVELOPER")//desenvolvedor ativo
-            if (public_flags_array.includes('EARLY_SUPPORTER')) list.push("EARLY_SUPPORTER")//apoiador inicial
-            if (public_flags_array.includes('EARLY_VERIFIED_BOT_DEVELOPER')) list.push("EARLY_VERIFIED_BOT_DEVELOPER")//desenvolvedor verificado de bots pioneiro
-            if (public_flags_array.includes('VERIFIED_BOT')) list.push("VERIFIED_BOT")//bot verificado
-            if (public_flags_array.includes('DISCORD_CERTIFIED_MODERATOR')) list.push("DISCORD_CERTIFIED_MODERATOR")//ex moderador do discord
+                const stringData2 = boostDate
+                const data2 = new Date(stringData2)
+                const nextBoostDateTemp = data2.getTime()
 
 
-            list = list
-                .join(",")
-                .replace("BOOSTER_1", "<:image:1061728732903133359>")
-                .replace("BOOSTER_2", "<:image4:1061732682599514313>")
-                .replace("BOOSTER_3", "<:image6:1061732685246107749>")
-                .replace("BOOSTER_6", "<:image7:1061732687255179365>")
-                .replace("BOOSTER_9", "<:image8:1061732688869998612>")
-                .replace("BOOSTER_12", "<:image1:1061732675938955384>")
-                .replace("BOOSTER_15", "<:image2:1061732678522638438>")
-                .replace("BOOSTER_18", "<:image3:1061732680154235000>")
-                .replace("BOOSTER_24", "<:image5:1061732683903938640>")
-                .replace("NITRO", "<:4306subscribernitro:1061715332378673203>")
+                function getBoostEmoji(boostLevel) {
+                    const emojiMap = {
+                        BoostLevel1: 'discordboost1:1178527220474576957',
+                        BoostLevel2: 'discordboost2:1178527223683240006',
+                        BoostLevel3: 'discordboost3:1178527224832466965',
+                        BoostLevel4: 'discordboost4:1178527227730739210',
+                        BoostLevel5: 'discordboost5:1178527229391675472',
+                        BoostLevel6: 'discordboost6:1178527232260579430',
+                        BoostLevel7: 'discordboost7:1178527233791504454',
+                        BoostLevel8: 'discordboost8:1178527236211617874',
+                        BoostLevel9: 'discordboost9:1178527237734137916',
+                    };
+
+                    return emojiMap[boostLevel] ? `<:${emojiMap[boostLevel]}>` : '❌';
+                }
+
+                let emoji = getBoostEmoji(boost);
+                let emoji2 = getBoostEmoji(nextBoost);
+
+                let descricaoUsuario = sobreMim
+                if (sobreMim == null) descricaoUsuario = "⠀⠀"
 
 
-                .replace("HOUSE_BALANCE", `<:5242hypesquadbalance:1061274091623034881>`)
-                .replace("HOUSE_BRAVERY", `<:6601hypesquadbravery:1061274089609760908>`)
-                .replace("HOUSE_BRILLIANCE", `<:6936hypesquadbrilliance:1061274087193854042>`)
+                let list = []
 
-                .replace("TAG", `<:username:1161109720870948884>`)
-                .replace("ACTIVE_DEVELOPER", `<:7011activedeveloperbadge:1061277829255413781>`)
-                .replace("EARLY_SUPPORTER", `<:Early_Supporter:1063599098135060590>`)
-                .replace("EARLY_VERIFIED_BOT_DEVELOPER", `<:Early_Verified_Bot_Developer:1063599974098665592>`)
-                .replace("VERIFIED_BOT", `<:verifiedbotbadge:1063600609699311676>`)
-                .replace("DISCORD_CERTIFIED_MODERATOR", `<:9765badgemoderators:1063603971471720458>`)
-
-
-
-            const permsObj = {
-                CreateInstantInvite: '\`Criar convite instantâneo\`',
-                KickMembers: '\`Expulsar membros\`',
-                BanMembers: '\`Banir membros\`',
-                Administrator: '\`Administrador\`',
-                ManageChannels: '\`Gerenciar canais\`',
-                ManageGuild: '\`Gerenciar servidor\`',
-                AddReactions: '\`Adicionar reações\`',
-                ViewAuditLog: '\`Ver registro de auditoria\`',
-                PrioritySpeaker: '\`Voz Prioritária\`',
-                Stream: '\`Ao vivo\`',
-                ViewChannel: '\`Ver canais\`',
-                SendMessages: '\`Enviar mensagens\`',
-                SendTTSMessages: '\`Enviar mensagens em tts\`',
-                ManageMessages: '\`Gerenciar mensagens\`',
-                EmbedLinks: '\`Enviar links\`',
-                AttachFiles: '\`Enviar anexos\`',
-                ReadMessageHistory: '\`Ver histórico de mensagens\`',
-                MentionEveryone: '\`Mencionar everyone e cargos\`',
-                UseExternalEmojis: '\`Usar emojis externos\`',
-                UseExternalStickers: '\`Usar figurinhas externas\`',
-                ViewGuildInsights: '\`Ver análises do servidor\`',
-                Connect: "\`Conectar em call's\`",
-                Speak: `\`Falar em call's\``,
-                MuteMembers: `\`Mutar membros\``,
-                DeafenMembers: `\`Ensurdecer membros\``,
-                MoveMembers: `\`Mover membros\``,
-                UseVAD: `\`Utilizar detecção de voz\``,
-                ChangeNickname: `\`Alterar apelido\``,
-                ManageNicknames: `\`Gerenciar apelidos\``,
-                ManageRoles: `\`Gerenciar cargos\``,
-                ManageWebhooks: `\`Gerenciar webhooks\``,
-                ManageEmojisAndStickers: `\`Gerenciar emojis e figurinhas\``,
-                UseApplicationCommands: `\`Utilizar comandos slashs (/)\``,
-                RequestToSpeak: `\`Pedir para falar\``,
-                ManageEvents: `\`Gerenciar eventos\``,
-                ManageThreads: `\`Gerenciar threads\``,
-                CreatePublicThreads: `\`Criar threads públicas\``,
-                CreatePrivateThreads: `\`Criar threads privadas\``,
-                SendMessagesInThreads: `\`Falar em threads\``,
-                UseEmbeddedActivities: `\`Iniciar atividades\``,
-                ModerateMembers: `\`Gerenciar moderação do servidor\``
-            }
+                const desiredBadges = [
+                    'Nitro', 'BoostLevel1', 'BoostLevel2', 'BoostLevel3', 'BoostLevel4',
+                    'BoostLevel5', 'BoostLevel6', 'BoostLevel7', 'BoostLevel8', 'BoostLevel9',
+                    'HypeSquadOnlineHouse1', 'HypeSquadOnlineHouse2', 'HypeSquadOnlineHouse3',
+                    'ActiveDeveloper', 'PremiumEarlySupporter', 'VerifiedDeveloper',
+                    'CertifiedModerator', 'VerifiedBot', 'ApplicationCommandBadge',
+                    'ApplicationAutoModerationRuleCreateBadge'
+                ];
 
 
-            let btn1 = new discord.ActionRowBuilder().addComponents([
-
-                new discord.ButtonBuilder()
-                    .setStyle("Primary")
-                    .setLabel("Avatar")
-                    .setCustomId("avatar"),
-
-                new discord.ButtonBuilder()
-                    .setStyle("Secondary")
-                    .setLabel("Banner")
-                    .setCustomId("banner"),
-
-                new discord.ButtonBuilder()
-                    .setLabel('Permissões do Membro')
-                    .setStyle("Success")
-                    .setCustomId('verPerms')
-
-            ]);
-
-            let btn2 = new discord.ActionRowBuilder().addComponents([
-
-                new discord.ButtonBuilder()
-                    .setStyle("Secondary")
-                    .setLabel("Pagina inicial")
-                    .setCustomId("inicial"),
-
-            ])
-
-            let btn3 = new discord.ActionRowBuilder().addComponents([
-
-                new discord.ButtonBuilder()
-                    .setStyle("Primary")
-                    .setLabel("Avatar")
-                    .setCustomId("avatar"),
-
-                new discord.ButtonBuilder()
-                    .setLabel('Permissões do Membro')
-                    .setStyle("Success")
-                    .setCustomId('verPerms')
-            ])
-
-
-            const embed = new discord.EmbedBuilder()
-                .setColor("#41b2b0")
-                .setTitle(list.split(",").join(" "))
-                .setAuthor({ name: `${data.global_name}` })
-                .setThumbnail(AvatarUser)
-                .setFields(
-                    {
-                        name: '<:channel:1026580767796625490> Tag',
-                        value: `\`\`\`${member.user.tag}\`\`\``,
-                        inline: true
-                    },
-                    {
-                        name: '<:idd:1026580771181428806> ID',
-                        value: `\`\`\`${member.user.id}\`\`\``,
-                        inline: true
-                    },
-                    {
-                        name: '<:data:1026580769503723550> Data de criação da conta',
-                        value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
-                        inline: false
-                    },
-                    {
-                        name: '<:data:1026580769503723550> Entrou em',
-                        value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
-                        inline: false
+                desiredBadges.forEach(badge => {
+                    if (badgesModule.hasBadge(badgesArrayUser, badge)) {
+                        list.push(badge);
                     }
-                )
+                })
+
+                if (nameOrifinal !== null && nameOrifinal !== undefined) {
+                    list.push("TAG");
+                }
+
+                list = list
+                    .map(badge => badgesModule.getFormattedBadge(badge))
+                    .join(',');
 
 
 
-            if (user2.banner) {
+                const permsObj = {
+                    CreateInstantInvite: `\`${lang.msg260}\``,
+                    KickMembers: `\`${lang.msg261}\``,
+                    BanMembers: `\`${lang.msg262}\``,
+                    Administrator: `\`${lang.msg263}\``,
+                    ManageChannels: `\`${lang.msg264}\``,
+                    ManageGuild: `\`${lang.msg265}\``,
+                    AddReactions: `\`${lang.msg266}\``,
+                    ViewAuditLog: `\`${lang.msg267}\``,
+                    PrioritySpeaker: `\`${lang.msg268}\``,
+                    Stream: `\`${lang.msg269}\``,
+                    ViewChannel: `\`${lang.msg270}\``,
+                    SendMessages: `\`${lang.msg271}\``,
+                    SendTTSMessages: `\`${lang.msg272}\``,
+                    ManageMessages: `\`${lang.msg273}\``,
+                    EmbedLinks: `\`${lang.msg274}\``,
+                    AttachFiles: `\`${lang.msg275}\``,
+                    ReadMessageHistory: `\`${lang.msg276}\``,
+                    MentionEveryone: `\`${lang.msg277}\``,
+                    UseExternalEmojis: `\`${lang.msg278}\``,
+                    UseExternalStickers: `\`${lang.msg279}\``,
+                    ViewGuildInsights: `\`${lang.msg280}\``,
+                    Connect: `\`${lang.msg281}\``,
+                    Speak: `\`${lang.msg282}\``,
+                    MuteMembers: `\`${lang.msg283}\``,
+                    DeafenMembers: `\`${lang.msg284}\``,
+                    MoveMembers: `\`${lang.msg285}\``,
+                    UseVAD: `\`${lang.msg286}\``,
+                    ChangeNickname: `\`${lang.msg287}\``,
+                    ManageNicknames: `\`${lang.msg288}\``,
+                    ManageRoles: `\`${lang.msg289}\``,
+                    ManageWebhooks: `\`${lang.msg290}\``,
+                    ManageEmojisAndStickers: `\`${lang.msg291}\``,
+                    UseApplicationCommands: `\`${lang.msg292}\``,
+                    RequestToSpeak: `\`${lang.msg293}\``,
+                    ManageEvents: `\`${lang.msg294}\``,
+                    ManageThreads: `\`${lang.msg295}\``,
+                    CreatePublicThreads: `\`${lang.msg296}\``,
+                    CreatePrivateThreads: `\`${lang.msg297}\``,
+                    SendMessagesInThreads: `\`${lang.msg298}\``,
+                    UseEmbeddedActivities: `\`${lang.msg299}\``,
+                    ModerateMembers: `\`${lang.msg300}\``,
+
+                }
 
 
 
-                let bannerURL = `https://cdn.discordapp.com/banners/${user2.id}/${user2.banner ? user2.banner : 'undefined'}.${user2?.banner?.substring(0, 2) === "a_" ? "gif" : "png"}?size=512`
 
 
-                let avatar = new discord.EmbedBuilder()
-
-                    .setImage(AvatarUser)
+                const embed = new discord.EmbedBuilder()
                     .setColor("#41b2b0")
-                let banner = new discord.EmbedBuilder()
-
-                    .setImage(bannerURL)
-                    .setColor("#41b2b0")
-
-                const permsArray = member.permissions.toArray().map(p => permsObj[p])
-
-                const embedPerms = new discord.EmbedBuilder()
-                    .setColor('#41b2b0')
-                    .addFields(
+                    .setTitle(`${list.split(",").join(" ")}`)
+                    .setAuthor({ name: `${userDataNameGlobal}` })
+                    .setThumbnail(AvatarUser)
+                    .setFooter({ text: `${lang.msg232} ${descricaoUsuario}` })
+                    .setFields(
                         {
-                            name: 'Maior Cargo:',
-                            value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                            name: '<:crvt:1179217380715544668> Tag',
+                            value: `\`\`\`${member.user.tag}\`\`\``,
+                            inline: true
+                        },
+                        {
+                            name: '<:crvt:1179554534301896764> ID',
+                            value: `\`\`\`${member.user.id}\`\`\``,
+                            inline: true
+                        },
+                        {
+                            name: `<:crvt:1179215960754896977> ${lang.msg233}`,
+                            value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
                             inline: false
                         },
                         {
-                            name: `Permissões de ${membro.username}`,
-                            value: `${permsArray.join(', ')}`
+                            name: `<:crvt:1179215962839453817> ${lang.msg234}`,
+                            value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
+                            inline: false
+                        },
+                        {
+                            name: `<:discordnitro:1178827913106305024> ${lang.msg235}`,
+                            value: `<t:${~~(boostDateTemp / 1000)}:f> (<t:${~~(boostDateTemp / 1000)}:R>)`,
+                            inline: false
+                        },
+                        {
+                            name: `<:1592wumpuswaveboost:1180830275182276658> ${lang.msg236}`,
+                            value: `<t:${~~(nextBoostDateTemp / 1000)}:f> (<t:${~~(nextBoostDateTemp / 1000)}:R>)`,
+                            inline: false
+                        },
+                        {
+                            name: `${lang.msg237}`,
+                            value: `${emoji} ${convertBoostLevel(boost)}`,
+                            inline: true
+                        },
+                        {
+                            name: `${lang.msg238}`,
+                            value: `${emoji2} ${convertNextBoostLevel(nextBoost)}`,
+                            inline: true
                         }
                     )
 
 
-                const m = await interaction.reply({ embeds: [embed], components: [btn1], fetchReply: true })
+                if (userBanner) {
+
+                    let avatar = new discord.EmbedBuilder()
+
+                        .setImage(AvatarUser)
+                        .setColor("#41b2b0")
+                    let banner = new discord.EmbedBuilder()
+
+                        .setImage(userBanner)
+                        .setColor("#41b2b0")
+
+                    const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                    const embedPerms = new discord.EmbedBuilder()
+                        .setColor('#41b2b0')
+                        .addFields(
+                            {
+                                name: `${lang.msg239}`,
+                                value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                inline: false
+                            },
+                            {
+                                name: `${lang.msg240} ${membro.username}`,
+                                value: `${permsArray.join(', ')}`
+                            }
+                        )
+
+
+                    const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+                    const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                    collector.on('collect', async (i) => {
+
+                        if (i.user.id != interaction.user.id)
+                            return i.reply({
+                                content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                ephemeral: true
+                            })
+
+                        i.deferUpdate()
+                        switch (i.customId) {
+
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                break;
+
+                            case `avatar`:
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                break;
+
+
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                break;
+
+
+                            case `banner`:
+                                m.edit({ embeds: [banner], components: [btnVoltar] })
+                                break;
+
+                            case `verPerms`:
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
+                                break;
+
+
+                            case `fechar`:
+                        }
+                    })
+
+                } else {
+
+                    const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                    const embedPerms = new discord.EmbedBuilder()
+                        .setColor('#41b2b0')
+                        .addFields(
+                            {
+                                name: `${lang.msg239}`,
+                                value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                inline: false
+                            },
+                            {
+                                name: `${lang.msg240} ${membro.username}`,
+                                value: `${permsArray.join(', ')}`
+                            }
+                        )
+
+
+                    let avatar = new discord.EmbedBuilder()
+                        .setImage(AvatarUser)
+                        .setColor("#41b2b0")
+
+                    const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
 
 
 
-                const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+                    const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
 
 
-                collector.on('collect', async (i) => {
+                    collector.on('collect', async (i) => {
 
-                    if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Somente a pessoa que executou o comando (\`${interaction.user.tag}\`) pode interagir com ele.`, ephemeral: true });
+                        if (i.user.id != interaction.user.id) return i.reply({ content: `${lang.msg241} ${user}\n${lang.msg242}`, ephemeral: true })
 
-                    i.deferUpdate()
-                    switch (i.customId) {
-
-
-                        case `avatar`:
-                            m.edit({ embeds: [avatar], components: [btn2] })
-                            break;
-
-                        case `inicial`:
-                            m.edit({ embeds: [embed], components: [btn1] })
-                            break;
+                        i.deferUpdate()
+                        switch (i.customId) {
 
 
-                        case `banner`:
-                            m.edit({ embeds: [banner], components: [btn2] })
-                            break;
 
-                        case `verPerms`:
-                            m.edit({ embeds: [embedPerms], components: [btn2] })
-                            break;
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                break;
+
+                            case `avatar`:
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                break;
+
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                break;
+
+                            case `verPerms`:
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
+                                break;
 
 
-                        case `fechar`:
+
+                            case `fechar`:
+                        }
+                    })
+                }
+
+
+            } else if (userData.user.premiumSince) {
+
+                const {
+                    user: { globalName: userDataNameGlobal, premiumSince: nitroData, legacyUsername: nameOrifinal },
+                    profile: { badgesArray: badgesArrayUser, aboutMe: sobreMim, bannerUrl: userBanner },
+                } = userData;
+
+                function convertBoostLevel(boost) {
+                    return `Boost Level ${boost.replace(/\D/g, '')}`;
+                }
+
+                function convertNextBoostLevel(nextBoost) {
+                    return `Boost Level ${nextBoost.replace(/\D/g, '')}`;
+                }
+
+                const stringData = nitroData
+                const data = new Date(stringData)
+                const boostDateTemp = data.getTime()
+
+
+                let descricaoUsuario = sobreMim
+                if (sobreMim == null) descricaoUsuario = "⠀⠀"
+
+                let list = []
+
+                const desiredBadges = [
+                    'Nitro', 'BoostLevel1', 'BoostLevel2', 'BoostLevel3', 'BoostLevel4',
+                    'BoostLevel5', 'BoostLevel6', 'BoostLevel7', 'BoostLevel8', 'BoostLevel9',
+                    'HypeSquadOnlineHouse1', 'HypeSquadOnlineHouse2', 'HypeSquadOnlineHouse3',
+                    'ActiveDeveloper', 'PremiumEarlySupporter', 'VerifiedDeveloper',
+                    'CertifiedModerator', 'VerifiedBot', 'ApplicationCommandBadge',
+                    'ApplicationAutoModerationRuleCreateBadge'
+                ];
+
+
+                desiredBadges.forEach(badge => {
+                    if (badgesModule.hasBadge(badgesArrayUser, badge)) {
+                        list.push(badge);
                     }
                 })
 
-            } else {
+                if (nameOrifinal !== null && nameOrifinal !== undefined) {
+                    list.push("TAG");
+                }
 
-                const permsArray = member.permissions.toArray().map(p => permsObj[p])
+                list = list
+                    .map(badge => badgesModule.getFormattedBadge(badge))
+                    .join(',');
 
-                const embedPerms = new discord.EmbedBuilder()
-                    .setColor('#41b2b0')
-                    .addFields(
+
+                const permsObj = {
+                    CreateInstantInvite: `\`${lang.msg260}\``,
+                    KickMembers: `\`${lang.msg261}\``,
+                    BanMembers: `\`${lang.msg262}\``,
+                    Administrator: `\`${lang.msg263}\``,
+                    ManageChannels: `\`${lang.msg264}\``,
+                    ManageGuild: `\`${lang.msg265}\``,
+                    AddReactions: `\`${lang.msg266}\``,
+                    ViewAuditLog: `\`${lang.msg267}\``,
+                    PrioritySpeaker: `\`${lang.msg268}\``,
+                    Stream: `\`${lang.msg269}\``,
+                    ViewChannel: `\`${lang.msg270}\``,
+                    SendMessages: `\`${lang.msg271}\``,
+                    SendTTSMessages: `\`${lang.msg272}\``,
+                    ManageMessages: `\`${lang.msg273}\``,
+                    EmbedLinks: `\`${lang.msg274}\``,
+                    AttachFiles: `\`${lang.msg275}\``,
+                    ReadMessageHistory: `\`${lang.msg276}\``,
+                    MentionEveryone: `\`${lang.msg277}\``,
+                    UseExternalEmojis: `\`${lang.msg278}\``,
+                    UseExternalStickers: `\`${lang.msg279}\``,
+                    ViewGuildInsights: `\`${lang.msg280}\``,
+                    Connect: `\`${lang.msg281}\``,
+                    Speak: `\`${lang.msg282}\``,
+                    MuteMembers: `\`${lang.msg283}\``,
+                    DeafenMembers: `\`${lang.msg284}\``,
+                    MoveMembers: `\`${lang.msg285}\``,
+                    UseVAD: `\`${lang.msg286}\``,
+                    ChangeNickname: `\`${lang.msg287}\``,
+                    ManageNicknames: `\`${lang.msg288}\``,
+                    ManageRoles: `\`${lang.msg289}\``,
+                    ManageWebhooks: `\`${lang.msg290}\``,
+                    ManageEmojisAndStickers: `\`${lang.msg291}\``,
+                    UseApplicationCommands: `\`${lang.msg292}\``,
+                    RequestToSpeak: `\`${lang.msg293}\``,
+                    ManageEvents: `\`${lang.msg294}\``,
+                    ManageThreads: `\`${lang.msg295}\``,
+                    CreatePublicThreads: `\`${lang.msg296}\``,
+                    CreatePrivateThreads: `\`${lang.msg297}\``,
+                    SendMessagesInThreads: `\`${lang.msg298}\``,
+                    UseEmbeddedActivities: `\`${lang.msg299}\``,
+                    ModerateMembers: `\`${lang.msg300}\``,
+
+                }
+
+
+
+
+                const embed = new discord.EmbedBuilder()
+                    .setColor("#41b2b0")
+                    .setTitle(`${list.split(",").join(" ")}`)
+                    .setAuthor({ name: `${userDataNameGlobal}` })
+                    .setThumbnail(AvatarUser)
+                    .setFooter({ text: `${lang.msg232} ${descricaoUsuario}` })
+                    .setFields(
                         {
-                            name: 'Maior Cargo:',
-                            value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                            name: '<:crvt:1179217380715544668> Tag',
+                            value: `\`\`\`${member.user.tag}\`\`\``,
+                            inline: true
+                        },
+                        {
+                            name: '<:crvt:1179554534301896764> ID',
+                            value: `\`\`\`${member.user.id}\`\`\``,
+                            inline: true
+                        },
+                        {
+                            name: `<:crvt:1179215960754896977> ${lang.msg233}`,
+                            value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
                             inline: false
                         },
                         {
-                            name: `Permissões de ${membro.username}`,
-                            value: `${permsArray.join(', ')}`
+                            name: `<:crvt:1179215962839453817> ${lang.msg234}`,
+                            value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
+                            inline: false
+                        },
+                        {
+                            name: `<:discordnitro:1178827913106305024> ${lang.msg235}`,
+                            value: `<t:${~~(boostDateTemp / 1000)}:f> (<t:${~~(boostDateTemp / 1000)}:R>)`,
+                            inline: false
+                        },
+
+                    )
+
+                if (userBanner) {
+
+                    let avatar = new discord.EmbedBuilder()
+                        .setImage(AvatarUser)
+                        .setColor("#41b2b0")
+                    let banner = new discord.EmbedBuilder()
+                        .setImage(userBanner)
+                        .setColor("#41b2b0")
+
+                    const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                    const embedPerms = new discord.EmbedBuilder()
+                        .setColor('#41b2b0')
+                        .addFields(
+                            {
+                                name: `${lang.msg239}`,
+                                value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                inline: false
+                            },
+                            {
+                                name: `${lang.msg240} ${membro.username}`,
+                                value: `${permsArray.join(', ')}`
+                            }
+                        )
+
+
+                    const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+                    const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                    collector.on('collect', async (i) => {
+
+                        if (i.user.id != interaction.user.id) return i.reply({ content: `${lang.msg241} ${user}\n${lang.msg242}`, ephemeral: true })
+
+                        i.deferUpdate()
+                        switch (i.customId) {
+
+
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                break;
+
+                            case `avatar`:
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                break;
+
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                break;
+
+                            case `banner`:
+                                m.edit({ embeds: [banner], components: [btnVoltar] })
+                                break;
+
+                            case `verPerms`:
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
+                                break;
+
+
+                            case `fechar`:
+                        }
+                    })
+
+                } else {
+
+                    const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                    const embedPerms = new discord.EmbedBuilder()
+                        .setColor('#41b2b0')
+                        .addFields(
+                            {
+                                name: `${lang.msg239}`,
+                                value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                inline: false
+                            },
+                            {
+                                name: `${lang.msg240} ${membro.username}`,
+                                value: `${permsArray.join(', ')}`
+                            }
+                        )
+
+
+                    let avatar = new discord.EmbedBuilder()
+                        .setImage(AvatarUser)
+                        .setColor("#41b2b0")
+                    const m = await interaction.reply({ embeds: [embed], components: [btnAvatarPermissão], fetchReply: true })
+
+
+
+                    const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                    collector.on('collect', async (i) => {
+
+                        if (i.user.id != interaction.user.id) return i.reply({ content: `${lang.msg241} ${user}\n${lang.msg242}`, ephemeral: true })
+
+                        i.deferUpdate()
+                        switch (i.customId) {
+
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                break;
+
+                            case `avatar`:
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                break;
+
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                break;
+
+                            case `verPerms`:
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
+                                break;
+
+                            case `fechar`:
+                        }
+                    })
+                }
+
+            } else if (userData.boost) {
+
+                const {
+                    user: { globalName: userDataNameGlobal, legacyUsername: nameOrifinal },
+                    profile: { badgesArray: badgesArrayUser, aboutMe: sobreMim, bannerUrl: userBanner },
+                    boost: { boost, boostDate, nextBoost }
+                } = userData;
+
+                function convertBoostLevel(boost) {
+                    return `Boost Level ${boost.replace(/\D/g, '')}`;
+                }
+
+                function convertNextBoostLevel(nextBoost) {
+                    return `Boost Level ${nextBoost.replace(/\D/g, '')}`;
+                }
+
+
+                const stringData2 = boostDate
+                const data2 = new Date(stringData2)
+                const nextBoostDateTemp = data2.getTime()
+
+
+                function getBoostEmoji(boostLevel) {
+                    const emojiMap = {
+                        BoostLevel1: 'discordboost1:1178527220474576957',
+                        BoostLevel2: 'discordboost2:1178527223683240006',
+                        BoostLevel3: 'discordboost3:1178527224832466965',
+                        BoostLevel4: 'discordboost4:1178527227730739210',
+                        BoostLevel5: 'discordboost5:1178527229391675472',
+                        BoostLevel6: 'discordboost6:1178527232260579430',
+                        BoostLevel7: 'discordboost7:1178527233791504454',
+                        BoostLevel8: 'discordboost8:1178527236211617874',
+                        BoostLevel9: 'discordboost9:1178527237734137916',
+                    };
+
+                    return emojiMap[boostLevel] ? `<:${emojiMap[boostLevel]}>` : '❌';
+                }
+
+                let emoji = getBoostEmoji(boost);
+                let emoji2 = getBoostEmoji(nextBoost);
+
+                let descricaoUsuario = sobreMim
+                if (sobreMim == null) descricaoUsuario = "⠀⠀"
+
+
+                let list = []
+
+                const desiredBadges = [
+                    'Nitro', 'BoostLevel1', 'BoostLevel2', 'BoostLevel3', 'BoostLevel4',
+                    'BoostLevel5', 'BoostLevel6', 'BoostLevel7', 'BoostLevel8', 'BoostLevel9',
+                    'HypeSquadOnlineHouse1', 'HypeSquadOnlineHouse2', 'HypeSquadOnlineHouse3',
+                    'ActiveDeveloper', 'PremiumEarlySupporter', 'VerifiedDeveloper',
+                    'CertifiedModerator', 'VerifiedBot', 'ApplicationCommandBadge',
+                    'ApplicationAutoModerationRuleCreateBadge'
+                ];
+
+
+                desiredBadges.forEach(badge => {
+                    if (badgesModule.hasBadge(badgesArrayUser, badge)) {
+                        list.push(badge);
+                    }
+                })
+
+                if (nameOrifinal !== null && nameOrifinal !== undefined) {
+                    list.push("TAG");
+                }
+
+                list = list
+                    .map(badge => badgesModule.getFormattedBadge(badge))
+                    .join(',');
+
+
+                const permsObj = {
+                    CreateInstantInvite: `\`${lang.msg260}\``,
+                    KickMembers: `\`${lang.msg261}\``,
+                    BanMembers: `\`${lang.msg262}\``,
+                    Administrator: `\`${lang.msg263}\``,
+                    ManageChannels: `\`${lang.msg264}\``,
+                    ManageGuild: `\`${lang.msg265}\``,
+                    AddReactions: `\`${lang.msg266}\``,
+                    ViewAuditLog: `\`${lang.msg267}\``,
+                    PrioritySpeaker: `\`${lang.msg268}\``,
+                    Stream: `\`${lang.msg269}\``,
+                    ViewChannel: `\`${lang.msg270}\``,
+                    SendMessages: `\`${lang.msg271}\``,
+                    SendTTSMessages: `\`${lang.msg272}\``,
+                    ManageMessages: `\`${lang.msg273}\``,
+                    EmbedLinks: `\`${lang.msg274}\``,
+                    AttachFiles: `\`${lang.msg275}\``,
+                    ReadMessageHistory: `\`${lang.msg276}\``,
+                    MentionEveryone: `\`${lang.msg277}\``,
+                    UseExternalEmojis: `\`${lang.msg278}\``,
+                    UseExternalStickers: `\`${lang.msg279}\``,
+                    ViewGuildInsights: `\`${lang.msg280}\``,
+                    Connect: `\`${lang.msg281}\``,
+                    Speak: `\`${lang.msg282}\``,
+                    MuteMembers: `\`${lang.msg283}\``,
+                    DeafenMembers: `\`${lang.msg284}\``,
+                    MoveMembers: `\`${lang.msg285}\``,
+                    UseVAD: `\`${lang.msg286}\``,
+                    ChangeNickname: `\`${lang.msg287}\``,
+                    ManageNicknames: `\`${lang.msg288}\``,
+                    ManageRoles: `\`${lang.msg289}\``,
+                    ManageWebhooks: `\`${lang.msg290}\``,
+                    ManageEmojisAndStickers: `\`${lang.msg291}\``,
+                    UseApplicationCommands: `\`${lang.msg292}\``,
+                    RequestToSpeak: `\`${lang.msg293}\``,
+                    ManageEvents: `\`${lang.msg294}\``,
+                    ManageThreads: `\`${lang.msg295}\``,
+                    CreatePublicThreads: `\`${lang.msg296}\``,
+                    CreatePrivateThreads: `\`${lang.msg297}\``,
+                    SendMessagesInThreads: `\`${lang.msg298}\``,
+                    UseEmbeddedActivities: `\`${lang.msg299}\``,
+                    ModerateMembers: `\`${lang.msg300}\``,
+
+                }
+
+
+
+
+
+
+                const embed = new discord.EmbedBuilder()
+                    .setColor("#41b2b0")
+                    .setTitle(`${list.split(",").join(" ")}`)
+                    .setAuthor({ name: `${userDataNameGlobal}` })
+                    .setThumbnail(AvatarUser)
+                    .setFooter({ text: `${lang.msg232} ${descricaoUsuario}` })
+                    .setFields(
+                        {
+                            name: '<:crvt:1179217380715544668> Tag',
+                            value: `\`\`\`${member.user.tag}\`\`\``,
+                            inline: true
+                        },
+                        {
+                            name: '<:crvt:1179554534301896764> ID',
+                            value: `\`\`\`${member.user.id}\`\`\``,
+                            inline: true
+                        },
+                        {
+                            name: `<:crvt:1179215960754896977> ${lang.msg233}`,
+                            value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
+                            inline: false
+                        },
+                        {
+                            name: `<:crvt:1179215962839453817> ${lang.msg234}`,
+                            value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
+                            inline: false
+                        },
+
+                        {
+                            name: `<:1592wumpuswaveboost:1180830275182276658> ${lang.msg236}`,
+                            value: `<t:${~~(nextBoostDateTemp / 1000)}:f> (<t:${~~(nextBoostDateTemp / 1000)}:R>)`,
+                            inline: false
+                        },
+                        {
+                            name: `${lang.msg237}`,
+                            value: `${emoji} ${convertBoostLevel(boost)}`,
+                            inline: true
+                        },
+                        {
+                            name: `${lang.msg238}`,
+                            value: `${emoji2} ${convertNextBoostLevel(nextBoost)}`,
+                            inline: true
                         }
                     )
 
 
-                let avatar = new discord.EmbedBuilder()
-                    .setImage(AvatarUser)
-                    .setColor("#41b2b0")
-                const m = await interaction.reply({ embeds: [embed], components: [btn3], fetchReply: true })
+                if (userBanner) {
+
+                    let avatar = new discord.EmbedBuilder()
+
+                        .setImage(AvatarUser)
+                        .setColor("#41b2b0")
+                    let banner = new discord.EmbedBuilder()
+
+                        .setImage(userBanner)
+                        .setColor("#41b2b0")
+
+                    const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                    const embedPerms = new discord.EmbedBuilder()
+                        .setColor('#41b2b0')
+                        .addFields(
+                            {
+                                name: `${lang.msg239}`,
+                                value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                inline: false
+                            },
+                            {
+                                name: `${lang.msg240} ${membro.username}`,
+                                value: `${permsArray.join(', ')}`
+                            }
+                        )
+
+
+                    const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+                    const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                    collector.on('collect', async (i) => {
+
+                        if (i.user.id != interaction.user.id) return i.reply({ content: `${lang.msg241} ${user}\n${lang.msg242}`, ephemeral: true })
+
+                        i.deferUpdate()
+                        switch (i.customId) {
+
+                            case `infos`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                break;
+
+                            case `avatar`:
+                                m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                break;
+
+
+                            case `voltar`:
+                                m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                break;
+
+
+                            case `banner`:
+                                m.edit({ embeds: [banner], components: [btnVoltar] })
+                                break;
+
+                            case `verPerms`:
+                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                break;
+
+                            case `inicial`:
+                                m.edit({ embeds: [embed], components: [btnInfo] })
+                                break;
+
+
+                            case `fechar`:
+                        }
+                    })
+
+                } else {
+
+                    const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                    const embedPerms = new discord.EmbedBuilder()
+                        .setColor('#41b2b0')
+                        .addFields(
+                            {
+                                name: `${lang.msg239}`,
+                                value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                inline: false
+                            },
+                            {
+                                name: `${lang.msg240} ${membro.username}`,
+                                value: `${permsArray.join(', ')}`
+                            }
+                        )
+
+
+                    let avatar = new discord.EmbedBuilder()
+                        .setImage(AvatarUser)
+                        .setColor("#41b2b0")
+
+                    const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
 
 
 
-                const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+                    const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
 
 
-                collector.on('collect', async (i) => {
+                    collector.on('collect', async (i) => {
 
-                    if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Somente a pessoa que executou o comando (\`${interaction.user.tag}\`) pode interagir com ele.`, ephemeral: true });
+                        if (i.user.id != interaction.user.id)
+                            return i.reply({
+                                content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                ephemeral: true
+                            })
 
-                    i.deferUpdate()
-                    switch (i.customId) {
-
-
-                        case `avatar`:
-                            m.edit({ embeds: [avatar], components: [btn2] })
-                            break;
-
-
-                        case `inicial`:
-                            m.edit({ embeds: [embed], components: [btn3] })
-                            break;
+                        i.deferUpdate()
+                        switch (i.customId) {
 
 
-                        case `verPerms`:
-                            m.edit({ embeds: [embedPerms], components: [btn2] })
-                            break;
 
-                        case `fechar`:
+                            case `infos`:
+                                m.edit({
+                                    embeds: [embed],
+                                    components: [btnAvatarPermissão, btnPaginaInicial]
+                                })
+                                break;
+
+                            case `avatar`:
+                                m.edit({
+                                    embeds: [avatar],
+                                    components: [btnVoltar]
+                                })
+                                break;
+
+                            case `voltar`:
+                                m.edit({
+                                    embeds: [embed],
+                                    components: [btnAvatarPermissão, btnPaginaInicial]
+                                })
+                                break;
+
+                            case `verPerms`:
+                                m.edit({
+                                    embeds: [embedPerms],
+                                    components: [btnVoltar]
+                                })
+                                break;
+
+                            case `inicial`:
+                                m.edit({
+                                    embeds: [embed],
+                                    components: [btnInfo]
+                                })
+                                break;
+
+                            case `fechar`:
+                        }
+                    })
+                }
+
+            } else if (!userData.user.premiumSince || !userData.boost.boost) {
+
+
+                const {
+                    user: { globalName: userDataNameGlobal, legacyUsername: nameOrifinal },
+                    profile: { badgesArray: badgesArrayUser, aboutMe: sobreMim, bannerUrl: userBanner },
+
+                } = userData;
+
+
+
+
+
+                let descricaoUsuario = sobreMim
+                if (sobreMim == null) descricaoUsuario = "⠀⠀"
+
+                let list = [];
+
+                if (Array.isArray(badgesArrayUser)) {
+                    const desiredBadges = [
+
+                        'HypeSquadOnlineHouse1', 'HypeSquadOnlineHouse2', 'HypeSquadOnlineHouse3',
+                        'ActiveDeveloper', 'PremiumEarlySupporter', 'VerifiedDeveloper', 'CertifiedModerator',
+                        'VerifiedBot', 'ApplicationCommandBadge', 'ApplicationAutoModerationRuleCreateBadge'
+
+                    ]
+
+                    desiredBadges.forEach(badge => {
+                        if (badgesArrayUser.includes(badge)) {
+                            list.push(badge)
+                        }
+                    });
+                }
+
+                if (nameOrifinal !== null && nameOrifinal !== undefined) {
+                    list.push("TAG")
+                }
+
+                if (list.length > 0) {
+                    list = list
+                        .map(badge => badgeFormatter.formatBadge(badge))
+                        .join(",")
+
+
+                    const permsObj = {
+                        CreateInstantInvite: `\`${lang.msg260}\``,
+                        KickMembers: `\`${lang.msg261}\``,
+                        BanMembers: `\`${lang.msg262}\``,
+                        Administrator: `\`${lang.msg263}\``,
+                        ManageChannels: `\`${lang.msg264}\``,
+                        ManageGuild: `\`${lang.msg265}\``,
+                        AddReactions: `\`${lang.msg266}\``,
+                        ViewAuditLog: `\`${lang.msg267}\``,
+                        PrioritySpeaker: `\`${lang.msg268}\``,
+                        Stream: `\`${lang.msg269}\``,
+                        ViewChannel: `\`${lang.msg270}\``,
+                        SendMessages: `\`${lang.msg271}\``,
+                        SendTTSMessages: `\`${lang.msg272}\``,
+                        ManageMessages: `\`${lang.msg273}\``,
+                        EmbedLinks: `\`${lang.msg274}\``,
+                        AttachFiles: `\`${lang.msg275}\``,
+                        ReadMessageHistory: `\`${lang.msg276}\``,
+                        MentionEveryone: `\`${lang.msg277}\``,
+                        UseExternalEmojis: `\`${lang.msg278}\``,
+                        UseExternalStickers: `\`${lang.msg279}\``,
+                        ViewGuildInsights: `\`${lang.msg280}\``,
+                        Connect: `\`${lang.msg281}\``,
+                        Speak: `\`${lang.msg282}\``,
+                        MuteMembers: `\`${lang.msg283}\``,
+                        DeafenMembers: `\`${lang.msg284}\``,
+                        MoveMembers: `\`${lang.msg285}\``,
+                        UseVAD: `\`${lang.msg286}\``,
+                        ChangeNickname: `\`${lang.msg287}\``,
+                        ManageNicknames: `\`${lang.msg288}\``,
+                        ManageRoles: `\`${lang.msg289}\``,
+                        ManageWebhooks: `\`${lang.msg290}\``,
+                        ManageEmojisAndStickers: `\`${lang.msg291}\``,
+                        UseApplicationCommands: `\`${lang.msg292}\``,
+                        RequestToSpeak: `\`${lang.msg293}\``,
+                        ManageEvents: `\`${lang.msg294}\``,
+                        ManageThreads: `\`${lang.msg295}\``,
+                        CreatePublicThreads: `\`${lang.msg296}\``,
+                        CreatePrivateThreads: `\`${lang.msg297}\``,
+                        SendMessagesInThreads: `\`${lang.msg298}\``,
+                        UseEmbeddedActivities: `\`${lang.msg299}\``,
+                        ModerateMembers: `\`${lang.msg300}\``,
+
                     }
-                })
-            }
 
+
+
+
+                    const embed = new discord.EmbedBuilder()
+                        .setColor("#41b2b0")
+                        .setTitle(`${list.split(",").join(" ")}`)
+                        .setAuthor({ name: `${userDataNameGlobal}` })
+                        .setThumbnail(AvatarUser)
+                        .setFooter({ text: `${lang.msg232} ${descricaoUsuario}` })
+                        .setFields(
+                            {
+                                name: '<:crvt:1179217380715544668> Tag',
+                                value: `\`\`\`${member.user.tag}\`\`\``,
+                                inline: true
+                            },
+                            {
+                                name: '<:crvt:1179554534301896764> ID',
+                                value: `\`\`\`${member.user.id}\`\`\``,
+                                inline: true
+                            },
+                            {
+                                name: `<:crvt:1179215960754896977> ${lang.msg233}`,
+                                value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
+                                inline: false
+                            },
+                            {
+                                name: `<:crvt:1179215962839453817> ${lang.msg234}`,
+                                value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
+                                inline: false
+                            },
+                        )
+
+
+                    if (userBanner) {
+
+                        let avatar = new discord.EmbedBuilder()
+
+                            .setImage(AvatarUser)
+                            .setColor("#41b2b0")
+                        let banner = new discord.EmbedBuilder()
+
+                            .setImage(userBanner)
+                            .setColor("#41b2b0")
+
+                        const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                        const embedPerms = new discord.EmbedBuilder()
+                            .setColor('#41b2b0')
+                            .addFields(
+                                {
+                                    name: `${lang.msg239}`,
+                                    value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                    inline: false
+                                },
+                                {
+                                    name: `${lang.msg240} ${membro.username}`,
+                                    value: `${permsArray.join(', ')}`
+                                }
+                            )
+
+
+                        const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+                        const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                        collector.on('collect', async (i) => {
+
+                            if (i.user.id != interaction.user.id)
+                                return i.reply({
+                                    content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                    ephemeral: true
+                                })
+
+                            i.deferUpdate()
+                            switch (i.customId) {
+
+                                case `infos`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarBannerPermissão, btnPaginaInicial]
+                                    })
+                                    break;
+
+                                case `avatar`:
+                                    m.edit({
+                                        embeds: [avatar],
+                                        components: [btnVoltar]
+                                    })
+                                    break;
+
+
+                                case `voltar`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarBannerPermissão, btnPaginaInicial]
+                                    })
+                                    break;
+
+
+                                case `banner`:
+                                    m.edit({
+                                        embeds: [banner],
+                                        components: [btnVoltar]
+                                    })
+                                    break;
+
+                                case `verPerms`:
+                                    m.edit({
+                                        embeds: [embedPerms],
+                                        components: [btnVoltar]
+                                    })
+                                    break;
+
+                                case `inicial`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnInfo]
+                                    })
+                                    break;
+
+
+                                case `fechar`:
+                            }
+                        })
+
+                    } else {
+
+                        const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                        const embedPerms = new discord.EmbedBuilder()
+                            .setColor('#41b2b0')
+                            .addFields(
+                                {
+                                    name: `${lang.msg239}`,
+                                    value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                    inline: false
+                                },
+                                {
+                                    name: `${lang.msg240} ${membro.username}`,
+                                    value: `${permsArray.join(', ')}`
+                                }
+                            )
+
+
+                        let avatar = new discord.EmbedBuilder()
+                            .setImage(AvatarUser)
+                            .setColor("#41b2b0")
+
+                        const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+
+
+                        const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                        collector.on('collect', async (i) => {
+
+                            if (i.user.id != interaction.user.id)
+                                return i.reply({
+                                    content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                    ephemeral: true
+                                })
+
+                            i.deferUpdate()
+                            switch (i.customId) {
+
+
+
+                                case `infos`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarPermissão, btnPaginaInicial]
+                                    })
+                                    break;
+
+                                case `avatar`:
+                                    m.edit({
+                                        embeds: [avatar],
+                                        components: [btnVoltar]
+                                    })
+                                    break;
+
+                                case `voltar`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarPermissão, btnPaginaInicial]
+                                    })
+                                    break;
+
+                                case `verPerms`:
+                                    m.edit({
+                                        embeds: [embedPerms],
+                                        components: [btnVoltar]
+                                    })
+                                    break;
+
+                                case `inicial`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnInfo]
+                                    })
+                                    break;
+
+
+
+                                case `fechar`:
+                            }
+                        })
+                    }
+
+                } else {
+
+
+                    const {
+                        user: { globalName: userDataNameGlobal },
+                        profile: { aboutMe: sobreMim, bannerUrl: userBanner },
+
+                    } = userData
+
+
+
+                    let descricaoUsuario = sobreMim
+                    if (sobreMim == null) descricaoUsuario = "⠀⠀"
+
+
+                    const permsObj = {
+                        CreateInstantInvite: `\`${lang.msg260}\``,
+                        KickMembers: `\`${lang.msg261}\``,
+                        BanMembers: `\`${lang.msg262}\``,
+                        Administrator: `\`${lang.msg263}\``,
+                        ManageChannels: `\`${lang.msg264}\``,
+                        ManageGuild: `\`${lang.msg265}\``,
+                        AddReactions: `\`${lang.msg266}\``,
+                        ViewAuditLog: `\`${lang.msg267}\``,
+                        PrioritySpeaker: `\`${lang.msg268}\``,
+                        Stream: `\`${lang.msg269}\``,
+                        ViewChannel: `\`${lang.msg270}\``,
+                        SendMessages: `\`${lang.msg271}\``,
+                        SendTTSMessages: `\`${lang.msg272}\``,
+                        ManageMessages: `\`${lang.msg273}\``,
+                        EmbedLinks: `\`${lang.msg274}\``,
+                        AttachFiles: `\`${lang.msg275}\``,
+                        ReadMessageHistory: `\`${lang.msg276}\``,
+                        MentionEveryone: `\`${lang.msg277}\``,
+                        UseExternalEmojis: `\`${lang.msg278}\``,
+                        UseExternalStickers: `\`${lang.msg279}\``,
+                        ViewGuildInsights: `\`${lang.msg280}\``,
+                        Connect: `\`${lang.msg281}\``,
+                        Speak: `\`${lang.msg282}\``,
+                        MuteMembers: `\`${lang.msg283}\``,
+                        DeafenMembers: `\`${lang.msg284}\``,
+                        MoveMembers: `\`${lang.msg285}\``,
+                        UseVAD: `\`${lang.msg286}\``,
+                        ChangeNickname: `\`${lang.msg287}\``,
+                        ManageNicknames: `\`${lang.msg288}\``,
+                        ManageRoles: `\`${lang.msg289}\``,
+                        ManageWebhooks: `\`${lang.msg290}\``,
+                        ManageEmojisAndStickers: `\`${lang.msg291}\``,
+                        UseApplicationCommands: `\`${lang.msg292}\``,
+                        RequestToSpeak: `\`${lang.msg293}\``,
+                        ManageEvents: `\`${lang.msg294}\``,
+                        ManageThreads: `\`${lang.msg295}\``,
+                        CreatePublicThreads: `\`${lang.msg296}\``,
+                        CreatePrivateThreads: `\`${lang.msg297}\``,
+                        SendMessagesInThreads: `\`${lang.msg298}\``,
+                        UseEmbeddedActivities: `\`${lang.msg299}\``,
+                        ModerateMembers: `\`${lang.msg300}\``,
+                    }
+
+
+
+
+
+                    const embed = new discord.EmbedBuilder()
+                        .setColor("#41b2b0")
+                        // .setTitle(`${list.split(",").join(" ")}`)
+                        .setAuthor({ name: `${userDataNameGlobal}` })
+                        .setThumbnail(AvatarUser)
+                        .setFooter({ text: `${lang.msg232} ${descricaoUsuario}` })
+                        .setFields(
+                            {
+                                name: '<:crvt:1179217380715544668> Tag',
+                                value: `\`\`\`${member.user.tag}\`\`\``,
+                                inline: true
+                            },
+                            {
+                                name: '<:crvt:1179554534301896764> ID',
+                                value: `\`\`\`${member.user.id}\`\`\``,
+                                inline: true
+                            },
+                            {
+                                name: `<:crvt:1179215960754896977> ${lang.msg233}`,
+                                value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
+                                inline: false
+                            },
+                            {
+                                name: `<:crvt:1179215962839453817> ${lang.msg234}`,
+                                value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
+                                inline: false
+                            },
+                        )
+
+
+                    if (userBanner) {
+
+                        let avatar = new discord.EmbedBuilder()
+
+                            .setImage(AvatarUser)
+                            .setColor("#41b2b0")
+                        let banner = new discord.EmbedBuilder()
+
+                            .setImage(userBanner)
+                            .setColor("#41b2b0")
+
+                        const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                        const embedPerms = new discord.EmbedBuilder()
+                            .setColor('#41b2b0')
+                            .addFields(
+                                {
+                                    name: `${lang.msg239}`,
+                                    value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                    inline: false
+                                },
+                                {
+                                    name: `${lang.msg240} ${membro.username}`,
+                                    value: `${permsArray.join(', ')}`
+                                }
+                            )
+
+
+                        const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+
+                        const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                        collector.on('collect', async (i) => {
+
+                            if (i.user.id != interaction.user.id)
+                                return i.reply({
+                                    content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                    ephemeral: true
+                                })
+
+                            i.deferUpdate()
+                            switch (i.customId) {
+
+                                case `infos`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarBannerPermissão, btnPaginaInicial]
+                                    })
+                                    break;
+
+                                case `avatar`:
+                                    m.edit({
+                                        embeds: [avatar],
+                                        components: [btnVoltar]
+                                    })
+                                    break;
+
+
+                                case `voltar`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarBannerPermissão, btnPaginaInicial]
+                                    })
+                                    break;
+
+
+                                case `banner`:
+                                    m.edit({
+                                        embeds: [banner],
+                                        components: [btnVoltar]
+                                    })
+                                    break;
+
+                                case `verPerms`:
+                                    m.edit({
+                                        embeds: [embedPerms],
+                                        components: [btnVoltar]
+                                    })
+                                    break;
+
+                                case `inicial`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnInfo]
+                                    })
+                                    break;
+
+
+                                case `fechar`:
+                            }
+                        })
+
+                    } else {
+
+
+
+                        const permsArray = member.permissions.toArray().map(p => permsObj[p])
+
+                        const embedPerms = new discord.EmbedBuilder()
+                            .setColor('#41b2b0')
+                            .addFields(
+                                {
+                                    name: `${lang.msg239}`,
+                                    value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
+                                    inline: false
+                                },
+                                {
+                                    name: `${lang.msg240} ${membro.username}`,
+                                    value: `${permsArray.join(', ')}`
+                                }
+                            )
+
+
+                        let avatar = new discord.EmbedBuilder()
+                            .setImage(AvatarUser)
+                            .setColor("#41b2b0")
+
+                        const m = await interaction.reply({
+                            embeds: [embed],
+                            components: [btnInfo],
+                            fetchReply: true
+                        })
+
+
+
+                        const collector = m.createMessageComponentCollector({ time: 10 * 60000 });
+
+
+                        collector.on('collect', async (i) => {
+
+                            if (i.user.id != interaction.user.id)
+                                return i.reply({
+                                    content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                    ephemeral: true
+                                })
+
+                            i.deferUpdate()
+                            switch (i.customId) {
+
+
+                                case `infos`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarPermissão, btnPaginaInicial]
+                                    })
+                                    break;
+
+                                case `avatar`:
+                                    m.edit({
+                                        embeds: [avatar],
+                                        components: [btnVoltar]
+                                    })
+                                    break;
+
+                                case `voltar`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarPermissão, btnPaginaInicial]
+                                    })
+                                    break;
+
+                                case `verPerms`:
+                                    m.edit({
+                                        embeds: [embedPerms],
+                                        components: [btnVoltar]
+                                    })
+                                    break;
+
+                                case `inicial`:
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnInfo]
+                                    })
+                                    break;
+
+
+
+                                case `fechar`:
+                            }
+                        })
+                    }
+                }
+            }
         }
-        else
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+        else if (interaction.channel.id !== cmd1) {
+            interaction.reply({
+                content: `${lang.alertCanalErrado} <#${cmd1}>.`,
+                ephemeral: true
+            })
+        }
     }
 }
 

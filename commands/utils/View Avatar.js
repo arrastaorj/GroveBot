@@ -1,6 +1,8 @@
 const { ContextMenuCommandInteraction, ButtonStyle, ActionRowBuilder, ButtonBuilder, ApplicationCommandType, EmbedBuilder } = require("discord.js")
 const axios = require('axios')
 const comandos = require("../../database/models/comandos")
+const idioma = require("../../database/models/language")
+
 
 module.exports = {
     name: "View Avatar",
@@ -15,11 +17,25 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd)
+            return interaction.reply({
+                content: `${lang.alertCommandos}`,
+                ephemeral: true
+            })
 
 
         let cmd1 = cmd.canal1
@@ -27,9 +43,9 @@ module.exports = {
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
 
-         
 
-            
+
+
             let user =
                 interaction.guild.members.cache.get(interaction.targetId) ||
                 client.users.cache.get(interaction.targetId);
@@ -50,7 +66,7 @@ module.exports = {
                         const embed = new EmbedBuilder()
 
                             .setImage(url)
-                            .setDescription(`Avatar de ${user}`)
+                            .setDescription(`${lang.msg243} ${user}`)
                             .setColor('Random')
 
                         const button = new ActionRowBuilder()
@@ -59,7 +75,7 @@ module.exports = {
                                 new ButtonBuilder()
 
                                     .setStyle(ButtonStyle.Link)
-                                    .setLabel('Abrir Avatar')
+                                    .setLabel(`${lang.msg244}`)
                                     .setURL(user.displayAvatarURL({ size: 1024, format: 'png', dynamic: true }))
 
                             )
@@ -70,16 +86,18 @@ module.exports = {
                     } else {
                         const embeddanger = new EmbedBuilder()
 
-                            .setDescription(`${user} não possui um avatar!`)
+                            .setDescription(`${user} ${lang.msg245}`)
                             .setColor('Random')
                         interaction.reply({ embeds: [embeddanger] })
                     }
                 })
         }
-        else
-
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
-
+        else if (interaction.channel.id !== cmd1) {
+            interaction.reply({
+                content: `${lang.alertCanalErrado} <#${cmd1}>.`,
+                ephemeral: true
+            })
+        }
     }
 }
 

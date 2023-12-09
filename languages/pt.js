@@ -64,15 +64,121 @@ const language = {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+    ///AUTOMOD
+    msg59: "Carregando sua regra de automod...",
+    msg60: "Bloqueie palavrões, conteúdo sexual e calúnias, Alerta de Grove AutoMod.",
+    msg61: "Esta mensagem foi evitada pela GroveAutoMod!",
+    msg62: "> \`-\` <a:alerta:1163274838111162499> Você atingiu o número máximo de regras do AutoMod!",
+    msg63: "Ferramenta do AutoMod",
+    msg64: "• Regra do AutoMod",
+    msg65: "> Palavras ofencivas adicionada",
+    msg66: "Evite a palavra",
+    msg67: "de ser usado, Alerta de Grove AutoMod.",
+    msg68: "> palavra-chave adicionada",
+    msg69: "Evite mensagens de spam, Alerta de Grove AutoMod.",
+    msg70: "> spam-mensagens adicionada",
+    msg71: "Evite menções de spam, Alerta de Grove AutoMod.",
+    msg72: "> menção-spam adicionada",
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ///CARGOS
+    msg73: "> \`-\` <a:alerta:1163274838111162499> Desculpe, você só pode configurar um canal de texto.",
+    msg74: "> \`-\` <a:alerta:1163274838111162499> O cargo selecionado está acima ou na mesma posição hierárquica do cargo do Grove. O Grove não tem permissão para adicionar esse cargo adicione o cargo do Grove acima desse cargo.",
+    msg75: "Selecione os cargos desejado",
+    msg76: "> \`-\` <a:alerta:1163274838111162499> Seu máximo selecionado não pode ser maior do que a quantidade de cargos configurados.",
+    msg77: "Enviado com sucesso!",
+    msg78: "Canal:",
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    msg79: "Limpeza concluída",
+    msg80: "**Observação:** Você só pode excluir mensagens em massa com menos de 14 dias.",
+    msg81: "Limpado por:",
+    msg82: "AutoRole configurado:",
+    msg83: "AutoRole atualizado:",
+    msg84: "Canal de Bem-Vindos configurado:",
+    msg85: "Canal de Bem-Vindos atualizado:",
+    msg86: "Canal de comandos configurado:",
+    msg87: "Canal de comandos atualizado:",
+    msg88: "Imagem de Boas-Vindas configurada:",
+    msg89: "Nome:",
+    msg90: "Altura:",
+    msg91: "Largura:",
+    msg92: "Imagem de Boas-Vindas atualizado:",
+    msg93: "Canal de memes configurado:",
+    msg94: "Canal de memes atualizado:",
+
+    msg95: "Mensagem Ticket",
+    msg96: "Titulo (Para abrir ticket)",
+    msg97: "Digite o titulo (Primeira Linha)",
+    msg98: "Descrição da mensagem (Para abrir ticket)",
+    msg99: "Digite a Descrição.",
+    msg100: "Titulo (Dentro do ticket)",
+    msg101: "Descrição da mensagem (Dentro do ticket)",
+
+    msg102: "Olá",
+    msg103: "Veja como configurar meus comandos. Selecione uma categoria abaixo!",
+    msg104: "Observação 1:",
+    msg105: "Comandos que necessitam de cargos superiores aos membros não tem canal de texto definidos para uso de comandos.",
+    msg106: "Observação 2:",
+    msg107: "Recomendamos utilizalos em canal de texto privados.",
+    msg108: "Observação 3:",
+    msg109: "Nas configuraçãoes de cargos do seu servidor arraste o Grove para o topo de todos os cargos para que todos os comandos funcionem corretamente. Imagem ilustrativa abaixo.",
     
-    msg59: "",
-    msg60: "",
+    msg110: "Selecione uma categoria abaixo.",
+    msg111: "Painel inicial",
+    msg112: "Volte para a pagina inicial.",
+
+    msg113: "Bem-Vindo(a)",
+    msg114: "configurar a mensagem de boas-vindas.",
+
+    msg115: "Imagem de bem-vindo(a)",
+    msg116: "configurar uma imagem de fundo do Bem-Vindo(a).",
+    msg117: "Auto-Roles",
+    msg118: "configurar cargos automáticos para novos membros.",
+    msg119: "Comandos",
+    msg120: "configurar meu canal de comandos.",
+    msg121: "Memes",
+    msg122: "configurar meu canal de memes.",
+
+    msg123: "Olá",
+    msg124: "veja como configurar meu canal de memes:",
+    msg125: "Utilize:",
+    msg126: "Marque o canal de texto ou cole o ID. Após configurar o canal de memes somente o comando /meme funcionara nesse canal de texto.",
+    msg127: "Config Memes",
+
+    msg128: "Config Bem-Vindo.",
+    msg129: "veja como configurar meu canal de Bem-Vindo:",
+    msg130: "Marque o canal de texto ou cole o ID. Após configurar o canal de bem vindo, todos novos usuarios receberam uma saldação especial.",
+    
+    
+    msg131: "Config Comandos.",
+    msg132: "veja como configurar meu canal de comandos:",
+    msg133: "Marque o canal de texto ou cole o ID. Após configurar o canal de comandos, Todos os meu comandos de interação com o usuário so funcionaram no canal de texto configurado.",
+   
+    msg134: "Config AutoRole.",
+    msg135: "veja como Configurar o AutoRole:",
+    msg136: "Marque o cargo ou cole o ID. Após configurar o cargo, Todos os novos membros receberão um cargo automatico.",
+    
+    msg137: "Config Fundo Bem-Vindo.",
+    msg138: "Veja como configurar o banner de fundo:",
+    msg139: "Anexa um imagem valida..",
+    msg140: "",
+    msg141: "",
+    msg142: "",
+    msg143: "",
+    msg144: "",
+    msg145: "",
+    msg146: "",
+    msg147: "",
+    msg148: "",
+    msg149: "",
 
 
     msg45: "O tempo acabou",
 
-
+    alertNaoTemPermissão: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.",
+    alertPermissãoBot: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)",
     alertMemes: "> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de memes!",
     alertCanalErrado: "> \`-\` <a:alerta:1163274838111162499> Você está tentando usar um comando no canal de texto errado, tente usá-lo no canal correto.",
     alertCommandos: "> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!"

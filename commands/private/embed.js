@@ -1,4 +1,5 @@
 const discord = require("discord.js")
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: 'anunciar',
@@ -8,8 +9,22 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
 
-        if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
+
+        if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+            return interaction.reply({
+                content: `${lang.alertNaoTemPermissão}`,
+                ephemeral: true
+            })
 
 
         const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -18,79 +33,81 @@ module.exports = {
         if (hasPermission) {
 
             const embedEmpty = new discord.EmbedBuilder()
-                .setTitle('Titulo Defaut')
-                .setDescription('Descrição Defaut.')
-
+                .setTitle(`${lang.msg141}`)
+                .setDescription(`${lang.msg142}`)
 
             const buttonCreator = [
                 new discord.ActionRowBuilder().addComponents(
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_TITLE')
-                        .setLabel('Definir titulo')
+                        .setLabel(`${lang.msg143}`)
                         .setStyle(discord.ButtonStyle.Secondary)
                         .setEmoji(`🗨`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_DESCRIPTION')
-                        .setLabel('Definir descrição')
+                        .setLabel(`${lang.msg144}`)
                         .setStyle(discord.ButtonStyle.Secondary)
                         .setEmoji(`📃`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_COLOR')
-                        .setLabel('Definir cor')
+                        .setLabel(`${lang.msg145}`)
                         .setStyle(discord.ButtonStyle.Secondary)
                         .setEmoji(`🧪`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_IMAGE')
-                        .setLabel('Definir imagem')
+                        .setLabel(`${lang.msg146}`)
                         .setStyle(discord.ButtonStyle.Secondary)
                         .setEmoji(`🖼`),
                 ),
                 new discord.ActionRowBuilder().addComponents(
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_THUMBNAIL')
-                        .setLabel('Definir miniatura')
+                        .setLabel(`${lang.msg147}`)
                         .setStyle(discord.ButtonStyle.Secondary)
                         .setEmoji(`🖼`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_AUTHOR')
-                        .setLabel('Definir autor')
+                        .setLabel(`${lang.msg148}`)
                         .setStyle(discord.ButtonStyle.Secondary)
                         .setEmoji(`🧒`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_FOOTER')
-                        .setLabel('Definir rodape')
+                        .setLabel(`${lang.msg149}`)
                         .setStyle(discord.ButtonStyle.Secondary)
                         .setEmoji(`📝`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_MENTION_ROLE')
-                        .setLabel('Mencionar cargo')
+                        .setLabel(`${lang.msg150}`)
                         .setStyle(discord.ButtonStyle.Secondary)
                         .setEmoji(`📢`)
                 ),
                 new discord.ActionRowBuilder().addComponents(
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_IMPORT_JSON')
-                        .setLabel('Importar JSON')
+                        .setLabel(`${lang.msg151}`)
                         .setStyle(discord.ButtonStyle.Primary)
                         .setEmoji(`⬇`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_EXPORT_JSON')
-                        .setLabel('Exportar JSON')
+                        .setLabel(`${lang.msg152}`)
                         .setStyle(discord.ButtonStyle.Primary)
                         .setEmoji(`⬆`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SEND')
-                        .setLabel('Enviar mensagem')
+                        .setLabel(`${lang.msg153}`)
                         .setStyle(discord.ButtonStyle.Success)
                         .setEmoji(`📤`),
                 )
-            ];
+            ]
 
             interaction.reply({ embeds: [embedEmpty], components: buttonCreator, ephemeral: true });
 
         } else {
 
-            return interaction.reply({ content: "> \`+\` Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+            return interaction.reply({
+                content: `${lang.alertPermissãoBot}`,
+                ephemeral: true
+            })
         }
 
     }

@@ -3,6 +3,7 @@ const discord = require('discord.js');
 const Canvas = require('canvas');
 const { resolve } = require('path')
 const comandos = require("../../database/models/comandos")
+const idioma = require("../../database/models/language")
 const { createCanvas, loadImage, registerFont } = require('canvas')
 registerFont("././fonts/aAkhirTahun.ttf", { family: "aAkhirTahun" })
 const canvas = require("canvas")
@@ -29,11 +30,24 @@ module.exports = {
     ],
     run: async (client, interaction) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd)
+            return interaction.reply({
+                content: `${lang.alertCommandos}`,
+                ephemeral: true
+            })
 
         let cmd1 = cmd.canal1
 
@@ -156,12 +170,6 @@ module.exports = {
 
 
 
-
-
-
-
-
-
             const attachment = new discord.AttachmentBuilder(canvas.toBuffer(), { name: 'ship.png' });
 
             //Função para combinar os nomes
@@ -170,51 +178,50 @@ module.exports = {
             //Mensagem aleatória dependendo do resultado do ship
             let message = '';
             if (shipPercentage >= 40 && shipPercentage <= 45) {
-                message = 'A química entre eles é notável, como duas almas gêmeas prestes a se encontrar! 🔥❤️';
+                message = `${lang.msg209}`;
             } else if (shipPercentage > 45 && shipPercentage <= 50) {
-                message = 'A relação deles parece estar no caminho certo, como um romance em crescimento! 🌱❤️';
+                message = `${lang.msg210}`;
             } else if (shipPercentage >= 1 && shipPercentage <= 5) {
-                message = 'Embora as chances sejam baixas, lembre-se de que o amor pode surgir de surpresas inesperadas. Não perca a esperança! 🌦️❤️';
+                message = `${lang.msg211}`;
             } else if (shipPercentage > 5 && shipPercentage <= 10) {
-                message = 'O amor pode ser imprevisível, mantenha a chama acesa e veja o que o destino reserva! 🌟❤️';
+                message = `${lang.msg212}`;
             } else if (shipPercentage >= 11 && shipPercentage <= 15) {
-                message = 'Existe um pequeno raio de esperança, uma semente de amor que aguarda o momento certo para florescer! 🌈❤️';
+                message = `${lang.msg213}`;
             } else if (shipPercentage > 15 && shipPercentage <= 20) {
-                message = 'O amor está à espreita, pronto para envolver esses corações com ternura e paixão! ❤️🌟';
+                message = `${lang.msg214}`;
             } else if (shipPercentage >= 21 && shipPercentage <= 30) {
-                message = 'Acredito que esses dois têm o potencial para uma bela história de amor, como uma dança harmoniosa do destino! 💃❤️';
+                message = `${lang.msg215}`;
             } else if (shipPercentage > 30 && shipPercentage <= 39) {
-                message = 'O amor está no ar, e esses dois podem ser o próximo grande sucesso romântico! 💞❤️';
+                message = `${lang.msg216}`;
             } else if (shipPercentage >= 51 && shipPercentage <= 55) {
-                message = `Agora, o destino está nas mãos de ${user2}; estou ansioso para ver o que o futuro reserva para vocês! 🙌❤️`;
+                message = `${lang.msg217} ${user2}, ${lang.msg2177}`;
             } else if (shipPercentage > 55 && shipPercentage <= 60) {
-                message = `Este casal está em ascensão! Que aventuras românticas aguardam vocês dois no horizonte! 🚀❤️`;
+                message = `${lang.msg218}`;
             } else if (shipPercentage >= 61 && shipPercentage <= 70) {
-                message = 'Um casal incrível! Mal posso esperar para celebrar o seu amor em grande estilo! 🎉❤️';
+                message = `${lang.msg219}`;
             } else if (shipPercentage > 70 && shipPercentage <= 80) {
-                message = 'Amor verdadeiro floresce! Quando será a data do grande dia? Estou pronto para comemorar com vocês! 🎊❤️';
+                message = `${lang.msg220}`;
             } else if (shipPercentage >= 81 && shipPercentage <= 85) {
-                message = `O amor está no comando! ${user1} & ${user2}, sua jornada amorosa promete ser espetacular! 💖❤️`;
+                message = `${lang.msg221} ${user1} & ${user2}, ${lang.msg222}`;
             } else if (shipPercentage > 85 && shipPercentage <= 90) {
-                message = `Uma história de amor incrível! Mal posso esperar para testemunhar o próximo capítulo de vocês! 📖❤️`;
+                message = `${lang.msg223}`;
             } else if (shipPercentage >= 91 && shipPercentage <= 95) {
-                message = `O amor venceu todos os obstáculos! ${user1} & ${user2}, vocês são uma inspiração para todos nós! 🌟❤️`;
+                message = `${lang.msg224} ${user1} & ${user2}, ${lang.msg225}`;
             } else if (shipPercentage > 95 && shipPercentage <= 100) {
-                message = `Uma história de amor épica, digna de conto de fadas! O casamento de ${user1} & ${user2} é um evento que marcará época! 👰🤵❤️`;
+                message = `${lang.msg226} ${user1} & ${user2} ${lang.msg227}`;
             }
-            
-            const embed = new discord.EmbedBuilder()
-                //.setDescription(`${message}`)
-                .setColor('df6ccf')
-            //.setImage(`attachment://ship.png`);
 
-
-            await interaction.reply({ files: [attachment], content: `💏 Casal: ${user1} & ${user2}\n📝 Nome do Ship: **${combinedUsername}**\n\n**${message}**` });
+            await interaction.reply({
+                files: [attachment],
+                content: `${lang.msg228} ${user1} & ${user2}\n${lang.msg229} **${combinedUsername}**\n\n**${message}**`
+            })
         }
-        else
-
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
-
+        else if (interaction.channel.id !== cmd1) {
+            interaction.reply({
+                content: `${lang.alertCanalErrado} <#${cmd1}>.`,
+                ephemeral: true
+            })
+        }
     }
 }
 

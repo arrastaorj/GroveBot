@@ -2,6 +2,7 @@ const discord = require("discord.js");
 const comandos = require("../../database/models/comandos")
 const badgesModule = require('../../functionUserInfo/badges')
 const badgeFormatter = require('../../functionUserInfo/badges')
+const idioma = require("../../database/models/language")
 const { btnInfo, btnPaginaInicial, btnAvatarBannerPermissão, btnVoltar, btnAvatarPermissão } = require("../../buttons/userButtons")
 
 module.exports = {
@@ -27,13 +28,26 @@ module.exports = {
 
     async run(client, interaction, args) {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
 
 
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd)
+            return interaction.reply({
+                content: `${lang.alertCommandos}`,
+                ephemeral: true
+            })
 
 
         let cmd1 = cmd.canal1
@@ -43,7 +57,7 @@ module.exports = {
             let membro = interaction.options.getUser('usuario') || interaction.user
             let user = interaction.guild.members.cache.get(membro.id)
 
-    
+
 
 
             const member = interaction.guild.members.cache.get(user.id)
@@ -134,47 +148,48 @@ module.exports = {
 
 
                 const permsObj = {
-                    CreateInstantInvite: '\`Criar convite instantâneo\`',
-                    KickMembers: '\`Expulsar membros\`',
-                    BanMembers: '\`Banir membros\`',
-                    Administrator: '\`Administrador\`',
-                    ManageChannels: '\`Gerenciar canais\`',
-                    ManageGuild: '\`Gerenciar servidor\`',
-                    AddReactions: '\`Adicionar reações\`',
-                    ViewAuditLog: '\`Ver registro de auditoria\`',
-                    PrioritySpeaker: '\`Voz Prioritária\`',
-                    Stream: '\`Ao vivo\`',
-                    ViewChannel: '\`Ver canais\`',
-                    SendMessages: '\`Enviar mensagens\`',
-                    SendTTSMessages: '\`Enviar mensagens em tts\`',
-                    ManageMessages: '\`Gerenciar mensagens\`',
-                    EmbedLinks: '\`Enviar links\`',
-                    AttachFiles: '\`Enviar anexos\`',
-                    ReadMessageHistory: '\`Ver histórico de mensagens\`',
-                    MentionEveryone: '\`Mencionar everyone e cargos\`',
-                    UseExternalEmojis: '\`Usar emojis externos\`',
-                    UseExternalStickers: '\`Usar figurinhas externas\`',
-                    ViewGuildInsights: '\`Ver análises do servidor\`',
-                    Connect: "\`Conectar em call's\`",
-                    Speak: `\`Falar em call's\``,
-                    MuteMembers: `\`Mutar membros\``,
-                    DeafenMembers: `\`Ensurdecer membros\``,
-                    MoveMembers: `\`Mover membros\``,
-                    UseVAD: `\`Utilizar detecção de voz\``,
-                    ChangeNickname: `\`Alterar apelido\``,
-                    ManageNicknames: `\`Gerenciar apelidos\``,
-                    ManageRoles: `\`Gerenciar cargos\``,
-                    ManageWebhooks: `\`Gerenciar webhooks\``,
-                    ManageEmojisAndStickers: `\`Gerenciar emojis e figurinhas\``,
-                    UseApplicationCommands: `\`Utilizar comandos slashs (/)\``,
-                    RequestToSpeak: `\`Pedir para falar\``,
-                    ManageEvents: `\`Gerenciar eventos\``,
-                    ManageThreads: `\`Gerenciar threads\``,
-                    CreatePublicThreads: `\`Criar threads públicas\``,
-                    CreatePrivateThreads: `\`Criar threads privadas\``,
-                    SendMessagesInThreads: `\`Falar em threads\``,
-                    UseEmbeddedActivities: `\`Iniciar atividades\``,
-                    ModerateMembers: `\`Gerenciar moderação do servidor\``
+                    CreateInstantInvite: `\`${lang.msg260}\``,
+                    KickMembers: `\`${lang.msg261}\``,
+                    BanMembers: `\`${lang.msg262}\``,
+                    Administrator: `\`${lang.msg263}\``,
+                    ManageChannels: `\`${lang.msg264}\``,
+                    ManageGuild: `\`${lang.msg265}\``,
+                    AddReactions: `\`${lang.msg266}\``,
+                    ViewAuditLog: `\`${lang.msg267}\``,
+                    PrioritySpeaker: `\`${lang.msg268}\``,
+                    Stream: `\`${lang.msg269}\``,
+                    ViewChannel: `\`${lang.msg270}\``,
+                    SendMessages: `\`${lang.msg271}\``,
+                    SendTTSMessages: `\`${lang.msg272}\``,
+                    ManageMessages: `\`${lang.msg273}\``,
+                    EmbedLinks: `\`${lang.msg274}\``,
+                    AttachFiles: `\`${lang.msg275}\``,
+                    ReadMessageHistory: `\`${lang.msg276}\``,
+                    MentionEveryone: `\`${lang.msg277}\``,
+                    UseExternalEmojis: `\`${lang.msg278}\``,
+                    UseExternalStickers: `\`${lang.msg279}\``,
+                    ViewGuildInsights: `\`${lang.msg280}\``,
+                    Connect: `\`${lang.msg281}\``,
+                    Speak: `\`${lang.msg282}\``,
+                    MuteMembers: `\`${lang.msg283}\``,
+                    DeafenMembers: `\`${lang.msg284}\``,
+                    MoveMembers: `\`${lang.msg285}\``,
+                    UseVAD: `\`${lang.msg286}\``,
+                    ChangeNickname: `\`${lang.msg287}\``,
+                    ManageNicknames: `\`${lang.msg288}\``,
+                    ManageRoles: `\`${lang.msg289}\``,
+                    ManageWebhooks: `\`${lang.msg290}\``,
+                    ManageEmojisAndStickers: `\`${lang.msg291}\``,
+                    UseApplicationCommands: `\`${lang.msg292}\``,
+                    RequestToSpeak: `\`${lang.msg293}\``,
+                    ManageEvents: `\`${lang.msg294}\``,
+                    ManageThreads: `\`${lang.msg295}\``,
+                    CreatePublicThreads: `\`${lang.msg296}\``,
+                    CreatePrivateThreads: `\`${lang.msg297}\``,
+                    SendMessagesInThreads: `\`${lang.msg298}\``,
+                    UseEmbeddedActivities: `\`${lang.msg299}\``,
+                    ModerateMembers: `\`${lang.msg300}\``,
+
                 }
 
 
@@ -186,7 +201,7 @@ module.exports = {
                     .setTitle(`${list.split(",").join(" ")}`)
                     .setAuthor({ name: `${userDataNameGlobal}` })
                     .setThumbnail(AvatarUser)
-                    .setFooter({ text: `Sobre mim: ${descricaoUsuario}` })
+                    .setFooter({ text: `${lang.msg232} ${descricaoUsuario}` })
                     .setFields(
                         {
                             name: '<:crvt:1179217380715544668> Tag',
@@ -199,32 +214,32 @@ module.exports = {
                             inline: true
                         },
                         {
-                            name: '<:crvt:1179215960754896977> Data de criação da conta',
+                            name: `<:crvt:1179215960754896977> ${lang.msg233}`,
                             value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
                             inline: false
                         },
                         {
-                            name: '<:crvt:1179215962839453817> Entrou em',
+                            name: `<:crvt:1179215962839453817> ${lang.msg234}`,
                             value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
                             inline: false
                         },
                         {
-                            name: '<:discordnitro:1178827913106305024> Assinante Nitro desde',
+                            name: `<:discordnitro:1178827913106305024> ${lang.msg235}`,
                             value: `<t:${~~(boostDateTemp / 1000)}:f> (<t:${~~(boostDateTemp / 1000)}:R>)`,
                             inline: false
                         },
                         {
-                            name: '<:1592wumpuswaveboost:1180830275182276658> Impulsionando servidor desde',
+                            name: `<:1592wumpuswaveboost:1180830275182276658> ${lang.msg236}`,
                             value: `<t:${~~(nextBoostDateTemp / 1000)}:f> (<t:${~~(nextBoostDateTemp / 1000)}:R>)`,
                             inline: false
                         },
                         {
-                            name: ' Nível atual',
+                            name: `${lang.msg237}`,
                             value: `${emoji} ${convertBoostLevel(boost)}`,
                             inline: true
                         },
                         {
-                            name: ' Próximo Nível',
+                            name: `${lang.msg238}`,
                             value: `${emoji2} ${convertNextBoostLevel(nextBoost)}`,
                             inline: true
                         }
@@ -248,12 +263,12 @@ module.exports = {
                         .setColor('#41b2b0')
                         .addFields(
                             {
-                                name: 'Maior Cargo:',
+                                name: `${lang.msg239}`,
                                 value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
                                 inline: false
                             },
                             {
-                                name: `Permissões de ${membro.username}`,
+                                name: `${lang.msg240} ${membro.username}`,
                                 value: `${permsArray.join(', ')}`
                             }
                         )
@@ -266,7 +281,11 @@ module.exports = {
 
                     collector.on('collect', async (i) => {
 
-                        if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+                        if (i.user.id != interaction.user.id)
+                            return i.reply({
+                                content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                ephemeral: true
+                            })
 
                         i.deferUpdate()
                         switch (i.customId) {
@@ -310,12 +329,12 @@ module.exports = {
                         .setColor('#41b2b0')
                         .addFields(
                             {
-                                name: 'Maior Cargo:',
+                                name: `${lang.msg239}`,
                                 value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
                                 inline: false
                             },
                             {
-                                name: `Permissões de ${membro.username}`,
+                                name: `${lang.msg240} ${membro.username}`,
                                 value: `${permsArray.join(', ')}`
                             }
                         )
@@ -334,7 +353,7 @@ module.exports = {
 
                     collector.on('collect', async (i) => {
 
-                        if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+                        if (i.user.id != interaction.user.id) return i.reply({ content: `${lang.msg241} ${user}\n${lang.msg242}`, ephemeral: true })
 
                         i.deferUpdate()
                         switch (i.customId) {
@@ -420,47 +439,48 @@ module.exports = {
 
 
                 const permsObj = {
-                    CreateInstantInvite: '\`Criar convite instantâneo\`',
-                    KickMembers: '\`Expulsar membros\`',
-                    BanMembers: '\`Banir membros\`',
-                    Administrator: '\`Administrador\`',
-                    ManageChannels: '\`Gerenciar canais\`',
-                    ManageGuild: '\`Gerenciar servidor\`',
-                    AddReactions: '\`Adicionar reações\`',
-                    ViewAuditLog: '\`Ver registro de auditoria\`',
-                    PrioritySpeaker: '\`Voz Prioritária\`',
-                    Stream: '\`Ao vivo\`',
-                    ViewChannel: '\`Ver canais\`',
-                    SendMessages: '\`Enviar mensagens\`',
-                    SendTTSMessages: '\`Enviar mensagens em tts\`',
-                    ManageMessages: '\`Gerenciar mensagens\`',
-                    EmbedLinks: '\`Enviar links\`',
-                    AttachFiles: '\`Enviar anexos\`',
-                    ReadMessageHistory: '\`Ver histórico de mensagens\`',
-                    MentionEveryone: '\`Mencionar everyone e cargos\`',
-                    UseExternalEmojis: '\`Usar emojis externos\`',
-                    UseExternalStickers: '\`Usar figurinhas externas\`',
-                    ViewGuildInsights: '\`Ver análises do servidor\`',
-                    Connect: "\`Conectar em call's\`",
-                    Speak: `\`Falar em call's\``,
-                    MuteMembers: `\`Mutar membros\``,
-                    DeafenMembers: `\`Ensurdecer membros\``,
-                    MoveMembers: `\`Mover membros\``,
-                    UseVAD: `\`Utilizar detecção de voz\``,
-                    ChangeNickname: `\`Alterar apelido\``,
-                    ManageNicknames: `\`Gerenciar apelidos\``,
-                    ManageRoles: `\`Gerenciar cargos\``,
-                    ManageWebhooks: `\`Gerenciar webhooks\``,
-                    ManageEmojisAndStickers: `\`Gerenciar emojis e figurinhas\``,
-                    UseApplicationCommands: `\`Utilizar comandos slashs (/)\``,
-                    RequestToSpeak: `\`Pedir para falar\``,
-                    ManageEvents: `\`Gerenciar eventos\``,
-                    ManageThreads: `\`Gerenciar threads\``,
-                    CreatePublicThreads: `\`Criar threads públicas\``,
-                    CreatePrivateThreads: `\`Criar threads privadas\``,
-                    SendMessagesInThreads: `\`Falar em threads\``,
-                    UseEmbeddedActivities: `\`Iniciar atividades\``,
-                    ModerateMembers: `\`Gerenciar moderação do servidor\``
+                    CreateInstantInvite: `\`${lang.msg260}\``,
+                    KickMembers: `\`${lang.msg261}\``,
+                    BanMembers: `\`${lang.msg262}\``,
+                    Administrator: `\`${lang.msg263}\``,
+                    ManageChannels: `\`${lang.msg264}\``,
+                    ManageGuild: `\`${lang.msg265}\``,
+                    AddReactions: `\`${lang.msg266}\``,
+                    ViewAuditLog: `\`${lang.msg267}\``,
+                    PrioritySpeaker: `\`${lang.msg268}\``,
+                    Stream: `\`${lang.msg269}\``,
+                    ViewChannel: `\`${lang.msg270}\``,
+                    SendMessages: `\`${lang.msg271}\``,
+                    SendTTSMessages: `\`${lang.msg272}\``,
+                    ManageMessages: `\`${lang.msg273}\``,
+                    EmbedLinks: `\`${lang.msg274}\``,
+                    AttachFiles: `\`${lang.msg275}\``,
+                    ReadMessageHistory: `\`${lang.msg276}\``,
+                    MentionEveryone: `\`${lang.msg277}\``,
+                    UseExternalEmojis: `\`${lang.msg278}\``,
+                    UseExternalStickers: `\`${lang.msg279}\``,
+                    ViewGuildInsights: `\`${lang.msg280}\``,
+                    Connect: `\`${lang.msg281}\``,
+                    Speak: `\`${lang.msg282}\``,
+                    MuteMembers: `\`${lang.msg283}\``,
+                    DeafenMembers: `\`${lang.msg284}\``,
+                    MoveMembers: `\`${lang.msg285}\``,
+                    UseVAD: `\`${lang.msg286}\``,
+                    ChangeNickname: `\`${lang.msg287}\``,
+                    ManageNicknames: `\`${lang.msg288}\``,
+                    ManageRoles: `\`${lang.msg289}\``,
+                    ManageWebhooks: `\`${lang.msg290}\``,
+                    ManageEmojisAndStickers: `\`${lang.msg291}\``,
+                    UseApplicationCommands: `\`${lang.msg292}\``,
+                    RequestToSpeak: `\`${lang.msg293}\``,
+                    ManageEvents: `\`${lang.msg294}\``,
+                    ManageThreads: `\`${lang.msg295}\``,
+                    CreatePublicThreads: `\`${lang.msg296}\``,
+                    CreatePrivateThreads: `\`${lang.msg297}\``,
+                    SendMessagesInThreads: `\`${lang.msg298}\``,
+                    UseEmbeddedActivities: `\`${lang.msg299}\``,
+                    ModerateMembers: `\`${lang.msg300}\``,
+
                 }
 
 
@@ -471,7 +491,7 @@ module.exports = {
                     .setTitle(`${list.split(",").join(" ")}`)
                     .setAuthor({ name: `${userDataNameGlobal}` })
                     .setThumbnail(AvatarUser)
-                    .setFooter({ text: `Sobre mim: ${descricaoUsuario}` })
+                    .setFooter({ text: `${lang.msg232} ${descricaoUsuario}` })
                     .setFields(
                         {
                             name: '<:crvt:1179217380715544668> Tag',
@@ -484,17 +504,17 @@ module.exports = {
                             inline: true
                         },
                         {
-                            name: '<:crvt:1179215960754896977> Data de criação da conta',
+                            name: `<:crvt:1179215960754896977> ${lang.msg233}`,
                             value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
                             inline: false
                         },
                         {
-                            name: '<:crvt:1179215962839453817> Entrou em',
+                            name: `<:crvt:1179215962839453817> ${lang.msg234}`,
                             value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
                             inline: false
                         },
                         {
-                            name: '<:discordnitro:1178827913106305024> Assinante Nitro desde',
+                            name: `<:discordnitro:1178827913106305024> ${lang.msg235}`,
                             value: `<t:${~~(boostDateTemp / 1000)}:f> (<t:${~~(boostDateTemp / 1000)}:R>)`,
                             inline: false
                         },
@@ -516,12 +536,12 @@ module.exports = {
                         .setColor('#41b2b0')
                         .addFields(
                             {
-                                name: 'Maior Cargo:',
+                                name: `${lang.msg239}`,
                                 value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
                                 inline: false
                             },
                             {
-                                name: `Permissões de ${membro.username}`,
+                                name: `${lang.msg240} ${membro.username}`,
                                 value: `${permsArray.join(', ')}`
                             }
                         )
@@ -534,7 +554,7 @@ module.exports = {
 
                     collector.on('collect', async (i) => {
 
-                        if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+                        if (i.user.id != interaction.user.id) return i.reply({ content: `${lang.msg241} ${user}\n${lang.msg242}`, ephemeral: true })
 
                         i.deferUpdate()
                         switch (i.customId) {
@@ -577,12 +597,12 @@ module.exports = {
                         .setColor('#41b2b0')
                         .addFields(
                             {
-                                name: 'Maior Cargo:',
+                                name: `${lang.msg239}`,
                                 value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
                                 inline: false
                             },
                             {
-                                name: `Permissões de ${membro.username}`,
+                                name: `${lang.msg240} ${membro.username}`,
                                 value: `${permsArray.join(', ')}`
                             }
                         )
@@ -600,7 +620,7 @@ module.exports = {
 
                     collector.on('collect', async (i) => {
 
-                        if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+                        if (i.user.id != interaction.user.id) return i.reply({ content: `${lang.msg241} ${user}\n${lang.msg242}`, ephemeral: true })
 
                         i.deferUpdate()
                         switch (i.customId) {
@@ -703,47 +723,48 @@ module.exports = {
 
 
                 const permsObj = {
-                    CreateInstantInvite: '\`Criar convite instantâneo\`',
-                    KickMembers: '\`Expulsar membros\`',
-                    BanMembers: '\`Banir membros\`',
-                    Administrator: '\`Administrador\`',
-                    ManageChannels: '\`Gerenciar canais\`',
-                    ManageGuild: '\`Gerenciar servidor\`',
-                    AddReactions: '\`Adicionar reações\`',
-                    ViewAuditLog: '\`Ver registro de auditoria\`',
-                    PrioritySpeaker: '\`Voz Prioritária\`',
-                    Stream: '\`Ao vivo\`',
-                    ViewChannel: '\`Ver canais\`',
-                    SendMessages: '\`Enviar mensagens\`',
-                    SendTTSMessages: '\`Enviar mensagens em tts\`',
-                    ManageMessages: '\`Gerenciar mensagens\`',
-                    EmbedLinks: '\`Enviar links\`',
-                    AttachFiles: '\`Enviar anexos\`',
-                    ReadMessageHistory: '\`Ver histórico de mensagens\`',
-                    MentionEveryone: '\`Mencionar everyone e cargos\`',
-                    UseExternalEmojis: '\`Usar emojis externos\`',
-                    UseExternalStickers: '\`Usar figurinhas externas\`',
-                    ViewGuildInsights: '\`Ver análises do servidor\`',
-                    Connect: "\`Conectar em call's\`",
-                    Speak: `\`Falar em call's\``,
-                    MuteMembers: `\`Mutar membros\``,
-                    DeafenMembers: `\`Ensurdecer membros\``,
-                    MoveMembers: `\`Mover membros\``,
-                    UseVAD: `\`Utilizar detecção de voz\``,
-                    ChangeNickname: `\`Alterar apelido\``,
-                    ManageNicknames: `\`Gerenciar apelidos\``,
-                    ManageRoles: `\`Gerenciar cargos\``,
-                    ManageWebhooks: `\`Gerenciar webhooks\``,
-                    ManageEmojisAndStickers: `\`Gerenciar emojis e figurinhas\``,
-                    UseApplicationCommands: `\`Utilizar comandos slashs (/)\``,
-                    RequestToSpeak: `\`Pedir para falar\``,
-                    ManageEvents: `\`Gerenciar eventos\``,
-                    ManageThreads: `\`Gerenciar threads\``,
-                    CreatePublicThreads: `\`Criar threads públicas\``,
-                    CreatePrivateThreads: `\`Criar threads privadas\``,
-                    SendMessagesInThreads: `\`Falar em threads\``,
-                    UseEmbeddedActivities: `\`Iniciar atividades\``,
-                    ModerateMembers: `\`Gerenciar moderação do servidor\``
+                    CreateInstantInvite: `\`${lang.msg260}\``,
+                    KickMembers: `\`${lang.msg261}\``,
+                    BanMembers: `\`${lang.msg262}\``,
+                    Administrator: `\`${lang.msg263}\``,
+                    ManageChannels: `\`${lang.msg264}\``,
+                    ManageGuild: `\`${lang.msg265}\``,
+                    AddReactions: `\`${lang.msg266}\``,
+                    ViewAuditLog: `\`${lang.msg267}\``,
+                    PrioritySpeaker: `\`${lang.msg268}\``,
+                    Stream: `\`${lang.msg269}\``,
+                    ViewChannel: `\`${lang.msg270}\``,
+                    SendMessages: `\`${lang.msg271}\``,
+                    SendTTSMessages: `\`${lang.msg272}\``,
+                    ManageMessages: `\`${lang.msg273}\``,
+                    EmbedLinks: `\`${lang.msg274}\``,
+                    AttachFiles: `\`${lang.msg275}\``,
+                    ReadMessageHistory: `\`${lang.msg276}\``,
+                    MentionEveryone: `\`${lang.msg277}\``,
+                    UseExternalEmojis: `\`${lang.msg278}\``,
+                    UseExternalStickers: `\`${lang.msg279}\``,
+                    ViewGuildInsights: `\`${lang.msg280}\``,
+                    Connect: `\`${lang.msg281}\``,
+                    Speak: `\`${lang.msg282}\``,
+                    MuteMembers: `\`${lang.msg283}\``,
+                    DeafenMembers: `\`${lang.msg284}\``,
+                    MoveMembers: `\`${lang.msg285}\``,
+                    UseVAD: `\`${lang.msg286}\``,
+                    ChangeNickname: `\`${lang.msg287}\``,
+                    ManageNicknames: `\`${lang.msg288}\``,
+                    ManageRoles: `\`${lang.msg289}\``,
+                    ManageWebhooks: `\`${lang.msg290}\``,
+                    ManageEmojisAndStickers: `\`${lang.msg291}\``,
+                    UseApplicationCommands: `\`${lang.msg292}\``,
+                    RequestToSpeak: `\`${lang.msg293}\``,
+                    ManageEvents: `\`${lang.msg294}\``,
+                    ManageThreads: `\`${lang.msg295}\``,
+                    CreatePublicThreads: `\`${lang.msg296}\``,
+                    CreatePrivateThreads: `\`${lang.msg297}\``,
+                    SendMessagesInThreads: `\`${lang.msg298}\``,
+                    UseEmbeddedActivities: `\`${lang.msg299}\``,
+                    ModerateMembers: `\`${lang.msg300}\``,
+
                 }
 
 
@@ -756,7 +777,7 @@ module.exports = {
                     .setTitle(`${list.split(",").join(" ")}`)
                     .setAuthor({ name: `${userDataNameGlobal}` })
                     .setThumbnail(AvatarUser)
-                    .setFooter({ text: `Sobre mim: ${descricaoUsuario}` })
+                    .setFooter({ text: `${lang.msg232} ${descricaoUsuario}` })
                     .setFields(
                         {
                             name: '<:crvt:1179217380715544668> Tag',
@@ -769,28 +790,28 @@ module.exports = {
                             inline: true
                         },
                         {
-                            name: '<:crvt:1179215960754896977> Data de criação da conta',
+                            name: `<:crvt:1179215960754896977> ${lang.msg233}`,
                             value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
                             inline: false
                         },
                         {
-                            name: '<:crvt:1179215962839453817> Entrou em',
+                            name: `<:crvt:1179215962839453817> ${lang.msg234}`,
                             value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
                             inline: false
                         },
 
                         {
-                            name: '<:1592wumpuswaveboost:1180830275182276658> Impulsionando servidor desde',
+                            name: `<:1592wumpuswaveboost:1180830275182276658> ${lang.msg236}`,
                             value: `<t:${~~(nextBoostDateTemp / 1000)}:f> (<t:${~~(nextBoostDateTemp / 1000)}:R>)`,
                             inline: false
                         },
                         {
-                            name: ' Nível atual',
+                            name: `${lang.msg237}`,
                             value: `${emoji} ${convertBoostLevel(boost)}`,
                             inline: true
                         },
                         {
-                            name: ' Próximo Nível',
+                            name: `${lang.msg238}`,
                             value: `${emoji2} ${convertNextBoostLevel(nextBoost)}`,
                             inline: true
                         }
@@ -814,12 +835,12 @@ module.exports = {
                         .setColor('#41b2b0')
                         .addFields(
                             {
-                                name: 'Maior Cargo:',
+                                name: `${lang.msg239}`,
                                 value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
                                 inline: false
                             },
                             {
-                                name: `Permissões de ${membro.username}`,
+                                name: `${lang.msg240} ${membro.username}`,
                                 value: `${permsArray.join(', ')}`
                             }
                         )
@@ -832,7 +853,7 @@ module.exports = {
 
                     collector.on('collect', async (i) => {
 
-                        if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+                        if (i.user.id != interaction.user.id) return i.reply({ content: `${lang.msg241} ${user}\n${lang.msg242}`, ephemeral: true })
 
                         i.deferUpdate()
                         switch (i.customId) {
@@ -876,12 +897,12 @@ module.exports = {
                         .setColor('#41b2b0')
                         .addFields(
                             {
-                                name: 'Maior Cargo:',
+                                name: `${lang.msg239}`,
                                 value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
                                 inline: false
                             },
                             {
-                                name: `Permissões de ${membro.username}`,
+                                name: `${lang.msg240} ${membro.username}`,
                                 value: `${permsArray.join(', ')}`
                             }
                         )
@@ -900,7 +921,11 @@ module.exports = {
 
                     collector.on('collect', async (i) => {
 
-                        if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+                        if (i.user.id != interaction.user.id)
+                            return i.reply({
+                                content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                ephemeral: true
+                            })
 
                         i.deferUpdate()
                         switch (i.customId) {
@@ -908,23 +933,38 @@ module.exports = {
 
 
                             case `infos`:
-                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                m.edit({
+                                    embeds: [embed],
+                                    components: [btnAvatarPermissão, btnPaginaInicial]
+                                })
                                 break;
 
                             case `avatar`:
-                                m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                m.edit({
+                                    embeds: [avatar],
+                                    components: [btnVoltar]
+                                })
                                 break;
 
                             case `voltar`:
-                                m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                m.edit({
+                                    embeds: [embed],
+                                    components: [btnAvatarPermissão, btnPaginaInicial]
+                                })
                                 break;
 
                             case `verPerms`:
-                                m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                m.edit({
+                                    embeds: [embedPerms],
+                                    components: [btnVoltar]
+                                })
                                 break;
 
                             case `inicial`:
-                                m.edit({ embeds: [embed], components: [btnInfo] })
+                                m.edit({
+                                    embeds: [embed],
+                                    components: [btnInfo]
+                                })
                                 break;
 
                             case `fechar`:
@@ -977,47 +1017,48 @@ module.exports = {
 
 
                     const permsObj = {
-                        CreateInstantInvite: '\`Criar convite instantâneo\`',
-                        KickMembers: '\`Expulsar membros\`',
-                        BanMembers: '\`Banir membros\`',
-                        Administrator: '\`Administrador\`',
-                        ManageChannels: '\`Gerenciar canais\`',
-                        ManageGuild: '\`Gerenciar servidor\`',
-                        AddReactions: '\`Adicionar reações\`',
-                        ViewAuditLog: '\`Ver registro de auditoria\`',
-                        PrioritySpeaker: '\`Voz Prioritária\`',
-                        Stream: '\`Ao vivo\`',
-                        ViewChannel: '\`Ver canais\`',
-                        SendMessages: '\`Enviar mensagens\`',
-                        SendTTSMessages: '\`Enviar mensagens em tts\`',
-                        ManageMessages: '\`Gerenciar mensagens\`',
-                        EmbedLinks: '\`Enviar links\`',
-                        AttachFiles: '\`Enviar anexos\`',
-                        ReadMessageHistory: '\`Ver histórico de mensagens\`',
-                        MentionEveryone: '\`Mencionar everyone e cargos\`',
-                        UseExternalEmojis: '\`Usar emojis externos\`',
-                        UseExternalStickers: '\`Usar figurinhas externas\`',
-                        ViewGuildInsights: '\`Ver análises do servidor\`',
-                        Connect: "\`Conectar em call's\`",
-                        Speak: `\`Falar em call's\``,
-                        MuteMembers: `\`Mutar membros\``,
-                        DeafenMembers: `\`Ensurdecer membros\``,
-                        MoveMembers: `\`Mover membros\``,
-                        UseVAD: `\`Utilizar detecção de voz\``,
-                        ChangeNickname: `\`Alterar apelido\``,
-                        ManageNicknames: `\`Gerenciar apelidos\``,
-                        ManageRoles: `\`Gerenciar cargos\``,
-                        ManageWebhooks: `\`Gerenciar webhooks\``,
-                        ManageEmojisAndStickers: `\`Gerenciar emojis e figurinhas\``,
-                        UseApplicationCommands: `\`Utilizar comandos slashs (/)\``,
-                        RequestToSpeak: `\`Pedir para falar\``,
-                        ManageEvents: `\`Gerenciar eventos\``,
-                        ManageThreads: `\`Gerenciar threads\``,
-                        CreatePublicThreads: `\`Criar threads públicas\``,
-                        CreatePrivateThreads: `\`Criar threads privadas\``,
-                        SendMessagesInThreads: `\`Falar em threads\``,
-                        UseEmbeddedActivities: `\`Iniciar atividades\``,
-                        ModerateMembers: `\`Gerenciar moderação do servidor\``
+                        CreateInstantInvite: `\`${lang.msg260}\``,
+                        KickMembers: `\`${lang.msg261}\``,
+                        BanMembers: `\`${lang.msg262}\``,
+                        Administrator: `\`${lang.msg263}\``,
+                        ManageChannels: `\`${lang.msg264}\``,
+                        ManageGuild: `\`${lang.msg265}\``,
+                        AddReactions: `\`${lang.msg266}\``,
+                        ViewAuditLog: `\`${lang.msg267}\``,
+                        PrioritySpeaker: `\`${lang.msg268}\``,
+                        Stream: `\`${lang.msg269}\``,
+                        ViewChannel: `\`${lang.msg270}\``,
+                        SendMessages: `\`${lang.msg271}\``,
+                        SendTTSMessages: `\`${lang.msg272}\``,
+                        ManageMessages: `\`${lang.msg273}\``,
+                        EmbedLinks: `\`${lang.msg274}\``,
+                        AttachFiles: `\`${lang.msg275}\``,
+                        ReadMessageHistory: `\`${lang.msg276}\``,
+                        MentionEveryone: `\`${lang.msg277}\``,
+                        UseExternalEmojis: `\`${lang.msg278}\``,
+                        UseExternalStickers: `\`${lang.msg279}\``,
+                        ViewGuildInsights: `\`${lang.msg280}\``,
+                        Connect: `\`${lang.msg281}\``,
+                        Speak: `\`${lang.msg282}\``,
+                        MuteMembers: `\`${lang.msg283}\``,
+                        DeafenMembers: `\`${lang.msg284}\``,
+                        MoveMembers: `\`${lang.msg285}\``,
+                        UseVAD: `\`${lang.msg286}\``,
+                        ChangeNickname: `\`${lang.msg287}\``,
+                        ManageNicknames: `\`${lang.msg288}\``,
+                        ManageRoles: `\`${lang.msg289}\``,
+                        ManageWebhooks: `\`${lang.msg290}\``,
+                        ManageEmojisAndStickers: `\`${lang.msg291}\``,
+                        UseApplicationCommands: `\`${lang.msg292}\``,
+                        RequestToSpeak: `\`${lang.msg293}\``,
+                        ManageEvents: `\`${lang.msg294}\``,
+                        ManageThreads: `\`${lang.msg295}\``,
+                        CreatePublicThreads: `\`${lang.msg296}\``,
+                        CreatePrivateThreads: `\`${lang.msg297}\``,
+                        SendMessagesInThreads: `\`${lang.msg298}\``,
+                        UseEmbeddedActivities: `\`${lang.msg299}\``,
+                        ModerateMembers: `\`${lang.msg300}\``,
+
                     }
 
 
@@ -1028,7 +1069,7 @@ module.exports = {
                         .setTitle(`${list.split(",").join(" ")}`)
                         .setAuthor({ name: `${userDataNameGlobal}` })
                         .setThumbnail(AvatarUser)
-                        .setFooter({ text: `Sobre mim: ${descricaoUsuario}` })
+                        .setFooter({ text: `${lang.msg232} ${descricaoUsuario}` })
                         .setFields(
                             {
                                 name: '<:crvt:1179217380715544668> Tag',
@@ -1041,12 +1082,12 @@ module.exports = {
                                 inline: true
                             },
                             {
-                                name: '<:crvt:1179215960754896977> Data de criação da conta',
+                                name: `<:crvt:1179215960754896977> ${lang.msg233}`,
                                 value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
                                 inline: false
                             },
                             {
-                                name: '<:crvt:1179215962839453817> Entrou em',
+                                name: `<:crvt:1179215962839453817> ${lang.msg234}`,
                                 value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
                                 inline: false
                             },
@@ -1070,12 +1111,12 @@ module.exports = {
                             .setColor('#41b2b0')
                             .addFields(
                                 {
-                                    name: 'Maior Cargo:',
+                                    name: `${lang.msg239}`,
                                     value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
                                     inline: false
                                 },
                                 {
-                                    name: `Permissões de ${membro.username}`,
+                                    name: `${lang.msg240} ${membro.username}`,
                                     value: `${permsArray.join(', ')}`
                                 }
                             )
@@ -1088,35 +1129,57 @@ module.exports = {
 
                         collector.on('collect', async (i) => {
 
-                            if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+                            if (i.user.id != interaction.user.id)
+                                return i.reply({
+                                    content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                    ephemeral: true
+                                })
 
                             i.deferUpdate()
                             switch (i.customId) {
 
                                 case `infos`:
-                                    m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarBannerPermissão, btnPaginaInicial]
+                                    })
                                     break;
 
                                 case `avatar`:
-                                    m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                    m.edit({
+                                        embeds: [avatar],
+                                        components: [btnVoltar]
+                                    })
                                     break;
 
 
                                 case `voltar`:
-                                    m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarBannerPermissão, btnPaginaInicial]
+                                    })
                                     break;
 
 
                                 case `banner`:
-                                    m.edit({ embeds: [banner], components: [btnVoltar] })
+                                    m.edit({
+                                        embeds: [banner],
+                                        components: [btnVoltar]
+                                    })
                                     break;
 
                                 case `verPerms`:
-                                    m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                    m.edit({
+                                        embeds: [embedPerms],
+                                        components: [btnVoltar]
+                                    })
                                     break;
 
                                 case `inicial`:
-                                    m.edit({ embeds: [embed], components: [btnInfo] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnInfo]
+                                    })
                                     break;
 
 
@@ -1132,12 +1195,12 @@ module.exports = {
                             .setColor('#41b2b0')
                             .addFields(
                                 {
-                                    name: 'Maior Cargo:',
+                                    name: `${lang.msg239}`,
                                     value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
                                     inline: false
                                 },
                                 {
-                                    name: `Permissões de ${membro.username}`,
+                                    name: `${lang.msg240} ${membro.username}`,
                                     value: `${permsArray.join(', ')}`
                                 }
                             )
@@ -1156,7 +1219,11 @@ module.exports = {
 
                         collector.on('collect', async (i) => {
 
-                            if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+                            if (i.user.id != interaction.user.id)
+                                return i.reply({
+                                    content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                    ephemeral: true
+                                })
 
                             i.deferUpdate()
                             switch (i.customId) {
@@ -1164,23 +1231,38 @@ module.exports = {
 
 
                                 case `infos`:
-                                    m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarPermissão, btnPaginaInicial]
+                                    })
                                     break;
 
                                 case `avatar`:
-                                    m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                    m.edit({
+                                        embeds: [avatar],
+                                        components: [btnVoltar]
+                                    })
                                     break;
 
                                 case `voltar`:
-                                    m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarPermissão, btnPaginaInicial]
+                                    })
                                     break;
 
                                 case `verPerms`:
-                                    m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                    m.edit({
+                                        embeds: [embedPerms],
+                                        components: [btnVoltar]
+                                    })
                                     break;
 
                                 case `inicial`:
-                                    m.edit({ embeds: [embed], components: [btnInfo] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnInfo]
+                                    })
                                     break;
 
 
@@ -1206,47 +1288,47 @@ module.exports = {
 
 
                     const permsObj = {
-                        CreateInstantInvite: '\`Criar convite instantâneo\`',
-                        KickMembers: '\`Expulsar membros\`',
-                        BanMembers: '\`Banir membros\`',
-                        Administrator: '\`Administrador\`',
-                        ManageChannels: '\`Gerenciar canais\`',
-                        ManageGuild: '\`Gerenciar servidor\`',
-                        AddReactions: '\`Adicionar reações\`',
-                        ViewAuditLog: '\`Ver registro de auditoria\`',
-                        PrioritySpeaker: '\`Voz Prioritária\`',
-                        Stream: '\`Ao vivo\`',
-                        ViewChannel: '\`Ver canais\`',
-                        SendMessages: '\`Enviar mensagens\`',
-                        SendTTSMessages: '\`Enviar mensagens em tts\`',
-                        ManageMessages: '\`Gerenciar mensagens\`',
-                        EmbedLinks: '\`Enviar links\`',
-                        AttachFiles: '\`Enviar anexos\`',
-                        ReadMessageHistory: '\`Ver histórico de mensagens\`',
-                        MentionEveryone: '\`Mencionar everyone e cargos\`',
-                        UseExternalEmojis: '\`Usar emojis externos\`',
-                        UseExternalStickers: '\`Usar figurinhas externas\`',
-                        ViewGuildInsights: '\`Ver análises do servidor\`',
-                        Connect: "\`Conectar em call's\`",
-                        Speak: `\`Falar em call's\``,
-                        MuteMembers: `\`Mutar membros\``,
-                        DeafenMembers: `\`Ensurdecer membros\``,
-                        MoveMembers: `\`Mover membros\``,
-                        UseVAD: `\`Utilizar detecção de voz\``,
-                        ChangeNickname: `\`Alterar apelido\``,
-                        ManageNicknames: `\`Gerenciar apelidos\``,
-                        ManageRoles: `\`Gerenciar cargos\``,
-                        ManageWebhooks: `\`Gerenciar webhooks\``,
-                        ManageEmojisAndStickers: `\`Gerenciar emojis e figurinhas\``,
-                        UseApplicationCommands: `\`Utilizar comandos slashs (/)\``,
-                        RequestToSpeak: `\`Pedir para falar\``,
-                        ManageEvents: `\`Gerenciar eventos\``,
-                        ManageThreads: `\`Gerenciar threads\``,
-                        CreatePublicThreads: `\`Criar threads públicas\``,
-                        CreatePrivateThreads: `\`Criar threads privadas\``,
-                        SendMessagesInThreads: `\`Falar em threads\``,
-                        UseEmbeddedActivities: `\`Iniciar atividades\``,
-                        ModerateMembers: `\`Gerenciar moderação do servidor\``
+                        CreateInstantInvite: `\`${lang.msg260}\``,
+                        KickMembers: `\`${lang.msg261}\``,
+                        BanMembers: `\`${lang.msg262}\``,
+                        Administrator: `\`${lang.msg263}\``,
+                        ManageChannels: `\`${lang.msg264}\``,
+                        ManageGuild: `\`${lang.msg265}\``,
+                        AddReactions: `\`${lang.msg266}\``,
+                        ViewAuditLog: `\`${lang.msg267}\``,
+                        PrioritySpeaker: `\`${lang.msg268}\``,
+                        Stream: `\`${lang.msg269}\``,
+                        ViewChannel: `\`${lang.msg270}\``,
+                        SendMessages: `\`${lang.msg271}\``,
+                        SendTTSMessages: `\`${lang.msg272}\``,
+                        ManageMessages: `\`${lang.msg273}\``,
+                        EmbedLinks: `\`${lang.msg274}\``,
+                        AttachFiles: `\`${lang.msg275}\``,
+                        ReadMessageHistory: `\`${lang.msg276}\``,
+                        MentionEveryone: `\`${lang.msg277}\``,
+                        UseExternalEmojis: `\`${lang.msg278}\``,
+                        UseExternalStickers: `\`${lang.msg279}\``,
+                        ViewGuildInsights: `\`${lang.msg280}\``,
+                        Connect: `\`${lang.msg281}\``,
+                        Speak: `\`${lang.msg282}\``,
+                        MuteMembers: `\`${lang.msg283}\``,
+                        DeafenMembers: `\`${lang.msg284}\``,
+                        MoveMembers: `\`${lang.msg285}\``,
+                        UseVAD: `\`${lang.msg286}\``,
+                        ChangeNickname: `\`${lang.msg287}\``,
+                        ManageNicknames: `\`${lang.msg288}\``,
+                        ManageRoles: `\`${lang.msg289}\``,
+                        ManageWebhooks: `\`${lang.msg290}\``,
+                        ManageEmojisAndStickers: `\`${lang.msg291}\``,
+                        UseApplicationCommands: `\`${lang.msg292}\``,
+                        RequestToSpeak: `\`${lang.msg293}\``,
+                        ManageEvents: `\`${lang.msg294}\``,
+                        ManageThreads: `\`${lang.msg295}\``,
+                        CreatePublicThreads: `\`${lang.msg296}\``,
+                        CreatePrivateThreads: `\`${lang.msg297}\``,
+                        SendMessagesInThreads: `\`${lang.msg298}\``,
+                        UseEmbeddedActivities: `\`${lang.msg299}\``,
+                        ModerateMembers: `\`${lang.msg300}\``,
                     }
 
 
@@ -1258,7 +1340,7 @@ module.exports = {
                         // .setTitle(`${list.split(",").join(" ")}`)
                         .setAuthor({ name: `${userDataNameGlobal}` })
                         .setThumbnail(AvatarUser)
-                        .setFooter({ text: `Sobre mim: ${descricaoUsuario}` })
+                        .setFooter({ text: `${lang.msg232} ${descricaoUsuario}` })
                         .setFields(
                             {
                                 name: '<:crvt:1179217380715544668> Tag',
@@ -1271,12 +1353,12 @@ module.exports = {
                                 inline: true
                             },
                             {
-                                name: '<:crvt:1179215960754896977> Data de criação da conta',
+                                name: `<:crvt:1179215960754896977> ${lang.msg233}`,
                                 value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
                                 inline: false
                             },
                             {
-                                name: '<:crvt:1179215962839453817> Entrou em',
+                                name: `<:crvt:1179215962839453817> ${lang.msg234}`,
                                 value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
                                 inline: false
                             },
@@ -1300,12 +1382,12 @@ module.exports = {
                             .setColor('#41b2b0')
                             .addFields(
                                 {
-                                    name: 'Maior Cargo:',
+                                    name: `${lang.msg239}`,
                                     value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
                                     inline: false
                                 },
                                 {
-                                    name: `Permissões de ${membro.username}`,
+                                    name: `${lang.msg240} ${membro.username}`,
                                     value: `${permsArray.join(', ')}`
                                 }
                             )
@@ -1318,35 +1400,57 @@ module.exports = {
 
                         collector.on('collect', async (i) => {
 
-                            if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+                            if (i.user.id != interaction.user.id)
+                                return i.reply({
+                                    content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                    ephemeral: true
+                                })
 
                             i.deferUpdate()
                             switch (i.customId) {
 
                                 case `infos`:
-                                    m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarBannerPermissão, btnPaginaInicial]
+                                    })
                                     break;
 
                                 case `avatar`:
-                                    m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                    m.edit({
+                                        embeds: [avatar],
+                                        components: [btnVoltar]
+                                    })
                                     break;
 
 
                                 case `voltar`:
-                                    m.edit({ embeds: [embed], components: [btnAvatarBannerPermissão, btnPaginaInicial] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarBannerPermissão, btnPaginaInicial]
+                                    })
                                     break;
 
 
                                 case `banner`:
-                                    m.edit({ embeds: [banner], components: [btnVoltar] })
+                                    m.edit({
+                                        embeds: [banner],
+                                        components: [btnVoltar]
+                                    })
                                     break;
 
                                 case `verPerms`:
-                                    m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                    m.edit({
+                                        embeds: [embedPerms],
+                                        components: [btnVoltar]
+                                    })
                                     break;
 
                                 case `inicial`:
-                                    m.edit({ embeds: [embed], components: [btnInfo] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnInfo]
+                                    })
                                     break;
 
 
@@ -1364,12 +1468,12 @@ module.exports = {
                             .setColor('#41b2b0')
                             .addFields(
                                 {
-                                    name: 'Maior Cargo:',
+                                    name: `${lang.msg239}`,
                                     value: `${member.roles.cache.sort((a, b) => b.position - a.position).first()}`,
                                     inline: false
                                 },
                                 {
-                                    name: `Permissões de ${membro.username}`,
+                                    name: `${lang.msg240} ${membro.username}`,
                                     value: `${permsArray.join(', ')}`
                                 }
                             )
@@ -1379,7 +1483,11 @@ module.exports = {
                             .setImage(AvatarUser)
                             .setColor("#41b2b0")
 
-                        const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
+                        const m = await interaction.reply({
+                            embeds: [embed],
+                            components: [btnInfo],
+                            fetchReply: true
+                        })
 
 
 
@@ -1388,30 +1496,49 @@ module.exports = {
 
                         collector.on('collect', async (i) => {
 
-                            if (i.user.id != interaction.user.id) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/user info\`\` para vizualizar seu perfil.`, ephemeral: true })
+                            if (i.user.id != interaction.user.id)
+                                return i.reply({
+                                    content: `${lang.msg241} ${user}\n${lang.msg242}`,
+                                    ephemeral: true
+                                })
 
                             i.deferUpdate()
                             switch (i.customId) {
 
 
                                 case `infos`:
-                                    m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarPermissão, btnPaginaInicial]
+                                    })
                                     break;
 
                                 case `avatar`:
-                                    m.edit({ embeds: [avatar], components: [btnVoltar] })
+                                    m.edit({
+                                        embeds: [avatar],
+                                        components: [btnVoltar]
+                                    })
                                     break;
 
                                 case `voltar`:
-                                    m.edit({ embeds: [embed], components: [btnAvatarPermissão, btnPaginaInicial] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnAvatarPermissão, btnPaginaInicial]
+                                    })
                                     break;
 
                                 case `verPerms`:
-                                    m.edit({ embeds: [embedPerms], components: [btnVoltar] })
+                                    m.edit({
+                                        embeds: [embedPerms],
+                                        components: [btnVoltar]
+                                    })
                                     break;
 
                                 case `inicial`:
-                                    m.edit({ embeds: [embed], components: [btnInfo] })
+                                    m.edit({
+                                        embeds: [embed],
+                                        components: [btnInfo]
+                                    })
                                     break;
 
 
@@ -1424,6 +1551,11 @@ module.exports = {
             }
         }
 
-        else if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+        else if (interaction.channel.id !== cmd1) {
+            interaction.reply({
+                content: `${lang.alertCanalErrado} <#${cmd1}>.`,
+                ephemeral: true
+            })
+        }
     }
 }

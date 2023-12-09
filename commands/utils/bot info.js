@@ -4,9 +4,10 @@ const { EmbedBuilder, Client, version } = require("discord.js");
 const { readdirSync } = require("fs");
 require("moment-duration-format");
 const os = require("os");
+const idioma = require("../../database/models/language")
 
 module.exports = {
-    name: "lexa",
+    name: "grove",
     description: 'Veja info sobre mim.',
     options: [
         {
@@ -20,19 +21,33 @@ module.exports = {
 
     run: async (client, interaction, args) => {
 
+
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({
+            content: `${lang.alertCommandos}`,
+            ephemeral: true
+        })
 
 
         let cmd1 = cmd.canal1
 
         if (cmd1 === null || cmd1 === true || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
-          
-            
+
+
             var commands = [];
             readdirSync("././commands/").forEach((dir) => {
                 var dircmds = readdirSync(`././commands/${dir}/`).filter((file) =>
@@ -43,96 +58,98 @@ module.exports = {
             });
 
             const embed = new discord.EmbedBuilder()
-                .setAuthor({ name: `${interaction.user.username} Status/Informações!`, iconURL: client.user.displayAvatarURL() })
+                .setAuthor({ name: `${interaction.user.username} ${lang.msg157}`, iconURL: client.user.displayAvatarURL() })
                 .addFields(
                     {
-                        name: "Nome",
+                        name: `${lang.msg158}`,
                         value: `┕ \`${client.user.username}\``,
                         inline: true,
                     },
                     {
-                        name: "Developers",
+                        name: `${lang.msg159}`,
                         value: `┕ <@424244967893106699>`,
                         inline: true,
                     },
                     {
-                        name: "Criação",
+                        name: `${lang.msg160}`,
                         value: `<t:${Math.round(client.user.createdTimestamp / 1000)}>`,
                         inline: true,
                     },
                     {
-                        name: "**Gerenciando**",
-                        value: `​ ┕ \`${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)}\`Usuários`,
+                        name: `**${lang.msg161}**`,
+                        value: `​ ┕ \`${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)}\`${lang.msg161}`,
                         inline: true,
                     },
                     {
-                        name: "**Servidores**",
+                        name: `**${lang.msg163}**`,
                         value: `​ ┕ \`${client.guilds.cache.size}\``,
                         inline: true,
                     },
                     {
-                        name: "**Canais**",
+                        name: `**${lang.msg164}**`,
                         value: `​ ┕ \`${client.channels.cache.size}\``,
                         inline: true,
                     },
                     {
-                        name: "**Memory usanda**",
+                        name: `**${lang.msg165}**`,
                         value: `​ ┕ \`${Math.round(
                             process.memoryUsage().heapUsed / 1024 / 1024
                         )}mb\``,
                         inline: true,
                     },
                     {
-                        name: `Node.js Versão`,
+                        name: `${lang.msg166}`,
                         value: `┕ \`${process.version}\``,
                         inline: true,
                     },
                     {
-                        name: `Discord.js Versão`,
+                        name: `${lang.msg167}`,
                         value: `┕ \`${version}\``,
                         inline: true,
                     },
                     {
-                        name: `Comandos`,
+                        name: `${lang.msg168}`,
                         value: `┕ \`${commands.length}\``,
                         inline: true,
                     },
                     {
-                        name: `Plataforma`,
+                        name: `${lang.msg169}`,
                         value: `┕ ${os.type}`,
                         inline: true,
                     },
                     {
-                        name: `Cores`,
+                        name: `${lang.msg170}`,
                         value: `┕ ${os.cpus().length}`,
                         inline: true,
                     },
                     {
-                        name: `Model`,
+                        name: `${lang.msg171}`,
                         value: `┕ ${os.cpus()[0].model}`,
                         inline: true,
                     },
                     {
-                        name: `Valocidade`,
+                        name: `${lang.msg172}`,
                         value: `┕ ${os.cpus()[0].speed} MHz`,
                         inline: true,
                     },
                     {
-                        name: "Shards",
+                        name: `${lang.msg173}`,
                         value: `\`${client.options.shardCount}\``,
                         inline: true,
                     },
-                    
+
                 )
 
 
             interaction.reply({ embeds: [embed] })
 
         }
-        else
-
-
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+        else if (interaction.channel.id !== cmd1) {
+            interaction.reply({
+                content: `${lang.alertCanalErrado} <#${cmd1}>.`,
+                ephemeral: true
+            })
+        }
     }
 }
 

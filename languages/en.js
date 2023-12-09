@@ -1,23 +1,23 @@
 const language = {
 
-    ///MUSICA
-    msg1: "> \`-\` Currently not playing any music.",
-    msg2: "> \`+\` Music playback paused.",
-    msg3: "> \`+\` Music playback resumed.",
-    msg4: "> \`+\` Current song skipped.",
-    msg5: "> \`+\` Music playback stopped, and the bot disconnected.",
-    msg6: "> \`-\` AutoPlay is disabled.",
-    msg7: "> \`+\` AutoPlay is enabled.",
+    ///MUSIC
+    msg1: "> \`-\` There is currently no music playing.",
+    msg2: "> \`+\` Music playback has been paused.",
+    msg3: "> \`+\` Music playback has been resumed.",
+    msg4: "> \`+\` The current track has been skipped.",
+    msg5: "> \`+\` Music playback has been stopped, and the bot disconnected.",
+    msg6: "> \`-\` AutoPlay has been disabled.",
+    msg7: "> \`+\` AutoPlay is Active.",
     msg8: "Added",
     msg9: "songs from the playlist",
-    msg10: "Added to queue",
+    msg10: "Added to the queue",
     msg11: "Added by",
-    msg12: "**Record Label / Artist**",
+    msg12: "**Label / Artist**",
     msg13: "Duration",
     msg14: "No results found for your query.",
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    ///ECONOMIA
+    ///ECONOMY
     msg15: "You have already claimed daily rewards today! Please wait",
     msg16: "to claim again.",
     msg17: "> \`+\` You claimed **<:dollar_9729309:1178199735799119892>",
@@ -28,7 +28,7 @@ const language = {
     msg22: "GroveCoins**",
     msg23: "> \`-\` An error occurred while executing this command...",
     msg24: "Express Exploration",
-    msg25: "Complete Exploration",
+    msg25: "Full Exploration",
     msg26: "Return in",
     msg27: "minutes",
     msg28: "Only the person who executed the command",
@@ -37,21 +37,21 @@ const language = {
     msg31: "GroveCoins and <:eXP1:1059132345774510100> 10 EXP**",
     msg32: "Return in 8 minutes",
     msg33: "Reward Available",
-    msg34: "> \`+\` You have just explored the Pinwheel Galaxy, as a reward, I'm giving you a treasure of <:dollar_9729309:1178199735799119892>",
+    msg34: "> \`+\` You have just explored the Milky Way Galaxy, as a reward, I'm giving you a treasure of <:dollar_9729309:1178199735799119892>",
     msg35: "GroveCoins and <:eXP1:1059132345774510100> 30 EXP**",
     msg36: "Return in 30 minutes",
     msg37: "Reward Available",
-    msg38: "> \`-\` Have you begged too much today? Please wait more",
+    msg38: "> \`-\` Have you begged too much today? Wait more",
     msg39: "to beg again.",
     msg40: "> \`+\`You begged and received **<:dollar_9729309:1178199735799119892>",
     msg41: "GroveCoins**",
-    msg42: "> \`-\` <a:alert:1163274838111162499> This interaction is exclusive to:",
+    msg42: "> \`-\` <a:alerta:1163274838111162499> This interaction is only for:",
     msg43: "Use",
     msg44: "to view your profile.",
     msg46: "You already have this item! View and equip it in your",
     msg47: "You don't have enough <:dollar_9729309:1178199735799119892> GroveCoins for this purchase.",
-    msg48: "Congratulations, you've just acquired an item! View and use it in your",
-    msg49: "> \`+\` We're happy to have you in the Grove Daily Shop, where you can enhance your \`/perfil\` with <:dollar_9729309:1178199735799119892> GroveCoins.",
+    msg48: "Congratulations, you just acquired an item! View and use it in your",
+    msg49: "> \`+\` We're glad to have you in Grove's Daily Store, where you can enhance your \`/profile\` with <:dollar_9729309:1178199735799119892> GroveCoins.",
     msg50: "> \`-\` You don't have enough coins in your bank to withdraw.",
     msg51: "> \`-\` Enter a number above 0.",
     msg52: "Operation completed successfully.",
@@ -63,14 +63,122 @@ const language = {
     msg58: "Double!",
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ///AUTOMOD
+    msg59: "Loading your automod rule...",
+    msg60: "Block swear words, sexual content, and slander. Grove AutoMod Alert.",
+    msg61: "This message has been avoided by GroveAutoMod!",
+    msg62: "> \`-\` <a:alerta:1163274838111162499> You have reached the maximum number of AutoMod rules!",
+    msg63: "AutoMod Tool",
+    msg64: "• AutoMod Rule",
+    msg65: "> Offensive words added",
+    msg66: "Prevent the word",
+    msg67: "from being used. Grove AutoMod Alert.",
+    msg68: "> Keyword added",
+    msg69: "Avoid spam messages. Grove AutoMod Alert.",
+    msg70: "> Spam messages added",
+    msg71: "Avoid spam mentions. Grove AutoMod Alert.",
+    msg72: "> Mention spam added",
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///ROLES
+    msg73: "> \`-\` <a:alerta:1163274838111162499> Sorry, you can only set a text channel.",
+    msg74: "> \`-\` <a:alerta:1163274838111162499> The selected role is above or at the same hierarchical position as the Grove role. Grove doesn't have permission to add this role; please add the Grove role above this role.",
+    msg75: "Select the desired roles",
+    msg76: "> \`-\` <a:alerta:1163274838111162499> Your maximum selection cannot be greater than the number of configured roles.",
+    msg77: "Successfully sent!",
+    msg78: "Channel:",
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    msg79: "Cleanup completed",
+    msg80: "**Note:** You can only mass delete messages less than 14 days old.",
+    msg81: "Cleaned by:",
+    msg82: "AutoRole configured:",
+    msg83: "AutoRole updated:",
+    msg84: "Welcome Channel configured:",
+    msg85: "Welcome Channel updated:",
+    msg86: "Commands Channel configured:",
+    msg87: "Commands Channel updated:",
+    msg88: "Welcome Image configured:",
+    msg89: "Name:",
+    msg90: "Height:",
+    msg91: "Width:",
+    msg92: "Welcome Image updated:",
+    msg93: "Memes Channel configured:",
+    msg94: "Memes Channel updated:",
+
+    msg95: "Ticket Message",
+    msg96: "Title (To open a ticket)",
+    msg97: "Enter the title (First Line)",
+    msg98: "Message description (To open a ticket)",
+    msg99: "Enter the description.",
+    msg100: "Title (Inside the ticket)",
+    msg101: "Message description (Inside the ticket)",
+
+    msg102: "Hello",
+    msg103: "See how to configure my commands. Select a category below!",
+    msg104: "Note 1:",
+    msg105: "Commands that require roles higher than members do not have text channels defined for command usage.",
+    msg106: "Note 2:",
+    msg107: "We recommend using them in private text channels.",
+    msg108: "Note 3:",
+    msg109: "In your server's role settings, drag Grove to the top of all roles for all commands to work correctly. Illustrated image below.",
+    
+    msg110: "Select a category below.",
+    msg111: "Home Panel",
+    msg112: "Go back to the home page.",
+
+    msg113: "Welcome",
+    msg114: "configure the welcome message.",
+
+    msg115: "Welcome Image",
+    msg116: "configure a background image for Welcome.",
+    msg117: "Auto-Roles",
+    msg118: "configure automatic roles for new members.",
+    msg119: "Commands",
+    msg120: "configure my commands channel.",
+    msg121: "Memes",
+    msg122: "configure my memes channel.",
+
+    msg123: "Hello",
+    msg124: "see how to configure my memes channel:",
+    msg125: "Use:",
+    msg126: "Mention the text channel or paste its ID. After configuring the memes channel, only the /meme command will work in this text channel.",
+    msg127: "Configure Memes",
+
+    msg128: "Welcome Configuration",
+    msg129: "see how to configure my Welcome channel:",
+    msg130: "Mention the text channel or paste its ID. After configuring the welcome channel, all new users will receive a special greeting.",
+    
+    
+    msg131: "Commands Configuration",
+    msg132: "see how to configure my commands channel:",
+    msg133: "Mention the text channel or paste its ID. After configuring the commands channel, all my user interaction commands will only work in the configured text channel.",
+   
+    msg134: "AutoRole Configuration",
+    msg135: "see how to configure AutoRole:",
+    msg136: "Mention the role or paste its ID. After configuring the role, all new members will receive an automatic role.",
+    
+    msg137: "Welcome Background Configuration",
+    msg138: "See how to configure the background banner:",
+    msg139: "Attach a valid image.",
+    msg140: "",
+    msg141: "",
+    msg142: "",
+    msg143: "",
+    msg144: "",
+    msg145: "",
+    msg146: "",
+    msg147: "",
+    msg148: "",
+    msg149: "",
 
 
-    msg45: "Time's Up",
+    msg45: "Time is up",
 
-    alertMemes: "> \`-\` <a:alert:1163274838111162499> An Administrator has not yet configured the channel for meme usage!",
-    alertCanalErrado: "> \`-\` <a:alert:1163274838111162499> You are trying to use a command in the wrong text channel; try using it in the correct channel.",
-    alertCommandos: "> \`-\` <a:alert:1163274838111162499> An Administrator has not yet configured the channel for command usage!"
-
+    alertNoPermission: "> \`-\` <a:alerta:1163274838111162499> I cannot complete this command because you do not have permission.",
+    alertBotPermission: "> \`-\` <a:alerta:1163274838111162499> I cannot complete the command because I have not received permission to manage this server (Administrator)",
+    alertMemes: "> \`-\` <a:alerta:1163274838111162499> An Administrator has not configured the channel for meme usage yet!",
+    alertWrongChannel: "> \`-\` <a:alerta:1163274838111162499> You are trying to use a command in the wrong text channel, try using it in the correct channel.",
+    alertCommands: "> \`-\` <a:alerta:1163274838111162499> An Administrator has not configured the channel for command usage yet!"
 }
-
 module.exports = language;

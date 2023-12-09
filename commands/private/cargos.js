@@ -1,5 +1,7 @@
 const discord = require("discord.js")
 const cargos = require("../../database/models/cargos")
+const idioma = require("../../database/models/language")
+
 
 module.exports = {
     name: 'cargos',
@@ -101,9 +103,18 @@ module.exports = {
 
     run: async (client, interaction, args) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
 
 
-        if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+
+        if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
 
         const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -147,7 +158,7 @@ module.exports = {
                     continue;
                 }
                 if (chatList.type === 2) {
-                    return interaction.reply({ content: "\`\`\`❌ AVISO: Desculpe, você só pode configurar um canal de texto.\`\`\`", ephemeral: true });
+                    return interaction.reply({ content: `${lang.msg73}`, ephemeral: true });
                 }
             }
 
@@ -169,7 +180,7 @@ module.exports = {
                     continue;
                 }
                 if (cargoList.position >= botMember.roles.highest.position) {
-                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> O cargo selecionado está acima ou na mesma posição hierárquica do cargo da Lexa. A Lexa não tem permissão para adicionar esse cargo adicione o cargo da Lexa acima desse cargo.", ephemeral: true });
+                    return interaction.reply({ content: `${lang.msg74}`, ephemeral: true });
                 }
             }
 
@@ -186,7 +197,7 @@ module.exports = {
 
             const stringSelectMenu = new discord.StringSelectMenuBuilder()
                 .setCustomId('select2')
-                .setPlaceholder('Selecione os cargos desejado')
+                .setPlaceholder(`${lang.msg75}`)
 
             const currentCargos = [cargo1, cargo2, cargo3, cargo4, cargo5, cargo6, cargo7, cargo8, cargo9, cargo10].filter(cargo => cargo)
 
@@ -201,7 +212,7 @@ module.exports = {
             if (setmax <= currentCargos.length) {
                 stringSelectMenu.setMaxValues(setmax);
             } else {
-                return interaction.reply({ content: "> \`-\` AVISO: Seu máximo selecionado não pode ser maior do que a quantidade de cargos configurados.", ephemeral: true });
+                return interaction.reply({ content: `${lang.msg76}`, ephemeral: true });
             }
 
             stringSelectMenu.setMinValues(0)
@@ -272,11 +283,11 @@ module.exports = {
 
             })
 
-            await interaction.reply({ ephemeral: true, content: `> \`-\` <a:alerta:1163274838111162499> ${interaction.user},\n\n**dropdownRoles**, Enviado com sucesso!\n\n**Canal:** ${chat}\n**Logs:** ${logs}`, })
+            await interaction.reply({ ephemeral: true, content: `> \`-\` <a:alerta:1163274838111162499> ${interaction.user},\n\n**dropdownRoles**, ${lang.msg77}\n\n**${lang.msg78}** ${chat}\n**Logs:** ${logs}`, })
 
         } else {
 
-            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+            return interaction.reply({ content: `${lang.alertPermissãoBot}`, ephemeral: true })
         }
 
     }

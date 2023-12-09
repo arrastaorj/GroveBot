@@ -9,7 +9,7 @@ registerFont("./fonts/the.otf", { family: "the" })
 registerFont("./fonts/beaufortforlo.otf", { family: "beaufortforlo" })
 const translate = require("@iamtraction/google-translate");
 const { ApplicationCommandType, ApplicationCommandOptionType } = require("discord.js");
-
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: "league",
@@ -54,13 +54,26 @@ module.exports = {
 
     run: async (client, interaction, args) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         let subcommands = interaction.options.getSubcommand()
 
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({
+            content: `${lang.alertCommandos}`,
+            ephemeral: true
+        })
 
         let cmd1 = cmd.canal1
 
@@ -117,10 +130,10 @@ module.exports = {
 
 
                     let embed = new discord.EmbedBuilder()
-                        .setTitle(`Olá, invocador!`)
-                        .setDescription("Aqui está seu campeão e sua build")
+                        .setTitle(`${lang.msg181}`)
+                        .setDescription(`${lang.msg182}`)
                         .setImage(`http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg`)
-                        .setFooter({ text: "Se você não seguir a build tera 30 anos de azar!" })
+                        .setFooter({ text: `${lang.msg183}` })
 
 
                     let embed2 = new discord.EmbedBuilder()
@@ -652,10 +665,12 @@ module.exports = {
                         })
 
                     } catch (err) {
-                        return interaction.editReply({ content: `> \`-\` <a:alerta:1163274838111162499> Olá ${interaction.user}, O usuário \`${nick}\` nao foi encontrado! Por Favor verifique o nick e tente novamente.`, err, ephemeral: true })
+                        return interaction.editReply({
+                            content: `> \`-\` <a:alerta:1163274838111162499> ${lang.msg184} ${interaction.user}, ${lang.msg185} \`${nick}\` ${lang.msg186}`,
+                            err,
+                            ephemeral: true
+                        })
                     }
-
-
 
                     break
                 }
@@ -665,7 +680,11 @@ module.exports = {
 
         }
 
-        else
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+        else if (interaction.channel.id !== cmd1) {
+            interaction.reply({
+                content: `${lang.alertCanalErrado} <#${cmd1}>.`,
+                ephemeral: true
+            })
+        }
     }
 }

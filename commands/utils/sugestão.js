@@ -1,4 +1,6 @@
 const discord = require('discord.js')
+const idioma = require("../../database/models/language")
+
 
 module.exports = {
 
@@ -9,15 +11,22 @@ module.exports = {
 
     run: async (client, interaction) => {
 
-     
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
 
-        
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         const modal = new discord.ModalBuilder()
             .setCustomId('modal_sugestao')
-            .setTitle(`Olá usuário, Nos diga qual é a sua sugestão.`)
+            .setTitle(`${lang.msg230}`)
         const sugestao3 = new discord.TextInputBuilder()
             .setCustomId('sugestão')
-            .setLabel('Qual sua sugestão?')
+            .setLabel(`${lang.msg231}`)
             .setStyle(discord.TextInputStyle.Paragraph)
 
         const firstActionRow = new discord.ActionRowBuilder().addComponents(sugestao3)

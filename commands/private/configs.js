@@ -5,6 +5,8 @@ const meme = require("../../database/models/meme")
 const bemvindo = require("../../database/models/bemvindo")
 const fbv = require("../../database/models/fbv")
 const ticket = require("../../database/models/ticket")
+const idioma = require("../../database/models/language")
+
 
 module.exports = {
     name: "config",
@@ -157,11 +159,25 @@ module.exports = {
 
         let subcommands = interaction.options.getSubcommand()
 
+
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         switch (subcommands) {
 
             case "autorole": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({
+                    content: `${lang.alertNaoTemPermissão}`,
+                    ephemeral: true
+                })
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
                 const hasPermission = botMember.permissions.has("Administrator")
@@ -187,7 +203,10 @@ module.exports = {
                             continue;
                         }
                         if (cargoList.position >= botMember.roles.highest.position) {
-                            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> O cargo selecionado está acima ou na mesma posição hierárquica do cargo da Grove. A Grove não tem permissão para adicionar esse cargo adicione o cargo da Grove acima desse cargo.", ephemeral: true });
+                            return interaction.reply({
+                                content: `${lang.msg74}`,
+                                ephemeral: true
+                            })
                         }
                     }
 
@@ -238,7 +257,7 @@ module.exports = {
 
                         if (cargoNames.length > 0) {
                             let LogsAddUser = new discord.EmbedBuilder()
-                                .setDescription(`**AutoRole configurado:** \n\n> \`+\` ${cargoNames.join("\n> \`+\` ")}`)
+                                .setDescription(`**${lang.msg82}** \n\n> \`+\` ${cargoNames.join("\n> \`+\` ")}`)
                                 .setTimestamp()
                                 .setColor('13F000')
                                 .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -318,7 +337,7 @@ module.exports = {
 
                         if (cargoNames.length > 0) {
                             let LogsAddUser = new discord.EmbedBuilder()
-                                .setDescription(`**AutoRole atualizado:** \n\n> \`+\` ${cargoNames.join("\n> \`+\` ")}`)
+                                .setDescription(`**${lang.msg83}** \n\n> \`+\` ${cargoNames.join("\n> \`+\` ")}`)
                                 .setTimestamp()
                                 .setColor('13F000')
                                 .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -330,7 +349,10 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({
+                        content: `${lang.alertPermissãoBot}`,
+                        ephemeral: true
+                    })
                 }
 
                 break
@@ -338,7 +360,10 @@ module.exports = {
 
             case "bem-vindo": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({
+                    content: `${lang.alertNaoTemPermissão}`,
+                    ephemeral: true
+                })
 
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -369,7 +394,7 @@ module.exports = {
                         }
 
                         let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**Canal de Bem-Vindos configurado:** \n\n> \`+\` ${cargoNames}`)
+                            .setDescription(`**${lang.msg84}** \n\n> \`+\` ${cargoNames}`)
                             .setTimestamp()
                             .setColor('13F000')
                             .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -395,7 +420,7 @@ module.exports = {
                         }
 
                         let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**Canal de Bem-Vindos atualizado:** \n\n> \`+\` ${cargoNames}`)
+                            .setDescription(`**${lang.msg85}** \n\n> \`+\` ${cargoNames}`)
                             .setTimestamp()
                             .setColor('13F000')
                             .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -406,7 +431,10 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({
+                        content: `${lang.alertPermissãoBot}`,
+                        ephemeral: true
+                    })
                 }
 
                 break
@@ -415,7 +443,10 @@ module.exports = {
 
             case "comandos": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({
+                    content: `${lang.alertNaoTemPermissão}`,
+                    ephemeral: true
+                })
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
                 const hasPermission = botMember.permissions.has("Administrator")
@@ -445,7 +476,7 @@ module.exports = {
                         }
 
                         let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**Canal de comandos configurado:** \n\n> \`+\` ${cargoNames}`)
+                            .setDescription(`**${lang.msg86}** \n\n> \`+\` ${cargoNames}`)
                             .setTimestamp()
                             .setColor('13F000')
                             .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -471,7 +502,7 @@ module.exports = {
 
 
                         let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**Canal de comandos atualizado:** \n\n> \`+\` ${cargoNames}`)
+                            .setDescription(`**${lang.msg87}** \n\n> \`+\` ${cargoNames}`)
                             .setTimestamp()
                             .setColor('13F000')
                             .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -481,7 +512,10 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({
+                        content: `${lang.alertPermissãoBot}`,
+                        ephemeral: true
+                    })
                 }
 
                 break
@@ -491,7 +525,10 @@ module.exports = {
             //////// fbv Atualizado MongoDB
             case "fbv": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({
+                    content: `${lang.alertNaoTemPermissão}`,
+                    ephemeral: true
+                })
 
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -522,7 +559,7 @@ module.exports = {
                         }
 
                         let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**Imagem de Boas-Vindas configurada:** \n\n> \`+\` Nome: **${cmd1.name}** \n\n > \`+\` Altura: **${cmd1.height}** \n\n > \`+\` Largura: **${cmd1.width}**`)
+                            .setDescription(`**${lang.msg88}** \n\n> \`+\` ${lang.msg89} **${cmd1.name}** \n\n > \`+\` ${lang.msg90} **${cmd1.height}** \n\n > \`+\` ${lang.msg91} **${cmd1.width}**`)
                             .setImage(cmd1.url)
                             .setTimestamp()
                             .setColor('13F000')
@@ -549,7 +586,7 @@ module.exports = {
 
 
                         let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**Imagem de Boas-Vindas atualizado:** \n\n> \`+\` Nome: **${cmd1.name}** \n\n > \`+\` Altura: **${cmd1.height}** \n\n > \`+\` Largura: **${cmd1.width}**`)
+                            .setDescription(`**${lang.msg92}** \n\n> \`+\` ${lang.msg89} **${cmd1.name}** \n\n > \`+\` ${lang.msg90} **${cmd1.height}** \n\n > \`+\` ${lang.msg91} **${cmd1.width}**`)
                             .setImage(cmd1.url)
                             .setTimestamp()
                             .setColor('13F000')
@@ -560,7 +597,7 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({ content: `${lang.alertPermissãoBot}`, ephemeral: true })
                 }
 
                 break
@@ -569,7 +606,7 @@ module.exports = {
 
             case "memes": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -600,7 +637,7 @@ module.exports = {
                         }
 
                         let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**Canal de memes configurado:** \n\n> \`+\` ${cargoNames}`)
+                            .setDescription(`**${lang.msg93}** \n\n> \`+\` ${cargoNames}`)
                             .setTimestamp()
                             .setColor('13F000')
                             .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -626,7 +663,7 @@ module.exports = {
 
 
                         let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**Canal de memes atualizado:** \n\n> \`+\` ${cargoNames}`)
+                            .setDescription(`**${lang.msg94}** \n\n> \`+\` ${cargoNames}`)
                             .setTimestamp()
                             .setColor('13F000')
                             .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -636,7 +673,7 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({ content: `${lang.alertPermissãoBot}`, ephemeral: true })
                 }
 
                 break
@@ -644,7 +681,7 @@ module.exports = {
 
             case "ticket": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.Administrator)) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.`, ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.Administrator)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
                 const hasPermission = botMember.permissions.has("Administrator")
@@ -743,34 +780,34 @@ module.exports = {
 
                     let modal = new discord.ModalBuilder()
                         .setCustomId('modal_ticket')
-                        .setTitle('Mensagem Ticket')
+                        .setTitle(`${lang.msg95}`)
 
                     let titu = new discord.TextInputBuilder()
                         .setCustomId('titulo')
-                        .setLabel("Titulo (Para abrir ticket)")
+                        .setLabel(`${lang.msg96}`)
                         .setStyle(1)
-                        .setPlaceholder('Digite o titulo (Primeira Linha)')
+                        .setPlaceholder(`${lang.msg97}`)
                         .setRequired(false)
 
                     let desc = new discord.TextInputBuilder()
                         .setCustomId('descrição')
-                        .setLabel("Descrição da mensagem (Para abrir ticket)")
+                        .setLabel(`${lang.msg98}`)
                         .setStyle(2)
-                        .setPlaceholder('Digite a Descrição.')
+                        .setPlaceholder(`${lang.msg99}`)
                         .setRequired(false)
 
                     let titu02 = new discord.TextInputBuilder()
                         .setCustomId('titulo02')
-                        .setLabel("Titulo (Dentro do ticket)")
+                        .setLabel(`${lang.msg100}`)
                         .setStyle(1)
-                        .setPlaceholder('Digite o titulo (Primeira Linha)')
+                        .setPlaceholder(`${lang.msg97}`)
                         .setRequired(false)
 
                     let desc02 = new discord.TextInputBuilder()
                         .setCustomId('descrição02')
-                        .setLabel("Descrição da mensagem (Dentro do ticket)")
+                        .setLabel(`${lang.msg101}`)
                         .setStyle(2)
-                        .setPlaceholder('Digite a Descrição.')
+                        .setPlaceholder(`${lang.msg99}`)
                         .setRequired(false)
 
                     const titulo = new discord.ActionRowBuilder().addComponents(titu)
@@ -784,7 +821,7 @@ module.exports = {
 
                 } else {
 
-                    return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+                    return interaction.reply({ content: `${lang.alertPermissãoBot}`, ephemeral: true })
                 }
 
                 break
@@ -792,31 +829,34 @@ module.exports = {
 
             case "help": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({
+                    content: `${lang.alertNaoTemPermissão}`,
+                    ephemeral: true
+                })
 
 
                 let HelpEmbed = new discord.EmbedBuilder()
                     .setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL({ dynamic: true }) })
-                    .setDescription(`Olá ${interaction.user}, Veja como configurar meus comandos. Selecione uma categoria abaixo!`)
+                    .setDescription(`${lang.msg102} ${interaction.user}, ${lang.msg103}`)
                     .setColor("#41b2b0")
                     .addFields(
                         {
-                            name: '**Observação 1:**',
-                            value: `Comandos que necessitam de cargos superiores aos membros não tem canal de texto definidos para uso de comandos.`,
+                            name: `**${lang.msg104}**`,
+                            value: `${lang.msg105}`,
                             inline: false,
 
 
                         },
                         {
-                            name: '**Observação 2:**',
-                            value: `Recomendamos utilizalos em canal de texto privados.`,
+                            name: `**${lang.msg106}**`,
+                            value: `${lang.msg107}`,
                             inline: false,
 
 
                         },
                         {
-                            name: '**Observação 2:**',
-                            value: `\Nas configuraçãoes de cargos do seu servidor arraste a Grove para o topo de todos os cargos para que todos os comandos funcionem corretamente. Imagem ilustrativa abaixo.`,
+                            name: `**${lang.msg108}**`,
+                            value: `${lang.msg109}`,
                             inline: false,
 
 
@@ -830,43 +870,44 @@ module.exports = {
 
                 let painel = new discord.ActionRowBuilder().addComponents(new discord.StringSelectMenuBuilder()
                     .setCustomId('menu')
-                    .setPlaceholder('Selecione uma categoria abaixo.')
+                    .setPlaceholder(`${lang.msg110}`)
                     .addOptions([{
-                        label: 'Painel inicial',
-                        description: 'Volte para a pagina inicial.',
+                        label: `${lang.msg111}`,
+                        description: `${lang.msg112}`,
                         emoji: '<:voltar:1167104944420175984>',
                         value: 'home',
                     },
                     {
-                        label: 'Bem-Vindo(a)',
-                        description: 'configurar a menssagem de boas-vindas.',
-                        emoji: '<:discotoolsxyzicon1:1169631915083583569>',
-                        value: 'div',
+                        label: `${lang.msg113}`,
+                        description: `${lang.msg114}`,
+                        emoji: `<:discotoolsxyzicon1:1169631915083583569>`,
+                        value: `div`,
                     },
                     {
-                        label: 'Imagem de bem-vindo(a)',
-                        description: 'configurar uma imagem de fundo do Bem-Vindo(a).',
-                        emoji: '<:discotoolsxyzicon3:1169631785261486080>',
-                        value: 'util3',
+                        label: `${lang.msg115}`,
+                        description: `${lang.msg116}`,
+                        emoji: `<:discotoolsxyzicon3:1169631785261486080>`,
+                        value: `util3`,
                     },
                     {
-                        label: 'Auto-Roles',
-                        description: 'configurar cargos automatico para novos membros.',
-                        emoji: '<:discotoolsxyzicon5:1169631781604053124>',
-                        value: 'util2',
+                        label: `${lang.msg117}`,
+                        description: `${lang.msg118}`,
+                        emoji: `<:discotoolsxyzicon5:1169631781604053124>`,
+                        value: `util2`,
                     },
                     {
-                        label: 'Commandos',
-                        description: 'configurar meu canal de comandos.',
-                        emoji: '<:discotoolsxyzicon2:1169631787106967643>',
-                        value: 'util',
+                        label: `${lang.msg119}`,
+                        description: `${lang.msg120}`,
+                        emoji: `<:discotoolsxyzicon2:1169631787106967643>`,
+                        value: `util`,
                     },
                     {
-                        label: 'Memes',
-                        description: 'configurar meu canal de memes.',
-                        emoji: '<:discotoolsxyzicon:1169630230953082991>',
-                        value: 'mod',
+                        label: `${lang.msg121}`,
+                        description: `${lang.msg122}`,
+                        emoji: `<:discotoolsxyzicon:1169630230953082991>`,
+                        value: `mod`,
                     },
+
 
                     ])
                 )
@@ -895,18 +936,18 @@ module.exports = {
 
                             let ModEmbed = new discord.EmbedBuilder()
 
-                                .setTitle('SetMemes')
+                                .setTitle(`${lang.msg127}`)
                                 .setColor("#41b2b0")
 
 
                                 .setThumbnail(`${client.user.displayAvatarURL({ dynamic: true })}`)
 
-                                .setDescription(`Olá ${interaction.member}, veja como seta meu canal de memes:`)
+                                .setDescription(`${lang.msg123} ${interaction.member}, ${lang.msg124}`)
 
                                 .addFields(
                                     {
-                                        name: `Utilize: </config memes:1160583289464176694> `,
-                                        value: `Marque o canal de texto ou cole o ID. Após seta o canal de memes somente o comando /meme funcionara nesse canal de texto.`,
+                                        name: `${lang.msg125} </config memes:1160583289464176694> `,
+                                        value: `${lang.msg126}`,
                                         inline: false,
                                     }
                                 )
@@ -923,18 +964,18 @@ module.exports = {
 
                             let DivEmbed = new discord.EmbedBuilder()
 
-                                .setTitle('SetBemVindo.')
+                                .setTitle(`${lang.msg128}`)
                                 .setColor("#41b2b0")
 
 
                                 .setThumbnail(`${client.user.displayAvatarURL({ dynamic: true })}`)
 
-                                .setDescription(`Olá ${interaction.member}, veja como seta meu canal de Boas Vindas:`)
+                                .setDescription(`${lang.msg123} ${interaction.member}, ${lang.msg129}`)
 
                                 .addFields(
                                     {
-                                        name: `Utilize: </config bem-vindo:1160583289464176694>`,
-                                        value: `Marque o canal de texto ou cole o ID. Após seta o canal de bem vindo, todos novos usuarios receberam uma saldação especial.`,
+                                        name: `${lang.msg125} </config bem-vindo:1160583289464176694>`,
+                                        value: `${lang.msg130}`,
                                         inline: false,
                                     }
                                 )
@@ -953,18 +994,18 @@ module.exports = {
 
                             let UtilEmbed = new discord.EmbedBuilder()
 
-                                .setTitle('SetComandos.')
+                                .setTitle(`${lang.msg131}`)
                                 .setColor("#41b2b0")
 
 
                                 .setThumbnail(`${client.user.displayAvatarURL({ dynamic: true })}`)
 
-                                .setDescription(`Olá ${interaction.member}, veja como seta meu canal de comandos:`)
+                                .setDescription(`${lang.msg123} ${interaction.member}, ${lang.msg132}`)
 
                                 .addFields(
                                     {
-                                        name: `Utilize: </config comandos:1160583289464176694>`,
-                                        value: `Marque o canal de texto ou cole o ID. Após seta o canal de comandos, Todos os meu comandos de interação com o usuário so funcionaram no canal de texto setado.`,
+                                        name: `${lang.msg125} </config comandos:1160583289464176694>`,
+                                        value: `${lang.msg133}`,
                                         inline: false,
                                     },
                                 )
@@ -981,18 +1022,18 @@ module.exports = {
 
                             let UtilEmbed2 = new discord.EmbedBuilder()
 
-                                .setTitle('SetAutoRole.')
+                                .setTitle(`${lang.msg134}`)
                                 .setColor("#41b2b0")
 
 
                                 .setThumbnail(`${client.user.displayAvatarURL({ dynamic: true })}`)
 
-                                .setDescription(`Olá ${interaction.member}, veja como Configurar o AutoRole:`)
+                                .setDescription(`${lang.msg123} ${interaction.member}, ${lang.msg135}`)
 
                                 .addFields(
                                     {
-                                        name: `Utilize: </config autorole:1160583289464176694>`,
-                                        value: `Marque o cargo ou cole o ID. Após seta o cargo, Todos os novos membros receberão um cargo automatico.`,
+                                        name: `${lang.msg125} </config autorole:1160583289464176694>`,
+                                        value: `${lang.msg136}`,
                                         inline: false,
                                     },
                                 )
@@ -1007,16 +1048,16 @@ module.exports = {
 
                             let UtilEmbed3 = new discord.EmbedBuilder()
 
-                                .setTitle('setfb.')
+                                .setTitle(`${lang.msg137}`)
                                 .setColor("#41b2b0")
                                 .setThumbnail(`${client.user.displayAvatarURL({ dynamic: true })}`)
 
-                                .setDescription(`Olá ${interaction.member}, Veja como configurar o banner de fundo:`)
+                                .setDescription(`${lang.msg123} ${interaction.member}, ${lang.msg138}`)
 
                                 .addFields(
                                     {
-                                        name: `Utilize: </config fbv:1160583289464176694>`,
-                                        value: `Anexa um imagem valida.. (PNG/JPEG)`,
+                                        name: `${lang.msg125} </config fbv:1160583289464176694>`,
+                                        value: `${lang.msg139} (PNG/JPEG)`,
                                         inline: false,
                                     },
                                 )

@@ -4,6 +4,7 @@ const level = require("../../database/models/level")
 const { createCanvas, loadImage, registerFont } = require('canvas')
 const canvas = require("canvas")
 registerFont("./fonts/Pelita.otf", { family: "Pelita" })
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: "rank",
@@ -13,11 +14,25 @@ module.exports = {
 
     async run(client, interaction, args) {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd)
+            return interaction.reply({
+                content: `${lang.alertCommandos}`,
+                ephemeral: true
+            })
 
         let cmd1 = cmd.canal1
 
@@ -36,7 +51,11 @@ module.exports = {
 
 
             dataGlobal = dataGlobal.slice(0, 10)
-            if (!dataGlobal) return interaction.reply({ content: `este servido n tem rank`, ephemeral: true })
+            if (!dataGlobal)
+                return interaction.reply({
+                    content: `${lang.msg204}`,
+                    ephemeral: true
+                })
 
             const puestoUsuario = dataGlobal.findIndex(dataUser => dataUser.userId === interaction.user.id) + 1
 
@@ -408,9 +427,12 @@ module.exports = {
             return interaction.editReply({ files: [at] })
 
         }
-        else
-
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+        else if (interaction.channel.id !== cmd1) {
+            interaction.reply({
+                content: `${lang.alertCanalErrado} <#${cmd1}>.`,
+                ephemeral: true
+            })
+        }
 
     }
 }

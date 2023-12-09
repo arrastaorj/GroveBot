@@ -1,4 +1,5 @@
 const discord = require("discord.js")
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: "automod",
@@ -49,10 +50,20 @@ module.exports = {
 
     run: async (client, interaction, args) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         const { guild, options } = interaction
         const sub = options.getSubcommand()
 
-        if (!interaction.member.permissions.has(discord.PermissionsBitField.Flags.Administrator)) return await interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você não tem permissão para configurar o automod neste servidor`, ephemeral: true })
+        if (!interaction.member.permissions.has(discord.PermissionsBitField.Flags.Administrator)) return await interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
 
         const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -63,10 +74,10 @@ module.exports = {
             switch (sub) {
                 case "ofencivas":
 
-                    await interaction.reply({ content: `Carregando sua regra de automod...` })
+                    await interaction.reply({ content: `${lang.msg59}` })
 
                     const mod1 = await guild.autoModerationRules.create({
-                        name: `Bloqueie palavrões, conteúdo sexual e calúnias por meio da Lexa.`,
+                        name: `${lang.msg60}`,
                         creatorId: '1053482665942196224',
                         enabled: true,
                         eventType: 1,
@@ -81,13 +92,13 @@ module.exports = {
                                 metadata: {
                                     channel: interaction.channel,
                                     durationSeconds: 10,
-                                    customMessage: 'Esta mensagem foi evitada pela GroveAutoMod!'
+                                    customMessage: `${lang.msg61}`
                                 }
                             }
                         ]
                     }).catch(async err => {
                         setTimeout(async () => {
-                            return await interaction.editReply({ content: `> \`-\` <a:alerta:1163274838111162499> Você atingiu o número máximo de regras do AutoMod!`, ephemeral: true })
+                            return await interaction.editReply({ content: `${lang.msg62}`, ephemeral: true })
                         }, 2000)
                     })
 
@@ -97,8 +108,8 @@ module.exports = {
                         const embed = new discord.EmbedBuilder()
                             .setColor("#6dfef2")
                             .setTimestamp()
-                            .setAuthor({ name: `Ferramenta do AutoMod` })
-                            .addFields({ name: `• Regra do AutoMod`, value: `> Palavras ofencivas adicionada` })
+                            .setAuthor({ name: `${lang.msg63}` })
+                            .addFields({ name: `${lang.msg64}`, value: `${lang.msg65}` })
                             .setThumbnail("https://raw.githubusercontent.com/arrastaorj/flags/main/automod.png")
 
                         await interaction.editReply({ content: ``, embeds: [embed] })
@@ -108,11 +119,11 @@ module.exports = {
 
                 case 'palavra-chave':
 
-                    await interaction.reply({ content: `Carregando sua regra de automod...` })
+                    await interaction.reply({ content: `${lang.msg59}` })
                     const word = options.getString('palavra')
 
                     const mod2 = await guild.autoModerationRules.create({
-                        name: `Evite a palavra ${word} de ser usado pela Lexa`,
+                        name: `${lang.msg66} ${word} ${lang.msg67}`,
                         createId: '1053482665942196224',
                         enabled: true,
                         eventType: 1,
@@ -127,14 +138,14 @@ module.exports = {
                                 metadata: {
                                     channel: interaction.channel,
                                     durationSeconds: 10,
-                                    customMessage: 'Esta mensagem foi evitada pela GroveAutoMod'
+                                    customMessage: `${lang.msg61}`
                                 }
                             }
                         ]
                     }).catch(async err => {
                         setTimeout(async () => {
 
-                            return await interaction.editReply({ content: `> \`-\` <a:alerta:1163274838111162499> Você atingiu o número máximo de regras do AutoMod!`, ephemeral: true })
+                            return await interaction.editReply({ content: `${lang.msg62}`, ephemeral: true })
                         }, 2000)
                     })
 
@@ -144,8 +155,8 @@ module.exports = {
                         const embed = new discord.EmbedBuilder()
                             .setColor("#6dfef2")
                             .setTimestamp()
-                            .setAuthor({ name: `Ferramenta do AutoMod` })
-                            .addFields({ name: `• Regra do AutoMod`, value: `> palavra-chave adicionada` })
+                            .setAuthor({ name: `${lang.msg63}` })
+                            .addFields({ name: `${lang.msg64}`, value: `${lang.msg68}` })
                             .setThumbnail("https://raw.githubusercontent.com/arrastaorj/flags/main/automod.png")
 
                         await interaction.editReply({ content: ``, embeds: [embed] })
@@ -155,11 +166,11 @@ module.exports = {
 
                 case 'spam-mensagens':
 
-                    await interaction.reply({ content: `Carregando sua regra de automod...` })
+                    await interaction.reply({ content: `${lang.msg59}` })
 
 
                     const mod3 = await guild.autoModerationRules.create({
-                        name: `Evite mensagens de spam por meio da Lexa`,
+                        name: `${lang.msg69}`,
                         createId: '1053482665942196224',
                         enabled: true,
                         eventType: 1,
@@ -174,14 +185,14 @@ module.exports = {
                                 metadata: {
                                     channel: interaction.channel,
                                     durationSeconds: 10,
-                                    customMessage: 'Esta mensagem foi evitada pela GroveAutoMod'
+                                    customMessage: `${lang.msg61}`
                                 }
                             }
                         ]
                     }).catch(async err => {
                         setTimeout(async () => {
 
-                            return await interaction.editReply({ content: `> \`-\` <a:alerta:1163274838111162499> Você atingiu o número máximo de regras do AutoMod!`, ephemeral: true })
+                            return await interaction.editReply({ content: `${lang.msg62}`, ephemeral: true })
                         }, 2000)
                     })
 
@@ -191,8 +202,8 @@ module.exports = {
                         const embed = new discord.EmbedBuilder()
                             .setColor("#6dfef2")
                             .setTimestamp()
-                            .setAuthor({ name: `Ferramenta do AutoMod` })
-                            .addFields({ name: `• Regra do AutoMod`, value: `> spam-mensagens adicionada` })
+                            .setAuthor({ name: `${lang.msg63}` })
+                            .addFields({ name: `${lang.msg64}`, value: `${lang.msg70}` })
                             .setThumbnail("https://raw.githubusercontent.com/arrastaorj/flags/main/automod.png")
 
 
@@ -203,12 +214,12 @@ module.exports = {
 
                 case 'menção-spam':
 
-                    await interaction.reply({ content: `Carregando sua regra de automod...` })
+                    await interaction.reply({ content: `${lang.msg59}` })
 
                     const number = options.getNumber('número')
 
                     const mod4 = await guild.autoModerationRules.create({
-                        name: `Evite menções de spam por meio da Lexa`,
+                        name: `${lang.msg71}`,
                         createId: '1053482665942196224',
                         enabled: true,
                         eventType: 1,
@@ -223,14 +234,14 @@ module.exports = {
                                 metadata: {
                                     channel: interaction.channel,
                                     durationSeconds: 10,
-                                    customMessage: 'Esta mensagem foi evitada pela GroveAutoMod'
+                                    customMessage: `${lang.msg61}`
                                 }
                             }
                         ]
                     }).catch(async err => {
                         setTimeout(async () => {
 
-                            return await interaction.editReply({ content: `> \`-\` <a:alerta:1163274838111162499> Você atingiu o número máximo de regras do AutoMod!`, ephemeral: true })
+                            return await interaction.editReply({ content: `${lang.msg62}`, ephemeral: true })
                         }, 2000)
                     })
 
@@ -240,22 +251,21 @@ module.exports = {
                         const embed = new discord.EmbedBuilder()
                             .setColor("#6dfef2")
                             .setTimestamp()
-                            .setAuthor({ name: `Ferramenta do AutoMod` })
-                            .addFields({ name: `• Regra do AutoMod`, value: `> menção-spam adicionada` })
+                            .setAuthor({ name: `${lang.msg63}` })
+                            .addFields({ name: `${lang.msg64}`, value: `${lang.msg72}` })
                             .setThumbnail("https://raw.githubusercontent.com/arrastaorj/flags/main/automod.png")
 
                         await interaction.editReply({ content: ``, embeds: [embed] })
                     }, 3000)
 
-                  
+
 
             }
 
-    
 
         } else {
 
-            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)", ephemeral: true })
+            return interaction.reply({ content: `${lang.alertPermissãoBot}`, ephemeral: true })
         }
 
 
