@@ -2,6 +2,7 @@ const discord = require("discord.js")
 const ms = require("ms")
 const comandos = require("../../database/models/comandos")
 const User = require('../../database/models/economia')
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: 'implorar',
@@ -9,11 +10,21 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `${lang.alertCommandos}`, ephemeral: true })
 
 
         let cmd1 = cmd.canal1
@@ -38,25 +49,20 @@ module.exports = {
                     let timeLeft = ms(timeout - (Date.now() - data.begTimeout))
 
                     await interaction.reply({
-                        content: `${interaction.user}\n> \`-\` Você não ja implorou de mais hoje? Aguarde mais **${timeLeft}** para implorar novamente.`, ephemeral: true
+                        content: `${interaction.user}\n${lang.msg38} **${timeLeft}** ${lang.msg39}`, ephemeral: true
                     })
                 } else {
                     data.begTimeout = Date.now()
                     data.wallet += amount * 1
                     await data.save()
-                    await interaction.reply({ content: `${interaction.user}\n> \`+\`Você implorou e recebeu **<:dollar_9729309:1178199735799119892> ${amount.toLocaleString()} GroveCoins**` })
+                    await interaction.reply({ content: `${interaction.user}\n${lang.msg40} ${amount.toLocaleString()} ${lang.msg41}` })
                 }
 
             }
 
-
-
-
         }
         else
 
-
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
-
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `${lang.alertCanalErrado} <#${cmd1}>.`, ephemeral: true }) }
     }
 }

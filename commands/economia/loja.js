@@ -1,8 +1,8 @@
 const discord = require("discord.js")
-
 const schema = require("../../database/models/economia")
 const skin = require("../../database/models/skin")
 const comandos = require("../../database/models/comandos")
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: "loja",
@@ -11,12 +11,22 @@ module.exports = {
 
     run: async (client, interaction, args) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
 
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `${lang.alertCommandos}`, ephemeral: true })
 
 
         let cmd1 = cmd.canal1
@@ -198,7 +208,7 @@ module.exports = {
 
                 collector.on('collect', async (i) => {
 
-                    if (i.user != user) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/perfil\`\` para vizualizar seu perfil.`, ephemeral: true })
+                    if (i.user != user) return i.reply({ content: `${lang.msg42} ${user}\n> \`-\` ${lang.msg43} \`\`/perfil\`\` ${lang.msg44}`, ephemeral: true })
 
                     await i.deferUpdate();
 
@@ -255,13 +265,13 @@ module.exports = {
                         });
 
                         if (verif && verif[imgField]) {
-                            return await i.followUp({ content: `> \`-\` ${interaction.user} Você já possui esse item! Visualize e equipe no seu \`/perfil\`. `, ephemeral: true });
+                            return await i.followUp({ content: `> \`-\` ${interaction.user} ${lang.msg46} \`/perfil\`. `, ephemeral: true });
                         }
 
                         if (data.saldo < cost) {
-                            await i.followUp({ content: `> \`-\` ${interaction.user} Você não tem <:dollar_9729309:1178199735799119892> GroveCoins suficientes para essa compra.`, ephemeral: true });
+                            await i.followUp({ content: `> \`-\` ${interaction.user} ${lang.msg47}`, ephemeral: true });
                         } else {
-                            await i.followUp({ content: `> \`+\` ${interaction.user} Parabéns, você acabou de adquirir um item! Visualize e use no seu \`/perfil\`.`, ephemeral: true });
+                            await i.followUp({ content: `> \`+\` ${interaction.user} ${lang.msg48} \`/perfil\`.`, ephemeral: true });
 
                             data.saldo -= cost;
                             await data.save();
@@ -318,7 +328,7 @@ module.exports = {
 
                     for (const customId of customIds) {
                         if (i.customId === customId) {
-                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária do Grove, onde você pode aprimorar seu \`/perfil\` com as <:dollar_9729309:1178199735799119892> GroveCoins.`, ephemeral: true })
+                            await i.followUp({ content: `${lang.msg49}`, ephemeral: true })
                             break;
                         }
                     }
@@ -349,7 +359,7 @@ module.exports = {
 
                 collector.on('collect', async (i) => {
 
-                    if (i.user != user) return i.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Essa interação e somente do: ${user}\n> \`-\` Utilize \`\`/perfil\`\` para vizualizar seu perfil.`, ephemeral: true })
+                    if (i.user != user) return i.reply({ content: `${lang.msg42} ${user}\n> \`-\` ${lang.msg43} \`\`/perfil\`\` ${lang.msg44}`, ephemeral: true })
 
                     await i.deferUpdate();
 
@@ -406,13 +416,13 @@ module.exports = {
                         });
 
                         if (verif && verif[imgField]) {
-                            return await i.followUp({ content: `> \`-\` ${interaction.user} Você já possui esse item! Visualize e equipe no seu \`/perfil\`. `, ephemeral: true });
+                            return await i.followUp({ content: `> \`-\` ${interaction.user} ${lang.msg46} \`/perfil\`. `, ephemeral: true });
                         }
 
                         if (data.saldo < cost) {
-                            await i.followUp({ content: `> \`-\` ${interaction.user} Você não tem <:dollar_9729309:1178199735799119892> GroveCoins suficientes para essa compra.`, ephemeral: true });
+                            await i.followUp({ content: `> \`-\` ${interaction.user} ${lang.msg47}`, ephemeral: true });
                         } else {
-                            await i.followUp({ content: `> \`+\` ${interaction.user} Parabéns, você acabou de adquirir um item! Visualize e use no seu \`/perfil\`.`, ephemeral: true });
+                            await i.followUp({ content: `> \`+\` ${interaction.user} ${lang.msg48} \`/perfil\`.`, ephemeral: true });
 
                             data.saldo -= cost;
                             await data.save();
@@ -468,7 +478,7 @@ module.exports = {
 
                     for (const customId of customIds) {
                         if (i.customId === customId) {
-                            await i.followUp({ content: `> \`+\` Estamos felizes em tê-lo(a) na Loja Diária do Grove, onde você pode aprimorar seu \`/perfil\` com as <:dollar_9729309:1178199735799119892> GroveCoins.`, ephemeral: true })
+                            await i.followUp({ content: `${lang.msg49}`, ephemeral: true })
                             break;
                         }
                     }
@@ -481,7 +491,7 @@ module.exports = {
         else
 
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `${lang.alertCanalErrado} <#${cmd1}>.`, ephemeral: true }) }
 
 
     }

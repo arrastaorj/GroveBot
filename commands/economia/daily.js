@@ -2,6 +2,7 @@ const discord = require('discord.js')
 const User = require('../../database/models/economia')
 const ms = require("../../plugins/parseMs")
 const comandos = require("../../database/models/comandos")
+const idioma = require("../../database/models/language")
 
 
 module.exports = {
@@ -11,13 +12,21 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
 
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
 
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+
+        if (!cmd) return interaction.reply({ content: `${lang.alertCommandos}`, ephemeral: true })
 
 
         let cmd1 = cmd.canal1
@@ -46,7 +55,7 @@ module.exports = {
 
                         const timeLeft = ms(timeout - (Date.now() - user.lastDaily))
 
-                        interaction.reply({ content: `${interaction.user}\n> \`-\` Você já resgatou recompensas diárias hoje! Aguarde **${timeLeft.hours}h e ${timeLeft.minutes}m** Para resgata novamente.`, ephemeral: true })
+                        interaction.reply({ content: `${interaction.user}\n${lang.msg15} **${timeLeft.hours}h e ${timeLeft.minutes}m** ${lang.msg16}`, ephemeral: true })
                         return
                     }
 
@@ -61,7 +70,7 @@ module.exports = {
                 user.saldo += amount * 1
                 await user.save()
 
-                interaction.reply({ content: `${interaction.user}\n> \`+\` Você regatou **<:dollar_9729309:1178199735799119892> ${amount.toLocaleString()} GroveCoins**` })
+                interaction.reply({ content: `${interaction.user}\n${lang.msg17} ${amount.toLocaleString()} ${lang.msg18}` })
 
 
             } catch (error) {
@@ -71,6 +80,6 @@ module.exports = {
         else
 
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `${lang.alertCanalErrado} <#${cmd1}>.`, ephemeral: true }) }
     }
 }

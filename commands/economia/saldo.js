@@ -1,6 +1,7 @@
 const discord = require("discord.js")
 const comandos = require("../../database/models/comandos")
 const User = require('../../database/models/economia')
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: 'saldo',
@@ -17,11 +18,21 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `${lang.alertCommandos}`, ephemeral: true })
 
 
         let cmd1 = cmd.canal1
@@ -42,7 +53,7 @@ module.exports = {
 
                 if (user2) {
 
-                    await interaction.reply({ content: `${user}\n> \`+\` <:withdraw_8378797:1162537287188496434> Carteira: <:dollar_9729309:1178199735799119892> **${user2.saldo.toLocaleString()} LexaCoins** \n> \`+\` <:bank_7407955:1162534093997752420> Banco: <:dollar_9729309:1178199735799119892> **${user2.bank.toLocaleString()} GroveCoins**\n\n> \`+\` Membros <:star_4066310:1162534911211737098> **LC Primer** recebem **GroveCoins** em Dobro!` })
+                    await interaction.reply({ content: `${user}\n> \`+\` <:withdraw_8378797:1162537287188496434> ${lang.msg54} <:dollar_9729309:1178199735799119892> **${user2.saldo.toLocaleString()} GroveCoins** \n> \`+\` <:bank_7407955:1162534093997752420> ${lang.msg55} <:dollar_9729309:1178199735799119892> **${user2.bank.toLocaleString()} GroveCoins**\n\n> \`+\` ${lang.msg56} <:star_4066310:1162534911211737098> **GV Primer** ${lang.msg57} **GroveCoins** ${lang.msg58}` })
 
                 } else {
                     const newUser = new User({
@@ -62,7 +73,7 @@ module.exports = {
                     const user2 = await User.findOne(query)
 
 
-                    await interaction.reply({ content: `${user}\n> \`+\` <:withdraw_8378797:1162537287188496434> Carteira: <:dollar_9729309:1178199735799119892> **${user2.saldo.toLocaleString()} GroveCoins** \n> \`+\` <:bank_7407955:1162534093997752420> Banco: <:dollar_9729309:1178199735799119892> **${user2.bank.toLocaleString()} GroveCoins**\n\n> \`+\` Membros <:star_4066310:1162534911211737098> **LC Primer** recebem **GroveCoins** em Dobro!` })
+                    await interaction.reply({ content: `${user}\n> \`+\` <:withdraw_8378797:1162537287188496434> ${lang.msg54} <:dollar_9729309:1178199735799119892> **${user2.saldo.toLocaleString()} GroveCoins** \n> \`+\` <:bank_7407955:1162534093997752420> ${lang.msg55} <:dollar_9729309:1178199735799119892> **${user2.bank.toLocaleString()} GroveCoins**\n\n> \`+\` ${lang.msg56} <:star_4066310:1162534911211737098> **GV Primer** ${lang.msg57} **GroveCoins** ${lang.msg58}` })
 
 
 
@@ -76,7 +87,7 @@ module.exports = {
         else
 
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `${lang.alertCanalErrado} <#${cmd1}>.`, ephemeral: true }) }
 
     }
 }

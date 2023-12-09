@@ -3,6 +3,9 @@ const { GatewayIntentBits, Partials } = require('discord.js')
 require('dotenv').config()
 
 
+const config = require("./plugins/config")
+
+
 const { readdirSync } = require("fs")
 const Riffy = require("riffy")
 const { nodes } = require("./structures/configuration/index")
@@ -35,6 +38,8 @@ require('./handler')(client)
 const connectiondb = require("./database/connect")
 connectiondb.start()
 
+
+client.language = config.language || "pt";
 
 
 client.riffy = new Riffy.Riffy(client, nodes, {

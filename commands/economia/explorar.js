@@ -6,12 +6,24 @@ const User = require('../../database/models/economia')
 const Explorar = require('../../database/models/explorar')
 const comandos = require("../../database/models/comandos")
 
+const idioma = require("../../database/models/language")
+
 module.exports = {
     name: "explorar",
     description: "Participe de explorações para ganhar tesouros",
     type: discord.ApplicationCommandType.ChatInput,
 
     run: async (client, interaction, args) => {
+
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
 
         await interaction.deferReply({ fetchReply: true })
 
@@ -21,12 +33,12 @@ module.exports = {
         let btn1 = new discord.ActionRowBuilder().addComponents([
             new discord.ButtonBuilder()
                 .setStyle(ButtonStyle.Primary)
-                .setLabel("Exploração Expressa")
+                .setLabel(`${lang.msg24}`)
                 .setEmoji("<:explorador:1061082035176865853>")
                 .setCustomId("ex"),
             new discord.ButtonBuilder()
                 .setStyle(ButtonStyle.Primary)
-                .setLabel("Exploração Completa")
+                .setLabel(`${lang.msg25}`)
                 .setEmoji("<:lander:1061082037890596884>")
                 .setCustomId("exc")
 
@@ -66,7 +78,7 @@ module.exports = {
                     new discord.ButtonBuilder()
                         .setStyle(ButtonStyle.Primary)
                         .setDisabled(true)
-                        .setLabel(`Volte em ${timeLeft.minutes} minutos ${timeLeft.seconds}s`)
+                        .setLabel(`${lang.msg26} ${timeLeft.minutes} ${lang.msg27} ${timeLeft.seconds}s`)
                         .setEmoji("<:relogio:1061082925975736380>")
                         .setCustomId("ex"),
 
@@ -85,7 +97,7 @@ module.exports = {
                         new discord.ButtonBuilder()
                             .setStyle(ButtonStyle.Primary)
                             .setDisabled(true)
-                            .setLabel(`Volte em ${timeLeft.minutes} minutos ${timeLeft.seconds}s`)
+                            .setLabel(`${lang.msg26} ${timeLeft.minutes} ${lang.msg27} ${timeLeft.seconds}s`)
                             .setEmoji("<:relogio:1061082925975736380>")
                             .setCustomId("ex"),
 
@@ -105,20 +117,20 @@ module.exports = {
 
         collector.on('collect', async (i) => {
 
-            if (i.user.id != interaction.user.id) return i.reply({ content: `Somente a pessoa que executou o comando (\`${interaction.user.tag}\`) pode interagir com ele.`, ephemeral: true })
+            if (i.user.id != interaction.user.id) return i.reply({ content: `${lang.msg28} (\`${interaction.user.tag}\`) ${msg29}`, ephemeral: true })
 
 
             switch (i.customId) {
 
                 case `ex`:
 
-                    i.reply({ content: `> \`+\` Você acabou explorar a Galáxia de Andrômeda, Em recompensar por isso estou te dando um tesouro de <:dollar_9729309:1178199735799119892> **${amount.toLocaleString()} GroveCoins e <:eXP1:1059132345774510100> 10 EXP**`, ephemeral: true })
+                    i.reply({ content: `${lang.msg30} **${amount.toLocaleString()} ${lang.msg31}`, ephemeral: true })
 
                     let btn3 = new discord.ActionRowBuilder().addComponents([
                         new discord.ButtonBuilder()
                             .setStyle(ButtonStyle.Primary)
                             .setDisabled(true)
-                            .setLabel(`Volte em 8 minutos`)
+                            .setLabel(`${lang.msg32}`)
                             .setEmoji("<:relogio:1061082925975736380>")
                             .setCustomId("ex"),
 
@@ -128,7 +140,7 @@ module.exports = {
                         new discord.ButtonBuilder()
                             .setStyle(ButtonStyle.Primary)
                             .setDisabled(true)
-                            .setLabel(`Recompensa Disponível`)
+                            .setLabel(`${lang.msg33}`)
                             .setEmoji("<:relogio:1061082925975736380>")
                             .setCustomId("exxxx"),
 
@@ -164,13 +176,13 @@ module.exports = {
 
                 case `exc`:
 
-                    i.reply({ content: `> \`+\` Você acabou explorar a Galáxia do Rodamoinho, Em recompensar por isso estou te dando um tesouro de <:dollar_9729309:1178199735799119892> **${amount2.toLocaleString()} GroveCoins e <:eXP1:1059132345774510100> 30 EXP**`, ephemeral: true })
+                    i.reply({ content: `${lang.msg34} **${amount2.toLocaleString()} ${lang.msg35}`, ephemeral: true })
 
                     let btn4 = new discord.ActionRowBuilder().addComponents([
                         new discord.ButtonBuilder()
                             .setStyle(ButtonStyle.Primary)
                             .setDisabled(true)
-                            .setLabel(`Volte em 30 minutos`)
+                            .setLabel(`${lang.msg36}`)
                             .setCustomId("ex"),
 
                     ]);
@@ -179,7 +191,7 @@ module.exports = {
                         new discord.ButtonBuilder()
                             .setStyle(ButtonStyle.Primary)
                             .setDisabled(true)
-                            .setLabel(`Recompensa Disponível`)
+                            .setLabel(`${lang.msg37}`)
                             .setCustomId("exxxx"),
 
                     ]);
@@ -192,14 +204,14 @@ module.exports = {
                     })
 
                     if (!Verifc) {
-                        // Se Verifc não existir, crie um novo objeto com lastDaily2 definido.
+
                         Verifc = new Explorar({
                             guildId: interaction.guild.id,
                             userId: interaction.user.id,
                             lastDaily2: new Date(),
                         });
                     } else {
-                        // Se Verifc existe, apenas atualize a propriedade lastDaily2.
+
                         Verifc.lastDaily2 = new Date();
                     }
 

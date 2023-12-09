@@ -1,6 +1,7 @@
 const discord = require("discord.js")
 const comandos = require("../../database/models/comandos")
 const User = require('../../database/models/economia')
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: 'sacar',
@@ -18,11 +19,21 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `${lang.alertCommandos}`, ephemeral: true })
 
 
         let cmd1 = cmd.canal1
@@ -45,12 +56,12 @@ module.exports = {
 
                 if (withdrawAmount > data.bank) {
                     await interaction.reply({
-                        content: `${interaction.user}\n> \`-\` Você não tem tantas moedas em seu banco para sacar.`,
+                        content: `${interaction.user}\n${lang.msg50}`,
                         ephemeral: true,
                     })
                 } else if (withdrawAmount <= 0) {
                     await interaction.reply({
-                        content: `${interaction.user}\n> \`-\` Insira um número acima de 0.`,
+                        content: `${interaction.user}\n${lang.msg51}`,
                         ephemeral: true,
                     })
                 } else {
@@ -60,7 +71,7 @@ module.exports = {
 
                     await interaction.reply({
 
-                        content: `${interaction.user}\n> \`+\` <:download_9906560:1162869267591602327> Operação realizada com sucesso.\n> \`+\` Valor do saque: **<:dollar_9729309:1178199735799119892> ${withdrawAmount.toLocaleString()} GroveCoins**`,
+                        content: `${interaction.user}\n> \`+\` <:download_9906560:1162869267591602327> ${lang.msg52}\n> \`+\` ${lang.msg53} **<:dollar_9729309:1178199735799119892> ${withdrawAmount.toLocaleString()} GroveCoins**`,
 
                     })
                 }
@@ -71,7 +82,7 @@ module.exports = {
         else
 
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `${lang.alertCanalErrado} <#${cmd1}>.`, ephemeral: true }) }
 
 
     }

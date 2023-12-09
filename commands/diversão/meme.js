@@ -2,6 +2,8 @@ const discord = require("discord.js");
 const { images } = require("../../plugins/images.json")
 const meme = require("../../database/models/meme")
 
+const idioma = require("../../database/models/language")
+
 module.exports = {
     name: "meme",
     description: "Exibe memes aleatórios.",
@@ -9,18 +11,27 @@ module.exports = {
 
     async run(client, interaction, args) {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
 
         const cmd = await meme.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de memes!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `${lang.alertMemes}`, ephemeral: true })
 
         let cmd1 = cmd.canal1
 
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
-          
+
             const random = Math.floor(Math.random() * images.length)
             const randomMeme = images[random];
             const embed = new discord.EmbedBuilder()
@@ -32,7 +43,7 @@ module.exports = {
         }
         else
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `${lang.alertMemes2} <#${cmd1}>.`, ephemeral: true }) }
 
     }
 }

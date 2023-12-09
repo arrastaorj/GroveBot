@@ -1,6 +1,7 @@
 const discord = require("discord.js")
 const comandos = require("../../database/models/comandos")
 const User = require('../../database/models/economia')
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: 'depositar',
@@ -16,11 +17,21 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`)
+
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!`, ephemeral: true })
+        if (!cmd) return interaction.reply({ content: `${lang.alertCommandos}`, ephemeral: true })
 
 
         let cmd1 = cmd.canal1
@@ -42,9 +53,9 @@ module.exports = {
                 if (data) {
 
                     if (depositAmount > data.saldo) {
-                        await interaction.reply({ content: `${interaction.user}\n> \`-\` Você não tem tantas moedas na carteira para depositar.`, ephemeral: true })
+                        await interaction.reply({ content: `${interaction.user}\n${lang.msg19}`, ephemeral: true })
                     } else if (depositAmount <= 0) {
-                        await interaction.reply({ content: `${interaction.user}\n> \`-\` Insira um número acima de 0.`, ephemeral: true })
+                        await interaction.reply({ content: `${interaction.user}\n${lang.msg20}`, ephemeral: true })
                     } else {
                         data.saldo -= depositAmount * 1
 
@@ -52,20 +63,20 @@ module.exports = {
 
                         await data.save()
 
-                        await interaction.reply({ content: `${interaction.user}\n> \`+\` <:profits_2936758:1162527940022644916> Valor depositado com sucesso **<:dollar_9729309:1178199735799119892> ${depositAmount.toLocaleString()} GroveCoins**` })
+                        await interaction.reply({ content: `${interaction.user}\n${lang.msg21} ${depositAmount.toLocaleString()} ${lang.msg22}` })
                     }
 
                 }
 
             } catch (err) {
                 console.log(err)
-                await interaction.reply({ content: "> \`-\` Ocorreu um erro ao executar este comando...", ephemeral: true })
+                await interaction.reply({ content: `${lang.msg23}`, ephemeral: true })
             }
 
         }
         else
 
 
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Você estar tentando usar um comando no canal de texto errado, tente utiliza-lo no canal de <#${cmd1}>.`, ephemeral: true }) }
+            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `${lang.alertCanalErrado} <#${cmd1}>.`, ephemeral: true }) }
     }
 }

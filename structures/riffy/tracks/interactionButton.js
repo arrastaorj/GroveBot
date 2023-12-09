@@ -3,7 +3,22 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js")
 
 const { pauseRow, playRow, skipRowDisabled, disconnectRow } = require("../../../buttons/musicButtons")
 
+const idioma = require("../../../database/models/language")
+
+
 client.on('interactionCreate', async (interaction) => {
+
+    let lang = await idioma.findOne({ guildId: interaction.guild.id });
+
+    if (!lang || !lang.language) {
+
+        lang = { language: client.language };
+    }
+
+    lang = require(`../../../languages/${lang.language}.js`);
+
+
+
     if (!interaction.isButton()) return
 
     const player = client.riffy.players.get(interaction.guild.id)
@@ -14,7 +29,7 @@ client.on('interactionCreate', async (interaction) => {
             await interaction.deferUpdate()
 
             if (!player) return interaction.followUp({
-                content: `> \`-\` Não há música reproduzindo atualmente.`,
+                content: `${lang.msg1}`,
                 ephemeral: true
             })
 
@@ -23,7 +38,7 @@ client.on('interactionCreate', async (interaction) => {
                 components: [pauseRow]
             }).then(
                 interaction.followUp({
-                    content: `> \`+\` A reprodução da música foi pausada.`,
+                    content: `${lang.msg2}`,
                     ephemeral: true,
                 })
             )
@@ -33,7 +48,7 @@ client.on('interactionCreate', async (interaction) => {
             await interaction.deferUpdate()
 
             if (!player) return interaction.followUp({
-                content: `> \`-\` Não há música reproduzindo atualmente.`,
+                content: `${lang.msg1}`,
                 ephemeral: true
             })
 
@@ -43,7 +58,7 @@ client.on('interactionCreate', async (interaction) => {
                 components: [playRow]
             }).then(
                 interaction.followUp({
-                    content: `> \`+\` A reprodução da música foi retomada.`,
+                    content: `${lang.msg3}`,
                     ephemeral: true,
                 })
             )
@@ -54,7 +69,7 @@ client.on('interactionCreate', async (interaction) => {
             await interaction.deferUpdate()
 
             if (!player) return interaction.followUp({
-                content: `> \`-\` Não há música reproduzindo atualmente.`,
+                content: `${lang.msg1}`,
                 ephemeral: true
             })
 
@@ -64,7 +79,7 @@ client.on('interactionCreate', async (interaction) => {
                 components: [skipRowDisabled]
             }).then(
                 interaction.followUp({
-                    content: `> \`+\` A música atual foi pulada.`,
+                    content: `${lang.msg4}`,
                     ephemeral: true,
                 })
             )
@@ -74,7 +89,7 @@ client.on('interactionCreate', async (interaction) => {
             await interaction.deferUpdate()
 
             if (!player) return interaction.followUp({
-                content: `> \`-\` Não há música reproduzindo atualmente.`,
+                content: `${lang.msg1}`,
                 ephemeral: true
             })
 
@@ -84,7 +99,7 @@ client.on('interactionCreate', async (interaction) => {
                 components: [disconnectRow]
             }).then(
                 interaction.followUp({
-                    content: `> \`+\` A reprodução da música foi interrompida e o bot desconectado.`,
+                    content: `${lang.msg5}`,
                     ephemeral: true,
                 })
             )
@@ -95,7 +110,7 @@ client.on('interactionCreate', async (interaction) => {
             await interaction.deferUpdate()
 
             if (!player) return interaction.followUp({
-                content: `> \`-\` Não há música reproduzindo atualmente.`,
+                content: `${lang.msg1}`,
                 ephemeral: true
             })
 
@@ -104,13 +119,13 @@ client.on('interactionCreate', async (interaction) => {
             if (currentAutoplayStatus) {
                 player.autoplay(false)
                 await interaction.followUp({
-                    content: `> \`-\` O AutoPlay foi desativado.`,
+                    content: `${lang.msg6}`,
                     ephemeral: true,
                 });
             } else {
                 player.autoplay(true)
                 await interaction.followUp({
-                    content: `> \`+\` O AutoPlay está Ativo.`,
+                    content: `${lang.msg7}`,
                     ephemeral: true,
                 });
             }

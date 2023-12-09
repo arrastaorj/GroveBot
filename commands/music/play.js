@@ -1,4 +1,5 @@
 const { Client, CommandInteraction, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: 'play',
@@ -15,7 +16,17 @@ module.exports = {
 
 
     run: async (client, interaction, args) => {
+
+        let lang = await idioma.findOne({ guildId: interaction.guild.id });
+        if (!lang || !lang.language) {
+            lang = { language: client.language };
+        }
+        lang = require(`../../languages/${lang.language}.js`);
+
+
+
         const query = interaction.options.getString('música')
+
 
         const player = client.riffy.createConnection({
             guildId: interaction.guild.id,
@@ -33,7 +44,7 @@ module.exports = {
                 player.queue.add(track)
             }
 
-            await interaction.reply(`Adicionadas ${tracks.length} músicas da playlist ${playlistInfo.name}.`)
+            await interaction.reply(`${lang.msg8} ${tracks.length} ${lang.msg9} ${playlistInfo.name}.`)
 
             if (!player.playing && !player.paused) return player.play()
 
@@ -61,7 +72,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setAuthor({
-                    name: 'Adicionado à fila',
+                    name: `${lang.msg10}`,
                     iconURL: track.info.requester.user.displayAvatarURL({ dynamic: true })
                 })
                 .setThumbnail(track.thumbnail)
@@ -69,17 +80,17 @@ module.exports = {
                 .setDescription(`[${track.info.title}](${track.info.uri})`)
                 .addFields([
                     {
-                        name: 'Adicionado por',
+                        name: `${lang.msg11}`,
                         value: `<@${track.info.requester.id}>`,
                         inline: true,
                     },
                     {
-                        name: '**Gravadora / Artista**',
+                        name: `${lang.msg12}`,
                         value: `**${track.info.author}**`,
                         inline: true,
                     },
                     {
-                        name: 'Duração',
+                        name: `${lang.msg13}`,
                         value: `**${formattedLength}**`,
                         inline: true,
                     },
@@ -96,7 +107,7 @@ module.exports = {
 
         } else {
 
-            return interaction.reply('Não foram encontrados resultados para sua consulta.')
+            return interaction.reply(`${lang.msg14}`)
 
         }
     }
