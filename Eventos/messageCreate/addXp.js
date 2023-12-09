@@ -4,8 +4,18 @@ const comandos = require("../../database/models/comandos")
 const Level = require("../../database/models/level")
 const calculateLevelXp = require('../../plugins/calculateLevelXp');
 const cooldowns = new Set()
+const idioma = require("../../database/models/language")
 
 client.on("messageCreate", async (message, member) => {
+
+    let lang = await idioma.findOne({
+        guildId: message.guild.id
+    })
+
+    if (!lang || !lang.language) {
+        lang = { language: client.language };
+    }
+    lang = require(`../../languages/${lang.language}.js`)
 
 
     if (message.guild && message.guild.id) {
@@ -51,7 +61,7 @@ client.on("messageCreate", async (message, member) => {
 
 
 
-                    client.channels.cache.get(cmd1).send(`**🎆 ${message.author}, Parabêns, você subiu para o nível: \`${level.level}\` **`)
+                    client.channels.cache.get(cmd1).send(`**🎆 ${message.author}, ${lang.msg347} \`${level.level}\` **`)
 
                 }
 

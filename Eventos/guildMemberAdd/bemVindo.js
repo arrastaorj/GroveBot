@@ -3,8 +3,18 @@ const discord = require("discord.js")
 const bemvindo = require("../../database/models/bemvindo")
 const fbv = require("../../database/models/fbv")
 const Canvas = require("canvas")
+const idioma = require("../../database/models/language")
 
 client.on("guildMemberAdd", async (member) => {
+
+    let lang = await idioma.findOne({
+        guildId: member.guild.id
+    })
+
+    if (!lang || !lang.language) {
+        lang = { language: client.language };
+    }
+    lang = require(`../../languages/${lang.language}.js`)
 
 
     try {
@@ -47,7 +57,7 @@ client.on("guildMemberAdd", async (member) => {
             chave.context.drawImage(img, 0, 0, 1024, 500)
 
             chave.context.font = '65px "Nexa-Heavy"',
-                chave.context.fillText("Bem-Vindo(a)", 300, 360)
+                chave.context.fillText(`${lang.msg252}`, 300, 360)
             chave.context.textAlign = 'center'
 
             chave.context.beginPath()
@@ -60,7 +70,7 @@ client.on("guildMemberAdd", async (member) => {
             chave.context.fillText(`${member.user.tag.toUpperCase()}`, 512, 410)
             chave.context.textAlign = 'center'
             chave.context.font = '20px "Nexa-Heavy"',
-                chave.context.fillText(`Você e nosso membro de n°${member.guild.memberCount}`, 512, 455)
+                chave.context.fillText(`${lang.msg253}${member.guild.memberCount}`, 512, 455)
             chave.context.textAlign = 'center'
 
             chave.context.beginPath()
@@ -80,6 +90,6 @@ client.on("guildMemberAdd", async (member) => {
         })
 
     } catch (error) {
-        client.channels.cache.get(cmd1).send("> \`-\` <a:alerta:1163274838111162499> Peço desculpas por não poder enviar a menssagem de boas vindas, pois não tenho as permissões necessárias. Recomendo que entre em contato com o administrador do servidor ou acesse nosso servidor de suporte e abra um ticket para obter assistência.");
+        client.channels.cache.get(cmd1).send(`${lang.alertPermissãoBot}`)
     }
 })

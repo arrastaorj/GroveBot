@@ -1,8 +1,21 @@
 const discord = require("discord.js")
 const client = require('../../index')
 const autorole = require("../../database/models/autorole")
+const idioma = require("../../database/models/language")
+
 
 client.on("guildMemberAdd", async (member) => {
+
+    let lang = await idioma.findOne({
+        guildId: member.guild.id
+    })
+
+    if (!lang || !lang.language) {
+        lang = { language: client.language };
+    }
+
+    lang = require(`../../languages/${lang.language}.js`)
+
 
     const addRoles = await autorole.findOne({
         guildId: member.guild.id
@@ -31,7 +44,7 @@ client.on("guildMemberAdd", async (member) => {
                 await member.roles.add(addRoles.cargo5Id)
             }
         } catch (error) {
-            member.send("> \`-\` <a:alerta:1163274838111162499> Peço desculpas por não poder adicionar seu cargo automaticamente, pois não tenho as permissões necessárias. Recomendo que entre em contato com o administrador do servidor ou acesse nosso servidor de suporte e abra um ticket para obter assistência.");
+            member.send(`${lang.alertPermissãoBot}`)
         }
     } else {
         console.log("> \`-\` <a:alerta:1163274838111162499> O bot NÃO tem permissão para gerenciar funções (ManageRoles).")

@@ -1,9 +1,20 @@
 const client = require('../../index')
 const discord = require("discord.js")
 const cargos = require("../../database/models/cargos")
+const idioma = require("../../database/models/language")
 
 client.on("interactionCreate", async (interaction) => {
     const { options, guild, member, customId, message } = interaction
+
+    let lang = await idioma.findOne({
+        guildId: interaction.guild.id
+    })
+
+    if (!lang || !lang.language) {
+        lang = { language: client.language };
+    }
+    lang = require(`../../languages/${lang.language}.js`)
+
 
     if (interaction.customId === "select2") {
 
@@ -20,7 +31,10 @@ client.on("interactionCreate", async (interaction) => {
             })
 
             if (!cargo) {
-                return interaction.reply({ content: "\`\`\`❌ AVISO: Parece que houve um problema com minha DataBase, Entre em contato com meu desenvolvedor. \n Suporte: https://discord.gg/MGhvwwSw \n Discord: Arrastão RJ#6839\`\`\`", ephemeral: true })
+                return interaction.reply({
+                    content: `${lang.alertPermissãoBot}`,
+                    ephemeral: true
+                })
             } else {
 
                 try {
@@ -80,25 +94,25 @@ client.on("interactionCreate", async (interaction) => {
 
 
                     let logsAdd = new discord.EmbedBuilder()
-                        .setDescription(` ${interaction.member} **Atualizou seus cargos** \n\n> \`+\` ${rolesToAddCheck.join("\n> \`+\` ")}`)
+                        .setDescription(` ${interaction.member} **${lang.msg254}** \n\n> \`+\` ${rolesToAddCheck.join("\n> \`+\` ")}`)
                         .setTimestamp()
                         .setColor('13F000')
                         .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
 
                     let logsRemove = new discord.EmbedBuilder()
-                        .setDescription(` ${interaction.member} **Removeu seus cargos** \n\n> \`-\` ${rolesToRemoveCheck.join("\n> \`-\` ")}`)
+                        .setDescription(` ${interaction.member} **${lang.msg255}** \n\n> \`-\` ${rolesToRemoveCheck.join("\n> \`-\` ")}`)
                         .setTimestamp()
                         .setColor('E61919')
                         .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
 
                     let LogsAddUser = new discord.EmbedBuilder()
-                        .setDescription(`**Cargos adicionados:** \n\n> \`+\` ${rolesToAddCheck.join("\n> \`+\` ")}`)
+                        .setDescription(`**${lang.msg256}** \n\n> \`+\` ${rolesToAddCheck.join("\n> \`+\` ")}`)
                         .setTimestamp()
                         .setColor('13F000')
                         .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
 
                     let logsRemoveUser = new discord.EmbedBuilder()
-                        .setDescription(`**Cargos removidos:** \n\n> \`-\` ${rolesToRemoveCheck.join("\n> \`-\` ")}`)
+                        .setDescription(`**${lang.msg257}** \n\n> \`-\` ${rolesToRemoveCheck.join("\n> \`-\` ")}`)
                         .setTimestamp()
                         .setColor('E61919')
                         .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -115,16 +129,16 @@ client.on("interactionCreate", async (interaction) => {
                         return interaction.reply({ embeds: [logsRemoveUser], ephemeral: true })
                     }
 
-                    return interaction.reply({ content: "Você já tem todos os cargos selecionados", ephemeral: true })
+                    return interaction.reply({ content: `${lang.msg258}`, ephemeral: true })
 
                 } catch (error) {
 
-                    return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Peço desculpas por não poder adicionar seu cargo automaticamente, pois não tenho as permissões necessárias. Recomendo que entre em contato com o administrador do servidor ou acesse nosso servidor de suporte e abra um ticket para obter assistência.`, ephemeral: true })
+                    return interaction.reply({ content: `${lang.alertPermissãoBot}`, ephemeral: true })
                 }
             }
         } else {
 
-            return interaction.reply({ content: "\`\`\`❌ AVISO: Parece que houve um problema com minha DataBase, Entre em contato com meu desenvolvedor. \n\nSuporte: https://dsc.gg/lexasupport \nDiscord: Arrastão RJ#6839\`\`\`", ephemeral: true })
+            return interaction.reply({ content: `${lang.alertPermissãoBot}`, ephemeral: true })
 
         }
     }

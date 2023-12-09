@@ -1,16 +1,28 @@
 const client = require('../../index')
 const discord = require("discord.js")
+const idioma = require("../../database/models/language")
+
 
 client.on("interactionCreate", async (interaction) => {
+
+    let lang = await idioma.findOne({
+        guildId: interaction.guild.id
+    })
+
+    if (!lang || !lang.language) {
+        lang = { language: client.language };
+    }
+    lang = require(`../../languages/${lang.language}.js`)
+
 
     if (interaction.isButton()) {
         if (interaction.customId.startsWith("botao_modal")) {
             const modal = new discord.ModalBuilder()
                 .setCustomId('modal_sugestao')
-                .setTitle(`Olá usuário, Nos diga qual é a sua sugestão.`)
+                .setTitle(`${lang.msg301}`)
             const sugestao3 = new discord.TextInputBuilder()
                 .setCustomId('sugestão')
-                .setLabel('Qual sua sugestão?')
+                .setLabel(`${lang.msg302}`)
                 .setStyle(discord.TextInputStyle.Paragraph)
 
             const firstActionRow = new discord.ActionRowBuilder().addComponents(sugestao3);
@@ -18,7 +30,7 @@ client.on("interactionCreate", async (interaction) => {
             await interaction.showModal(modal);
 
             interaction.followUp({
-                content: `${interaction.user}, Não abuse dessa função, caso contrario poderá e irá resultar em banimento.`,
+                content: `${interaction.user}, ${lang.msg303}`,
                 ephemeral: true
             })
         }
@@ -32,7 +44,7 @@ client.on("interactionCreate", async (interaction) => {
         const sugestao2 = interaction.fields.getTextInputValue('sugestão');
 
         interaction.reply({
-            content: `${interaction.user}, Sua sugestão foi enviada com sucesso!`, ephemeral: true
+            content: `${interaction.user}, ${lang.msg304}`, ephemeral: true
         })
 
         channel.send({

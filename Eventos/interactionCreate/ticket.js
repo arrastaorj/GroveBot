@@ -2,10 +2,23 @@ const client = require('../../index')
 const discord = require("discord.js")
 const ticket = require("../../database/models/ticket")
 const discordTranscripts = require('discord-html-transcripts')
+const idioma = require("../../database/models/language")
+
 
 client.on("interactionCreate", async (interaction) => {
 
+    let lang = await idioma.findOne({
+        guildId: interaction.guild.id
+    })
+
+    if (!lang || !lang.language) {
+        lang = { language: client.language };
+    }
+    lang = require(`../../languages/${lang.language}.js`)
+
+
     if (interaction.isModalSubmit()) {
+
 
         if (interaction.customId === 'modal_ticket') {
 
@@ -98,7 +111,7 @@ client.on("interactionCreate", async (interaction) => {
 
             } catch (error) {
 
-                return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Peço desculpas por não poder adicionar seu cargo automaticamente, pois não tenho as permissões necessárias. Recomendo que entre em contato com o administrador do servidor ou acesse nosso servidor de suporte e abra um ticket para obter assistência.`, ephemeral: true })
+                return interaction.reply({ content: `${lang.alertErroInesperado}`, ephemeral: true })
             }
 
         }
@@ -118,7 +131,7 @@ client.on("interactionCreate", async (interaction) => {
             if (interaction.customId === 'ticket') {
 
                 if (interaction.guild.channels.cache.find((c) => c.topic === interaction.user.id)) {
-                    interaction.reply({ content: `**Calma, Você já tem um ticket criado -> ${interaction.guild.channels.cache.find(c => c.topic === interaction.user.id)}.**`, ephemeral: true })
+                    interaction.reply({ content: `**${lang.msg305} ${interaction.guild.channels.cache.find(c => c.topic === interaction.user.id)}.**`, ephemeral: true })
 
                 } else {
 
@@ -217,11 +230,11 @@ client.on("interactionCreate", async (interaction) => {
                         let iniciado = new discord.EmbedBuilder()
                             .setColor('#2f3136')
                             //.setAuthor({ name: `Suporte - ${interaction.guild.name}`, iconURL: interaction.guild.iconURL({ dynamic: true }) })
-                            .setDescription(`Olá ${interaction.user}, Seu ticket foi criado com sucesso.`)
+                            .setDescription(`Olá ${interaction.user}, ${lang.msg306}`)
                         //.setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL({ dynamic: true }) })
 
                         let atalho = new discord.ButtonBuilder()
-                            .setLabel('Atalho')
+                            .setLabel(`${lang.msg307}`)
                             .setURL(channel.url)
                             .setStyle(discord.ButtonStyle.Link)
 
@@ -239,33 +252,33 @@ client.on("interactionCreate", async (interaction) => {
                             .setCustomId('close')
                             .setEmoji('<:crvt:1168024673481662534>')
                             .setStyle(4)
-                            .setLabel('Finalizar Atendimento')
+                            .setLabel(`${lang.msg308}`)
 
                         let call = new discord.ButtonBuilder()
                             .setCustomId('call')
                             .setEmoji('<:crvt:1168024678204461129>')
                             .setStyle(2)
-                            .setLabel('Criar Canal de Voz')
+                            .setLabel(`${lang.msg309}`)
 
                         let add = new discord.ButtonBuilder()
                             .setCustomId("AdicionarMembro")
                             .setEmoji('<:crvt:1168024675599790100>')
-                            .setLabel('Adicionar Membro')
+                            .setLabel(`${lang.msg310}`)
                             .setStyle(2)
                         let remover = new discord.ButtonBuilder()
                             .setCustomId("RemoverMembro")
                             .setEmoji('<:crvt:1168024676879040613>')
-                            .setLabel('Remover Membro')
+                            .setLabel(`${lang.msg311}`)
                             .setStyle(2)
                         let notificar = new discord.ButtonBuilder()
                             .setCustomId("poke")
                             .setEmoji('<:crvt:1168024680683282495>')
-                            .setLabel('Notificação')
+                            .setLabel(`${lang.msg312}`)
                             .setStyle(2)
                         let sair = new discord.ButtonBuilder()
                             .setCustomId("SairdoTicket")
                             .setEmoji('<:voltar:1167104944420175984>')
-                            .setLabel('Sair do Canal')
+                            .setLabel(`${lang.msg313}`)
                             .setStyle(1)
 
                         const deletar = new discord.ActionRowBuilder().addComponents(add, remover, fechar)
@@ -285,7 +298,11 @@ client.on("interactionCreate", async (interaction) => {
 
                 if (!interaction.isButton()) return;
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
 
                 const cmd = await ticket.findOne({
                     guildId: interaction.guild.id
@@ -304,7 +321,12 @@ client.on("interactionCreate", async (interaction) => {
 
 
 
-                if (possuido) return interaction.reply({ content: `> \`-\` <a:crime_y_aviso:1168049861459980318> ${interaction.user}, você já possui um **CHAT DE VOZ** criado em <#${userVoiceId}>.`, ephemeral: true, fetchReply: true })
+                if (possuido)
+                    return interaction.reply({
+                        content: `> \`-\` <a:alerta:1163274838111162499> ${interaction.user}, ${lang.msg314} <#${userVoiceId}>.`,
+                        ephemeral: true,
+                        fetchReply: true
+                    })
 
                 interaction.deferUpdate()
 
@@ -357,11 +379,11 @@ client.on("interactionCreate", async (interaction) => {
 
                     const callIniciadaEmbed = new discord.EmbedBuilder()
                         .setTitle("Chamada Iniciada")
-                        .setDescription(`Uma chamada foi iniciada por ${interaction.user}. Abaixo estão várias funções disponíveis com interação apenas no chat de voz.`)
+                        .setDescription(`${lang.msg315} ${interaction.user}. ${lang.msg316}`)
                         .setColor("#27ae60")
                         .setFooter({
                             iconURL: interaction.user.displayAvatarURL(),
-                            text: "A chamada será encerrada após 2 minutos de inatividade."
+                            text: `${lang.msg317}`
                         })
                         .setTimestamp();
 
@@ -370,15 +392,15 @@ client.on("interactionCreate", async (interaction) => {
                             new discord.ButtonBuilder()
                                 .setCustomId("EncerrarChamado")
                                 .setEmoji('1001951864620859462')
-                                .setLabel('Encerrar Chamada de Voz')
+                                .setLabel(`${lang.msg318}`)
                                 .setStyle(1),
                         )
 
                     interaction.channel.send({ embeds: [callIniciadaEmbed], components: [row], ephemeral: true }).then(edit => {
 
                         const inatividadeEmbed = new discord.EmbedBuilder()
-                            .setTitle("Suporte por Chamada Encerrado")
-                            .setDescription("O suporte por chamada foi encerrado devido à inatividade.")
+                            .setTitle(`${lang.msg319}`)
+                            .setDescription(`${lang.msg320}`)
                             .setColor("#e74c3c")
                             .setTimestamp()
                         setTimeout(() => {
@@ -397,7 +419,11 @@ client.on("interactionCreate", async (interaction) => {
 
                 if (!interaction.isButton()) return;
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
 
                 const cmd = await ticket.findOne({
                     guildId: interaction.guild.id
@@ -410,8 +436,8 @@ client.on("interactionCreate", async (interaction) => {
                 fetchedVoice.delete().catch(e => null)
 
                 const sairEmbed = new discord.EmbedBuilder()
-                    .setTitle("Suporte por Chamada Encerrado")
-                    .setDescription(`O suporte por chamada foi encerrado por um membro da equipe.\n\n**Usuário:** ${interaction.user.username}`)
+                    .setTitle(`${lang.msg319}`)
+                    .setDescription(`${lang.msg321}\n\n**${lang.msg322}** ${interaction.user.username}`)
                     .setColor("#3498db")
                     .setTimestamp()
 
@@ -424,15 +450,15 @@ client.on("interactionCreate", async (interaction) => {
 
                 if (!interaction.isButton()) return;
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
                 const modal = new discord.ModalBuilder()
                     .setCustomId('addmembro')
-                    .setTitle(`Adicionar Membro`)
+                    .setTitle(`${lang.msg323}`)
 
                 const favoriteColorInput = new discord.TextInputBuilder()
                     .setCustomId('idUser')
-                    .setLabel("Qual ID do membro a ser adicionado?")
+                    .setLabel(`${lang.msg324}`)
                     .setStyle(discord.TextInputStyle.Short)
 
                 const firstActionRow = new discord.ActionRowBuilder().addComponents(favoriteColorInput)
@@ -447,7 +473,7 @@ client.on("interactionCreate", async (interaction) => {
 
                 if (!interaction.isButton()) return;
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
                 const modal = new discord.ModalBuilder()
                     .setCustomId('removermembrotexto')
@@ -456,7 +482,7 @@ client.on("interactionCreate", async (interaction) => {
 
                 const favoriteColorInput = new discord.TextInputBuilder()
                     .setCustomId('idMember')
-                    .setLabel("Qual ID do membro a ser removido?")
+                    .setLabel(`${lang.msg325}`)
                     .setStyle(discord.TextInputStyle.Short);
 
                 const firstActionRow = new discord.ActionRowBuilder().addComponents(favoriteColorInput);
@@ -488,13 +514,13 @@ client.on("interactionCreate", async (interaction) => {
                     const membersWithRole = role.members;
 
                     if (membersWithRole.size === 0) {
-                        interaction.reply("Nenhum membro com o cargo encontrado.");
+                        interaction.reply(`${lang.msg326}`);
                         return;
                     }
 
                     const row = new discord.ActionRowBuilder().addComponents(
                         new discord.ButtonBuilder()
-                            .setLabel('Visualizar o Ticket')
+                            .setLabel(`${lang.msg327}`)
                             .setEmoji("<:crvt:1168028479833505842>")
                             .setURL(fetchedChannel.url) // Use channelId diretamente, não .url
                             .setStyle(5)
@@ -502,11 +528,11 @@ client.on("interactionCreate", async (interaction) => {
 
                     const embed = new discord.EmbedBuilder()
                         .setColor("#3498db") // Cor azul profissional
-                        .setTitle("<a:alerta:1163274838111162499> Você foi mencionado em um Ticket!")
-                        .setDescription(`Olá membros com o cargo **${role.name}**,\n\nAlguém mencionou vocês em um ticket aberto e aguarda uma resposta.\n\nPor favor, verifique o ticket e forneça sua colaboração.`)
+                        .setTitle(`<a:alerta:1163274838111162499> ${lang.msg328}`)
+                        .setDescription(`${lang.msg329} **${role.name}**,\n\n${lang.msg330}\n\n${lang.msg331}`)
                         .setFooter({
                             iconURL: interaction.user.displayAvatarURL(),
-                            text: `Agradecemos sua colaboração em ${interaction.guild.name}!`
+                            text: `${lang.msg332} ${interaction.guild.name}!`
                         });
 
 
@@ -519,12 +545,13 @@ client.on("interactionCreate", async (interaction) => {
                     })
 
                     interaction.reply({
-                        content: `> \`+\` <a:alerta:1163274838111162499> Notificação enviada para membros com o cargo <@&${role.id}>. \n\n> \`-\` <a:crime_y_aviso:1168049861459980318> **Evite usar essa função de maneira inadequada, pois isso acarretará penalidades.**`, ephemeral: true
+                        content: `> \`+\` <a:alerta:1163274838111162499> ${lang.msg333} <@&${role.id}>. \n\n> \`-\` <a:alerta:1163274838111162499> **${lang.msg334}**`,
+                        ephemeral: true
                     })
 
                 } else {
 
-                    interaction.reply({ content: `> \`-\` Cargo não encontrado.`, ephemeral: true })
+                    interaction.reply({ content: `> \`-\` ${lang.msg335}`, ephemeral: true })
 
                 }
             }
@@ -532,7 +559,11 @@ client.on("interactionCreate", async (interaction) => {
 
             if (interaction.customId === 'addmembro') {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
 
 
                 const cmd = await ticket.findOne({
@@ -557,7 +588,7 @@ client.on("interactionCreate", async (interaction) => {
             if (interaction.customId === 'removermembrotexto') {
 
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
                 const cmd = await ticket.findOne({
                     guildId: interaction.guild.id
@@ -579,7 +610,7 @@ client.on("interactionCreate", async (interaction) => {
 
                 interaction.channel.permissionOverwrites.edit(interaction.user.id, { ViewChannel: false })
 
-                interaction.reply({ content: `${interaction.user} Saiu do Atendimento!`, ephemeral: false })
+                interaction.reply({ content: `${interaction.user} ${lang.msg336}`, ephemeral: false })
 
             }
 
@@ -588,7 +619,7 @@ client.on("interactionCreate", async (interaction) => {
 
                 if (!interaction.isButton()) return;
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
                 let ticket = interaction.channel.topic
 
@@ -615,17 +646,17 @@ client.on("interactionCreate", async (interaction) => {
                 let embed = new discord.EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL({ dynamic: true }) })
-                    .setDescription(`O Membro ${interaction.user}\`(${interaction.user.id})\` Fechou o ticket, Escolha uma opção abaixo. `)
+                    .setDescription(`${lang.msg337} ${interaction.user}\`(${interaction.user.id})\` ${lang.msg338}`)
 
                 let botoes = new discord.ActionRowBuilder().addComponents([
 
                     new discord.ButtonBuilder()
                         .setStyle(discord.ButtonStyle.Success)
-                        .setLabel('Reabrir')
+                        .setLabel(`${lang.msg339}`)
                         .setCustomId('reabrir'),
                     new discord.ButtonBuilder()
                         .setStyle(discord.ButtonStyle.Danger)
-                        .setLabel('Deletar')
+                        .setLabel(`${lang.msg340}`)
                         .setCustomId('deletar')])
 
 
@@ -638,7 +669,7 @@ client.on("interactionCreate", async (interaction) => {
 
                 if (!interaction.isButton()) return;
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
                 interaction.message.delete()
 
@@ -667,10 +698,10 @@ client.on("interactionCreate", async (interaction) => {
                 let embed = new discord.EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL({ dynamic: true }) })
-                    .setDescription(`Olá <@${ticket}>, O Membro ${interaction.user} Reabriu seu ticket.`)
+                    .setDescription(`${lang.msg341} <@${ticket}>, ${lang.msg342} ${interaction.user} ${lang.msg343}`)
 
                 let button = new discord.ButtonBuilder()
-                    .setLabel('Apagar Mensagem')
+                    .setLabel(`${lang.msg344}`)
                     .setStyle(2)
                     .setCustomId('msg')
 
@@ -685,7 +716,7 @@ client.on("interactionCreate", async (interaction) => {
 
                 if (!interaction.isButton()) return;
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
                 interaction.message.delete()
 
@@ -696,7 +727,7 @@ client.on("interactionCreate", async (interaction) => {
 
                 if (!interaction.isButton()) return;
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: "> \`-\` <a:crime_y_aviso:1168049861459980318> Não posso concluir este comando pois você não possui permissão.", ephemeral: true })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
 
                 const topic = interaction.channel.topic
 
@@ -707,7 +738,7 @@ client.on("interactionCreate", async (interaction) => {
                 interaction.channel.delete()
 
                 let embed = new discord.EmbedBuilder()
-                    .setDescription(`Ticket de <@${topic}>\`(${topic})\` \n Deletado por ${interaction.user}\`(${interaction.user.id})\``)
+                    .setDescription(`${lang.msg345} <@${topic}>\`(${topic})\` \n ${lang.msg346} ${interaction.user}\`(${interaction.user.id})\``)
                     .setTimestamp()
 
                 let chat_log = cmd3.canalLog
@@ -720,7 +751,10 @@ client.on("interactionCreate", async (interaction) => {
 
         } catch (error) {
 
-            return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Peço desculpas por não poder adicionar seu cargo automaticamente, pois não tenho as permissões necessárias. Recomendo que entre em contato com o administrador do servidor ou acesse nosso servidor de suporte e abra um ticket para obter assistência.`, ephemeral: true })
+            return interaction.reply({
+                content: `${lang.alertNaoTemPermissão}`,
+                ephemeral: true
+            })
         }
 
     }
