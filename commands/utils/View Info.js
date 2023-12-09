@@ -27,55 +27,55 @@ module.exports = {
         lang = require(`../../languages/${lang.language}.js`)
 
 
-        const btnInfo = new ActionRowBuilder().addComponents([
-            new ButtonBuilder()
-                .setStyle(ButtonStyle.Primary)
+        const btnInfo = new discord.ActionRowBuilder().addComponents([
+            new discord.ButtonBuilder()
+                .setStyle(discord.ButtonStyle.Primary)
                 .setLabel(`${lang.msg246}`)
                 .setCustomId("infos"),
         ])
-        const btnPaginaInicial = new ActionRowBuilder().addComponents([
-            new ButtonBuilder()
-                .setStyle(ButtonStyle.Secondary)
+        const btnPaginaInicial = new discord.ActionRowBuilder().addComponents([
+            new discord.ButtonBuilder()
+                .setStyle(discord.ButtonStyle.Secondary)
                 .setLabel(`${lang.msg247}`)
                 .setCustomId("inicial"),
         ])
-        const btnAvatarBannerPermissão = new ActionRowBuilder().addComponents([
+        const btnAvatarBannerPermissão = new discord.ActionRowBuilder().addComponents([
 
-            new ButtonBuilder()
-                .setStyle(ButtonStyle.Primary)
+            new discord.ButtonBuilder()
+                .setStyle(discord.ButtonStyle.Primary)
                 .setLabel(`${lang.msg248}`)
                 .setCustomId("avatar"),
 
-            new ButtonBuilder()
-                .setStyle(ButtonStyle.Secondary)
+            new discord.ButtonBuilder()
+                .setStyle(discord.ButtonStyle.Secondary)
                 .setLabel(`${lang.msg249}`)
                 .setCustomId("banner"),
 
-            new ButtonBuilder()
+            new discord.ButtonBuilder()
                 .setLabel(`${lang.msg250}`)
                 .setEmoji("<:9081settings:1167219166898557029>")
-                .setStyle(ButtonStyle.Danger)
+                .setStyle(discord.ButtonStyle.Danger)
                 .setCustomId('verPerms')
 
         ])
-        const btnVoltar = new ActionRowBuilder().addComponents([
+        const btnVoltar = new discord.ActionRowBuilder().addComponents([
 
-            new ButtonBuilder()
-                .setStyle(ButtonStyle.Secondary)
+            new discord.ButtonBuilder()
+                .setStyle(discord.ButtonStyle.Secondary)
                 .setLabel(`${lang.msg251}`)
                 .setCustomId("voltar"),
 
         ])
-        const btnAvatarPermissão = new ActionRowBuilder().addComponents([
-            new ButtonBuilder()
-                .setStyle(ButtonStyle.Primary)
+        const btnAvatarPermissão = new discord.ActionRowBuilder().addComponents([
+            new discord.ButtonBuilder()
+                .setStyle(discord.ButtonStyle.Primary)
                 .setLabel(`${lang.msg248}`)
                 .setCustomId("avatar"),
 
-            new ButtonBuilder()
+            new discord.ButtonBuilder()
                 .setLabel(`${lang.msg250}`)
                 .setEmoji("<:9081settings:1167219166898557029>")
-                .setStyle(ButtonStyle.Danger)
+                .setStyle(discord.ButtonStyle.Danger)
                 .setCustomId('verPerms')
         ])
 
