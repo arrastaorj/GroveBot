@@ -17,7 +17,11 @@ const pauseRow = new ActionRowBuilder()
         new ButtonBuilder()
             .setCustomId('autoplay')
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji('<:autoplay:1182488248019329104>'),
+            .setEmoji('<:repeat_7456137:1183251681551581306>'),
+        new ButtonBuilder()
+            .setCustomId('fila')
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji('<:copy_3914628:1183247896141910066>'),
 
     )
 
@@ -38,7 +42,12 @@ const playRow = new ActionRowBuilder()
         new ButtonBuilder()
             .setCustomId('autoplay')
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji('<:autoplay:1182488248019329104>'),
+            .setEmoji('<:repeat_7456137:1183251681551581306>'),
+
+        new ButtonBuilder()
+            .setCustomId('fila')
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji('<:copy_3914628:1183247896141910066>'),
 
     )
 
@@ -62,7 +71,7 @@ const skipRowDisabled = new ActionRowBuilder()
         new ButtonBuilder()
             .setCustomId('autoplay')
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji('<:autoplay:1182488248019329104>')
+            .setEmoji('<:repeat_7456137:1183251681551581306>')
             .setDisabled(true),
         new ButtonBuilder()
             .setCustomId('skiped')
@@ -92,7 +101,7 @@ const disconnectRow = new ActionRowBuilder()
         new ButtonBuilder()
             .setCustomId('autoplay')
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji('<:autoplay:1182488248019329104>')
+            .setEmoji('<:repeat_7456137:1183251681551581306>')
             .setDisabled(true),
         new ButtonBuilder()
             .setCustomId('skiped')

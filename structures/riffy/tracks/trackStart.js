@@ -27,7 +27,12 @@ client.riffy.on('trackStart', async (player, track) => {
             new ButtonBuilder()
                 .setCustomId('autoplay')
                 .setStyle(ButtonStyle.Secondary)
-                .setEmoji('<:autoplay:1182488248019329104>'),
+                .setEmoji('<:repeat_7456137:1183251681551581306>'),
+
+            new ButtonBuilder()
+                .setCustomId('fila')
+                .setStyle(ButtonStyle.Secondary)
+                .setEmoji('<:copy_3914628:1183247896141910066>'),
         );
 
     const channel = client.channels.cache.get(player.textChannel);
@@ -111,7 +116,7 @@ client.riffy.on("queueEnd", async (player) => {
             new ButtonBuilder()
                 .setCustomId('autoplay')
                 .setStyle(ButtonStyle.Secondary)
-                .setEmoji('<:autoplay:1182488248019329104>')
+                .setEmoji('<:repeat_7456137:1183251681551581306>')
                 .setDisabled(true),
 
         )
