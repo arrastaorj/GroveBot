@@ -7,6 +7,7 @@ const client = require("../../../index")
 const activeMessages = new Map();
 
 client.riffy.on('trackStart', async (player, track) => {
+
     const row = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
@@ -86,12 +87,12 @@ client.riffy.on('trackStart', async (player, track) => {
             activeMessages.set(channel.id, { msg, row, row2 });
         }
     } catch (error) {
-        // Se ocorrer um erro ao editar a mensagem existente ou a mensagem foi apagada,
-        // envie uma nova mensagem e remova a entrada do mapa
+
         const msg = await channel.send({
             files: [attachment],
             components: [row, row2],
-        });
+        })
+
         activeMessages.delete(channel.id);
         activeMessages.set(channel.id, { msg, row, row2 });
     }
@@ -138,7 +139,6 @@ client.riffy.on("queueEnd", async (player) => {
                 .setDisabled(true),
         )
 
-
     const card = new musicCard()
         .setName("Grove Music")
         .setAuthor("Sofisticado")
@@ -149,7 +149,6 @@ client.riffy.on("queueEnd", async (player) => {
         .setProgress(0)
         .setStartTime("00:00")
         .setEndTime("00:00")
-
 
     const buffer = await card.build()
     const attachment = new AttachmentBuilder(buffer, { name: `musicard.png` })
@@ -170,8 +169,6 @@ client.riffy.on("queueEnd", async (player) => {
     } catch (error) {
         return
     }
-
-
     if (player.isAutoplay) {
         player.autoplay(player)
     } else {
