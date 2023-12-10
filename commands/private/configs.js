@@ -173,7 +173,7 @@ module.exports = {
         switch (subcommands) {
 
             case "autorole": {
-
+                //Verificação para somente quem tiver permição usar o comando
                 if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
                     return interaction.reply({
                         content: `${lang.alertNaoTemPermissão}`,
@@ -361,10 +361,12 @@ module.exports = {
 
             case "bem-vindo": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({
-                    content: `${lang.alertNaoTemPermissão}`,
-                    ephemeral: true
-                })
+                //Verificação para somente quem tiver permição usar o comando
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
 
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -444,10 +446,12 @@ module.exports = {
 
             case "comandos": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({
-                    content: `${lang.alertNaoTemPermissão}`,
-                    ephemeral: true
-                })
+                //Verificação para somente quem tiver permição usar o comando
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
                 const hasPermission = botMember.permissions.has("Administrator")
@@ -526,10 +530,12 @@ module.exports = {
             //////// fbv Atualizado MongoDB
             case "fbv": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({
-                    content: `${lang.alertNaoTemPermissão}`,
-                    ephemeral: true
-                })
+                //Verificação para somente quem tiver permição usar o comando
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
 
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
@@ -607,8 +613,12 @@ module.exports = {
 
             case "memes": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
-
+                //Verificação para somente quem tiver permição usar o comando
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
                 const hasPermission = botMember.permissions.has("Administrator")
@@ -682,7 +692,13 @@ module.exports = {
 
             case "ticket": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.Administrator)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
+                //Verificação para somente quem tiver permição usar o comando
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
+
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
                 const hasPermission = botMember.permissions.has("Administrator")
@@ -830,11 +846,12 @@ module.exports = {
 
             case "help": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({
-                    content: `${lang.alertNaoTemPermissão}`,
-                    ephemeral: true
-                })
-
+                //Verificação para somente quem tiver permição usar o comando
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
 
                 let HelpEmbed = new discord.EmbedBuilder()
                     .setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL({ dynamic: true }) })

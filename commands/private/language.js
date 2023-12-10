@@ -14,7 +14,8 @@ module.exports = {
         lang = require(`../../languages/${lang.language}.js`);
 
 
-        if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
+        //Verificação para somente quem tiver permição usar o comando
+        if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
             return interaction.reply({
                 content: `${lang.alertNaoTemPermissão}`,
                 ephemeral: true

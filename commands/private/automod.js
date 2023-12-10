@@ -63,6 +63,8 @@ module.exports = {
         const { guild, options } = interaction
         const sub = options.getSubcommand()
 
+
+        //Verificação para somente quem tiver permição usar o comando
         if (!interaction.member.permissions.has(discord.PermissionsBitField.Flags.Administrator))
             return await interaction.reply({
                 content: `${lang.alertNaoTemPermissão}`,

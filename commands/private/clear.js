@@ -17,16 +17,15 @@ module.exports = {
         }
         lang = require(`../../languages/${lang.language}.js`)
 
-
-
-        let numero = 50 + 49;
-
+        //Verificação para somente quem tiver permição usar o comando
         if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) {
             return interaction.reply({
                 content: `${lang.alertNaoTemPermissão}`,
                 ephemeral: true,
             });
         }
+        let numero = 50 + 49;
+
 
         const botMember = interaction.member.guild.members.cache.get(client.user.id);
         const hasPermission = botMember.permissions.has("Administrator");
