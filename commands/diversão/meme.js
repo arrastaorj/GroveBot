@@ -33,7 +33,7 @@ module.exports = {
             const random = Math.floor(Math.random() * images.length)
             const randomMeme = images[random];
             const embed = new discord.EmbedBuilder()
-                .setColor("#41b2b0")
+                .setColor("#6dfef2")
                 .setTimestamp(new Date)
                 .setFooter({ text: `${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL({ dynamic: true, format: "png" }) })
                 .setImage(randomMeme);

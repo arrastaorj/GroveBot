@@ -76,6 +76,7 @@ module.exports = {
                     iconURL: track.info.requester.user.displayAvatarURL({ dynamic: true })
                 })
                 .setThumbnail(track.thumbnail)
+                .setColor("#6dfef2")
                 .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
                 .setDescription(`[${track.info.title}](${track.info.uri})`)
                 .addFields([

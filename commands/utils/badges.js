@@ -52,7 +52,7 @@ module.exports = {
 
 
             let embed1 = new EmbedBuilder()
-                .setColor("Purple")
+                .setColor("#6dfef2")
                 .setAuthor({ name: `Badges - ${interaction.guild.name}`, iconURL: client.user.displayAvatarURL() })
                 .setThumbnail(`${interaction.guild.iconURL({ dynamic: true })}`)
                 .setDescription(`<:1769discordstaff:1157876972031053984> Discord Staff: \`${counts['Staff'] || 0}\`

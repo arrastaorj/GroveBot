@@ -1,5 +1,4 @@
 const Discord = require("discord.js")
-const bot = require("../../bot.json")
 const comandos = require("../../database/models/comandos")
 const idioma = require("../../database/models/language")
 
@@ -38,7 +37,7 @@ module.exports = {
 
       let Embed2 = new Discord.EmbedBuilder()
         .setDescription(`> \`+\` **👋 ${lang.msg202} ${interaction.user},** ${lang.msg203} \`${client.ws.ping}ms\``)
-        .setColor(bot.config.color);
+        .setColor("#6dfef2")
 
       interaction.reply({ embeds: [Embed2], content: ``, ephemeral: true })
     }

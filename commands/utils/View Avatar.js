@@ -67,7 +67,7 @@ module.exports = {
 
                             .setImage(url)
                             .setDescription(`${lang.msg243} ${user}`)
-                            .setColor('Random')
+                            .setColor("#6dfef2")
 
                         const button = new ActionRowBuilder()
 
@@ -87,7 +87,7 @@ module.exports = {
                         const embeddanger = new EmbedBuilder()
 
                             .setDescription(`${user} ${lang.msg245}`)
-                            .setColor('Random')
+                            .setColor("#6dfef2")
                         interaction.reply({ embeds: [embeddanger] })
                     }
                 })

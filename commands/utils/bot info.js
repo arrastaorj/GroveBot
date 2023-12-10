@@ -59,6 +59,7 @@ module.exports = {
 
             const embed = new discord.EmbedBuilder()
                 .setAuthor({ name: `${interaction.user.username} ${lang.msg157}`, iconURL: client.user.displayAvatarURL() })
+                .setColor("#6dfef2")
                 .addFields(
                     {
                         name: `${lang.msg158}`,
