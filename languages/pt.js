@@ -1,6 +1,4 @@
 const language = {
-
-    ///MUSICA
     msg1: "> \`-\` Não há música reproduzindo atualmente.",
     msg2: "> \`+\` A reprodução da música foi pausada.",
     msg3: "> \`+\` A reprodução da música foi retomada.",
@@ -8,20 +6,14 @@ const language = {
     msg5: "> \`+\` A reprodução da música foi interrompida e o bot desconectado.",
     msg6: "> \`-\` O AutoPlay foi desativado.",
     msg7: "> \`+\` O AutoPlay está Ativo.",
-    
-    
     msgPlaylist: "PlayList Adicionada",
     msg8: "Adicionadas",
     msg9: "músicas da playlist",
-
-
     msg10: "Adicionado à fila",
     msg11: "Adicionado por",
     msg12: "**Gravadora / Artista**",
     msg13: "Duração",
     msg14: "Não foram encontrados resultados para sua consulta.",
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///ECONOMIA
     msg15: "Você já resgatou recompensas diárias hoje! Aguarde",
     msg16: "Para resgata novamente.",
     msg17: "> \`+\` Você regatou **<:dollar_9729309:1178199735799119892>",
@@ -66,8 +58,6 @@ const language = {
     msg56: "Membros",
     msg57: "recebem",
     msg58: "em Dobro!",
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///AUTOMOD
     msg59: "Carregando sua regra de automod...",
     msg60: "Bloqueie palavrões, conteúdo sexual e calúnias, Alerta de Grove AutoMod.",
     msg61: "Esta mensagem foi evitada pela GroveAutoMod!",
@@ -82,15 +72,12 @@ const language = {
     msg70: "> spam-mensagens adicionada",
     msg71: "Evite menções de spam, Alerta de Grove AutoMod.",
     msg72: "> menção-spam adicionada",
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///CARGOS
     msg73: "> \`-\` <a:alerta:1163274838111162499> Desculpe, você só pode configurar um canal de texto.",
     msg74: "> \`-\` <a:alerta:1163274838111162499> O cargo selecionado está acima ou na mesma posição hierárquica do cargo do Grove. O Grove não tem permissão para adicionar esse cargo adicione o cargo do Grove acima desse cargo.",
     msg75: "Selecione os cargos desejado",
     msg76: "> \`-\` <a:alerta:1163274838111162499> Seu máximo selecionado não pode ser maior do que a quantidade de cargos configurados.",
     msg77: "Enviado com sucesso!",
     msg78: "Canal:",
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     msg79: "Limpeza concluída",
     msg80: "**Observação:** Você só pode excluir mensagens em massa com menos de 14 dias.",
     msg81: "Limpado por:",
@@ -113,6 +100,8 @@ const language = {
     msg98: "Descrição da mensagem (Para abrir ticket)",
     msg99: "Digite a Descrição.",
     msg100: "Titulo (Dentro do ticket)",
+
+
     msg101: "Descrição da mensagem (Dentro do ticket)",
     msg102: "Olá",
     msg103: "Veja como configurar meus comandos. Selecione uma categoria abaixo!",
@@ -212,8 +201,8 @@ const language = {
     msg197: "> \`-\` Utilize \`\`/perfil\`\` para vizualizar seu perfil.",
     msg198: "> \`+\` <:effect_7889005:1162567929271947274> Skin selecionada com sucesso. Aproveite!",
     msg199: "> \`+\` Clique em <:voltar:1167104944420175984> para visualizá-la.",
-    msg200: "> \`+\` As skins são a chave para transformar o visual do seu Perfil na Lexa. Não deixe de verificar as novidades na \`/loja\` diária.",
-    msg201: "> \`+\` A skin ainda não está disponível em seu inventário. Para visualizá-la, basta digitar \`/loja\` e conferir as ofertas diárias da Lexa.",
+    msg200: "> \`+\` As skins são a chave para transformar o visual do seu Perfil no Grove. Não deixe de verificar as novidades na \`/loja\` diária.",
+    msg201: "> \`+\` A skin ainda não está disponível em seu inventário. Para visualizá-la, basta digitar \`/loja\` e conferir as ofertas diárias no Grove.",
     msg202: "Olá",
     msg203: "meu ping está em",
     msg204: "Este servidor ainda não possui Rank",

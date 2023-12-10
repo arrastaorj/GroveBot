@@ -1,6 +1,4 @@
 const language = {
-
-    ///MUSIC
     msg1: "> \`-\` There is currently no music playing.",
     msg2: "> \`+\` Music playback has been paused.",
     msg3: "> \`+\` Music playback has been resumed.",
@@ -8,21 +6,14 @@ const language = {
     msg5: "> \`+\` Music playback has been stopped, and the bot disconnected.",
     msg6: "> \`-\` AutoPlay has been disabled.",
     msg7: "> \`+\` AutoPlay is Active.",
-   
-
     msgPlaylist: "Playlist Added",
     msg8: "Added",
     msg9: "songs from the playlist",
-
-
-
     msg10: "Added to the queue",
     msg11: "Added by",
     msg12: "**Label / Artist**",
     msg13: "Duration",
     msg14: "No results found for your query.",
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///ECONOMY
     msg15: "You have already claimed daily rewards today! Please wait",
     msg16: "to claim again.",
     msg17: "> \`+\` You claimed **<:dollar_9729309:1178199735799119892>",
@@ -57,7 +48,7 @@ const language = {
     msg46: "You already have this item! View and equip it in your",
     msg47: "You don't have enough <:dollar_9729309:1178199735799119892> GroveCoins for this purchase.",
     msg48: "Congratulations, you just acquired an item! View and use it in your",
-    msg49: "> \`+\` We're glad to have you in Grove's Daily Store, where you can enhance your \`/profile\` with <:dollar_9729309:1178199735799119892> GroveCoins.",
+    msg49: "> \`+\` We're glad to have you in Grove's Daily Store, where you can enhance your \`/perfil\` with <:dollar_9729309:1178199735799119892> GroveCoins.",
     msg50: "> \`-\` You don't have enough coins in your bank to withdraw.",
     msg51: "> \`-\` Enter a number above 0.",
     msg52: "Operation completed successfully.",
@@ -67,8 +58,6 @@ const language = {
     msg56: "Members",
     msg57: "receive",
     msg58: "Double!",
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///AUTOMOD
     msg59: "Loading your automod rule...",
     msg60: "Block swear words, sexual content, and slander. Grove AutoMod Alert.",
     msg61: "This message has been avoided by GroveAutoMod!",
@@ -83,15 +72,12 @@ const language = {
     msg70: "> Spam messages added",
     msg71: "Avoid spam mentions. Grove AutoMod Alert.",
     msg72: "> Mention spam added",
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///ROLES
     msg73: "> \`-\` <a:alerta:1163274838111162499> Sorry, you can only set a text channel.",
     msg74: "> \`-\` <a:alerta:1163274838111162499> The selected role is above or at the same hierarchical position as the Grove role. Grove doesn't have permission to add this role; please add the Grove role above this role.",
     msg75: "Select the desired roles",
     msg76: "> \`-\` <a:alerta:1163274838111162499> Your maximum selection cannot be greater than the number of configured roles.",
     msg77: "Successfully sent!",
     msg78: "Channel:",
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     msg79: "Cleanup completed",
     msg80: "**Note:** You can only mass delete messages less than 14 days old.",
     msg81: "Cleaned by:",
@@ -208,13 +194,13 @@ const language = {
     msg192: "Change Profile Biography",
     msg193: "ABOUT ME:",
     msg194: "Select a skin...",
-    msg195: "You don't have the custom /profile. Use the button below to customize!",
+    msg195: "You don't have the custom /perfil. Use the button below to customize!",
     msg196: "> \`-\` <a:alert:1163274838111162499> This interaction is only for:",
-    msg197: "> \`-\` Use \`\`/profile\`\` to view your profile.",
+    msg197: "> \`-\` Use \`\`/perfil\`\` to view your profile.",
     msg198: "> \`+\` <:effect_7889005:1162567929271947274> Skin selected successfully. Enjoy!",
     msg199: "> \`+\` Click <:back:1167104944420175984> to view it.",
-    msg200: "> \`+\` Skins are the key to transforming the look of your Profile on Lexa. Be sure to check out the daily offers in \`/shop\`.",
-    msg201: "> \`+\` The skin is not yet available in your inventory. To view it, simply type \`/shop\` and check Lexa's daily offers.",
+    msg200: "> \`+\` Skins are the key to transforming the look of your Profile on Grove. Be sure to check out the daily offers in \`/loja\`.",
+    msg201: "> \`+\` The skin is not yet available in your inventory. To view it, simply type \`/loja\` and check Grove's daily offers.",
     msg202: "Hello",
     msg203: "my ping is at",
     msg204: "This server does not have a Rank yet",

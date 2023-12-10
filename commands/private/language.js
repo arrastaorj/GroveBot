@@ -15,12 +15,16 @@ module.exports = {
 
 
         let buttons = new ActionRowBuilder().addComponents(
-
             new ButtonBuilder()
                 .setLabel("English")
                 .setCustomId('en')
                 .setStyle(ButtonStyle.Secondary)
                 .setEmoji('🇬🇧'),
+            new ButtonBuilder()
+                .setLabel("Français")
+                .setCustomId('fr')
+                .setStyle(ButtonStyle.Secondary)
+                .setEmoji('🇫🇷'),
         )
 
         let buttons2 = new ActionRowBuilder().addComponents(
@@ -29,19 +33,28 @@ module.exports = {
                 .setCustomId('pt')
                 .setStyle(ButtonStyle.Secondary)
                 .setEmoji('🇧🇷'),
-
+            new ButtonBuilder()
+                .setLabel("Español")
+                .setCustomId('es')
+                .setStyle(ButtonStyle.Secondary)
+                .setEmoji('🇪🇸'),
         )
 
-        let buttonsDesabi = new ActionRowBuilder().addComponents(
 
+        let buttonsDesabi = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setLabel("English")
                 .setCustomId('en')
                 .setStyle(ButtonStyle.Secondary)
                 .setEmoji('🇬🇧')
                 .setDisabled(true),
+            new ButtonBuilder()
+                .setLabel("Français")
+                .setCustomId('fr')
+                .setStyle(ButtonStyle.Secondary)
+                .setEmoji('🇫🇷')
+                .setDisabled(true),
         )
-
         let buttons2Desabi = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setLabel("Português")
@@ -49,10 +62,15 @@ module.exports = {
                 .setStyle(ButtonStyle.Secondary)
                 .setEmoji('🇧🇷')
                 .setDisabled(true),
-
+            new ButtonBuilder()
+                .setLabel("Español")
+                .setCustomId('es')
+                .setStyle(ButtonStyle.Secondary)
+                .setEmoji('🇪🇸')
+                .setDisabled(true),
         )
 
-        
+
         let embed = new EmbedBuilder()
             .setTitle("Selecione um idioma")
             .setColor("#6dfef2")
@@ -97,7 +115,7 @@ module.exports = {
                             { guildId: interaction.guild.id },
                             { $set: { language: 'en' } },
                             { upsert: true }
-                        ).catch(e => { });
+                        ).catch(e => { })
 
                         await interaction.editReply({
                             embeds: [embed],
@@ -113,6 +131,47 @@ module.exports = {
                         await col.stop();
                         break;
 
+                    case 'fr':
+                        await idioma.findOneAndUpdate(
+                            { guildId: interaction.guild.id },
+                            { $set: { language: 'fr' } },
+                            { upsert: true }
+                        ).catch(e => { })
+
+                        await interaction.editReply({
+                            embeds: [embed],
+                            components: [buttonsDesabi, buttons2Desabi],
+                        }).catch(e => { })
+
+                        interaction.followUp({
+                            content: `La langue du bot a été modifiée avec succès en français. :flag_fr:`,
+                            ephemeral: true
+                        })
+                        await button.deferUpdate().catch(e => { })
+                        await col.stop()
+                        break
+
+                    case 'es':
+                        await idioma.findOneAndUpdate(
+                            { guildId: interaction.guild.id },
+                            { $set: { language: 'es' } },
+                            { upsert: true }
+                        ).catch(e => { })
+
+                        await interaction.editReply({
+                            embeds: [embed],
+                            components: [buttonsDesabi, buttons2Desabi]
+                        }).catch(e => { })
+
+                        interaction.followUp({
+                            content: `El idioma del bot se cambió con éxito al español. :flag_es:`,
+                            ephemeral: true
+                        })
+
+
+                        await button.deferUpdate().catch(e => { })
+                        await col.stop()
+                        break
 
                 }
             })
