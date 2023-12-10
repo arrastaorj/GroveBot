@@ -44,7 +44,27 @@ module.exports = {
                 player.queue.add(track)
             }
 
-            await interaction.reply(`${lang.msg8} ${tracks.length} ${lang.msg9} ${playlistInfo.name}.`)
+            const track = tracks.shift()
+            track.info.requester = interaction.member
+
+
+            const PlayList = new EmbedBuilder()
+                .setAuthor({
+                    name: `${lang.msgPlaylist}`,
+                    iconURL: track.info.requester.user.displayAvatarURL({ dynamic: true })
+                })
+                .setDescription(`${lang.msg8} **${tracks.length}** ${lang.msg9} **${playlistInfo.name}**`)
+                .setColor("#6dfef2")
+                .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
+
+
+            await interaction.reply({ embeds: [PlayList] }).then((msg) => {
+                setTimeout(() => {
+                    msg.delete().catch((e) => null)
+                }, 10000)
+            })
+
+
 
             if (!player.playing && !player.paused) return player.play()
 

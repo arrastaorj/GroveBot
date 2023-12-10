@@ -159,7 +159,7 @@ client.on('interactionCreate', async (interaction) => {
                 let currentPage = 0;
                 let globalCounter = 0;
 
-               
+
                 buttons.components[1].setDisabled(currentPage === pages.length - 1 || pages.length <= 1);
 
 
@@ -184,13 +184,13 @@ client.on('interactionCreate', async (interaction) => {
                     if (interaction.customId === 'prev') {
                         currentPage = (currentPage - 1 + pages.length) % pages.length;
 
-                        
+
                     } else if (interaction.customId === 'next') {
                         currentPage = (currentPage + 1) % pages.length;
 
                     }
 
-                
+
                     buttons.components[0].setDisabled(currentPage === 0);
                     buttons.components[1].setDisabled(currentPage === pages.length - 1)
 

@@ -8,8 +8,14 @@ const language = {
     msg5: "> \`+\` Music playback has been stopped, and the bot disconnected.",
     msg6: "> \`-\` AutoPlay has been disabled.",
     msg7: "> \`+\` AutoPlay is Active.",
+   
+
+    msgPlaylist: "Playlist Added",
     msg8: "Added",
     msg9: "songs from the playlist",
+
+
+
     msg10: "Added to the queue",
     msg11: "Added by",
     msg12: "**Label / Artist**",
