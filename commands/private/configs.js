@@ -174,10 +174,11 @@ module.exports = {
 
             case "autorole": {
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({
-                    content: `${lang.alertNaoTemPermissão}`,
-                    ephemeral: true
-                })
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
 
                 const botMember = interaction.member.guild.members.cache.get(client.user.id)
                 const hasPermission = botMember.permissions.has("Administrator")

@@ -63,7 +63,11 @@ module.exports = {
         const { guild, options } = interaction
         const sub = options.getSubcommand()
 
-        if (!interaction.member.permissions.has(discord.PermissionsBitField.Flags.Administrator)) return await interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
+        if (!interaction.member.permissions.has(discord.PermissionsBitField.Flags.Administrator))
+            return await interaction.reply({
+                content: `${lang.alertNaoTemPermissão}`,
+                ephemeral: true
+            })
 
 
         const botMember = interaction.member.guild.members.cache.get(client.user.id)

@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
 const idioma = require("../../database/models/language")
 
 module.exports = {
@@ -12,6 +12,14 @@ module.exports = {
             lang = { language: client.language };
         }
         lang = require(`../../languages/${lang.language}.js`);
+
+
+        if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
+            return interaction.reply({
+                content: `${lang.alertNaoTemPermissão}`,
+                ephemeral: true
+            })
+
 
 
         let buttons = new ActionRowBuilder().addComponents(

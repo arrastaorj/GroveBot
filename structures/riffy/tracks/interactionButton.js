@@ -1,7 +1,7 @@
 const client = require("../../../index")
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js")
 
-const { pauseRow, playRow, skipRowDisabled, disconnectRow } = require("../../../buttons/musicButtons")
+const { pauseRow, playRow, skipRowDisabled, disconnectRow, pauseRow2, playRow2, skipRowDisabled2, disconnectRow2 } = require("../../../buttons/musicButtons")
 
 const idioma = require("../../../database/models/language")
 
@@ -25,6 +25,7 @@ client.on('interactionCreate', async (interaction) => {
 
 
     switch (interaction.customId) {
+
         case 'pause':
             await interaction.deferUpdate()
 
@@ -35,7 +36,7 @@ client.on('interactionCreate', async (interaction) => {
 
             player.pause(true)
             await interaction.message.edit({
-                components: [pauseRow]
+                components: [pauseRow, pauseRow2]
             }).then(
                 interaction.followUp({
                     content: `${lang.msg2}`,
@@ -55,7 +56,7 @@ client.on('interactionCreate', async (interaction) => {
             player.pause(false)
 
             await interaction.message.edit({
-                components: [playRow]
+                components: [playRow, playRow2]
             }).then(
                 interaction.followUp({
                     content: `${lang.msg3}`,
@@ -76,7 +77,7 @@ client.on('interactionCreate', async (interaction) => {
             player.stop()
 
             await interaction.message.edit({
-                components: [skipRowDisabled]
+                components: [skipRowDisabled, skipRowDisabled2]
             }).then(
                 interaction.followUp({
                     content: `${lang.msg4}`,
@@ -96,7 +97,7 @@ client.on('interactionCreate', async (interaction) => {
             player.destroy()
 
             await interaction.message.edit({
-                components: [disconnectRow]
+                components: [disconnectRow, disconnectRow2]
             }).then(
                 interaction.followUp({
                     content: `${lang.msg5}`,
@@ -152,8 +153,8 @@ client.on('interactionCreate', async (interaction) => {
                 }
 
                 const buttons = new ActionRowBuilder().addComponents(
-                    new ButtonBuilder().setCustomId('prev').setEmoji("<:backward_7071381:1183247894900375562>").setStyle('Primary').setDisabled(true),
-                    new ButtonBuilder().setCustomId('next').setEmoji("<:fastforward_7071375:1183247892538986626>").setStyle('Primary').setDisabled(true),
+                    new ButtonBuilder().setCustomId('prev').setEmoji("<:voltar:1183481878313967758>").setStyle(ButtonStyle.Secondary).setDisabled(true),
+                    new ButtonBuilder().setCustomId('next').setEmoji("<:pular:1183481876447506552>").setStyle(ButtonStyle.Secondary).setDisabled(true),
                 );
 
                 let currentPage = 0;
@@ -163,7 +164,7 @@ client.on('interactionCreate', async (interaction) => {
                 buttons.components[1].setDisabled(currentPage === pages.length - 1 || pages.length <= 1);
 
 
-                console.log(currentPage === pages.length - 1 || pages.length <= 1)
+
                 const embed = new EmbedBuilder()
                     .setTitle(`Fila de Reprodução - Página ${currentPage + 1}/${pages.length}`)
                     .setColor("#6dfef2")
