@@ -92,8 +92,6 @@ async function loadRiffy() {
 
 
 
-
-
 client.login(process.env.tokenGrove)
 
 

@@ -15,7 +15,7 @@ module.exports = {
 
 
         //Verificação para somente quem tiver permição usar o comando
-        if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+        if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
             return interaction.reply({
                 content: `${lang.alertNaoTemPermissão}`,
                 ephemeral: true
