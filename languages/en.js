@@ -356,6 +356,7 @@ const language = {
     alertBotPermission: "> \`-\` <a:alerta:1163274838111162499> I cannot complete the command because I have not received permission to manage this server (Administrator)",
     alertMemes: "> \`-\` <a:alerta:1163274838111162499> An Administrator has not configured the channel for meme usage yet!",
     alertWrongChannel: "> \`-\` <a:alerta:1163274838111162499> You are trying to use a command in the wrong text channel, try using it in the correct channel.",
-    alertCommands: "> \`-\` <a:alerta:1163274838111162499> An Administrator has not configured the channel for command usage yet!"
+    alertCommands: "> \`-\` <a:alerta:1163274838111162499> An Administrator has not configured the channel for command usage yet!",
+    alertCommandosMusic: "> `-` <a:alert:1163274838111162499> A channel has not yet been configured by an administrator to enable the use of music commands."
 }
 module.exports = language;

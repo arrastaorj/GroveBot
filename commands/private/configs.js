@@ -6,7 +6,7 @@ const bemvindo = require("../../database/models/bemvindo")
 const fbv = require("../../database/models/fbv")
 const ticket = require("../../database/models/ticket")
 const idioma = require("../../database/models/language")
-
+const music = require("../../database/models/music")
 
 module.exports = {
     name: "config",
@@ -58,6 +58,7 @@ module.exports = {
                 {
                     name: "canal",
                     type: discord.ApplicationCommandOptionType.Channel,
+                    channelTypes: [discord.ChannelType.GuildText],
                     description: "Mencione o canal de texto ou coloque o ID.",
                     required: true
                 }
@@ -68,10 +69,12 @@ module.exports = {
             name: 'comandos',
             description: 'Definir canal de comandos.',
             type: discord.ApplicationCommandOptionType.Subcommand,
+            channelTypes: [discord.ChannelType.GuildText],
             options: [
                 {
                     name: "canal",
                     type: discord.ApplicationCommandOptionType.Channel,
+                    channelTypes: [discord.ChannelType.GuildText],
                     description: "Mencione o canal de texto ou coloque o ID.",
                     required: true
 
@@ -99,6 +102,7 @@ module.exports = {
                 {
                     name: "canal",
                     type: discord.ApplicationCommandOptionType.Channel,
+                    channelTypes: [discord.ChannelType.GuildText],
                     description: "Mencione o canal de texto ou coloque o ID.",
                     required: true
                 },
@@ -150,6 +154,27 @@ module.exports = {
             description: 'configure meus comandos.',
             type: discord.ApplicationCommandOptionType.Subcommand,
         },
+
+        {
+            name: 'musica',
+            description: 'configure o canal de musicas.',
+            type: discord.ApplicationCommandOptionType.Subcommand,
+            options: [
+
+                {
+                    name: "canal",
+                    type: discord.ApplicationCommandOptionType.Channel,
+                    channelTypes: [discord.ChannelType.GuildText],
+                    description: "Mencione o canal de texto ou coloque o ID.",
+                    required: true
+
+                },
+            ],
+        },
+
+
+
+
 
 
     ],
@@ -1090,6 +1115,91 @@ module.exports = {
                     })
 
                 })
+
+                break
+            }
+
+            case "musica": {
+
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
+
+
+                const botMember = interaction.member.guild.members.cache.get(client.user.id)
+                const hasPermission = botMember.permissions.has("Administrator")
+
+                if (hasPermission) {
+
+                    const canal = interaction.options.getChannel('canal')
+
+                    const user = await music.findOne({
+                        guildId: interaction.guild.id
+                    })
+
+                    if (!user) {
+                        const newCmd = {
+                            guildId: interaction.guild.id,
+                        }
+
+                        if (canal) {
+                            newCmd.canal1 = canal.id;
+                        }
+
+                        await music.create(newCmd)
+
+                        let cargoNames = []
+
+                        if (canal) {
+                            cargoNames.push(canal)
+                        }
+
+                        let LogsAddUser = new discord.EmbedBuilder()
+                            .setDescription(`**Canal de musica configurado:** \n\n> \`+\` ${cargoNames}`)
+                            .setTimestamp()
+                            .setColor('13F000')
+                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true });
+                    } else {
+
+                        if (!canal) {
+                            await music.findOneAndUpdate({
+                                guildId: interaction.guild.id
+                            }, { $unset: { "canal1": "" } });
+                        } else {
+                            await music.findOneAndUpdate({
+                                guildId: interaction.guild.id
+                            }, { $set: { "canal1": canal.id } });
+                        }
+
+                        let cargoNames = []
+
+                        if (canal) {
+                            cargoNames.push(canal)
+                        }
+
+                        let LogsAddUser = new discord.EmbedBuilder()
+                            .setDescription(`**Canal de musica atualizado:** \n\n> \`+\` ${cargoNames}`)
+                            .setTimestamp()
+                            .setColor('13F000')
+                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                        return interaction.reply({
+                            embeds: [LogsAddUser],
+                            ephemeral: true
+                        })
+                    }
+
+                } else {
+
+                    return interaction.reply({
+                        content: `${lang.alertPermissãoBot}`,
+                        ephemeral: true
+                    })
+                }
 
                 break
             }

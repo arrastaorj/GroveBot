@@ -11,12 +11,14 @@ module.exports = {
         {
             name: "canal",
             type: discord.ApplicationCommandOptionType.Channel,
+            channelTypes: [discord.ChannelType.GuildText],
             description: "Canal onde irei enviar o dropdownRoles",
             required: true
         },
         {
             name: "logs",
             type: discord.ApplicationCommandOptionType.Channel,
+            channelTypes: [discord.ChannelType.GuildText],
             description: "Canal onde sera gerado os logs dos usuários.",
             required: true
         },

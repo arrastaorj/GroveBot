@@ -356,6 +356,7 @@ const language = {
     alertMemes: "> \`-\` <a:alerta:1163274838111162499> ¡Un administrador aún no ha configurado el canal para usar memes!",
     alertCanalErrado: "> \`-\` <a:alerta:1163274838111162499> Estás intentando usar un comando en el canal de texto incorrecto. Inténtalo en el canal correcto.",
     alertCommandos: "> \`-\` <a:alerta:1163274838111162499> Un administrador aún no ha configurado el canal para usar comandos!",
+    alertCommandosMusic: "> `-` <a:alerta:1163274838111162499> Un canal aún no ha sido configurado por un administrador para permitir el uso de los comandos de música.",
 }
 
 module.exports = language;

@@ -1,5 +1,5 @@
 const language = {
-    
+
     msg1: "> `-` Il n'y a actuellement aucune musique en cours de lecture.",
     msg2: "> `+` La lecture de la musique a été mise en pause.",
     msg3: "> `+` La lecture de la musique a repris.",
@@ -357,7 +357,8 @@ const language = {
     alertPermissãoBot: "> `-` <a:alerta:1163274838111162499> Je ne peux pas exécuter la commande car je n'ai pas encore reçu l'autorisation de gérer ce serveur (Administrateur)",
     alertMemes: "> `-` <a:alerta:1163274838111162499> Un administrateur n'a pas encore configuré le canal pour l'utilisation des memes !",
     alertCanalErrado: "> `-` <a:alerta:1163274838111162499> Vous essayez d'utiliser une commande dans le mauvais canal, essayez de l'utiliser dans le canal correct.",
-    alertCommandos: "> `-` <a:alerta:1163274838111162499> Un administrateur n'a pas encore configuré le canal pour l'utilisation des commandes !"
+    alertCommandos: "> `-` <a:alerta:1163274838111162499> Un administrateur n'a pas encore configuré le canal pour l'utilisation des commandes !",
+    alertCommandosMusic: "> `-` <a:alerte:1163274838111162499> Un canal n'a pas encore été configuré par un administrateur pour autoriser l'utilisation des commandes musicales."
 
 }
 module.exports = language;

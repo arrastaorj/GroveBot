@@ -358,6 +358,8 @@ const language = {
     alertPermissãoBot: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)",
     alertMemes: "> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de memes!",
     alertCanalErrado: "> \`-\` <a:alerta:1163274838111162499> Você está tentando usar um comando no canal de texto errado, tente usá-lo no canal correto.",
-    alertCommandos: "> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!"
+    alertCommandos: "> \`-\` <a:alerta:1163274838111162499> Um Adminitrador ainda não configurou o canal para uso de comandos!",
+    alertCommandosMusic: "> \`-\` <a:alerta:1163274838111162499> Um canal ainda não foi configurado por um administrador para permitir o uso dos comandos de música."
+
 }
 module.exports = language;
