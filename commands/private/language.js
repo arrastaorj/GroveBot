@@ -23,7 +23,7 @@ module.exports = {
 
 
 
-        let buttons = new ActionRowBuilder().addComponents(
+        const buttons = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setLabel("English")
                 .setCustomId('en')
@@ -36,7 +36,7 @@ module.exports = {
                 .setEmoji('🇫🇷'),
         )
 
-        let buttons2 = new ActionRowBuilder().addComponents(
+        const buttons2 = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setLabel("Português")
                 .setCustomId('pt')
@@ -50,7 +50,7 @@ module.exports = {
         )
 
 
-        let buttonsDesabi = new ActionRowBuilder().addComponents(
+        const buttonsDesabi = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setLabel("English")
                 .setCustomId('en')
@@ -64,7 +64,7 @@ module.exports = {
                 .setEmoji('🇫🇷')
                 .setDisabled(true),
         )
-        let buttons2Desabi = new ActionRowBuilder().addComponents(
+        const buttons2Desabi = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setLabel("Português")
                 .setCustomId('pt')
@@ -80,7 +80,7 @@ module.exports = {
         )
 
 
-        let embed = new EmbedBuilder()
+        const embed = new EmbedBuilder()
             .setTitle("Selecione um idioma")
             .setColor("#6dfef2")
             .setDescription("Escolha o idioma desejado para a comunicação.")
@@ -94,96 +94,56 @@ module.exports = {
             let col = await Message.createMessageComponentCollector({ filter, time: 30000 });
 
             col.on('collect', async (button) => {
-                if (button.user.id !== interaction.user.id) return
-                switch (button.customId) {
+                if (button.user.id !== interaction.user.id) return;
 
+                const { guild } = interaction;
+                const { customId } = button;
+                let language, successMessage;
 
+                switch (customId) {
                     case 'pt':
-                        await idioma.findOneAndUpdate(
-                            { guildId: interaction.guild.id },
-                            { $set: { language: 'pt' } },
-                            { upsert: true }
-                        ).catch(e => { });
-
-                        await interaction.editReply({
-                            embeds: [embed],
-                            components: [buttonsDesabi, buttons2Desabi],
-                        }).catch(e => { })
-
-                        interaction.followUp({
-                            content: `Língua do bot definida para Português - Brasil com sucesso. :flag_br:`,
-                            ephemeral: true
-                        })
-
-                        await button.deferUpdate().catch(e => { });
-                        await col.stop();
+                        language = 'pt';
+                        successMessage = `Língua do bot definida para Português - Brasil com sucesso. :flag_br:`;
                         break;
-
                     case 'en':
-                        await idioma.findOneAndUpdate(
-                            { guildId: interaction.guild.id },
-                            { $set: { language: 'en' } },
-                            { upsert: true }
-                        ).catch(e => { })
-
-                        await interaction.editReply({
-                            embeds: [embed],
-                            components: [buttonsDesabi, buttons2Desabi],
-                        }).catch(e => { })
-
-                        interaction.followUp({
-                            content: `Bot language successfully changed to English. :flag_gb:`,
-                            ephemeral: true
-                        })
-
-                        await button.deferUpdate().catch(e => { });
-                        await col.stop();
+                        language = 'en';
+                        successMessage = `Bot language successfully changed to English. :flag_gb:`;
                         break;
-
                     case 'fr':
-                        await idioma.findOneAndUpdate(
-                            { guildId: interaction.guild.id },
-                            { $set: { language: 'fr' } },
-                            { upsert: true }
-                        ).catch(e => { })
-
-                        await interaction.editReply({
-                            embeds: [embed],
-                            components: [buttonsDesabi, buttons2Desabi],
-                        }).catch(e => { })
-
-                        interaction.followUp({
-                            content: `La langue du bot a été modifiée avec succès en français. :flag_fr:`,
-                            ephemeral: true
-                        })
-                        await button.deferUpdate().catch(e => { })
-                        await col.stop()
-                        break
-
+                        language = 'fr';
+                        successMessage = `La langue du bot a été modifiée avec succès en français. :flag_fr:`;
+                        break;
                     case 'es':
-                        await idioma.findOneAndUpdate(
-                            { guildId: interaction.guild.id },
-                            { $set: { language: 'es' } },
-                            { upsert: true }
-                        ).catch(e => { })
-
-                        await interaction.editReply({
-                            embeds: [embed],
-                            components: [buttonsDesabi, buttons2Desabi]
-                        }).catch(e => { })
-
-                        interaction.followUp({
-                            content: `El idioma del bot se cambió con éxito al español. :flag_es:`,
-                            ephemeral: true
-                        })
-
-
-                        await button.deferUpdate().catch(e => { })
-                        await col.stop()
-                        break
-
+                        language = 'es';
+                        successMessage = `El idioma del bot se cambió con éxito al español. :flag_es:`;
+                        break;
+                    default:
+                        return;
                 }
-            })
+
+                try {
+                    await idioma.findOneAndUpdate(
+                        { guildId: guild.id },
+                        { $set: { language } },
+                        { upsert: true }
+                    );
+
+                    await interaction.editReply({
+                        embeds: [embed],
+                        components: [buttonsDesabi, buttons2Desabi],
+                    });
+
+                    interaction.followUp({
+                        content: successMessage,
+                        ephemeral: true,
+                    });
+
+                    await button.deferUpdate();
+                    await col.stop();
+                } catch (error) {
+                    console.error(error);
+                }
+            });
 
             col.on('end', async (button, reason) => {
                 if (reason === 'time') {
