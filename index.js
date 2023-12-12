@@ -35,8 +35,6 @@ const connectiondb = require("./database/connect")
 connectiondb.start()
 
 
-client.language = config.language || "pt";
-
 
 client.riffy = new Riffy.Riffy(client, nodes, {
   send: (payload) => {

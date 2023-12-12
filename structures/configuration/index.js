@@ -6,16 +6,9 @@ module.exports = {
         {
             host: "groveserver.discloud.app",
             port: 443,
-            name: 'GroveServer',
+            name: 'GroveLavaLink',
             password: "7856",
             secure: true
         },
     ]
 }
-
-
-// host: "132.145.68.135",
-// port: 6016,
-// name: 'LavaLink 1',
-// password: "nagatoroLavaLink#@#@",
-// secure: false

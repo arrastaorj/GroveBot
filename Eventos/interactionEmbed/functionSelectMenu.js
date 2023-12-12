@@ -1,6 +1,7 @@
 const client = require('../../index')
 const discord = require("discord.js")
 const { EmbedBuilder, roleMention, PermissionsBitField, codeBlock, ActionRowBuilder, ChannelSelectMenuBuilder, ButtonStyle, ButtonBuilder, TextInputBuilder, ModalBuilder, TextInputStyle, ChannelType } = require("discord.js");
+const idioma = require("../../database/models/language")
 
 client.on("interactionCreate", async (interaction) => {
 
