@@ -1,11 +1,7 @@
 const discord = require("discord.js")
 const { GatewayIntentBits, Partials } = require('discord.js')
 require('dotenv').config()
-
-
 const config = require("./plugins/config")
-
-
 const { readdirSync } = require("fs")
 const Riffy = require("riffy")
 const { nodes } = require("./structures/configuration/index")
@@ -84,23 +80,14 @@ async function loadRiffy() {
   })
 }
 
-
-
-
-
-
-
-
-
 client.login(process.env.tokenGrove)
 
-
-// process.on('unhandRejection', (reason, promise) => {
-//   console.log(`❗ | [Erro]\n\n` + reason, promise)
-// })
-// process.on('uncaughtException', (error, origin) => {
-//   console.log(`❗ | [Erro]\n\n` + error, origin)
-// })
-// process.on('uncaughtExceptionMonitor', (error, origin) => {
-//   console.log(`❗ | [Erro]\n\n` + error, origin)
-// })
+process.on('unhandRejection', (reason, promise) => {
+  console.log(`❗ | [Erro]\n\n` + reason, promise)
+})
+process.on('uncaughtException', (error, origin) => {
+  console.log(`❗ | [Erro]\n\n` + error, origin)
+})
+process.on('uncaughtExceptionMonitor', (error, origin) => {
+  console.log(`❗ | [Erro]\n\n` + error, origin)
+})
