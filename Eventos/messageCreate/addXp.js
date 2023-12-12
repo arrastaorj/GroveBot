@@ -9,16 +9,12 @@ const idioma = require("../../database/models/language")
 client.on("messageCreate", async (message, member) => {
 
     try {
+
+
         let lang = await idioma.findOne({
-            guildId: message.guild.id
+            guildId: interaction.guild.id
         })
-
-
-
-        if (!lang || !lang.language) {
-            lang = { language: client.language };
-        }
-        lang = require(`../../languages/${lang.language}.js`)
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
         if (message.guild && message.guild.id) {

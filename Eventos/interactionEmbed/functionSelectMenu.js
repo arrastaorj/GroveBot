@@ -5,6 +5,13 @@ const { EmbedBuilder, roleMention, PermissionsBitField, codeBlock, ActionRowBuil
 client.on("interactionCreate", async (interaction) => {
 
 
+    let lang = await idioma.findOne({
+        guildId: interaction.guild.id
+    })
+    lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+
+
+
     switch (interaction.customId) {
         case 'CREATOR_MENTION_ROLE': {
 

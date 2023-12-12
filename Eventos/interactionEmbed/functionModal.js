@@ -6,8 +6,15 @@ const { buttonCreator } = require("../../commands/private/embed");
 
 client.on("interactionCreate", async (interaction) => {
 
+
+    let lang = await idioma.findOne({
+        guildId: interaction.guild.id
+    })
+    lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+
+
     if (!interaction.isModalSubmit()) return
-   
+
 
     const modal = interaction.fields;
     const message = interaction.message;
@@ -37,9 +44,9 @@ client.on("interactionCreate", async (interaction) => {
             return await creatorSetFooter(interaction, modal);
         }
         case 'CREATOR_IMPORT_JSON': {
-			return await creatorImportJson(interaction, modal);
-		}
-        
+            return await creatorImportJson(interaction, modal);
+        }
+
     }
 
 
@@ -202,18 +209,18 @@ const creatorSetFooter = async (interaction, modal) => {
 
 const creatorImportJson = async (interaction, modal) => {
 
-	const message = interaction.message;
+    const message = interaction.message;
 
-	if (!message.embeds) {
-		return await interaction.reply({ content: 'A mensagem não contém nenhuma mensagem personalizada.', ephemeral: true })
-	}
+    if (!message.embeds) {
+        return await interaction.reply({ content: 'A mensagem não contém nenhuma mensagem personalizada.', ephemeral: true })
+    }
 
-	try {
-		const json = modal.getTextInputValue('JSON_INPUT');
-		const embed = EmbedBuilder.from(JSON.parse(json));
+    try {
+        const json = modal.getTextInputValue('JSON_INPUT');
+        const embed = EmbedBuilder.from(JSON.parse(json));
 
-		await interaction.update({ embeds: [embed] }).catch(() => false);
-	} catch (e) {
-		await interaction.reply({ content: 'O json precisa ser um json válido.', ephemeral: true })
-	}
+        await interaction.update({ embeds: [embed] }).catch(() => false);
+    } catch (e) {
+        await interaction.reply({ content: 'O json precisa ser um json válido.', ephemeral: true })
+    }
 }

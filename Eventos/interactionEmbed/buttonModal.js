@@ -5,6 +5,13 @@ const { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, EmbedB
 
 client.on("interactionCreate", async (interaction) => {
 
+
+    let lang = await idioma.findOne({
+        guildId: interaction.guild.id
+    })
+    lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+
+
     if (!interaction.isButton()) return;
 
     const member = interaction.member;
