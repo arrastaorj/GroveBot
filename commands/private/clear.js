@@ -8,7 +8,7 @@ module.exports = {
     options: [
         {
             name: 'numero',
-            type: discord.ApplicationCommandOptionType.Number,
+            type: discord.ApplicationCommandOptionType.Integer,
             description: 'O número de mensagens a serem limpas (máximo 100)',
             required: true
         },
@@ -20,7 +20,7 @@ module.exports = {
         let lang = await idioma.findOne({ guildId: interaction.guild.id })
         lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
-        const messageCount = interaction.options.getNumber('numero')
+        const messageCount = interaction.options.getInteger('numero')
 
 
         if (messageCount < 1 || messageCount > 100) {
