@@ -7,11 +7,10 @@ module.exports = {
 
     run: async (client, interaction) => {
 
-        let lang = await idioma.findOne({ guildId: interaction.guild.id });
-        if (!lang || !lang.language) {
-            lang = { language: client.language };
-        }
-        lang = require(`../../languages/${lang.language}.js`);
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
         //Verificação para somente quem tiver permição usar o comando
@@ -143,7 +142,7 @@ module.exports = {
                 } catch (error) {
                     console.error(error);
                 }
-            });
+            })
 
             col.on('end', async (button, reason) => {
                 if (reason === 'time') {
@@ -160,7 +159,10 @@ module.exports = {
                         .setTimestamp()
                         .setFooter({ text: `Grove` })
 
-                    await interaction.editReply({ embeds: [embed], components: [buttons] }).catch(e => { })
+                    await interaction.editReply({
+                        embeds: [embed],
+                        components: [buttons]
+                    }).catch(e => { })
                 }
             })
         }).catch(e => { })

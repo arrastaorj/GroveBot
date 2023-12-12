@@ -13,11 +13,7 @@ module.exports = {
         let lang = await idioma.findOne({
             guildId: interaction.guild.id
         })
-
-        if (!lang || !lang.language) {
-            lang = { language: client.language };
-        }
-        lang = require(`../../languages/${lang.language}.js`)
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
         const cmd = await comandos.findOne({
@@ -31,8 +27,8 @@ module.exports = {
 
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
-         
-            
+
+
 
             let amount = Math.floor(Math.random() * 1000) + 100
 

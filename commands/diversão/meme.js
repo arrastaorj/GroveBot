@@ -10,14 +10,11 @@ module.exports = {
 
     async run(client, interaction, args) {
 
+
         let lang = await idioma.findOne({
             guildId: interaction.guild.id
         })
-
-        if (!lang || !lang.language) {
-            lang = { language: client.language };
-        }
-        lang = require(`../../languages/${lang.language}.js`)
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
         const cmd = await meme.findOne({

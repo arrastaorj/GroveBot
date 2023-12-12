@@ -12,12 +12,7 @@ module.exports = {
         let lang = await idioma.findOne({
             guildId: interaction.guild.id
         })
-
-        if (!lang || !lang.language) {
-            lang = { language: client.language };
-        }
-        lang = require(`../../languages/${lang.language}.js`)
-
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
         //Verificação para somente quem tiver permição usar o comando
@@ -27,24 +22,19 @@ module.exports = {
                 ephemeral: true
             })
 
-        const botMember = interaction.member.guild.members.cache.get(client.user.id)
-        const hasPermission = botMember.permissions.has("Administrator")
-
-        if (hasPermission) {
-
-
-            interaction.reply({
-                content: `${lang.msg154}`,
-                ephemeral: true
-            }).then(msg => {
-                interaction.channel.permissionOverwrites.edit(interaction.guild.id, { SendMessages: false })
-            })
-        } else {
-
+        if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
             return interaction.reply({
-                content: `${lang.alertPermissãoBot}`,
+                content: `${lang.alertNaoTemPermissão}`,
                 ephemeral: true
             })
-        }
+
+
+        interaction.reply({
+            content: `${lang.msg154}`,
+            ephemeral: true
+        }).then(msg => {
+            interaction.channel.permissionOverwrites.edit(interaction.guild.id, { SendMessages: false })
+        })
+
     }
 }

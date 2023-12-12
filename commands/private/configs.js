@@ -184,15 +184,10 @@ module.exports = {
 
         let subcommands = interaction.options.getSubcommand()
 
-
         let lang = await idioma.findOne({
             guildId: interaction.guild.id
         })
-
-        if (!lang || !lang.language) {
-            lang = { language: client.language };
-        }
-        lang = require(`../../languages/${lang.language}.js`)
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
         switch (subcommands) {
@@ -205,182 +200,174 @@ module.exports = {
                         ephemeral: true
                     })
 
-                const botMember = interaction.member.guild.members.cache.get(client.user.id)
-                const hasPermission = botMember.permissions.has("Administrator")
 
-                if (hasPermission) {
+                const botMember = interaction.guild.members.cache.get(client.user.id)
+                if (!botMember.permissions.has(discord.PermissionFlagsBits.ManageMessages)) {
+                    return interaction.reply({ content: lang.alertPermissãoBot, ephemeral: true })
+                }
 
-                    const cargo = interaction.options.getRole('cargo')
-                    const cargo2 = interaction.options.getRole('cargo2')
-                    const cargo3 = interaction.options.getRole('cargo3')
-                    const cargo4 = interaction.options.getRole('cargo4')
-                    const cargo5 = interaction.options.getRole('cargo5')
 
-                    const cargosCurrent = [
-                        cargo,
-                        cargo2,
-                        cargo3,
-                        cargo4,
-                        cargo5,
-                    ]
+                const cargo = interaction.options.getRole('cargo')
+                const cargo2 = interaction.options.getRole('cargo2')
+                const cargo3 = interaction.options.getRole('cargo3')
+                const cargo4 = interaction.options.getRole('cargo4')
+                const cargo5 = interaction.options.getRole('cargo5')
 
-                    for (const cargoList of cargosCurrent) {
-                        if (!cargoList) {
-                            continue;
-                        }
-                        if (cargoList.position >= botMember.roles.highest.position) {
-                            return interaction.reply({
-                                content: `${lang.msg74}`,
-                                ephemeral: true
-                            })
-                        }
+                const cargosCurrent = [
+                    cargo,
+                    cargo2,
+                    cargo3,
+                    cargo4,
+                    cargo5,
+                ]
+
+                for (const cargoList of cargosCurrent) {
+                    if (!cargoList) {
+                        continue;
+                    }
+                    if (cargoList.position >= botMember.roles.highest.position) {
+                        return interaction.reply({
+                            content: `${lang.msg74}`,
+                            ephemeral: true
+                        })
+                    }
+                }
+
+                const user = await autoroles.findOne({
+                    guildId: interaction.guild.id
+                })
+
+                if (!user) {
+                    const newCargo = {
+                        guildId: interaction.guild.id,
                     }
 
-                    const user = await autoroles.findOne({
-                        guildId: interaction.guild.id
-                    })
+                    if (cargo) {
+                        newCargo.cargo1Id = cargo.id
+                    }
+                    if (cargo2) {
+                        newCargo.cargo2Id = cargo2.id
+                    }
+                    if (cargo3) {
+                        newCargo.cargo3Id = cargo3.id
+                    }
+                    if (cargo4) {
+                        newCargo.cargo4Id = cargo4.id
+                    }
+                    if (cargo5) {
+                        newCargo.cargo5Id = cargo5.id
+                    }
 
-                    if (!user) {
-                        const newCargo = {
-                            guildId: interaction.guild.id,
-                        }
+                    await autoroles.create(newCargo)
 
-                        if (cargo) {
-                            newCargo.cargo1Id = cargo.id
-                        }
-                        if (cargo2) {
-                            newCargo.cargo2Id = cargo2.id
-                        }
-                        if (cargo3) {
-                            newCargo.cargo3Id = cargo3.id
-                        }
-                        if (cargo4) {
-                            newCargo.cargo4Id = cargo4.id
-                        }
-                        if (cargo5) {
-                            newCargo.cargo5Id = cargo5.id
-                        }
+                    let cargoNames = []
 
-                        await autoroles.create(newCargo)
+                    if (cargo) {
+                        cargoNames.push(cargo)
+                    }
+                    if (cargo2) {
+                        cargoNames.push(cargo2)
+                    }
+                    if (cargo3) {
+                        cargoNames.push(cargo3)
+                    }
+                    if (cargo4) {
+                        cargoNames.push(cargo4)
+                    }
+                    if (cargo5) {
+                        cargoNames.push(cargo5)
+                    }
 
-                        let cargoNames = []
+                    if (cargoNames.length > 0) {
+                        let LogsAddUser = new discord.EmbedBuilder()
+                            .setDescription(`**${lang.msg82}** \n\n> \`+\` ${cargoNames.join("\n> \`+\` ")}`)
+                            .setTimestamp()
+                            .setColor('13F000')
+                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
 
-                        if (cargo) {
-                            cargoNames.push(cargo)
-                        }
-                        if (cargo2) {
-                            cargoNames.push(cargo2)
-                        }
-                        if (cargo3) {
-                            cargoNames.push(cargo3)
-                        }
-                        if (cargo4) {
-                            cargoNames.push(cargo4)
-                        }
-                        if (cargo5) {
-                            cargoNames.push(cargo5)
-                        }
-
-                        if (cargoNames.length > 0) {
-                            let LogsAddUser = new discord.EmbedBuilder()
-                                .setDescription(`**${lang.msg82}** \n\n> \`+\` ${cargoNames.join("\n> \`+\` ")}`)
-                                .setTimestamp()
-                                .setColor('13F000')
-                                .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                            return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
-                        }
-
-                    } else {
-
-                        if (!cargo) {
-                            await autoroles.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "cargo1Id": "" } })
-                        } else {
-                            await autoroles.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "cargo1Id": cargo.id } })
-                        }
-
-                        if (!cargo2) {
-                            await autoroles.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "cargo2Id": "" } })
-                        } else {
-                            await autoroles.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "cargo2Id": cargo2.id } })
-                        }
-
-                        if (!cargo3) {
-                            await autoroles.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "cargo3Id": "" } })
-                        } else {
-                            await autoroles.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "cargo3Id": cargo3.id } })
-                        }
-
-                        if (!cargo4) {
-                            await autoroles.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "cargo4Id": "" } })
-                        } else {
-                            await autoroles.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "cargo4Id": cargo4.id } })
-                        }
-
-                        if (!cargo5) {
-                            await autoroles.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "cargo5Id": "" } })
-                        } else {
-                            await autoroles.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "cargo5Id": cargo5.id } })
-                        }
-
-                        let cargoNames = []
-
-                        if (cargo) {
-                            cargoNames.push(cargo)
-                        }
-                        if (cargo2) {
-                            cargoNames.push(cargo2)
-                        }
-                        if (cargo3) {
-                            cargoNames.push(cargo3)
-                        }
-                        if (cargo4) {
-                            cargoNames.push(cargo4)
-                        }
-                        if (cargo5) {
-                            cargoNames.push(cargo5)
-                        }
-
-                        if (cargoNames.length > 0) {
-                            let LogsAddUser = new discord.EmbedBuilder()
-                                .setDescription(`**${lang.msg83}** \n\n> \`+\` ${cargoNames.join("\n> \`+\` ")}`)
-                                .setTimestamp()
-                                .setColor('13F000')
-                                .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                            return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
-                        }
-
+                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
                     }
 
                 } else {
 
-                    return interaction.reply({
-                        content: `${lang.alertPermissãoBot}`,
-                        ephemeral: true
-                    })
-                }
+                    if (!cargo) {
+                        await autoroles.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "cargo1Id": "" } })
+                    } else {
+                        await autoroles.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "cargo1Id": cargo.id } })
+                    }
 
+                    if (!cargo2) {
+                        await autoroles.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "cargo2Id": "" } })
+                    } else {
+                        await autoroles.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "cargo2Id": cargo2.id } })
+                    }
+
+                    if (!cargo3) {
+                        await autoroles.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "cargo3Id": "" } })
+                    } else {
+                        await autoroles.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "cargo3Id": cargo3.id } })
+                    }
+
+                    if (!cargo4) {
+                        await autoroles.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "cargo4Id": "" } })
+                    } else {
+                        await autoroles.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "cargo4Id": cargo4.id } })
+                    }
+
+                    if (!cargo5) {
+                        await autoroles.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "cargo5Id": "" } })
+                    } else {
+                        await autoroles.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "cargo5Id": cargo5.id } })
+                    }
+
+                    let cargoNames = []
+
+                    if (cargo) {
+                        cargoNames.push(cargo)
+                    }
+                    if (cargo2) {
+                        cargoNames.push(cargo2)
+                    }
+                    if (cargo3) {
+                        cargoNames.push(cargo3)
+                    }
+                    if (cargo4) {
+                        cargoNames.push(cargo4)
+                    }
+                    if (cargo5) {
+                        cargoNames.push(cargo5)
+                    }
+
+                    if (cargoNames.length > 0) {
+                        let LogsAddUser = new discord.EmbedBuilder()
+                            .setDescription(`**${lang.msg83}** \n\n> \`+\` ${cargoNames.join("\n> \`+\` ")}`)
+                            .setTimestamp()
+                            .setColor('13F000')
+                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
+                    }
+                }
                 break
             }
 
@@ -394,75 +381,66 @@ module.exports = {
                     })
 
 
-                const botMember = interaction.member.guild.members.cache.get(client.user.id)
-                const hasPermission = botMember.permissions.has("Administrator")
+                const botMember = interaction.guild.members.cache.get(client.user.id)
+                if (!botMember.permissions.has(discord.PermissionFlagsBits.ManageMessages)) {
+                    return interaction.reply({ content: lang.alertPermissãoBot, ephemeral: true })
+                }
 
-                if (hasPermission) {
+                const cmd1 = interaction.options.getChannel('canal')
 
-                    const cmd1 = interaction.options.getChannel('canal')
+                const user = await bemvindo.findOne({
+                    guildId: interaction.guild.id
+                })
 
-                    const user = await bemvindo.findOne({
-                        guildId: interaction.guild.id
-                    })
-
-                    if (!user) {
-                        const newCmd = {
-                            guildId: interaction.guild.id,
-                        }
-                        if (cmd1) {
-                            newCmd.canal1 = cmd1.id
-                        }
-
-                        await bemvindo.create(newCmd)
-
-                        let cargoNames = []
-
-                        if (cmd1) {
-                            cargoNames.push(cmd1)
-                        }
-
-                        let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**${lang.msg84}** \n\n> \`+\` ${cargoNames}`)
-                            .setTimestamp()
-                            .setColor('13F000')
-                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
-
-                    } else {
-
-                        if (!cmd1) {
-                            await bemvindo.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "canal1": "" } })
-                        } else {
-                            await bemvindo.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "canal1": cmd1.id } })
-                        }
-
-                        let cargoNames = []
-
-                        if (cmd1) {
-                            cargoNames.push(cmd1)
-                        }
-
-                        let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**${lang.msg85}** \n\n> \`+\` ${cargoNames}`)
-                            .setTimestamp()
-                            .setColor('13F000')
-                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
+                if (!user) {
+                    const newCmd = {
+                        guildId: interaction.guild.id,
+                    }
+                    if (cmd1) {
+                        newCmd.canal1 = cmd1.id
                     }
 
+                    await bemvindo.create(newCmd)
+
+                    let cargoNames = []
+
+                    if (cmd1) {
+                        cargoNames.push(cmd1)
+                    }
+
+                    let LogsAddUser = new discord.EmbedBuilder()
+                        .setDescription(`**${lang.msg84}** \n\n> \`+\` ${cargoNames}`)
+                        .setTimestamp()
+                        .setColor('13F000')
+                        .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                    return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
 
                 } else {
 
-                    return interaction.reply({
-                        content: `${lang.alertPermissãoBot}`,
-                        ephemeral: true
-                    })
+                    if (!cmd1) {
+                        await bemvindo.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "canal1": "" } })
+                    } else {
+                        await bemvindo.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "canal1": cmd1.id } })
+                    }
+
+                    let cargoNames = []
+
+                    if (cmd1) {
+                        cargoNames.push(cmd1)
+                    }
+
+                    let LogsAddUser = new discord.EmbedBuilder()
+                        .setDescription(`**${lang.msg85}** \n\n> \`+\` ${cargoNames}`)
+                        .setTimestamp()
+                        .setColor('13F000')
+                        .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                    return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
                 }
 
                 break
@@ -478,75 +456,68 @@ module.exports = {
                         ephemeral: true
                     })
 
-                const botMember = interaction.member.guild.members.cache.get(client.user.id)
-                const hasPermission = botMember.permissions.has("Administrator")
+                const botMember = interaction.guild.members.cache.get(client.user.id)
+                if (!botMember.permissions.has(discord.PermissionFlagsBits.ManageMessages)) {
+                    return interaction.reply({ content: lang.alertPermissãoBot, ephemeral: true })
+                }
 
-                if (hasPermission) {
+                const cmd1 = interaction.options.getChannel('canal')
 
-                    const cmd1 = interaction.options.getChannel('canal')
+                const user = await comandos.findOne({
+                    guildId: interaction.guild.id
+                })
 
-                    const user = await comandos.findOne({
-                        guildId: interaction.guild.id
-                    })
-
-                    if (!user) {
-                        const newCmd = {
-                            guildId: interaction.guild.id,
-                        }
-                        if (cmd1) {
-                            newCmd.canal1 = cmd1.id
-                        }
-
-                        await comandos.create(newCmd)
-
-                        let cargoNames = []
-
-                        if (cmd1) {
-                            cargoNames.push(cmd1)
-                        }
-
-                        let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**${lang.msg86}** \n\n> \`+\` ${cargoNames}`)
-                            .setTimestamp()
-                            .setColor('13F000')
-                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
-                    } else {
-
-                        if (!cmd1) {
-                            await comandos.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "canal1": "" } })
-                        } else {
-                            await comandos.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "canal1": cmd1.id } })
-                        }
-
-                        let cargoNames = []
-
-                        if (cmd1) {
-                            cargoNames.push(cmd1)
-                        }
-
-
-                        let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**${lang.msg87}** \n\n> \`+\` ${cargoNames}`)
-                            .setTimestamp()
-                            .setColor('13F000')
-                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
+                if (!user) {
+                    const newCmd = {
+                        guildId: interaction.guild.id,
+                    }
+                    if (cmd1) {
+                        newCmd.canal1 = cmd1.id
                     }
 
+                    await comandos.create(newCmd)
+
+                    let cargoNames = []
+
+                    if (cmd1) {
+                        cargoNames.push(cmd1)
+                    }
+
+                    let LogsAddUser = new discord.EmbedBuilder()
+                        .setDescription(`**${lang.msg86}** \n\n> \`+\` ${cargoNames}`)
+                        .setTimestamp()
+                        .setColor('13F000')
+                        .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                    return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
                 } else {
 
-                    return interaction.reply({
-                        content: `${lang.alertPermissãoBot}`,
-                        ephemeral: true
-                    })
+                    if (!cmd1) {
+                        await comandos.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "canal1": "" } })
+                    } else {
+                        await comandos.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "canal1": cmd1.id } })
+                    }
+
+                    let cargoNames = []
+
+                    if (cmd1) {
+                        cargoNames.push(cmd1)
+                    }
+
+
+                    let LogsAddUser = new discord.EmbedBuilder()
+                        .setDescription(`**${lang.msg87}** \n\n> \`+\` ${cargoNames}`)
+                        .setTimestamp()
+                        .setColor('13F000')
+                        .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                    return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
                 }
+
 
                 break
             }
@@ -563,74 +534,70 @@ module.exports = {
                     })
 
 
-                const botMember = interaction.member.guild.members.cache.get(client.user.id)
-                const hasPermission = botMember.permissions.has("Administrator")
+                const botMember = interaction.guild.members.cache.get(client.user.id)
+                if (!botMember.permissions.has(discord.PermissionFlagsBits.ManageMessages)) {
+                    return interaction.reply({ content: lang.alertPermissãoBot, ephemeral: true })
+                }
 
-                if (hasPermission) {
+                const cmd1 = interaction.options.getAttachment('imagem')
 
-                    const cmd1 = interaction.options.getAttachment('imagem')
+                const user = await fbv.findOne({
+                    guildId: interaction.guild.id
+                })
 
-                    const user = await fbv.findOne({
-                        guildId: interaction.guild.id
-                    })
-
-                    if (!user) {
-                        const newCmd = {
-                            guildId: interaction.guild.id,
-                        }
-                        if (cmd1) {
-                            newCmd.canal1 = cmd1.url
-                        }
-
-                        await fbv.create(newCmd)
-
-                        let cargoNames = []
-
-                        if (cmd1) {
-                            cargoNames.push(cmd1)
-                        }
-
-                        let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**${lang.msg88}** \n\n> \`+\` ${lang.msg89} **${cmd1.name}** \n\n > \`+\` ${lang.msg90} **${cmd1.height}** \n\n > \`+\` ${lang.msg91} **${cmd1.width}**`)
-                            .setImage(cmd1.url)
-                            .setTimestamp()
-                            .setColor('13F000')
-                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
-                    } else {
-
-                        if (!cmd1) {
-                            await fbv.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "canal1": "" } })
-                        } else {
-                            await fbv.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "canal1": cmd1.url } })
-                        }
-
-                        let cargoNames = []
-
-                        if (cmd1) {
-                            cargoNames.push(cmd1)
-                        }
-
-
-                        let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**${lang.msg92}** \n\n> \`+\` ${lang.msg89} **${cmd1.name}** \n\n > \`+\` ${lang.msg90} **${cmd1.height}** \n\n > \`+\` ${lang.msg91} **${cmd1.width}**`)
-                            .setImage(cmd1.url)
-                            .setTimestamp()
-                            .setColor('13F000')
-                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
+                if (!user) {
+                    const newCmd = {
+                        guildId: interaction.guild.id,
+                    }
+                    if (cmd1) {
+                        newCmd.canal1 = cmd1.url
                     }
 
+                    await fbv.create(newCmd)
+
+                    let cargoNames = []
+
+                    if (cmd1) {
+                        cargoNames.push(cmd1)
+                    }
+
+                    let LogsAddUser = new discord.EmbedBuilder()
+                        .setDescription(`**${lang.msg88}** \n\n> \`+\` ${lang.msg89} **${cmd1.name}** \n\n > \`+\` ${lang.msg90} **${cmd1.height}** \n\n > \`+\` ${lang.msg91} **${cmd1.width}**`)
+                        .setImage(cmd1.url)
+                        .setTimestamp()
+                        .setColor('13F000')
+                        .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                    return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
                 } else {
 
-                    return interaction.reply({ content: `${lang.alertPermissãoBot}`, ephemeral: true })
+                    if (!cmd1) {
+                        await fbv.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "canal1": "" } })
+                    } else {
+                        await fbv.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "canal1": cmd1.url } })
+                    }
+
+                    let cargoNames = []
+
+                    if (cmd1) {
+                        cargoNames.push(cmd1)
+                    }
+
+
+                    let LogsAddUser = new discord.EmbedBuilder()
+                        .setDescription(`**${lang.msg92}** \n\n> \`+\` ${lang.msg89} **${cmd1.name}** \n\n > \`+\` ${lang.msg90} **${cmd1.height}** \n\n > \`+\` ${lang.msg91} **${cmd1.width}**`)
+                        .setImage(cmd1.url)
+                        .setTimestamp()
+                        .setColor('13F000')
+                        .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                    return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
                 }
+
 
                 break
             }
@@ -645,73 +612,67 @@ module.exports = {
                         ephemeral: true
                     })
 
-                const botMember = interaction.member.guild.members.cache.get(client.user.id)
-                const hasPermission = botMember.permissions.has("Administrator")
-
-                if (hasPermission) {
-
-                    const canal = interaction.options.getChannel('canal')
-
-                    const user = await meme.findOne({
-                        guildId: interaction.guild.id
-                    })
-
-                    if (!user) {
-                        const newCmd = {
-                            guildId: interaction.guild.id,
-                        }
-                        if (canal) {
-                            newCmd.canal1 = canal.id
-                        }
-
-                        await meme.create(newCmd)
-
-                        let cargoNames = []
-
-                        if (canal) {
-                            cargoNames.push(canal)
-                        }
-
-                        let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**${lang.msg93}** \n\n> \`+\` ${cargoNames}`)
-                            .setTimestamp()
-                            .setColor('13F000')
-                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
-                    } else {
-
-                        if (!canal) {
-                            await meme.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "canal1": "" } })
-                        } else {
-                            await meme.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "canal1": canal.id } })
-                        }
-
-                        let cargoNames = []
-
-                        if (canal) {
-                            cargoNames.push(canal)
-                        }
-
-
-                        let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**${lang.msg94}** \n\n> \`+\` ${cargoNames}`)
-                            .setTimestamp()
-                            .setColor('13F000')
-                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
-                    }
-
-                } else {
-
-                    return interaction.reply({ content: `${lang.alertPermissãoBot}`, ephemeral: true })
+                const botMember = interaction.guild.members.cache.get(client.user.id)
+                if (!botMember.permissions.has(discord.PermissionFlagsBits.ManageMessages)) {
+                    return interaction.reply({ content: lang.alertPermissãoBot, ephemeral: true })
                 }
 
+                const canal = interaction.options.getChannel('canal')
+
+                const user = await meme.findOne({
+                    guildId: interaction.guild.id
+                })
+
+                if (!user) {
+                    const newCmd = {
+                        guildId: interaction.guild.id,
+                    }
+                    if (canal) {
+                        newCmd.canal1 = canal.id
+                    }
+
+                    await meme.create(newCmd)
+
+                    let cargoNames = []
+
+                    if (canal) {
+                        cargoNames.push(canal)
+                    }
+
+                    let LogsAddUser = new discord.EmbedBuilder()
+                        .setDescription(`**${lang.msg93}** \n\n> \`+\` ${cargoNames}`)
+                        .setTimestamp()
+                        .setColor('13F000')
+                        .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                    return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
+                } else {
+
+                    if (!canal) {
+                        await meme.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "canal1": "" } })
+                    } else {
+                        await meme.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "canal1": canal.id } })
+                    }
+
+                    let cargoNames = []
+
+                    if (canal) {
+                        cargoNames.push(canal)
+                    }
+
+
+                    let LogsAddUser = new discord.EmbedBuilder()
+                        .setDescription(`**${lang.msg94}** \n\n> \`+\` ${cargoNames}`)
+                        .setTimestamp()
+                        .setColor('13F000')
+                        .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                    return interaction.reply({ embeds: [LogsAddUser], ephemeral: true })
+                }
                 break
             }
 
@@ -725,146 +686,141 @@ module.exports = {
                     })
 
 
-                const botMember = interaction.member.guild.members.cache.get(client.user.id)
-                const hasPermission = botMember.permissions.has("Administrator")
+                const botMember = interaction.guild.members.cache.get(client.user.id)
+                if (!botMember.permissions.has(discord.PermissionFlagsBits.ManageMessages)) {
+                    return interaction.reply({ content: lang.alertPermissãoBot, ephemeral: true })
+                }
 
-                if (hasPermission) {
-
-                    let canal = interaction.options.getChannel('canal')
-                    let canal_log = interaction.options.getChannel('canal_log')
-                    let categoria = interaction.options.getChannel('categoria')
-                    let button = interaction.options.getString('nome_botao')
-                    let cargo = interaction.options.getRole('cargo')
-
-
-
-                    const user = await ticket.findOne({
-                        guildId: interaction.guild.id
-                    })
-
-                    if (!user) {
-                        const newCmd = {
-                            guildId: interaction.guild.id,
-                        }
-                        if (canal) {
-                            newCmd.canal1 = canal.id
-                        }
-                        if (canal_log) {
-                            newCmd.canalLog = canal_log.id
-                        }
-                        if (categoria) {
-                            newCmd.categoria = categoria.id
-                        }
-                        if (button) {
-                            newCmd.nomeBotao = button
-                        }
-                        if (cargo) {
-                            newCmd.cargo = cargo.id
-                        }
-
-                        await ticket.create(newCmd)
+                let canal = interaction.options.getChannel('canal')
+                let canal_log = interaction.options.getChannel('canal_log')
+                let categoria = interaction.options.getChannel('categoria')
+                let button = interaction.options.getString('nome_botao')
+                let cargo = interaction.options.getRole('cargo')
 
 
-                    } else {
 
-                        if (!canal) {
-                            await ticket.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "canal1": "" } })
-                        } else {
-                            await ticket.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "canal1": canal.id } })
-                        }
+                const user = await ticket.findOne({
+                    guildId: interaction.guild.id
+                })
 
-                        if (!canal_log) {
-                            await ticket.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "canalLog": "" } })
-                        } else {
-                            await ticket.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "canalLog": canal_log.id } })
-                        }
-
-                        if (!categoria) {
-                            await ticket.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "categoria": "" } })
-                        } else {
-                            await ticket.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "categoria": categoria.id } })
-                        }
-
-                        if (!button) {
-                            await ticket.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "nomeBotao": "" } })
-                        } else {
-                            await ticket.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "nomeBotao": button } })
-                        }
-
-                        if (!cargo) {
-                            await ticket.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "cargo": "" } })
-                        } else {
-                            await ticket.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "cargo": cargo.id } })
-                        }
-
+                if (!user) {
+                    const newCmd = {
+                        guildId: interaction.guild.id,
+                    }
+                    if (canal) {
+                        newCmd.canal1 = canal.id
+                    }
+                    if (canal_log) {
+                        newCmd.canalLog = canal_log.id
+                    }
+                    if (categoria) {
+                        newCmd.categoria = categoria.id
+                    }
+                    if (button) {
+                        newCmd.nomeBotao = button
+                    }
+                    if (cargo) {
+                        newCmd.cargo = cargo.id
                     }
 
+                    await ticket.create(newCmd)
 
-                    let modal = new discord.ModalBuilder()
-                        .setCustomId('modal_ticket')
-                        .setTitle(`${lang.msg95}`)
-
-                    let titu = new discord.TextInputBuilder()
-                        .setCustomId('titulo')
-                        .setLabel(`${lang.msg96}`)
-                        .setStyle(1)
-                        .setPlaceholder(`${lang.msg97}`)
-                        .setRequired(false)
-
-                    let desc = new discord.TextInputBuilder()
-                        .setCustomId('descrição')
-                        .setLabel(`${lang.msg98}`)
-                        .setStyle(2)
-                        .setPlaceholder(`${lang.msg99}`)
-                        .setRequired(false)
-
-                    let titu02 = new discord.TextInputBuilder()
-                        .setCustomId('titulo02')
-                        .setLabel(`${lang.msg100}`)
-                        .setStyle(1)
-                        .setPlaceholder(`${lang.msg97}`)
-                        .setRequired(false)
-
-                    let desc02 = new discord.TextInputBuilder()
-                        .setCustomId('descrição02')
-                        .setLabel(`${lang.msg101}`)
-                        .setStyle(2)
-                        .setPlaceholder(`${lang.msg99}`)
-                        .setRequired(false)
-
-                    const titulo = new discord.ActionRowBuilder().addComponents(titu)
-                    const descrição = new discord.ActionRowBuilder().addComponents(desc)
-                    const titulo02 = new discord.ActionRowBuilder().addComponents(titu02)
-                    const descrição02 = new discord.ActionRowBuilder().addComponents(desc02)
-
-                    modal.addComponents(titulo, descrição, titulo02, descrição02)
-
-                    await interaction.showModal(modal)
 
                 } else {
 
-                    return interaction.reply({ content: `${lang.alertPermissãoBot}`, ephemeral: true })
+                    if (!canal) {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "canal1": "" } })
+                    } else {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "canal1": canal.id } })
+                    }
+
+                    if (!canal_log) {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "canalLog": "" } })
+                    } else {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "canalLog": canal_log.id } })
+                    }
+
+                    if (!categoria) {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "categoria": "" } })
+                    } else {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "categoria": categoria.id } })
+                    }
+
+                    if (!button) {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "nomeBotao": "" } })
+                    } else {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "nomeBotao": button } })
+                    }
+
+                    if (!cargo) {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "cargo": "" } })
+                    } else {
+                        await ticket.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "cargo": cargo.id } })
+                    }
+
                 }
+
+
+                let modal = new discord.ModalBuilder()
+                    .setCustomId('modal_ticket')
+                    .setTitle(`${lang.msg95}`)
+
+                let titu = new discord.TextInputBuilder()
+                    .setCustomId('titulo')
+                    .setLabel(`${lang.msg96}`)
+                    .setStyle(1)
+                    .setPlaceholder(`${lang.msg97}`)
+                    .setRequired(false)
+
+                let desc = new discord.TextInputBuilder()
+                    .setCustomId('descrição')
+                    .setLabel(`${lang.msg98}`)
+                    .setStyle(2)
+                    .setPlaceholder(`${lang.msg99}`)
+                    .setRequired(false)
+
+                let titu02 = new discord.TextInputBuilder()
+                    .setCustomId('titulo02')
+                    .setLabel(`${lang.msg100}`)
+                    .setStyle(1)
+                    .setPlaceholder(`${lang.msg97}`)
+                    .setRequired(false)
+
+                let desc02 = new discord.TextInputBuilder()
+                    .setCustomId('descrição02')
+                    .setLabel(`${lang.msg101}`)
+                    .setStyle(2)
+                    .setPlaceholder(`${lang.msg99}`)
+                    .setRequired(false)
+
+                const titulo = new discord.ActionRowBuilder().addComponents(titu)
+                const descrição = new discord.ActionRowBuilder().addComponents(desc)
+                const titulo02 = new discord.ActionRowBuilder().addComponents(titu02)
+                const descrição02 = new discord.ActionRowBuilder().addComponents(desc02)
+
+                modal.addComponents(titulo, descrição, titulo02, descrição02)
+
+                await interaction.showModal(modal)
 
                 break
             }
@@ -1127,80 +1083,70 @@ module.exports = {
                         ephemeral: true
                     })
 
+                const botMember = interaction.guild.members.cache.get(client.user.id)
+                if (!botMember.permissions.has(discord.PermissionFlagsBits.ManageMessages)) {
+                    return interaction.reply({ content: lang.alertPermissãoBot, ephemeral: true })
+                }
 
-                const botMember = interaction.member.guild.members.cache.get(client.user.id)
-                const hasPermission = botMember.permissions.has("Administrator")
+                const canal = interaction.options.getChannel('canal')
 
-                if (hasPermission) {
+                const user = await music.findOne({
+                    guildId: interaction.guild.id
+                })
 
-                    const canal = interaction.options.getChannel('canal')
-
-                    const user = await music.findOne({
-                        guildId: interaction.guild.id
-                    })
-
-                    if (!user) {
-                        const newCmd = {
-                            guildId: interaction.guild.id,
-                        }
-
-                        if (canal) {
-                            newCmd.canal1 = canal.id;
-                        }
-
-                        await music.create(newCmd)
-
-                        let cargoNames = []
-
-                        if (canal) {
-                            cargoNames.push(canal)
-                        }
-
-                        let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**Canal de musica configurado:** \n\n> \`+\` ${cargoNames}`)
-                            .setTimestamp()
-                            .setColor('13F000')
-                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                        return interaction.reply({ embeds: [LogsAddUser], ephemeral: true });
-                    } else {
-
-                        if (!canal) {
-                            await music.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $unset: { "canal1": "" } });
-                        } else {
-                            await music.findOneAndUpdate({
-                                guildId: interaction.guild.id
-                            }, { $set: { "canal1": canal.id } });
-                        }
-
-                        let cargoNames = []
-
-                        if (canal) {
-                            cargoNames.push(canal)
-                        }
-
-                        let LogsAddUser = new discord.EmbedBuilder()
-                            .setDescription(`**Canal de musica atualizado:** \n\n> \`+\` ${cargoNames}`)
-                            .setTimestamp()
-                            .setColor('13F000')
-                            .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-
-                        return interaction.reply({
-                            embeds: [LogsAddUser],
-                            ephemeral: true
-                        })
+                if (!user) {
+                    const newCmd = {
+                        guildId: interaction.guild.id,
                     }
 
+                    if (canal) {
+                        newCmd.canal1 = canal.id;
+                    }
+
+                    await music.create(newCmd)
+
+                    let cargoNames = []
+
+                    if (canal) {
+                        cargoNames.push(canal)
+                    }
+
+                    let LogsAddUser = new discord.EmbedBuilder()
+                        .setDescription(`**Canal de musica configurado:** \n\n> \`+\` ${cargoNames}`)
+                        .setTimestamp()
+                        .setColor('13F000')
+                        .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
+                    return interaction.reply({ embeds: [LogsAddUser], ephemeral: true });
                 } else {
 
+                    if (!canal) {
+                        await music.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $unset: { "canal1": "" } });
+                    } else {
+                        await music.findOneAndUpdate({
+                            guildId: interaction.guild.id
+                        }, { $set: { "canal1": canal.id } });
+                    }
+
+                    let cargoNames = []
+
+                    if (canal) {
+                        cargoNames.push(canal)
+                    }
+
+                    let LogsAddUser = new discord.EmbedBuilder()
+                        .setDescription(`**Canal de musica atualizado:** \n\n> \`+\` ${cargoNames}`)
+                        .setTimestamp()
+                        .setColor('13F000')
+                        .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+
                     return interaction.reply({
-                        content: `${lang.alertPermissãoBot}`,
+                        embeds: [LogsAddUser],
                         ephemeral: true
                     })
                 }
-
                 break
             }
         }

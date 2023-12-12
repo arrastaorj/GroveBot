@@ -18,11 +18,10 @@ module.exports = {
 
     run: async (client, interaction, args) => {
 
-        let lang = await idioma.findOne({ guildId: interaction.guild.id });
-        if (!lang || !lang.language) {
-            lang = { language: client.language };
-        }
-        lang = require(`../../languages/${lang.language}.js`);
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
 
