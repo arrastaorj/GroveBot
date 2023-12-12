@@ -78,7 +78,7 @@ const language = {
     msg76: "> \`-\` <a:alerta:1163274838111162499> Your maximum selection cannot be greater than the number of configured roles.",
     msg77: "Successfully sent!",
     msg78: "Channel:",
-    msg79: "Cleanup completed",
+    msg79: "Exclusion Report",
     msg80: "**Note:** You can only mass delete messages less than 14 days old.",
     msg81: "Cleaned by:",
     msg82: "AutoRole configured:",
@@ -349,9 +349,16 @@ const language = {
     msg346: "Deleted by",
     msg347: "Congratulations, you have leveled up to:",
 
+    msg348: "One message was successfully removed.",
+    msg349: "Messages were successfully removed.",
+    msg350: "<a:alerta:1163274838111162499> Additionally, one message could not be removed as it is older than 14 days.",
+    msg351: "<a:alerta:1163274838111162499> Additionally, messages could not be removed as,",
+    msg352: "they are older than 14 days.",
 
 
-
+    alertMsgClear: "> `-` <a:alerta:1163274838111162499> Aucun message à supprimer, car tous sont épinglés ou ont plus de 14 jours.",
+    alert14dias: "> `-` <a:alert:1163274838111162499> Discord does not allow the deletion of messages older than 14 days.",
+    alertNumeroInvalido: "> `-` <a:alert:1163274838111162499> An unexpected error occurred. You need to provide a number between 1 and 100.",
     alertNoPermission: "> \`-\` <a:alerta:1163274838111162499> I cannot complete this command because you do not have permission.",
     alertBotPermission: "> \`-\` <a:alerta:1163274838111162499> I cannot complete the command because I have not received permission to manage this server (Administrator)",
     alertMemes: "> \`-\` <a:alerta:1163274838111162499> An Administrator has not configured the channel for meme usage yet!",

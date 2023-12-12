@@ -78,9 +78,13 @@ const language = {
     msg76: "> \`-\` <a:alerta:1163274838111162499> Seu máximo selecionado não pode ser maior do que a quantidade de cargos configurados.",
     msg77: "Enviado com sucesso!",
     msg78: "Canal:",
-    msg79: "Limpeza concluída",
+
+    msg79: "Relatório de Exclusões",
     msg80: "**Observação:** Você só pode excluir mensagens em massa com menos de 14 dias.",
     msg81: "Limpado por:",
+
+
+
     msg82: "AutoRole configurado:",
     msg83: "AutoRole atualizado:",
     msg84: "Canal de Bem-Vindos configurado:",
@@ -351,8 +355,16 @@ const language = {
     msg346: "Deletado por",
     msg347: "Parabêns, você subiu para o nível:",
 
+    msg348: "Uma mensagem foi removida com sucesso.",
+    msg349: "mensagens foram removidas com sucesso.",
+    msg350: "<a:alerta:1163274838111162499> Além disso, uma mensagem não pôde ser removida por ser mais antiga do que 14 dias.",
+    msg351: "<a:alerta:1163274838111162499> Além disso,",
+    msg352: "mensagens não puderam ser removidas por serem mais antigas do que 14 dias.",
 
 
+    alertMsgClear: "> \`-\` <a:alerta:1163274838111162499> Não há mensagens a serem excluídas, pois todas estão fixadas ou têm mais de 14 dias.",
+    alert14dias: "> \`-\` <a:alerta:1163274838111162499> O Discord não permite a exclusão de mensagens com mais de 14 dias",
+    alertNumeroInvalido: "> \`-\` <a:alerta:1163274838111162499> Ocorreu um erro inesperado, Você precisa fornecer um numero de 1 a 100",
     alertErroInesperado: "> \`-\` <a:alerta:1163274838111162499> Ocorreu um erro inesperado, Tente de novo em alguns segundos.",
     alertNaoTemPermissão: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir este comando pois você não possui permissão.",
     alertPermissãoBot: "> \`-\` <a:alerta:1163274838111162499> Não posso concluir o comandos pois ainda não recebir permissão para gerenciar este servidor (Administrador)",

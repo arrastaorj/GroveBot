@@ -79,7 +79,7 @@ const language = {
     msg76: "> \`-\` <a:alerta:1163274838111162499> Tu selección máxima no puede ser mayor que la cantidad de roles configurados.",
     msg77: "¡Enviado con éxito!",
     msg78: "Canal:",
-    msg79: "Limpieza completada",
+    msg79: "Informe de Eliminaciones",
     msg80: "**Nota:** Solo puedes eliminar mensajes en masa con menos de 14 días.",
     msg81: "Borrado por:",
     msg82: "AutoRol configurado:",
@@ -350,6 +350,18 @@ const language = {
     msg345: "Ticket de",
     msg346: "Borrado por",
     msg347: "¡Felicidades, has subido al nivel:",
+
+    msg348: "Se eliminó con éxito un mensaje.",
+    msg349: "Se eliminaron con éxito mensajes.",
+    msg350: "<a:alerta:1163274838111162499> Además, no se pudo eliminar un mensaje porque tiene más de 14 días.",
+    msg351: "<a:alerta:1163274838111162499> Además, no se pudieron eliminar mensajes,",
+    msg352: "porque son más antiguos de 14 días.",
+
+
+
+    alertMsgClear: "> `-` <a:alerta:1163274838111162499> Aucun message à supprimer, car tous sont épinglés ou ont plus de 14 jours.",
+    alert14dias: "> `-` <a:alerta:1163274838111162499> Discord no permite la eliminación de mensajes con más de 14 días.",
+    alertNumeroInvalido: "> `-` <a:alerta:1163274838111162499> Se produjo un error inesperado. Debes proporcionar un número del 1 al 100.",
     alertErroInesperado: "> \`-\` <a:alerta:1163274838111162499> Ocurrió un error inesperado. Inténtalo de nuevo en unos segundos.",
     alertNaoTemPermissão: "> \`-\` <a:alerta:1163274838111162499> No puedo completar este comando porque no tienes permisos.",
     alertPermissãoBot: "> \`-\` <a:alerta:1163274838111162499> No puedo completar los comandos porque aún no tengo permisos para administrar este servidor (Administrador).",
