@@ -350,7 +350,6 @@ const language = {
     msg345: "Ticket de",
     msg346: "Borrado por",
     msg347: "¡Felicidades, has subido al nivel:",
-
     msg348: "Se eliminó con éxito un mensaje.",
     msg349: "Se eliminaron con éxito mensajes.",
     msg350: "<a:alerta:1163274838111162499> Además, no se pudo eliminar un mensaje porque tiene más de 14 días.",

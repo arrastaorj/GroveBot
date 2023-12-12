@@ -348,12 +348,13 @@ const language = {
     msg345: "Ticket of",
     msg346: "Deleted by",
     msg347: "Congratulations, you have leveled up to:",
-
     msg348: "One message was successfully removed.",
     msg349: "Messages were successfully removed.",
     msg350: "<a:alerta:1163274838111162499> Additionally, one message could not be removed as it is older than 14 days.",
     msg351: "<a:alerta:1163274838111162499> Additionally, messages could not be removed as,",
     msg352: "they are older than 14 days.",
+
+
 
 
     alertMsgClear: "> `-` <a:alerta:1163274838111162499> Aucun message à supprimer, car tous sont épinglés ou ont plus de 14 jours.",

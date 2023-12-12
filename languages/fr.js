@@ -101,7 +101,6 @@ const language = {
     msg98: "Description du message (Pour ouvrir un ticket)",
     msg99: "Entrez la description.",
     msg100: "Titre (Dans le ticket)",
-
     msg101: "Description du message (À l'intérieur du ticket)",
     msg102: "Bonjour",
     msg103: "Voici comment configurer mes commandes. Sélectionnez une catégorie ci-dessous !",
@@ -202,7 +201,6 @@ const language = {
     msg198: "> `+` <:effect_7889005:1162567929271947274> Skin sélectionnée avec succès. Profitez-en !",
     msg199: "> `+` Cliquez sur <:voltar:1167104944420175984> pour la visualiser.",
     msg200: "> `+` Les skins sont la clé pour transformer l'apparence de votre profil en Grove. N'oubliez pas de vérifier les nouveautés dans la `/loja` quotidienne.",
-
     msg201: "> `+` La skin n'est pas encore disponible dans votre inventaire. Pour la visualiser, il vous suffit de taper `/loja` et de consulter les offres quotidiennes do Grove.",
     msg202: "Salut",
     msg203: "mon ping est de",
@@ -351,12 +349,14 @@ const language = {
     msg345: "Ticket de",
     msg346: "Supprimé par",
     msg347: "Félicitations, vous avez atteint le niveau :",
-
     msg348: "Une message a été supprimé avec succès.",
     msg349: "Des messages ont été supprimés avec succès.",
     msg350: "<a:alerta:1163274838111162499> De plus, un message n'a pas pu être supprimé car il est plus ancien de 14 jours.",
     msg351: "<a:alerta:1163274838111162499> De plus, des messages n'ont pas pu être,",
     msg352: "supprimés car ils sont plus anciens de 14 jours.",
+
+
+
 
     alertMsgClear: "> `-` <a:alerta:1163274838111162499> Aucun message à supprimer, car tous sont épinglés ou ont plus de 14 jours.",
     alert14dias: "> `-` <a:alerte:1163274838111162499> Discord ne permet pas la suppression de messages datant de plus de 14 jours.",

@@ -78,13 +78,9 @@ const language = {
     msg76: "> \`-\` <a:alerta:1163274838111162499> Seu máximo selecionado não pode ser maior do que a quantidade de cargos configurados.",
     msg77: "Enviado com sucesso!",
     msg78: "Canal:",
-
     msg79: "Relatório de Exclusões",
     msg80: "**Observação:** Você só pode excluir mensagens em massa com menos de 14 dias.",
     msg81: "Limpado por:",
-
-
-
     msg82: "AutoRole configurado:",
     msg83: "AutoRole atualizado:",
     msg84: "Canal de Bem-Vindos configurado:",
@@ -104,8 +100,6 @@ const language = {
     msg98: "Descrição da mensagem (Para abrir ticket)",
     msg99: "Digite a Descrição.",
     msg100: "Titulo (Dentro do ticket)",
-
-
     msg101: "Descrição da mensagem (Dentro do ticket)",
     msg102: "Olá",
     msg103: "Veja como configurar meus comandos. Selecione uma categoria abaixo!",
@@ -354,12 +348,13 @@ const language = {
     msg345: "Ticket de",
     msg346: "Deletado por",
     msg347: "Parabêns, você subiu para o nível:",
-
     msg348: "Uma mensagem foi removida com sucesso.",
     msg349: "mensagens foram removidas com sucesso.",
     msg350: "<a:alerta:1163274838111162499> Além disso, uma mensagem não pôde ser removida por ser mais antiga do que 14 dias.",
     msg351: "<a:alerta:1163274838111162499> Além disso,",
     msg352: "mensagens não puderam ser removidas por serem mais antigas do que 14 dias.",
+
+
 
 
     alertMsgClear: "> \`-\` <a:alerta:1163274838111162499> Não há mensagens a serem excluídas, pois todas estão fixadas ou têm mais de 14 dias.",
