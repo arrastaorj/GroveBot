@@ -1,8 +1,8 @@
 const fs = require("fs")
 const bot = require('../bot.json')
 require('colors')
-module.exports = async (client) => {
 
+module.exports = async (client) => {
 
   const ArgsScommands = []
 
@@ -35,7 +35,6 @@ module.exports = async (client) => {
 
 
   client.on("ready", async () => {
-
 
     if (bot.slash.guild_id) {
 
