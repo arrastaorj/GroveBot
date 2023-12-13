@@ -5,8 +5,6 @@ const Riffy = require("riffy")
 const loadRiffy = require("./handler/riffy")
 const { nodes } = require("./structures/configuration/index")
 
-
-
 const client = new discord.Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -18,7 +16,13 @@ const client = new discord.Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildVoiceStates,
   ],
-  partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember, Partials.Reaction]
+  partials: [
+    Partials.Channel,
+    Partials.Message,
+    Partials.User,
+    Partials.GuildMember,
+    Partials.Reaction
+  ]
 })
 
 console.clear()
@@ -44,18 +48,18 @@ client.riffy = new Riffy.Riffy(client, nodes, {
   restVersion: "v3"
 });
 
-  (async () => {
-    await loadRiffy()
-  })()
+(async () => {
+  await loadRiffy()
+})()
 
 client.login(process.env.tokenGrove)
 
-process.on('unhandRejection', (reason, promise) => {
-  console.log(`❗ | [Erro]\n\n` + reason, promise)
-})
-process.on('uncaughtException', (error, origin) => {
-  console.log(`❗ | [Erro]\n\n` + error, origin)
-})
-process.on('uncaughtExceptionMonitor', (error, origin) => {
-  console.log(`❗ | [Erro]\n\n` + error, origin)
-})
+// process.on('unhandRejection', (reason, promise) => {
+//   console.log(`❗ | [Erro]\n\n` + reason, promise)
+// })
+// process.on('uncaughtException', (error, origin) => {
+//   console.log(`❗ | [Erro]\n\n` + error, origin)
+// })
+// process.on('uncaughtExceptionMonitor', (error, origin) => {
+//   console.log(`❗ | [Erro]\n\n` + error, origin)
+// })

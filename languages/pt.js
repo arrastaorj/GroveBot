@@ -353,7 +353,6 @@ const language = {
     msg350: "<a:alerta:1163274838111162499> Além disso, uma mensagem não pôde ser removida por ser mais antiga do que 14 dias.",
     msg351: "<a:alerta:1163274838111162499> Além disso,",
     msg352: "mensagens não puderam ser removidas por serem mais antigas do que 14 dias.",
-
     msg353: "Criador de mensagem",
     msg354: "Título",
     msg355: "Insira o título que deseja definir",
