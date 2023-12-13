@@ -2,7 +2,7 @@ const client = require("../../../index")
 const idioma = require("../../../database/models/language")
 
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js")
-const { pauseRow, playRow, skipRowDisabled, disconnectRow, pauseRow2, playRow2, skipRowDisabled2, disconnectRow2 } = require("../../../buttons/musicButtons")
+const { pauseRow, playRow, skipRowDisabled, disconnectRow, pauseRow2, playRow2, skipRowDisabled2, disconnectRow2 } = require("../buttons/musicButtons")
 
 
 
