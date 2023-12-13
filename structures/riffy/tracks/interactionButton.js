@@ -26,6 +26,27 @@ client.on('interactionCreate', async (interaction) => {
 
     switch (interaction.customId) {
 
+        case 'voltar':
+            await interaction.deferUpdate()
+
+            if (!player) return interaction.followUp({
+                content: `${lang.msg1}`,
+                ephemeral: true
+            })
+
+            await player.previous()
+            await interaction.message.edit({
+                components: [pauseRow, pauseRow2]
+            }).then(
+                interaction.followUp({
+                    content: `${lang.msg2}`,
+                    ephemeral: true,
+                })
+            )
+            break
+
+
+
         case 'pause':
             await interaction.deferUpdate()
 

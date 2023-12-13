@@ -2,6 +2,7 @@ const discord = require("discord.js")
 const { GatewayIntentBits, Partials } = require('discord.js')
 require('dotenv').config()
 const Riffy = require("riffy")
+const { Manager } = require("erela.js")
 const loadRiffy = require("./handler/riffy")
 const { nodes } = require("./structures/configuration/index")
 
@@ -39,6 +40,7 @@ connectiondb.start()
 
 
 
+
 client.riffy = new Riffy.Riffy(client, nodes, {
   send: (payload) => {
     const guild = client.guilds.cache.get(payload.d.guild_id)
@@ -47,6 +49,9 @@ client.riffy = new Riffy.Riffy(client, nodes, {
   defaultSearchPlatform: "ytmsearch",
   restVersion: "v3"
 });
+
+
+
 
 (async () => {
   await loadRiffy()
