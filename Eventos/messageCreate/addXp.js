@@ -12,7 +12,7 @@ client.on("messageCreate", async (message, member) => {
 
 
         let lang = await idioma.findOne({
-            guildId: interaction.guild.id
+            guildId: message.guild.id
         })
         lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
