@@ -73,13 +73,13 @@ module.exports = async (client) => {
 
   })
 
-  fs.readdir('././Eventos/', (err, fol) => {
+  fs.readdir('././events/', (err, fol) => {
     fol.forEach(subfol => {
-      fs.readdir(`././Eventos/${subfol}/`, (er, files) => {
+      fs.readdir(`././events/${subfol}/`, (er, files) => {
         files.forEach(evnt => {
           if (!evnt.endsWith('.js')) return;
 
-          const e = require(`../Eventos/${subfol}/${evnt}`);
+          const e = require(`../events/${subfol}/${evnt}`);
 
           client.removeAllListeners(e.name);
 
