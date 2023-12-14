@@ -1,8 +1,13 @@
 const client = require("../../../index")
 const idioma = require("../../../database/models/language")
+const { playedTracks } = require("./trackStart")
+
 
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js")
 const { pauseRow, playRow, skipRowDisabled, disconnectRow, pauseRow2, playRow2, skipRowDisabled2, disconnectRow2 } = require("../buttons/musicButtons")
+
+
+
 
 
 
@@ -24,24 +29,28 @@ client.on('interactionCreate', async (interaction) => {
     const player = client.riffy.players.get(interaction.guild.id)
 
 
+
     switch (interaction.customId) {
 
         case 'voltar':
-            await interaction.deferUpdate()
 
-            if (!player) return interaction.followUp({
-                content: `${lang.msg1}`,
-                ephemeral: true
-            })
+            if (playedTracks.length < 2) {
+                return interaction.reply({ content: 'Não há música anterior para voltar.', ephemeral: true })
+            }
 
-            interaction.followUp({
-                content: `>  \`+\` Peço desculpa, mais o comando de back ainda não esta disponivel!`,
+            playedTracks.pop()
+
+            const lastTrack = playedTracks.pop()
+            player.queue.unshift(lastTrack)
+            player.stop();
+
+            interaction.reply({
+                content: `testee`,
                 ephemeral: true,
             })
 
+
             break
-
-
 
         case 'pause':
             await interaction.deferUpdate()

@@ -6,6 +6,11 @@ const client = require("../../../index")
 
 const activeMessages = new Map();
 
+const playedTracks = []
+
+
+
+
 client.riffy.on('trackStart', async (player, track) => {
 
     const row = new ActionRowBuilder()
@@ -70,11 +75,18 @@ client.riffy.on('trackStart', async (player, track) => {
     const buffer = await card.build();
     const attachment = new AttachmentBuilder(buffer, { name: `musicard.png` });
 
+
+ 
+
+    playedTracks.push(track)
+
+
     const existingMessage = activeMessages.get(channel.id);
 
     try {
         if (existingMessage) {
             const { msg, row, row2 } = existingMessage;
+            
             await msg.edit({
                 files: [attachment],
                 components: [row, row2],
@@ -180,3 +192,7 @@ client.riffy.on("queueEnd", async (player) => {
 client.riffy.on('trackError', async (player, track, payload) => {
     //console.log(payload)
 })
+
+module.exports = {
+    playedTracks
+}
