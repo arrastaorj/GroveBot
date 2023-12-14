@@ -1,10 +1,6 @@
 const discord = require("discord.js")
 const { GatewayIntentBits, Partials } = require('discord.js')
 require('dotenv').config()
-const Riffy = require("riffy")
-const { Manager } = require("erela.js")
-const loadRiffy = require("./handler/riffy")
-const { nodes } = require("./structures/configuration/index")
 
 const client = new discord.Client({
   intents: [
@@ -36,26 +32,8 @@ client.aliases = new discord.Collection()
 require('./handler')(client)
 
 const connectiondb = require("./database/connect")
-connectiondb.start()
+connectiondb.start();
 
-
-
-
-client.riffy = new Riffy.Riffy(client, nodes, {
-  send: (payload) => {
-    const guild = client.guilds.cache.get(payload.d.guild_id)
-    if (guild) guild.shard.send(payload)
-  },
-  defaultSearchPlatform: "ytmsearch",
-  restVersion: "v3"
-});
-
-
-
-
-(async () => {
-  await loadRiffy()
-})()
 
 client.login(process.env.tokenGrove)
 

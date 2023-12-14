@@ -34,15 +34,11 @@ client.on('interactionCreate', async (interaction) => {
                 ephemeral: true
             })
 
-            await player.previous()
-            await interaction.message.edit({
-                components: [pauseRow, pauseRow2]
-            }).then(
-                interaction.followUp({
-                    content: `${lang.msg2}`,
-                    ephemeral: true,
-                })
-            )
+            interaction.followUp({
+                content: `>  \`+\` Peço desculpa, mais o comando de back ainda não esta disponivel!`,
+                ephemeral: true,
+            })
+
             break
 
 
