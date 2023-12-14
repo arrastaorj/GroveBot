@@ -7,6 +7,8 @@ const language = {
     msg5: "> `+` La lecture de la musique a été interrompue et le bot déconnecté.",
     msg6: "> `-` L'AutoPlay est désactivé.",
     msg7: "> `+` L'AutoPlay est activé.",
+    msgAnterior: "Il n’y a aucune chanson précédente sur laquelle revenir.",
+    msgBack: "> \`+\` Musique de retour.",
     msgPlaylist: "Playlist ajoutée",
     msg8: "Ajoutées",
     msg9: "chansons de la playlist",

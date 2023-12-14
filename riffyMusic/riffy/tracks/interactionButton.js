@@ -5,6 +5,7 @@ const { playedTracks } = require("./trackStart")
 
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js")
 const { pauseRow, playRow, skipRowDisabled, disconnectRow, pauseRow2, playRow2, skipRowDisabled2, disconnectRow2 } = require("../buttons/musicButtons")
+const play = require("../../../commands/music/play")
 
 
 
@@ -35,17 +36,14 @@ client.on('interactionCreate', async (interaction) => {
         case 'voltar':
 
             if (playedTracks.length < 2) {
-                return interaction.reply({ content: 'Não há música anterior para voltar.', ephemeral: true })
+                return interaction.reply({ content: `${lang.msgAnterior}`, ephemeral: true });
             }
 
-            playedTracks.pop()
-
-            const lastTrack = playedTracks.pop()
-            player.queue.unshift(lastTrack)
+            const lastTrack = playedTracks.shift();
+            player.queue.unshift(lastTrack);
             player.stop();
-
             interaction.reply({
-                content: `testee`,
+                content: `${lang.msgBack}`,
                 ephemeral: true,
             })
 
@@ -99,6 +97,7 @@ client.on('interactionCreate', async (interaction) => {
                 content: `${lang.msg1}`,
                 ephemeral: true
             })
+
 
             player.stop()
 

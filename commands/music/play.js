@@ -2,6 +2,7 @@ const { Client, CommandInteraction, ApplicationCommandOptionType, EmbedBuilder }
 const idioma = require("../../database/models/language")
 const canalMusic = require("../../database/models/music")
 
+
 module.exports = {
     name: 'play',
     description: 'reproduzir uma música',
@@ -71,7 +72,7 @@ module.exports = {
                     .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
 
 
-                await interaction.reply({ embeds: [PlayList] }).then((msg) => {
+                await interaction.reply({ embeds: [PlayList], fetchReply: true }).then((msg) => {
                     setTimeout(() => {
                         msg.delete().catch((e) => null)
                     }, 10000)
@@ -130,8 +131,7 @@ module.exports = {
                         },
                     ])
 
-
-                await interaction.reply({ embeds: [embed] }).then((msg) => {
+                await interaction.reply({ embeds: [embed], fetchReply: true }).then((msg) => {
                     setTimeout(() => {
                         msg.delete().catch((e) => null)
                     }, 10000)

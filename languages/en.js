@@ -6,6 +6,8 @@ const language = {
     msg5: "> \`+\` Music playback has been stopped, and the bot disconnected.",
     msg6: "> \`-\` AutoPlay has been disabled.",
     msg7: "> \`+\` AutoPlay is Active.",
+    msgAnterior: "There is no previous song to go back to.",
+    msgBack: "> \`+\` Back Music.",
     msgPlaylist: "Playlist Added",
     msg8: "Added",
     msg9: "songs from the playlist",

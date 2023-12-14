@@ -76,7 +76,7 @@ client.riffy.on('trackStart', async (player, track) => {
     const attachment = new AttachmentBuilder(buffer, { name: `musicard.png` });
 
 
- 
+
 
     playedTracks.push(track)
 
@@ -86,7 +86,7 @@ client.riffy.on('trackStart', async (player, track) => {
     try {
         if (existingMessage) {
             const { msg, row, row2 } = existingMessage;
-            
+
             await msg.edit({
                 files: [attachment],
                 components: [row, row2],
@@ -184,6 +184,7 @@ client.riffy.on("queueEnd", async (player) => {
     if (player.isAutoplay) {
         player.autoplay(player)
     } else {
+
         player.stop()
     }
 })
