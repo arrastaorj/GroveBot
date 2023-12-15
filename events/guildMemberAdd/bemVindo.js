@@ -8,7 +8,7 @@ const idioma = require("../../database/models/language")
 client.on("guildMemberAdd", async (member) => {
 
     let lang = await idioma.findOne({
-        guildId: interaction.guild.id
+        guildId: member.guild.id
     })
     lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
