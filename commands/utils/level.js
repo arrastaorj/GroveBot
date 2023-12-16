@@ -118,7 +118,7 @@ module.exports = {
             // Adicionando estatísticas
             ctx.font = "bold 25px Sans"
             ctx.fillText("#" + currentRank, 740, 40, 80)
-           // ctx.fillText(fetchedLevel.level, 230, 130, 80)
+            // ctx.fillText(fetchedLevel.level, 230, 130, 80)
 
             // Adicionando títulos 
             ctx.fillStyle = "white"
@@ -153,7 +153,9 @@ module.exports = {
 
             const at = new discord.AttachmentBuilder(canvas.toBuffer(), "rank.png")
 
-            interaction.reply({ files: [at] })
+            interaction.reply({
+                files: [at]
+            })
         }
 
         else if (interaction.channel.id !== cmd1) {

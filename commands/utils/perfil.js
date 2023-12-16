@@ -54,8 +54,9 @@ module.exports = {
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
 
-            const user = interaction.options.getUser("usuario") || interaction.user
+            await interaction.deferReply({ fetchReply: true })
 
+            const user = interaction.options.getUser("usuario") || interaction.user
 
 
             let btn = new discord.ActionRowBuilder().addComponents([
@@ -397,12 +398,14 @@ module.exports = {
 
             if (interaction.user != user) {
 
-                interaction.reply({ files: [mensagem] })
+                interaction.reply({
+                    files: [mensagem]
+                })
 
             } else {
 
 
-                const m = await interaction.reply({
+                const m = await interaction.editReply({
                     files: [mensagem],
                     components: [btn],
                     fetchReply: true

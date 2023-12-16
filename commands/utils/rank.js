@@ -52,56 +52,61 @@ module.exports = {
 
 
 
-            const ranks = Math.min(10, dataGlobal.length);
+            const ranks = Math.min(10, dataGlobal.length)
 
             const userNames = []
             const userContents = []
 
             for (let i = 0; i < ranks; i++) {
 
-                const userData = dataGlobal[i];
-                const user = client.users.cache.get(userData?.userId);
+                const userData = dataGlobal[i]
+                const user = client.users.cache.get(userData?.userId)
 
                 if (user) {
 
-                    const userName = `${user.tag} | Level: [${userData.level}]`;
-                    userNames.push(userName);
+                    const userName = `${user.tag} | Level: [${userData.level}]`
+                    userNames.push(userName)
 
-                    const userContent = `${user.id}`;
-                    userContents.push(userContent);
+                    const userContent = `${user.id}`
+                    userContents.push(userContent)
 
                 }
             }
 
 
             userNames.sort((a, b) => {
-                const levelA = parseInt(a.match(/\[([0-9]+)\]/)[1]);
-                const levelB = parseInt(b.match(/\[([0-9]+)\]/)[1]);
-                return levelB - levelA;
+                const levelA = parseInt(a.match(/\[([0-9]+)\]/)[1])
+                const levelB = parseInt(b.match(/\[([0-9]+)\]/)[1])
+                return levelB - levelA
             })
 
             userContents.sort((a, b) => {
-                const userDataA = dataGlobal.find((user) => user.userId === a);
-                const userDataB = dataGlobal.find((user) => user.userId === b);
+                const userDataA = dataGlobal.find((user) => user.userId === a)
+                const userDataB = dataGlobal.find((user) => user.userId === b)
 
 
-                const levelA = userDataA ? userDataA.level : 0;
-                const levelB = userDataB ? userDataB.level : 0;
+                const levelA = userDataA ? userDataA.level : 0
+                const levelB = userDataB ? userDataB.level : 0
 
 
                 if (levelB !== levelA) {
-                    return levelB - levelA;
+                    return levelB - levelA
                 } else {
-                    return parseInt(a) - parseInt(b);
+
+                    const xpA = userDataA ? userDataA.xp : 0
+                    const xpB = userDataB ? userDataB.xp : 0
+
+                    return xpB - xpA
                 }
-            })
+            });
+
 
 
 
             const canvas = createCanvas(680, 745),
                 ctx = canvas.getContext('2d'),
                 bg = await loadImage("https://raw.githubusercontent.com/arrastaorj/flags/main/rankteste.png");
-            ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(bg, 0, 0, canvas.width, canvas.height)
 
 
 
@@ -109,45 +114,51 @@ module.exports = {
                 ctx.font = "30px 'Pelita'";
                 ctx.fillStyle = "white";
                 ctx.textAlign = "left";
-                ctx.fillText(userName, 250, yPos);
+                ctx.fillText(userName, 250, yPos)
 
 
 
-                const user = client.users.cache.get(userContent);
-                const avatarURL = user?.displayAvatarURL({ extension: 'png', dynamic: false, caches: false });
+                const user = client.users.cache.get(userContent)
+                const avatarURL = user?.displayAvatarURL({
+                    extension: 'png',
+                    dynamic: false,
+                    caches: false
+                })
 
                 if (avatarURL) {
                     try {
                         const avatarImage = await loadImage(avatarURL);
-                        return { userName, avatarImage, yPos };
+                        return { userName, avatarImage, yPos }
                     } catch (error) {
-                        console.error(`Erro ao carregar avatar para ${userName}:`, error);
-                        return null;
+                        console.error(`Erro ao carregar avatar para ${userName}:`, error)
+                        return null
                     }
                 } else {
-                    console.error(`URL de avatar não encontrada para ${userName}`);
-                    return null;
+                    console.error(`URL de avatar não encontrada para ${userName}`)
+                    return null
                 }
             }
 
 
             const avatarPromises = userNames.map(async (userName, i) => {
-                const userContent = userContents[i];
-                const yPos = 105 + i * 55;
-                const userData = await drawUser(userName, userContent, yPos);
-                return userData;
-            });
+                const userContent = userContents[i]
+                const yPos = 105 + i * 55
+                const userData = await drawUser(userName, userContent, yPos)
+                return userData
+            })
 
-            const avatarImages = await Promise.all(avatarPromises);
+            const avatarImages = await Promise.all(avatarPromises)
 
-            avatarImages.sort((a, b) => a.yPos - b.yPos);
+            avatarImages.sort((a, b) => a.yPos - b.yPos)
 
             for (const { avatarImage, yPos } of avatarImages) {
-                ctx.drawImage(avatarImage, 198, yPos - 20, 38, 38);
+                ctx.drawImage(avatarImage, 198, yPos - 20, 38, 38)
             }
 
-            const at = new discord.AttachmentBuilder(canvas.toBuffer(), "rank.png");
-            return interaction.editReply({ files: [at] });
+            const at = new discord.AttachmentBuilder(canvas.toBuffer(), "rank.png")
+            return interaction.editReply({
+                files: [at]
+            })
 
         }
     }
