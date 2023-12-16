@@ -94,13 +94,13 @@ module.exports = {
                 } else {
                     return parseInt(a) - parseInt(b);
                 }
-            });
+            })
 
 
 
             const canvas = createCanvas(680, 745),
                 ctx = canvas.getContext('2d'),
-                bg = await loadImage("https://raw.githubusercontent.com/arrastaorj/flags/main/DrBC72T.png");
+                bg = await loadImage("https://raw.githubusercontent.com/arrastaorj/flags/main/rankteste.png");
             ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
 
