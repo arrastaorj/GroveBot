@@ -405,7 +405,7 @@ const language = {
     msg400: "Tempo/Data:",
 
 
-
+    AlertApiUser: "> \`-\` Peço desculpas, mas não posso fornecer informações sobre usuários deste servidor. Por favor, acesse o meu servidor de suporte e abra um ticket para obter mais informações.",
     alertMsgClear: "> \`-\` <a:alerta:1163274838111162499> Não há mensagens a serem excluídas, pois todas estão fixadas ou têm mais de 14 dias.",
     alert14dias: "> \`-\` <a:alerta:1163274838111162499> O Discord não permite a exclusão de mensagens com mais de 14 dias",
     alertNumeroInvalido: "> \`-\` <a:alerta:1163274838111162499> Ocorreu um erro inesperado, Você precisa fornecer um numero de 1 a 100",
