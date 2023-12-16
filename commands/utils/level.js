@@ -118,18 +118,18 @@ module.exports = {
             // Adicionando estatísticas
             ctx.font = "bold 25px Sans"
             ctx.fillText("#" + currentRank, 740, 40, 80)
-            ctx.fillText(fetchedLevel.level, 230, 130, 80)
+           // ctx.fillText(fetchedLevel.level, 230, 130, 80)
 
             // Adicionando títulos 
             ctx.fillStyle = "white"
             ctx.font = "bold 25px Sans"
             ctx.fillText("Rank:", 665, 40, 200)
-            ctx.fillText("Level:", 150, 130, 200)
+            ctx.fillText(`Level:${fetchedLevel.level}`, 150, 130, 200)
 
             // Adicionando título da barra
             ctx.fillStyle = "white"
             ctx.font = "bold 25px Sans"
-            ctx.fillText(`XP: ${fetchedLevel.xp}/${calculateLevelXp(fetchedLevel.level)}`, 300, 130)
+            ctx.fillText(`XP:${fetchedLevel.xp}/${calculateLevelXp(fetchedLevel.level)}`, 300, 130)
             // ctx.fillText(`${((xp * 100) / reqXP).toFixed(0)}/100 %`, 350, 158)
 
 

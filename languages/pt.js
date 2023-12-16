@@ -402,6 +402,7 @@ const language = {
     msg397: "O canal não foi encontrado.",
     msg398: "Mensagem enviada com sucesso no canal",
     msg399: "O canal precisa ser um canal de texto",
+    msg400: "Tempo/Data:",
 
 
 

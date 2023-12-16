@@ -35,9 +35,6 @@ module.exports = {
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
 
-
-
-
             await interaction.deferReply({ fetchReply: true })
 
 
@@ -54,7 +51,6 @@ module.exports = {
                 })
 
 
-         
 
             const ranks = Math.min(10, dataGlobal.length);
 
@@ -73,7 +69,7 @@ module.exports = {
 
                     const userContent = `${user.id}`;
                     userContents.push(userContent);
-                
+
                 }
             }
 
@@ -87,12 +83,12 @@ module.exports = {
             userContents.sort((a, b) => {
                 const userDataA = dataGlobal.find((user) => user.userId === a);
                 const userDataB = dataGlobal.find((user) => user.userId === b);
-            
-                // Certifique-se de tratar casos em que userDataA ou userDataB pode ser nulo
+
+
                 const levelA = userDataA ? userDataA.level : 0;
                 const levelB = userDataB ? userDataB.level : 0;
-            
-                // Compare primeiro com base no nível e, em seguida, no ID se os níveis forem iguais
+
+
                 if (levelB !== levelA) {
                     return levelB - levelA;
                 } else {
@@ -100,11 +96,7 @@ module.exports = {
                 }
             });
 
-            console.log(userContents)
 
-
-
-           // console.log(userContents)
 
             const canvas = createCanvas(680, 745),
                 ctx = canvas.getContext('2d'),
@@ -122,8 +114,8 @@ module.exports = {
 
 
                 const user = client.users.cache.get(userContent);
-                const avatarURL = user?.displayAvatarURL({ extension: 'png', dynamic: false, caches: false});
-            
+                const avatarURL = user?.displayAvatarURL({ extension: 'png', dynamic: false, caches: false });
+
                 if (avatarURL) {
                     try {
                         const avatarImage = await loadImage(avatarURL);
@@ -136,9 +128,6 @@ module.exports = {
                     console.error(`URL de avatar não encontrada para ${userName}`);
                     return null;
                 }
-
-                //console.log(userName)
-                //console.log(avatarURL)
             }
 
 
@@ -148,11 +137,11 @@ module.exports = {
                 const userData = await drawUser(userName, userContent, yPos);
                 return userData;
             });
-            
+
             const avatarImages = await Promise.all(avatarPromises);
-            
+
             avatarImages.sort((a, b) => a.yPos - b.yPos);
-            
+
             for (const { avatarImage, yPos } of avatarImages) {
                 ctx.drawImage(avatarImage, 198, yPos - 20, 38, 38);
             }

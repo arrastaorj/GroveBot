@@ -41,7 +41,7 @@ client.on("messageCreate", async (message, member) => {
             if (message.channel.type === 'dm') return
 
 
-            const xpToGive = getRandomXp(5, 15)
+            const xpToGive = getRandomXp(1, 5)
 
             const query = {
                 userId: message.author.id,

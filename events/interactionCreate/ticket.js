@@ -83,7 +83,7 @@ client.on("interactionCreate", async (interaction) => {
                     .setColor('#2f3136')
                     .setAuthor({ name: `${titulo}` })
                     .setDescription(descrição)
-                    .setImage(`${fotos}`)
+                    // .setImage(`${fotos}`)
 
                     .setThumbnail(client.user.displayAvatarURL({ format: 'png', size: 1024 }))
 
@@ -186,6 +186,7 @@ client.on("interactionCreate", async (interaction) => {
                         ]
 
                     }).then(async (channel) => {
+
 
 
                         const createdChannelID = channel.id;
@@ -731,10 +732,13 @@ client.on("interactionCreate", async (interaction) => {
 
                 const attachment = await discordTranscripts.createTranscript(channel)
 
+                const transcriptTimestamp = Math.round(Date.now() / 1000)
+
                 interaction.channel.delete()
 
+
                 let embed = new discord.EmbedBuilder()
-                    .setDescription(`${lang.msg345} <@${topic}>\`(${topic})\` \n ${lang.msg346} ${interaction.user}\`(${interaction.user.id})\``)
+                    .setDescription(`**${lang.msg345}:** <@${topic}>\`(${topic})\` \n **${lang.msg346}:** ${interaction.user}\`(${interaction.user.id})\` \n **${lang.msg400}** <t:${transcriptTimestamp}:R> (<t:${transcriptTimestamp}:F>)`)
                     .setTimestamp()
 
                 let chat_log = cmd3.canalLog
