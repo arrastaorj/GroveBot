@@ -405,7 +405,7 @@ const language = {
     msg400: "Time/Date:",
 
 
-
+    AlertApiUser: "> \`-\` I apologize, but I cannot provide information about users of this server. Please access my support server and open a ticket for more information.",
     alertMsgClear: "> `-` <a:alerta:1163274838111162499> Aucun message à supprimer, car tous sont épinglés ou ont plus de 14 jours.",
     alert14dias: "> `-` <a:alert:1163274838111162499> Discord does not allow the deletion of messages older than 14 days.",
     alertNumeroInvalido: "> `-` <a:alert:1163274838111162499> An unexpected error occurred. You need to provide a number between 1 and 100.",
