@@ -1,11 +1,9 @@
 const client = require("../../../index")
 const idioma = require("../../../database/models/language")
 const { playedTracks } = require("./trackStart")
-
-
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js")
 const { pauseRow, playRow, skipRowDisabled, disconnectRow, pauseRow2, playRow2, skipRowDisabled2, disconnectRow2 } = require("../buttons/musicButtons")
-const play = require("../../../commands/music/play")
+
 
 
 
