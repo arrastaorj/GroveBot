@@ -1,6 +1,6 @@
-const client = require("../../index");
-const Discord = require("discord.js");
-const bot = require('../../bot.json');
+const client = require("../../index")
+const Discord = require("discord.js")
+const bot = require('../../bot.json')
 
 client.on(`interactionCreate`, async (interaction) => {
 
