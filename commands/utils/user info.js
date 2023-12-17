@@ -85,6 +85,7 @@ module.exports = {
                 .setCustomId('verPerms')
         ])
 
+
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
@@ -102,11 +103,10 @@ module.exports = {
 
             let membro = interaction.options.getUser('usuario') || interaction.user
             let user = interaction.guild.members.cache.get(membro.id)
-
-
-
-
             const member = interaction.guild.members.cache.get(user.id)
+
+
+
 
             let AvatarUser = user.displayAvatarURL({ size: 4096, dynamic: true, format: "png" })
 
@@ -1591,6 +1591,7 @@ module.exports = {
                     content: `${lang.AlertApiUser}`,
                     ephemeral: true
                 })
+
 
             }
         }

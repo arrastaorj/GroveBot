@@ -1,7 +1,9 @@
 const { AttachmentBuilder } = require("discord.js")
-const { musicCard } = require("musicard")
 const client = require("../../../index")
 const { playRow, playRow2 } = require("../buttons/musicButtons")
+const { musicCard } = require('../build/structures/musicCard');
+
+
 
 
 const activeMessages = new Map()
@@ -20,19 +22,23 @@ client.riffy.on('trackStart', async (player, track) => {
     const musicLength = track.info.length
     const formattedLength = formatTime(Math.round(musicLength / 1000))
 
+
+
     const card = new musicCard()
         .setName(track.info.title)
         .setAuthor(track.info.author)
         .setColor("auto")
-        .setTheme("classic")
-        .setBrightness(100)
         .setThumbnail(track.info.thumbnail)
-        .setProgress(0)
-        .setStartTime("0:00")
+        .setProgress(20)
+        .setStartTime("00:00")
         .setEndTime(formattedLength)
+
 
     const buffer = await card.build()
     const attachment = new AttachmentBuilder(buffer, { name: `musicard.png` })
+
+
+
 
     playedTracks.push(track)
 

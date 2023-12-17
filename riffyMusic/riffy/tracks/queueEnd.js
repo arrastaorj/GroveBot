@@ -5,7 +5,6 @@ const { AttachmentBuilder } = require("discord.js")
 const { musicCard } = require("musicard")
 
 
-
 client.riffy.on("queueEnd", async (player) => {
 
     const card = new musicCard()
