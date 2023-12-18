@@ -52,6 +52,7 @@ module.exports = {
             const resolve = await client.riffy.resolve({ query: query, requester: interaction.member })
             const { loadType, tracks, playlistInfo } = resolve
 
+    
             if (loadType === 'PLAYLIST_LOADED') {
                 for (const track of resolve.tracks) {
                     track.info.requester = interaction.member
@@ -83,7 +84,10 @@ module.exports = {
                 if (!player.playing && !player.paused) return player.play()
 
             } else if (loadType === 'SEARCH_RESULT' || loadType === 'TRACK_LOADED') {
+
+               
                 const track = tracks.shift()
+
                 track.info.requester = interaction.member
 
                 player.queue.add(track)
