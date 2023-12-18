@@ -4,8 +4,6 @@ const { playRow, playRow2 } = require("../buttons/musicButtons")
 const musicCard = require('../build/structures/musicCard');
 
 
-
-
 const activeMessages = new Map()
 const playedTracks = []
 
