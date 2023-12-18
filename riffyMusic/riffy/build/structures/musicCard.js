@@ -60,11 +60,35 @@ class musicCard {
         chave.create = Canvas.createCanvas(720, 268);
         chave.context = chave.create.getContext('2d');
 
-        await Canvas.loadImage(this.thumbnailCard).then(async (img) => {
-            chave.context.globalAlpha = 0.1; // Define a transparência global para 30%
-            chave.context.drawImage(img, 0, -100, 920, 568);
-            chave.context.globalAlpha = 1.0; // Restaura a transparência global para o valor original
+
+
+        await Canvas.loadImage("https://raw.githubusercontent.com/arrastaorj/flags/main/cardclass2.png").then(async (img) => {
+            chave.context.drawImage(img, 245, 20, 433, 228);
+            await Canvas.loadImage(this.thumbnailCard).then(async (img) => {
+
+                // Criar um caminho de recorte para um canto arredondado
+                const radius = 15;
+
+                chave.context.save();
+                chave.context.beginPath();
+                chave.context.moveTo(247, 23 + radius); // Mover para o canto superior esquerdo
+                chave.context.arcTo(247, 23, 247 + radius, 23, radius); // Arco superior esquerdo
+                chave.context.arcTo(247 + 430, 23, 247 + 430, 23 + radius, radius); // Arco superior direito
+                chave.context.arcTo(247 + 430, 23 + 225, 247 + 430 - radius, 23 + 225, radius); // Arco inferior direito
+                chave.context.arcTo(247, 23 + 225, 247, 23 + 225 - radius, radius); // Arco inferior esquerdo
+                chave.context.closePath();
+
+                // Clip para o caminho de recorte
+                chave.context.clip();
+
+
+                chave.context.globalAlpha = 0.1; // Define a transparência global para 30%
+                chave.context.drawImage(img, 247, 23, 430, 225)
+                chave.context.globalAlpha = 1.0; // Restaura a transparência global para o valor original
+            });
+            chave.context.restore();
         });
+
 
 
         const validatedColor = await colorFetch(
@@ -76,10 +100,10 @@ class musicCard {
 
 
         // Recorte arredondado
-        const x = 40;
-        const y = 35;
-        const width = 200;
-        const height = 200;
+        const x = 20;
+        const y = 25;
+        const width = 220; //largura
+        const height = 220; // altura
         const radius = 20;
 
         chave.context.save();
@@ -93,22 +117,22 @@ class musicCard {
         chave.context.clip();
 
         await Canvas.loadImage(this.thumbnailCard).then(async (i) => {
-            chave.context.drawImage(i, -100, 0, 520, 268);
+            chave.context.drawImage(i, -125, 0, 520, 268)
         });
-
         chave.context.restore();
 
 
 
-        if (this.nameCard.length > 15) this.nameCard = `${this.nameCard.slice(0, 20)}...`;
-        if (this.authorCard.length > 15) this.authorCard = `${this.authorCard.slice(0, 27)}...`;
+        if (this.nameCard.length > 15) this.nameCard = `${this.nameCard.slice(0, 14)}...`;
+        if (this.authorCard.length > 15) this.authorCard = `${this.authorCard.slice(0, 14)}...`;
 
-        chave.context.fillStyle = "#ffffff";
-        chave.context.font = '30px "ResistSansDisplay-Bold"';
+        chave.context.fillStyle = `#${validatedColor}`;
+        chave.context.font = '45px "ResistSansDisplay-Bold"';
         chave.context.textAlign = "left";
-        chave.context.fillText(this.nameCard, 260, 100);
-        chave.context.font = '20px "ResistSansDisplay-Bold"';
-        chave.context.fillText(this.authorCard, 260, 130);
+        chave.context.fillText(this.nameCard, 260, 80);
+        chave.context.font = '25px "ResistSansDisplay-Bold"';
+        chave.context.fillStyle = "#ababab";
+        chave.context.fillText(this.authorCard, 260, 115);
 
 
 
@@ -163,9 +187,9 @@ class musicCard {
 
 
         chave.context.fillStyle = "#ffffff"
-        chave.context.font = '20px "ResistSansDisplay-Bold"'
-        chave.context.fillText(this.startTime, 260, 235)
-        chave.context.fillText(this.endTime, 615, 235)
+        chave.context.font = '17px "ResistSansDisplay-Bold"'
+        chave.context.fillText(this.startTime, 260, 233)
+        chave.context.fillText(this.endTime, 620, 233)
 
 
         const buffer = chave.create.toBuffer('image/png');
