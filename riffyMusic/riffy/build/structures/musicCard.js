@@ -61,8 +61,8 @@ class musicCard {
         chave.context = chave.create.getContext('2d');
 
         await Canvas.loadImage(this.thumbnailCard).then(async (img) => {
-            chave.context.globalAlpha = 0.3; // Define a transparência global para 30%
-            chave.context.drawImage(img, 0, -100, 920, 668);
+            chave.context.globalAlpha = 0.1; // Define a transparência global para 30%
+            chave.context.drawImage(img, 0, -100, 920, 568);
             chave.context.globalAlpha = 1.0; // Restaura a transparência global para o valor original
         });
 
