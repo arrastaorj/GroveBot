@@ -29,6 +29,7 @@ client.on('interactionCreate', async (interaction) => {
         })
     }
 
+
     switch (interaction.customId) {
 
         case 'voltar':
