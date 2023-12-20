@@ -403,6 +403,9 @@ const language = {
     msg398: "Mensagem enviada com sucesso no canal",
     msg399: "O canal precisa ser um canal de texto",
     msg400: "Tempo/Data:",
+    
+    msg401: "> \`+\` Desculpe, já estou tocando em uma sala de voz deste servidor.",
+    msg402: "> \`-\` Você precisa estar no mesmo canal de voz que o bot para interagir com os botões de música.",
 
 
     AlertApiUser: "> \`-\` Peço desculpas, mas não posso fornecer informações sobre usuários deste servidor. Por favor, acesse o meu servidor de suporte e abra um ticket para obter mais informações.",

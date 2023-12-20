@@ -19,8 +19,15 @@ client.on('interactionCreate', async (interaction) => {
     if (!interaction.isButton()) return
 
     const player = client.riffy.players.get(interaction.guild.id)
+    const member = interaction.guild.members.cache.get(interaction.user.id);
 
 
+    if (!member.voice.channel || member.voice.channelId !== player.voiceChannel) {
+        return interaction.reply({
+            content: `${lang.msg402}`,
+            ephemeral: true
+        })
+    }
 
     switch (interaction.customId) {
 

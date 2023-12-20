@@ -41,6 +41,10 @@ module.exports = {
 
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
+            const existingPlayer = client.riffy.players.get(interaction.guild.id);
+            if (existingPlayer && (!interaction.member.voice.channelId || interaction.member.voice.channelId !== existingPlayer.voiceChannel)) {
+                return interaction.reply({ content: `${lang.msg401}`, ephemeral: true });
+            }
 
             const player = client.riffy.createConnection({
                 guildId: interaction.guild.id,
@@ -52,7 +56,7 @@ module.exports = {
             const resolve = await client.riffy.resolve({ query: query, requester: interaction.member })
             const { loadType, tracks, playlistInfo } = resolve
 
-    
+
             if (loadType === 'PLAYLIST_LOADED') {
                 for (const track of resolve.tracks) {
                     track.info.requester = interaction.member
@@ -85,7 +89,7 @@ module.exports = {
 
             } else if (loadType === 'SEARCH_RESULT' || loadType === 'TRACK_LOADED') {
 
-               
+
                 const track = tracks.shift()
 
                 track.info.requester = interaction.member

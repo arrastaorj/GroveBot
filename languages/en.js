@@ -403,7 +403,8 @@ const language = {
     msg398: "Message sent successfully in the channel",
     msg399: "The channel needs to be a text channel",
     msg400: "Time/Date:",
-
+    msg401: "> \`+\` Sorry, I'm already in a voice channel on this server.",
+    msg402: "> \`-\` You need to be in the same voice channel as the bot to interact with the music buttons.",
 
     AlertApiUser: "> \`-\` I apologize, but I cannot provide information about users of this server. Please access my support server and open a ticket for more information.",
     alertMsgClear: "> `-` <a:alerta:1163274838111162499> Aucun message à supprimer, car tous sont épinglés ou ont plus de 14 jours.",
