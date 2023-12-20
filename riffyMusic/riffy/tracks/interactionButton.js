@@ -26,7 +26,7 @@ client.on('interactionCreate', async (interaction) => {
 
         case 'voltar':
 
-            if (playedTracks.length < 2) {
+            if (playedTracks.length < 1) {
                 return interaction.reply({ content: `${lang.msgAnterior}`, ephemeral: true });
             }
 
