@@ -1,4 +1,6 @@
 const client = require("../../index.js");
+const { activeMessages } = require("../../riffyMusic/riffy/tracks/trackStart.js")
+const { disconnectRow, disconnectRow2 } = require("../../riffyMusic/riffy/buttons/musicButtons.js")
 
 client.on("voiceStateUpdate", async (oldState, newState) => {
 
@@ -15,18 +17,49 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
 
     if (oldNonBotMembers && oldNonBotMembers.size === 0 && oldMembers.size === 1) {
 
-        setTimeout(() => {
+        setTimeout(async () => {
+
+            try {
+                const channel = client.channels.cache.get(player.textChannel)
+                const existingMessage = activeMessages.get(channel.id)
+                if (existingMessage) {
+                    const { msg } = existingMessage
+
+                    await msg.edit({
+                        components: [disconnectRow, disconnectRow2]
+                    })
+                }
+
+            } catch {
+                return
+            }
             player.destroy()
-        }, 1000)
+        }, 60000)
     }
 
     const newMembers = newVoiceChannel ? newVoiceChannel.members : null;
     const newNonBotMembers = newMembers ? newMembers.filter((member) => !member.user.bot) : null;
 
     if (newNonBotMembers && newNonBotMembers.size === 0 && newMembers.size === 1) {
-        setTimeout(() => {
+        setTimeout(async () => {
+
+            try {
+                const channel = client.channels.cache.get(player.textChannel)
+                const existingMessage = activeMessages.get(channel.id)
+                if (existingMessage) {
+                    const { msg } = existingMessage
+
+                    await msg.edit({
+                        components: [disconnectRow, disconnectRow2]
+                    })
+                }
+
+            } catch {
+                return
+            }
+
             player.destroy()
-        }, 1000)
+        }, 60000)
     }
 
 })

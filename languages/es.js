@@ -407,6 +407,7 @@ const language = {
     msg401: "> \`+\` Lo siento, ya estoy en un canal de voz en este servidor.",
     msg402: "> \`-\` Necesitas estar en el mismo canal de voz que el bot para interactuar con los botones de música.",
 
+    AlertPause: "> \`-\` Pausa más larga de lo esperado. Ahora, estoy terminando mi presencia en el canal de voz:",
     AlertaCanaldeVoz: "> \`-\` Necesitas estar en un canal de voz para usar este comando.",
     AlertaApiUsuario: "> \`-\` Mis disculpas, pero no puedo proporcionar información sobre los usuarios de este servidor. Por favor, acceda a mi servidor de soporte y abra un ticket para obtener más información.",
     alertMsgClear: "> `-` <a:alerta:1163274838111162499> Aucun message à supprimer, car tous sont épinglés ou ont plus de 14 jours.",

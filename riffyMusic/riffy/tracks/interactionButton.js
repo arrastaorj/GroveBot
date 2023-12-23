@@ -32,7 +32,10 @@ client.on('interactionCreate', async (interaction) => {
             })
         }
 
+        let pauseTimeout;
+
         switch (interaction.customId) {
+
 
             case 'voltar':
 
@@ -64,7 +67,29 @@ client.on('interactionCreate', async (interaction) => {
                     ephemeral: true
                 })
 
+
+
+                clearTimeout(pauseTimeout);
+
+
+                pauseTimeout = setTimeout(async () => {
+                    if (player && player.paused) {
+                        player.destroy();
+
+                        await interaction.message.edit({
+                            components: [disconnectRow, disconnectRow2]
+                        }).then(
+                            interaction.followUp({
+                                content: `${lang.AlertPause} <#${member.voice.channel.id}>`,
+                            })
+                        )
+
+                    }
+                }, 10000);
+
+
                 player.pause(true)
+
                 await interaction.message.edit({
                     components: [pauseRow, pauseRow2]
                 }).then(
@@ -83,7 +108,10 @@ client.on('interactionCreate', async (interaction) => {
                     ephemeral: true
                 })
 
-                player.pause(false)
+
+                clearTimeout(pauseTimeout);
+
+                player.pause(false);
 
                 await interaction.message.edit({
                     components: [playRow, playRow2]
@@ -93,6 +121,7 @@ client.on('interactionCreate', async (interaction) => {
                         ephemeral: true,
                     })
                 )
+
                 break
 
             case 'skip':
