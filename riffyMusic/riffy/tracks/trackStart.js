@@ -45,7 +45,6 @@ client.riffy.on('trackStart', async (player, track) => {
 
             // Altera os botões da mensagem existente para disconnectRow
             await msg.edit({
-                files: [attachment],
                 components: [disconnectRow, disconnectRow2],
             });
 
