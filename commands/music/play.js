@@ -63,7 +63,7 @@ module.exports = {
             const resolve = await client.riffy.resolve({ query: query, requester: interaction.member })
             const { loadType, tracks, playlistInfo } = resolve
 
-            
+
             await interaction.deferReply({ fetchReply: true })
 
 
@@ -87,12 +87,17 @@ module.exports = {
                     .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
 
 
-                await interaction.editReply({ embeds: [PlayList], fetchReply: true }).then((msg) => {
-                    setTimeout(() => {
-                        msg.delete().catch((e) => null)
-                    }, 10000)
-                })
+                try {
 
+                    await interaction.editReply({ embeds: [PlayList], fetchReply: true }).then((msg) => {
+                        setTimeout(() => {
+                            msg.delete().catch((e) => null)
+                        }, 10000)
+                    })
+
+                } catch {
+                    return
+                }
 
 
                 if (!player.playing && !player.paused) return player.play()
@@ -149,13 +154,19 @@ module.exports = {
                         },
                     ])
 
-                await interaction.editReply({ embeds: [embed], fetchReply: true }).then((msg) => {
-                    setTimeout(() => {
-                        msg.delete().catch((e) => null)
-                    }, 10000)
-                })
+                try {
 
-                if (!player.playing && !player.paused) return player.play()
+                    await interaction.editReply({ embeds: [embed], fetchReply: true }).then((msg) => {
+                        setTimeout(() => {
+                            msg.delete().catch((e) => null)
+                        }, 10000)
+                    })
+
+                    if (!player.playing && !player.paused) return player.play()
+
+                } catch {
+                    return
+                }
 
             } else {
 

@@ -28,13 +28,14 @@ client.riffy.on("queueEnd", async (player) => {
             const { msg } = existingMessage
 
             await msg.edit({
-                files: [attachment], components: [disconnectRow, disconnectRow2]
+                components: [disconnectRow, disconnectRow2]
             })
         }
 
     } catch (error) {
         return
     }
+    
     if (player.isAutoplay) {
         player.autoplay(player)
     } else {
@@ -46,7 +47,7 @@ client.riffy.on("queueEnd", async (player) => {
             const { msg } = existingMessage
 
             await msg.edit({
-                files: [attachment], components: [disconnectRow, disconnectRow2]
+                components: [disconnectRow, disconnectRow2]
             })
         }
 
