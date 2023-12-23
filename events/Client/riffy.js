@@ -9,11 +9,11 @@ client.riffy = new Riffy.Riffy(client, nodes, {
     const guild = client.guilds.cache.get(payload.d.guild_id)
     if (guild) guild.shard.send(payload)
   },
-  defaultSearchPlatform: "ytmsearch",
-  restVersion: "v3"
+  defaultSearchPlatform: "ytsearch",
+  restVersion: "v4"
 });
 
-
+//"ytsearch" | "ytmsearch" | "scsearch" | "spsearch" | "amsearch" | "dzsearch" | "ymsearch"
 (async () => {
   await loadRiffy()
 })()

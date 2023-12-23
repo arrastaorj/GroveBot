@@ -114,9 +114,9 @@ const disconnectRow = new ActionRowBuilder()
             .setEmoji('<:voltar:1183481878313967758>')
             .setDisabled(true),
         new ButtonBuilder()
-            .setCustomId('play')
+            .setCustomId('pause')
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji('<:play:1183481874115461190>')
+            .setEmoji('<:pause:1183481872374845531>')
             .setDisabled(true),
         new ButtonBuilder()
             .setCustomId('skip')
@@ -156,9 +156,9 @@ const fim = new ActionRowBuilder()
             .setEmoji('<:voltar:1183481878313967758>')
             .setDisabled(true),
         new ButtonBuilder()
-            .setCustomId('play')
+            .setCustomId('pause')
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji('<:play:1183481874115461190>')
+            .setEmoji('<:pause:1183481872374845531>')
             .setDisabled(true),
         new ButtonBuilder()
             .setCustomId('skip')
