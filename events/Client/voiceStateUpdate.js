@@ -17,7 +17,7 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
 
         setTimeout(() => {
             player.destroy()
-        }, 10000)
+        }, 1000)
     }
 
     const newMembers = newVoiceChannel ? newVoiceChannel.members : null;
@@ -26,7 +26,7 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
     if (newNonBotMembers && newNonBotMembers.size === 0 && newMembers.size === 1) {
         setTimeout(() => {
             player.destroy()
-        }, 10000)
+        }, 1000)
     }
 
 })

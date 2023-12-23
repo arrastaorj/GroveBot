@@ -2,7 +2,7 @@ const client = require("../../../index")
 const { disconnectRow, disconnectRow2 } = require("../buttons/musicButtons")
 const { activeMessages } = require("./trackStart")
 const { AttachmentBuilder } = require("discord.js")
-const { musicCard } = require("musicard")
+const { musicCard } = require("musiccard")
 
 
 client.riffy.on("queueEnd", async (player) => {
@@ -11,9 +11,7 @@ client.riffy.on("queueEnd", async (player) => {
         .setName("Grove Music")
         .setAuthor("Sofisticado")
         .setColor("auto")
-        .setTheme("classic")
-        .setBrightness(100)
-        .setThumbnail("https://raw.githubusercontent.com/arrastaorj/flags/main/strange.png")
+        .setThumbnail("https://raw.githubusercontent.com/arrastaorj/flags/main/music.png")
         .setProgress(0)
         .setStartTime("00:00")
         .setEndTime("00:00")
@@ -40,6 +38,17 @@ client.riffy.on("queueEnd", async (player) => {
     if (player.isAutoplay) {
         player.autoplay(player)
     } else {
+
+        const channel = client.channels.cache.get(player.textChannel)
+        const existingMessage = activeMessages.get(channel.id)
+
+        if (existingMessage) {
+            const { msg } = existingMessage
+
+            await msg.edit({
+                files: [attachment], components: [disconnectRow, disconnectRow2]
+            })
+        }
 
         player.stop()
     }

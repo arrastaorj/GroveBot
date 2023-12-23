@@ -1,7 +1,7 @@
 const { AttachmentBuilder } = require("discord.js")
 const client = require("../../../index")
-const { playRow, playRow2 } = require("../buttons/musicButtons")
-const musicCard = require('../build/structures/musicCard');
+const { playRow, playRow2, disconnectRow, disconnectRow2 } = require("../buttons/musicButtons")
+const { musicCard } = require("musiccard");
 
 
 const activeMessages = new Map()
@@ -41,29 +41,44 @@ client.riffy.on('trackStart', async (player, track) => {
 
     try {
         if (existingMessage) {
-            const { msg, playRow, playRow2 } = existingMessage
+            const { msg, playRow, playRow2 } = existingMessage;
 
+            // Altera os botões da mensagem existente para disconnectRow
             await msg.edit({
                 files: [attachment],
+                components: [disconnectRow, disconnectRow2],
+            });
+
+            // Envia uma nova mensagem com os botões playRow e playRow2
+            const newMsg = await channel.send({
+                files: [attachment],
                 components: [playRow, playRow2],
-            })
+            });
+
+            // Atualiza o mapa de mensagens ativas
+            activeMessages.set(channel.id, { msg: newMsg, playRow, playRow2 });
         } else {
+            // Se não existir uma mensagem, envia uma nova com os botões playRow e playRow2
             const msg = await channel.send({
                 files: [attachment],
                 components: [playRow, playRow2],
-            })
-            activeMessages.set(channel.id, { msg, playRow, playRow2 })
+            });
+
+            // Atualiza o mapa de mensagens ativas
+            activeMessages.set(channel.id, { msg, playRow, playRow2 });
         }
     } catch (error) {
-
+        // Em caso de erro, envia uma nova mensagem com os botões playRow e playRow2
         const msg = await channel.send({
             files: [attachment],
             components: [playRow, playRow2],
-        })
+        });
 
-        activeMessages.delete(channel.id)
-        activeMessages.set(channel.id, { msg, playRow, playRow2 })
+        // Remove a mensagem anterior (se existir) e atualiza o mapa de mensagens ativas
+        activeMessages.delete(channel.id);
+        activeMessages.set(channel.id, { msg, playRow, playRow2 });
     }
+
 })
 
 

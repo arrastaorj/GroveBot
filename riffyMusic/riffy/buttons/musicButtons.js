@@ -99,10 +99,10 @@ const skipRowDisabled2 = new ActionRowBuilder()
             .setEmoji('<:autoplay:1183505674328604743>')
             .setDisabled(true),
         new ButtonBuilder()
-            .setCustomId('skiped')
-            .setStyle(ButtonStyle.Success)
-            .setLabel('Ignorado')
-            .setDisabled(true)
+            .setCustomId('fila')
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji('<:filas:1183481870051201184>')
+            .setDisabled(true),
 
     )
 
@@ -141,10 +141,10 @@ const disconnectRow2 = new ActionRowBuilder()
             .setEmoji('<:autoplay:1183505674328604743>')
             .setDisabled(true),
         new ButtonBuilder()
-            .setCustomId('skiped')
-            .setStyle(ButtonStyle.Danger)
-            .setLabel('Desconectado')
-            .setDisabled(true)
+            .setCustomId('fila')
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji('<:filas:1183481870051201184>')
+            .setDisabled(true),
     )
 
 

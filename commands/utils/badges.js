@@ -52,7 +52,7 @@ module.exports = {
                 .setThumbnail(`${interaction.guild.iconURL({ dynamic: true })}`)
                 .setDescription(`<:1769discordstaff:1157876972031053984> Discord Staff: \`${counts['Staff'] || 0}\`
             <:9928discordpartnerbadge:1157876829596684370> Partner: \`${counts['Partner'] || 0}\`
-            <:3446blurplecertifiedmoderator:1157876139151331349> Certified Moderator: \`${counts['CertifiedModerator'] || 0}\`
+            <:discordmod:1178827911667646544> Certified Moderator: \`${counts['CertifiedModerator'] || 0}\`
             <:7606badgehypesquadevents:1157876137347788830> HypeSquad Events: \`${counts['Hypesquad'] || 0}\`
             <:6601hypesquadbravery:1061274089609760908> HypeSquad Bravery: \`${counts['HypeSquadOnlineHouse1'] || 0}\`
             <:6936hypesquadbrilliance:1061274087193854042> HypeSquad Brilliance: \`${counts['HypeSquadOnlineHouse2'] || 0}\`
@@ -81,7 +81,7 @@ module.exports = {
                     },
                     {
                         label: `Certified Moderator (${counts['CertifiedModerator'] || 0})`,
-                        emoji: "<:3446blurplecertifiedmoderator:1157876139151331349>",
+                        emoji: "<:discordmod:1178827911667646544>",
                         value: "CertifiedModerator",
                     },
                     {
@@ -172,7 +172,7 @@ module.exports = {
 
                     let embed_moderator = new EmbedBuilder()
                         .setColor("Orange")
-                        .setTitle(`<:3446blurplecertifiedmoderator:1157876139151331349> Certified Moderator (${counts['CertifiedModerator'] || 0})`)
+                        .setTitle(`<:discordmod:1178827911667646544> Certified Moderator (${counts['CertifiedModerator'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
                     return interaction.reply({ embeds: [embed_moderator], ephemeral: true })

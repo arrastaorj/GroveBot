@@ -19,6 +19,8 @@ module.exports = {
 
     run: async (client, interaction, args) => {
 
+
+
         let lang = await idioma.findOne({
             guildId: interaction.guild.id
         })
@@ -46,6 +48,11 @@ module.exports = {
                 return interaction.reply({ content: `${lang.msg401}`, ephemeral: true });
             }
 
+
+            if (!interaction.member.voice.channelId) {
+                return interaction.reply({ content: `${lang.AlertCanaldeVoz}`, ephemeral: true });
+            }
+
             const player = client.riffy.createConnection({
                 guildId: interaction.guild.id,
                 voiceChannel: interaction.member.voice.channel.id,
@@ -55,6 +62,9 @@ module.exports = {
 
             const resolve = await client.riffy.resolve({ query: query, requester: interaction.member })
             const { loadType, tracks, playlistInfo } = resolve
+
+            
+            await interaction.deferReply({ fetchReply: true })
 
 
             if (loadType === 'PLAYLIST_LOADED') {
@@ -77,7 +87,7 @@ module.exports = {
                     .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
 
 
-                await interaction.reply({ embeds: [PlayList], fetchReply: true }).then((msg) => {
+                await interaction.editReply({ embeds: [PlayList], fetchReply: true }).then((msg) => {
                     setTimeout(() => {
                         msg.delete().catch((e) => null)
                     }, 10000)
@@ -139,7 +149,7 @@ module.exports = {
                         },
                     ])
 
-                await interaction.reply({ embeds: [embed], fetchReply: true }).then((msg) => {
+                await interaction.editReply({ embeds: [embed], fetchReply: true }).then((msg) => {
                     setTimeout(() => {
                         msg.delete().catch((e) => null)
                     }, 10000)
@@ -149,7 +159,7 @@ module.exports = {
 
             } else {
 
-                return interaction.reply(`${lang.msg14}`)
+                return interaction.editReply(`${lang.msg14}`)
 
             }
         }
