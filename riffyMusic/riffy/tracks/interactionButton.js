@@ -9,6 +9,32 @@ const { pauseRow, playRow, skipRowDisabled, disconnectRow, pauseRow2, playRow2, 
 
 client.on('interactionCreate', async (interaction) => {
 
+
+    if (!interaction.isButton()) return;
+
+    const player = client.riffy.players.get(interaction.guild.id);
+    const member = interaction.guild.members.cache.get(interaction.user.id);
+
+
+    if (!member.voice.channel || member.voice.channelId !== player.voiceChannel) {
+        if (['voltar', 'pause', 'play', 'skip', 'disconnect', 'autoplay', 'fila'].includes(interaction.customId)) {
+            return interaction.reply({
+                content: `${lang.AlertInterVoz}`,
+                ephemeral: true
+            })
+        }
+    }
+    if (['voltar', 'pause', 'play', 'skip', 'disconnect', 'autoplay', 'fila'].includes(interaction.customId)) {
+        await handleMusicButton(interaction, player);
+    }
+
+
+})
+
+
+
+async function handleMusicButton(interaction, player) {
+
     try {
 
         let lang = await idioma.findOne({
@@ -17,24 +43,9 @@ client.on('interactionCreate', async (interaction) => {
         lang = lang ? require(`../../../languages/${lang.language}.js`) : require('../../../languages/pt.js')
 
 
-
-        if (!interaction.isButton()) return
-
-        const player = client.riffy.players.get(interaction.guild.id)
-        const member = interaction.guild.members.cache.get(interaction.user.id);
-
-
-        if (!member.voice.channel || member.voice.channelId !== player.voiceChannel) {
-            return interaction.reply({
-                content: `${lang.AlertInterVoz}`,
-                ephemeral: true
-            })
-        }
-
         let pauseTimeout;
 
         switch (interaction.customId) {
-
 
             case 'voltar':
 
@@ -46,9 +57,11 @@ client.on('interactionCreate', async (interaction) => {
                         ephemeral: true
                     });
                 }
-                const lastTrack = playedTracks.shift();
 
-                player.queue.unshift(lastTrack);
+                playedTracks.pop()
+                const lastTrack = playedTracks.pop()
+                player.queue.unshift(lastTrack)
+
                 player.stop();
                 interaction.followUp({
                     content: `${lang.msgBack}`,
@@ -70,6 +83,7 @@ client.on('interactionCreate', async (interaction) => {
 
                 clearTimeout(pauseTimeout);
 
+                const member = interaction.guild.members.cache.get(interaction.user.id);
 
                 pauseTimeout = setTimeout(async () => {
                     if (player && player.paused) {
@@ -299,4 +313,5 @@ client.on('interactionCreate', async (interaction) => {
     } catch {
         return
     }
-})
+}
+
