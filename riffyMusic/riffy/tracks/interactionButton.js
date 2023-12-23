@@ -11,7 +11,6 @@ client.on('interactionCreate', async (interaction) => {
 
     try {
 
-
         let lang = await idioma.findOne({
             guildId: interaction.guild.id
         })
@@ -85,7 +84,7 @@ client.on('interactionCreate', async (interaction) => {
                         )
 
                     }
-                }, 10000);
+                }, 60000);
 
 
                 player.pause(true)
