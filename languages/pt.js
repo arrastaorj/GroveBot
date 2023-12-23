@@ -405,8 +405,9 @@ const language = {
     msg400: "Tempo/Data:",
 
     msg401: "> \`+\` Desculpe, já estou tocando em uma sala de voz deste servidor.",
-    msg402: "> \`-\` Você precisa estar no mesmo canal de voz que o bot para interagir com os botões de música.",
 
+
+    AlertInterVoz: "> \`-\` Você precisa estar no mesmo canal de voz que o bot para interagir com os botões de música.",
     AlertPause: "> \`-\` Pausa mais longa do que o esperado. Agora, estou encerrando minha presença no canal de voz:",
     AlertCanaldeVoz: "> \`-\` Você precisa estar em um canal de voz para usar esse comando.",
     AlertApiUser: "> \`-\` Peço desculpas, mas não posso fornecer informações sobre usuários deste servidor. Por favor, acesse o meu servidor de suporte e abra um ticket para obter mais informações.",

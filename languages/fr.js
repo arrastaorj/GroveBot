@@ -405,8 +405,9 @@ const language = {
     msg399: "Le canal doit être un canal de texte",
     msg400: "Heure/Date:",
     msg401: "> \`+\` Désolé, je suis déjà dans un salon vocal sur ce serveur.",
-    msg402: "> \`-\` Vous devez être dans le même salon vocal que le bot pour interagir avec les boutons de musique.",
 
+    
+    AlertInterVoz: "> \`-\` Vous devez être dans le même salon vocal que le bot pour interagir avec les boutons de musique.",
     AlertPause : "> \`-\` Pause plus longue que prévu. Maintenant, je termine ma présence dans le canal vocal :",
     AlerteCanalVocal: "> \`-\` Vous devez être dans un canal vocal pour utiliser cette commande.",
     AlertApiUser : "> \`-\` Je m'excuse, mais je ne peux pas fournir d'informations sur les utilisateurs de ce serveur. Veuillez accéder à mon serveur de support et ouvrir un ticket pour obtenir plus d'informations.",

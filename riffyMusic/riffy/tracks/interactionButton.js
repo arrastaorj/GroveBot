@@ -27,7 +27,7 @@ client.on('interactionCreate', async (interaction) => {
 
         if (!member.voice.channel || member.voice.channelId !== player.voiceChannel) {
             return interaction.reply({
-                content: `${lang.msg402}`,
+                content: `${lang.AlertInterVoz}`,
                 ephemeral: true
             })
         }
