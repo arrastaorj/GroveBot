@@ -15,20 +15,22 @@ client.on('interactionCreate', async (interaction) => {
     const player = client.riffy.players.get(interaction.guild.id);
     const member = interaction.guild.members.cache.get(interaction.user.id);
 
-
-    if (!member.voice.channel || member.voice.channelId !== player.voiceChannel) {
-        if (['voltar', 'pause', 'play', 'skip', 'disconnect', 'autoplay', 'fila'].includes(interaction.customId)) {
-            return interaction.reply({
-                content: `${lang.AlertInterVoz}`,
-                ephemeral: true
-            })
+    try {
+        if (!member.voice.channel || member.voice.channelId !== player.voiceChannel) {
+            if (['voltar', 'pause', 'play', 'skip', 'disconnect', 'autoplay', 'fila'].includes(interaction.customId)) {
+                return interaction.reply({
+                    content: `${lang.AlertInterVoz}`,
+                    ephemeral: true
+                })
+            }
         }
-    }
-    if (['voltar', 'pause', 'play', 'skip', 'disconnect', 'autoplay', 'fila'].includes(interaction.customId)) {
-        await handleMusicButton(interaction, player);
-    }
+        if (['voltar', 'pause', 'play', 'skip', 'disconnect', 'autoplay', 'fila'].includes(interaction.customId)) {
+            await handleMusicButton(interaction, player);
+        }
 
-
+    } catch {
+        return
+    }
 })
 
 
