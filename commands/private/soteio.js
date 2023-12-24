@@ -92,7 +92,7 @@ module.exports = {
 
 
 
-        
+
 
                 storage.set(name, { participants: [], startTime: Date.now(), channelId: [], messageId: [] });
 
@@ -103,7 +103,7 @@ module.exports = {
 
                 const embedGiveaway = new EmbedBuilder()
                     .setTitle(`${award}`)
-                    //.setColor(color)
+                    .setColor('#41b2b0')
                     .addFields(
                         { name: `Patrocinado por`, value: `${user}` },
                         { name: `Duração`, value: `<t:${timer}:R>`, inline: true },
