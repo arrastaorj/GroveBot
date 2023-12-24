@@ -7,6 +7,7 @@ const {
     AttachmentBuilder,
     ButtonStyle,
     ActionRowBuilder,
+    PermissionFlagsBits,
     roleMention,
     ApplicationCommandType,
 } = require(`discord.js`)
@@ -16,7 +17,7 @@ const idioma = require("../../database/models/language")
 let storage = new Map()
 module.exports = {
     name: 'sorteio',
-    description: 'Exclui uma quantidade de mensagens',
+    description: 'Inicia um sorteio.',
     type: ApplicationCommandType.ChatInput,
     options: [
         {
@@ -127,7 +128,7 @@ module.exports = {
             case 'iniciar': {
 
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
                     return interaction.reply({
                         content: `${lang.alertNaoTemPermissão}`,
                         ephemeral: true
@@ -150,7 +151,6 @@ module.exports = {
                 }
 
 
-
                 storage.set(award, { participants: [], startTime: Date.now(), channelId: [], messageId: [] });
 
 
@@ -170,7 +170,6 @@ module.exports = {
                         { name: `Realizado por`, value: `${member}`, inline: true },
                         { name: `Ganhadores`, value: `${String(winners)} Sorteado` })
                     .setThumbnail(interaction.guild.iconURL({ extension: 'png' }))
-
 
 
 
@@ -280,7 +279,7 @@ module.exports = {
             case 'finalizar': {
                 try {
 
-                    if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
                         return interaction.reply({
                             content: `${lang.alertNaoTemPermissão}`,
                             ephemeral: true
