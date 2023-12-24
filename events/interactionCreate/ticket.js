@@ -81,11 +81,11 @@ client.on("interactionCreate", async (interaction) => {
 
                 const embed = new discord.EmbedBuilder()
                     .setColor('#2f3136')
-                    .setAuthor({ name: `${titulo}` })
+                    .setAuthor({ name: `${titulo}`, iconURL: interaction.guild.iconURL({ extension: 'png' }) })
                     .setDescription(descrição)
                     // .setImage(`${fotos}`)
 
-                    .setThumbnail(client.user.displayAvatarURL({ format: 'png', size: 1024 }))
+                    .setThumbnail(interaction.guild.iconURL({ extension: 'png', dynamic: true }))
 
                 const button = new discord.ButtonBuilder()
                     .setCustomId('ticket')
@@ -226,9 +226,9 @@ client.on("interactionCreate", async (interaction) => {
 
                         let iniciado = new discord.EmbedBuilder()
                             .setColor('#2f3136')
-                            //.setAuthor({ name: `Suporte - ${interaction.guild.name}`, iconURL: interaction.guild.iconURL({ dynamic: true }) })
+                            .setAuthor({ name: `Suporte - ${interaction.guild.name}`, iconURL: interaction.guild.iconURL({ extension: 'png' }) })
                             .setDescription(`Olá ${interaction.user}, ${lang.msg306}`)
-                        //.setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL({ dynamic: true }) })
+                            .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL({ extension: 'png' }) })
 
                         let atalho = new discord.ButtonBuilder()
                             .setLabel(`${lang.msg307}`)
@@ -243,7 +243,7 @@ client.on("interactionCreate", async (interaction) => {
                             .setColor('#2f3136')
                             .setAuthor({ name: titulo, iconURL: interaction.guild.iconURL({ dynamic: true }) })
                             .setDescription(descrição)
-                        //.setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL({ dynamic: true }) })
+                            .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL({ extension: 'png' }) })
 
                         let fechar = new discord.ButtonBuilder()
                             .setCustomId('close')
@@ -379,7 +379,7 @@ client.on("interactionCreate", async (interaction) => {
                         .setDescription(`${lang.msg315} ${interaction.user}. ${lang.msg316}`)
                         .setColor("#27ae60")
                         .setFooter({
-                            iconURL: interaction.user.displayAvatarURL(),
+                            iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
                             text: `${lang.msg317}`
                         })
                         .setTimestamp();
@@ -528,7 +528,7 @@ client.on("interactionCreate", async (interaction) => {
                         .setTitle(`<a:alerta:1163274838111162499> ${lang.msg328}`)
                         .setDescription(`${lang.msg329} **${role.name}**,\n\n${lang.msg330}\n\n${lang.msg331}`)
                         .setFooter({
-                            iconURL: interaction.user.displayAvatarURL(),
+                            iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
                             text: `${lang.msg332} ${interaction.guild.name}!`
                         });
 
