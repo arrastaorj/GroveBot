@@ -193,6 +193,7 @@ module.exports = {
         switch (subcommands) {
 
             case "autorole": {
+                
                 //Verificação para somente quem tiver permição usar o comando
                 if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
                     return interaction.reply({

@@ -1,86 +1,141 @@
-const { ApplicationCommandOptionType, ChannelType, ComponentType, EmbedBuilder, ButtonBuilder, AttachmentBuilder, ButtonStyle, ActionRowBuilder, roleMention, ApplicationCommandType, RESTJSONErrorCodes } = require(`discord.js`);
-const { Collection } = require('discord.js');
-const storage = new Collection();
+const {
+    ApplicationCommandOptionType,
+    ChannelType,
+    ComponentType,
+    EmbedBuilder,
+    ButtonBuilder,
+    AttachmentBuilder,
+    ButtonStyle,
+    ActionRowBuilder,
+    roleMention,
+    ApplicationCommandType,
+} = require(`discord.js`)
 
+const idioma = require("../../database/models/language")
+
+let storage = new Map()
 module.exports = {
     name: 'sorteio',
     description: 'Exclui uma quantidade de mensagens',
     type: ApplicationCommandType.ChatInput,
-    options: [{
-        type: ApplicationCommandOptionType.Subcommand,
-        name: 'iniciar',
-        description: 'Inicia um sorteio.',
-        options: [{
-            type: ApplicationCommandOptionType.User,
-            channelTypes: [ChannelType.GuildMedia],
-            name: 'usuário',
-            description: 'Quem estar patrocinando',
-            required: true
+    options: [
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: 'iniciar',
+            description: 'Inicia um sorteio.',
+            options: [
+                {
+                    type: ApplicationCommandOptionType.User,
+                    name: 'usuário',
+                    description: 'Quem estar patrocinandor',
+                    required: true
+                },
+                {
+                    type: ApplicationCommandOptionType.String,
+                    name: 'premiação',
+                    description: "Premiação do sorteio",
+                    required: true
+                },
+                {
+                    type: ApplicationCommandOptionType.Integer,
+                    name: 'ganhadores',
+                    description: 'Quantidade de ganhadores',
+                    required: true
+                },
+                {
+                    type: ApplicationCommandOptionType.Integer,
+                    name: 'duração',
+                    min_value: 1,
+                    max_value: 1440,
+                    description: 'Duração do sorteio em minutos',
+                    required: true
+                },
+                {
+                    type: ApplicationCommandOptionType.Channel,
+                    channelTypes: [ChannelType.GuildText],
+                    name: 'canal',
+                    description: 'Canal a ser enviado',
+                    required: false
+                },
+                {
+                    type: ApplicationCommandOptionType.Role,
+                    name: 'cargo',
+                    description: 'Cargo a ser mencionado',
+                    required: false
+                },
+                {
+                    type: ApplicationCommandOptionType.Role,
+                    name: 'exclusivo',
+                    description: 'Cargo requerido para participar do sorteio',
+                    required: false
+                },
+                {
+                    type: ApplicationCommandOptionType.String,
+                    name: 'tópico',
+                    description: 'Iniciar um tópico no sorteio',
+                    choices: [
+                        {
+                            name: "sim",
+                            value: "true"
+                        },
+                    ],
+                    required: false
+                }
+            ],
         },
         {
-            type: ApplicationCommandOptionType.String,
-            name: 'premiação',
-            description: "Premiação do sorteio",
-            required: true
-        },
-        {
-            type: ApplicationCommandOptionType.Integer,
-            name: 'ganhadores',
-            description: 'Quantidade de ganhadores',
-            required: true
-        },
-        {
-            type: ApplicationCommandOptionType.Integer,
-            name: 'duração',
-            min_value: 1,
-            max_value: 1440,
-            description: 'Duração do sorteio em minutos',
-            required: true
-        },
-        {
-            type: ApplicationCommandOptionType.Channel,
-            name: 'canal',
-            description: 'Canal a ser enviado',
-            required: false
-        },
-        {
-            type: ApplicationCommandOptionType.Role,
-            name: 'cargo',
-            description: 'Cargo a ser mencionado',
-            required: false
-        },
-        {
-            type: ApplicationCommandOptionType.Role,
-            name: 'exclusivo',
-            description: 'Cargo requerido para participar do sorteio',
-            required: false
-        },
-        {
-            type: ApplicationCommandOptionType.String,
-            name: 'tópico',
-            description: 'Iniciar um tópico no sorteio',
-            choices:
-                [
-                    {
-                        name: "sim",
-                        value: "true"
-                    },
-                ],
-            required: false
-        }],
-    }],
+            type: ApplicationCommandOptionType.Subcommand,
+            name: 'finalizar',
+            description: 'Finaliza um sorteio.',
+            options: [
+                {
+                    type: ApplicationCommandOptionType.String,
+                    name: 'premiação',
+                    description: 'Premiação do sorteio',
+                    required: true,
+                    autocomplete: true
+                }
+            ],
+        }
+    ],
 
+    async autocomplete(interaction) {
+
+        const focusedOption = interaction.options.getFocused();
+
+        let choices = [];
+
+        for (const user of storage.keys()) { choices.push(user) }
+        const filtered = choices.filter((choice) => choice.startsWith(focusedOption));
+
+        await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })),);
+    },
 
 
     run: async (client, interaction) => {
 
         const subCommand = interaction.options.getSubcommand();
 
+
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+
+
         switch (subCommand) {
             case 'iniciar': {
 
+
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    })
+
+
+
                 const member = interaction.member
-                const name = interaction.options.getString(`nome`);
                 const user = interaction.options.getUser(`usuário`);
                 const award = interaction.options.getString(`premiação`);
                 const winners = interaction.options.getInteger(`ganhadores`);
@@ -90,16 +145,21 @@ module.exports = {
                 const topic = interaction.options.getString(`tópico`) ?? false;
                 const exclusive = interaction.options.getRole(`exclusivo`);
 
+                if (storage.has(award)) {
+                    return await interaction.reply({ content: `Já existe um sorteio com o nome \`${award}\` em andamento.`, ephemeral: true })
+                }
 
 
 
+                storage.set(award, { participants: [], startTime: Date.now(), channelId: [], messageId: [] });
 
-                storage.set(name, { participants: [], startTime: Date.now(), channelId: [], messageId: [] });
 
-                const giveaway = storage.get(name);
+                const giveaway = storage.get(award);
                 const timeMillis = time * 60000;
                 const timer = Math.round((timeMillis + giveaway.startTime) / 1000);
                 let message;
+
+
 
                 const embedGiveaway = new EmbedBuilder()
                     .setTitle(`${award}`)
@@ -110,7 +170,6 @@ module.exports = {
                         { name: `Realizado por`, value: `${member}`, inline: true },
                         { name: `Ganhadores`, value: `${String(winners)} Sorteado` })
                     .setThumbnail(interaction.guild.iconURL({ extension: 'png' }))
-
 
 
 
@@ -132,20 +191,22 @@ module.exports = {
 
                 try {
                     if (exclusive) {
-                        message = await channel.send({ content: roleMention(exclusive.id), embeds: [embedGiveaway], components: [buttonGiveaway(name, giveaway.participants)], fetchReply: true })
+                        message = await channel.send({ content: roleMention(exclusive.id), embeds: [embedGiveaway], components: [buttonGiveaway(award, giveaway.participants)], fetchReply: true })
                     } else if (role) {
-                        message = await channel.send({ content: roleMention(role.id), embeds: [embedGiveaway], components: [buttonGiveaway(name, giveaway.participants)], fetchReply: true })
+                        message = await channel.send({ content: roleMention(role.id), embeds: [embedGiveaway], components: [buttonGiveaway(award, giveaway.participants)], fetchReply: true })
                     } else {
-                        message = await channel.send({ embeds: [embedGiveaway], components: [buttonGiveaway(name, giveaway.participants)], fetchReply: true })
+                        message = await channel.send({ embeds: [embedGiveaway], components: [buttonGiveaway(award, giveaway.participants)], fetchReply: true })
                     }
                     if (topic) {
-                        message.startThread({ name: `Sorteio ${name}`, })
+                        message.startThread({ name: `Sorteio ${award}`, })
                     }
                     giveaway.channelId.push(message.channelId);
                     giveaway.messageId.push(message.id);
+
+
                     await interaction.reply({ content: `Sorteio \`${award}\` iniciado no canal ${channel}.`, ephemeral: true })
                 } catch (e) {
-                    storage.delete(name);
+                    storage.delete(award);
                     return await interaction.reply({ content: 'Ocorreu um erro ao enviar o sorteio', ephemeral: true });
                 }
 
@@ -154,17 +215,17 @@ module.exports = {
 
                 collector.on('collect', async (i) => {
                     switch (i.customId) {
-                        case `GIVEAWAY_ENTER_${name}`: {
+                        case `GIVEAWAY_ENTER_${award}`: {
                             if (exclusive && !i.member.roles.cache.has(exclusive.id)) {
                                 return await i.reply({ content: `Vocë precisa ter o cargo ${roleMention(exclusive.id)} para participar deste sorteio.`, ephemeral: true });
                             }
                             if (giveaway.participants.includes(i.member.id)) {
                                 giveaway.participants.forEach((p, index) => { if (p === i.member.id) { giveaway.participants.splice(index, 1) } });
-                                await i.update({ components: [buttonGiveaway(name, giveaway.participants)] });
+                                await i.update({ components: [buttonGiveaway(award, giveaway.participants)] });
                                 return await i.followUp({ content: 'Você não está mais participando do sorteio.', ephemeral: true });
                             } else {
                                 giveaway.participants.push(i.member.id);
-                                await i.update({ components: [buttonGiveaway(name, giveaway.participants)] });
+                                await i.update({ components: [buttonGiveaway(award, giveaway.participants)] });
                                 return await i.followUp({ content: 'Você agora está participando do sorteio.', ephemeral: true });
                             }
                         }
@@ -191,7 +252,7 @@ module.exports = {
                             embed.spliceFields(1, 1, { name: 'Duração', value: `Finalizado <t:${timer}:R>` });
                             embed.spliceFields(3, 1, { name: 'Vencedor(es)', value: `Participantes insuficientes` });
 
-                            storage.delete(name);
+                            storage.delete(award);
                             await message.edit({ embeds: [embed], components: [] }).catch(() => false);
                         } else {
                             const getWinners = () => {
@@ -204,28 +265,46 @@ module.exports = {
                             embed.spliceFields(1, 1, { name: 'Duração', value: `Finalizado <t:${timer}:R>` });
                             embed.spliceFields(3, 1, { name: 'Vencedor(es)', value: `${list}` });
 
-                            storage.delete(name);
+                            storage.delete(award);
                             await message.edit({ embeds: [embed], components: [] }).catch(() => false);
                             await channel.send(`> \`+\` Parabéns 🎉 **${list}**, Você e ganhador do sorteio`);
                         }
                     } else if (reason === 'messageDelete') {
-                        storage.delete(name);
+                        storage.delete(award);
                     }
                 })
                 break;
             }
+
+
             case 'finalizar': {
-                const name = interaction.options.getString(`nome`);
+                try {
 
-                if (!storage.has(name)) {
-                    return await replyMsg(interaction, `Não existe um sorteio com o nome \`${name}\` em andamento.`, true);
+                    if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels))
+                        return interaction.reply({
+                            content: `${lang.alertNaoTemPermissão}`,
+                            ephemeral: true
+                        })
+
+
+                    const award = interaction.options.getString(`premiação`);
+
+                    if (!storage.has(award)) {
+
+                        return await interaction.reply({ content: `Não existe um sorteio com o nome \`${award}\` em andamento.`, ephemeral: true })
+
+                    }
+
+                    const giveaway = storage.get(award)
+
+
+                    await interaction.guild.channels.fetch(giveaway.channelId[0]).then(async (channel) => await channel.messages.fetch(giveaway.messageId[0]).then((m) => m.delete()).catch(() => false)).catch(() => false)
+                    return await interaction.reply({ content: `Sorteio \`${award}\` finalizado.`, ephemeral: true })
+
+                } catch {
+                    return
                 }
-                const giveaway = storage.get(name);
-
-                storage.delete(name);
-                await interaction.guild.channels.fetch(giveaway.channelId[0]).then(async (channel) => await channel.messages.fetch(giveaway.messageId[0]).then((m) => m.delete()).catch(() => false)).catch(() => false)
-                return await interaction.reply({ content: `Sorteio \`${name}\` finalizado.`, ephemeral: true });
             }
         }
     }
-};
+}
