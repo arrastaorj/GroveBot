@@ -428,8 +428,8 @@ module.exports = {
 
                             i.showModal(modal)
 
+                            
                             client.on('interactionCreate', async interaction => {
-
 
 
                                 if (!interaction.isModalSubmit()) return
