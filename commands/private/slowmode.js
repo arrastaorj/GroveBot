@@ -73,6 +73,8 @@ module.exports = {
             .setDescription(`Configura abaixo o modo de texto no chat`)
 
 
+        menssagemID.pop()
+
         const channel = interaction.channel
 
         if (channel.rateLimitPerUser === 0) {
