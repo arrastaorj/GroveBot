@@ -1,4 +1,9 @@
-const { Client, CommandInteraction, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js')
+const {
+    ApplicationCommandType,
+    ApplicationCommandOptionType,
+    EmbedBuilder,
+} = require('discord.js')
+
 const idioma = require("../../database/models/language")
 const canalMusic = require("../../database/models/music")
 
@@ -6,6 +11,7 @@ const canalMusic = require("../../database/models/music")
 module.exports = {
     name: 'play',
     description: 'reproduzir uma música',
+    type: ApplicationCommandType.ChatInput,
     inVoice: true,
     options: [
         {

@@ -1,18 +1,24 @@
-const discord = require("discord.js")
+const {
+    ApplicationCommandType,
+    ApplicationCommandOptionType,
+} = require("discord.js")
+
+
+
 const comandos = require("../../database/models/comandos")
 const User = require('../../database/models/economia')
 const idioma = require("../../database/models/language")
 
 module.exports = {
     name: 'sacar',
-
     description: 'Retire suas moedas do banco',
+    type: ApplicationCommandType.ChatInput,
 
     options: [
         {
             name: "valor",
             description: "Insira o valor do saque",
-            type: discord.ApplicationCommandOptionType.Integer,
+            type: ApplicationCommandOptionType.Integer,
             required: true
         }
     ],
@@ -29,7 +35,10 @@ module.exports = {
             guildId: interaction.guild.id
         })
 
-        if (!cmd) return interaction.reply({ content: `${lang.alertCommandos}`, ephemeral: true })
+        if (!cmd) return interaction.reply({
+            content: `${lang.alertCommandos}`,
+            ephemeral: true
+        })
 
 
         let cmd1 = cmd.canal1
@@ -39,8 +48,6 @@ module.exports = {
 
             let withdrawAmount = interaction.options.getInteger("valor")
 
-
-           
 
             const query = {
                 guildId: interaction.guild.id,
@@ -68,9 +75,7 @@ module.exports = {
                     await data.save()
 
                     await interaction.reply({
-
                         content: `${interaction.user}\n> \`+\` <:download_9906560:1162869267591602327> ${lang.msg52}\n> \`+\` ${lang.msg53} **<:dollar_9729309:1178199735799119892> ${withdrawAmount.toLocaleString()} GroveCoins**`,
-
                     })
                 }
 
@@ -79,9 +84,12 @@ module.exports = {
         }
         else
 
-
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `${lang.alertCanalErrado} <#${cmd1}>.`, ephemeral: true }) }
-
+            if (interaction.channel.id !== cmd1) {
+                interaction.reply({
+                    content: `${lang.alertCanalErrado} <#${cmd1}>.`,
+                    ephemeral: true
+                })
+            }
 
     }
 }

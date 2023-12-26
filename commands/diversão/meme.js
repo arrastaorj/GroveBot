@@ -1,4 +1,8 @@
-const discord = require("discord.js");
+const {
+    ApplicationCommandType,
+    EmbedBuilder,
+} = require("discord.js");
+
 const { images } = require("../../plugins/images.json")
 const meme = require("../../database/models/meme")
 const idioma = require("../../database/models/language")
@@ -6,7 +10,7 @@ const idioma = require("../../database/models/language")
 module.exports = {
     name: "meme",
     description: "Exibe memes aleatórios.",
-    type: discord.ApplicationCommandType.ChatInput,
+    type: ApplicationCommandType.ChatInput,
 
     async run(client, interaction, args) {
 
@@ -29,7 +33,7 @@ module.exports = {
 
             const random = Math.floor(Math.random() * images.length)
             const randomMeme = images[random];
-            const embed = new discord.EmbedBuilder()
+            const embed = new EmbedBuilder()
                 .setColor("#6dfef2")
                 .setTimestamp(new Date)
                 .setFooter({ text: `${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL({ dynamic: true, format: "png" }) })

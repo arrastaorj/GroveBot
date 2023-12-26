@@ -1,4 +1,6 @@
-const discord = require("discord.js")
+const {
+    ApplicationCommandOptionType,
+} = require('discord.js')
 const comandos = require("../../database/models/comandos")
 const User = require('../../database/models/economia')
 const idioma = require("../../database/models/language")
@@ -10,7 +12,7 @@ module.exports = {
         {
             name: "valor",
             description: "Insira o valor do depósito",
-            type: discord.ApplicationCommandOptionType.Integer,
+            type: ApplicationCommandOptionType.Integer,
             required: true
         }
     ],
@@ -20,7 +22,7 @@ module.exports = {
         let lang = await idioma.findOne({
             guildId: interaction.guild.id
         })
-        
+
         lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 

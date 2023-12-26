@@ -1,4 +1,6 @@
-const discord = require("discord.js")
+const {
+    ApplicationCommandType
+} = require("discord.js")
 const ms = require("ms")
 const comandos = require("../../database/models/comandos")
 const User = require('../../database/models/economia')
@@ -7,7 +9,7 @@ const idioma = require("../../database/models/language")
 module.exports = {
     name: 'implorar',
     description: 'Implore por algumas moedas.',
-
+    type: ApplicationCommandType.ChatInput,
     run: async (client, interaction) => {
 
         let lang = await idioma.findOne({

@@ -1,7 +1,18 @@
 const discord = require("discord.js")
+
+const {
+    ApplicationCommandType,
+    ButtonStyle,
+    ActionRowBuilder,
+    ButtonBuilder,
+    AttachmentBuilder
+
+
+} = require("discord.js")
+
+
 const ms = require("../../plugins/parseMs")
 const { createCanvas, loadImage, registerFont } = require('canvas')
-const { ButtonStyle } = require('discord.js');
 const User = require('../../database/models/economia')
 const Explorar = require('../../database/models/explorar')
 const comandos = require("../../database/models/comandos")
@@ -11,7 +22,7 @@ const idioma = require("../../database/models/language")
 module.exports = {
     name: "explorar",
     description: "Participe de explorações para ganhar tesouros",
-    type: discord.ApplicationCommandType.ChatInput,
+    type: ApplicationCommandType.ChatInput,
 
     run: async (client, interaction, args) => {
 
@@ -26,13 +37,13 @@ module.exports = {
         const amount = Math.floor(800)
         const amount2 = Math.floor(1000 + 4000)
 
-        let btn1 = new discord.ActionRowBuilder().addComponents([
-            new discord.ButtonBuilder()
+        let btn1 = new ActionRowBuilder().addComponents([
+            new ButtonBuilder()
                 .setStyle(ButtonStyle.Primary)
                 .setLabel(`${lang.msg24}`)
                 .setEmoji("<:explorador:1061082035176865853>")
                 .setCustomId("ex"),
-            new discord.ButtonBuilder()
+            new ButtonBuilder()
                 .setStyle(ButtonStyle.Primary)
                 .setLabel(`${lang.msg25}`)
                 .setEmoji("<:lander:1061082037890596884>")
@@ -46,7 +57,7 @@ module.exports = {
         ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
 
-        const at = new discord.AttachmentBuilder(canvas.toBuffer(), "explorar.png")
+        const at = new AttachmentBuilder(canvas.toBuffer(), "explorar.png")
 
         const query2 = {
             guildId: interaction.guild.id,

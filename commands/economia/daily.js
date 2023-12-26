@@ -1,4 +1,6 @@
-const discord = require('discord.js')
+const {
+    ApplicationCommandType,
+} = require('discord.js')
 const User = require('../../database/models/economia')
 const ms = require("../../plugins/parseMs")
 const comandos = require("../../database/models/comandos")
@@ -8,6 +10,7 @@ const idioma = require("../../database/models/language")
 module.exports = {
     name: 'daily',
     description: 'Colete seus GroveCoins diários',
+    type: ApplicationCommandType.ChatInput,
 
 
     run: async (client, interaction) => {

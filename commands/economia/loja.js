@@ -1,4 +1,13 @@
-const discord = require("discord.js")
+
+const {
+    ApplicationCommandType,
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+} = require("discord.js")
+
+
+
 const schema = require("../../database/models/economia")
 const skin = require("../../database/models/skin")
 const comandos = require("../../database/models/comandos")
@@ -7,7 +16,7 @@ const idioma = require("../../database/models/language")
 module.exports = {
     name: "loja",
     description: "Veja os itens disponíveis para comprar na loja.",
-    type: discord.ApplicationCommandType.ChatInput,
+    type: ApplicationCommandType.ChatInput,
 
     run: async (client, interaction, args) => {
 
@@ -54,124 +63,125 @@ module.exports = {
             let maxIndex2 = images.length - 2
 
 
-            const row = new discord.ActionRowBuilder().addComponents(
-                new discord.ButtonBuilder()
+            const row = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
                     .setCustomId('volta')
                     .setEmoji('<:1095137898262695937:1166902501572870195>')
                     .setDisabled(true)
-                    .setStyle('Primary'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
                     .setCustomId('home')
                     .setLabel(`Página 1/3`)
                     .setDisabled(true)
-                    .setStyle('Secondary'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('avancar')
                     .setEmoji('<:1095137870882279564:1166902503703580704>')
-                    .setStyle('Primary')
+                    .setStyle(ButtonStyle.Primary),
             )
 
-            const rowd = new discord.ActionRowBuilder().addComponents(
-                new discord.ButtonBuilder()
+            const rowd = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
                     .setCustomId('volta')
                     .setEmoji('<:1095137898262695937:1166902501572870195>')
-                    .setStyle('Primary'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
                     .setCustomId('home')
                     .setLabel(`Página 3/3`)
                     .setDisabled(true)
-                    .setStyle('Secondary'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('avancar')
                     .setEmoji('<:1095137870882279564:1166902503703580704>')
-                    .setStyle('Primary')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true)
             )
-            const rows = new discord.ActionRowBuilder().addComponents(
-                new discord.ButtonBuilder()
+            const rows = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
                     .setCustomId('volta')
                     .setEmoji('<:1095137898262695937:1166902501572870195>')
-                    .setStyle('Primary'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Primary),
+
+                new ButtonBuilder()
                     .setCustomId('home')
                     .setLabel(`Página 2/3`)
                     .setDisabled(true)
-                    .setStyle('Secondary'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('avancar')
                     .setEmoji('<:1095137870882279564:1166902503703580704>')
-                    .setStyle('Primary')
+                    .setStyle(ButtonStyle.Primary),
             )
 
 
-            const comprar1 = new discord.ActionRowBuilder().addComponents(
-                new discord.ButtonBuilder()
+            const comprar1 = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
                     .setCustomId('comprar1')
                     .setLabel('110.000')
                     .setEmoji("<:Lecoin:1059125860524900402>")
-                    .setStyle('Success'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
                     .setCustomId('info1')
                     .setEmoji("<:info:1167105337648742553>")
-                    .setStyle('Secondary'),
+                    .setStyle(ButtonStyle.Secondary),
             )
-            const comprar11 = new discord.ActionRowBuilder().addComponents(
-                new discord.ButtonBuilder()
+            const comprar11 = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
                     .setCustomId('comprar11')
                     .setLabel('Já Habilitada')
                     .setEmoji("<:padlock_5754374:1166904628672213044>")
                     .setDisabled(true)
-                    .setStyle('Secondary'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('info11')
                     .setEmoji("<:info:1167105337648742553>")
-                    .setStyle('Secondary'),
+                    .setStyle(ButtonStyle.Secondary),
             )
-            const comprar2 = new discord.ActionRowBuilder().addComponents(
-                new discord.ButtonBuilder()
+            const comprar2 = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
                     .setCustomId('comprar2')
                     .setLabel('210.000')
                     .setEmoji("<:Lecoin:1059125860524900402>")
-                    .setStyle('Success'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
                     .setCustomId('info2')
                     .setEmoji("<:info:1167105337648742553>")
-                    .setStyle('Secondary'),
+                    .setStyle(ButtonStyle.Secondary),
             )
-            const comprar22 = new discord.ActionRowBuilder().addComponents(
-                new discord.ButtonBuilder()
+            const comprar22 = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
                     .setCustomId('comprar22')
                     .setLabel('Já Habilitada')
                     .setEmoji("<:padlock_5754374:1166904628672213044>")
                     .setDisabled(true)
-                    .setStyle('Secondary'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('info22')
                     .setEmoji("<:info:1167105337648742553>")
-                    .setStyle('Secondary'),
+                    .setStyle(ButtonStyle.Secondary),
             )
-            const comprar3 = new discord.ActionRowBuilder().addComponents(
-                new discord.ButtonBuilder()
+            const comprar3 = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
                     .setCustomId('comprar3')
                     .setLabel('310.000')
                     .setEmoji("<:Lecoin:1059125860524900402>")
-                    .setStyle('Success'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
                     .setCustomId('info3')
                     .setEmoji("<:info:1167105337648742553>")
-                    .setStyle('Secondary'),
+                    .setStyle(ButtonStyle.Secondary),
             )
-            const comprar33 = new discord.ActionRowBuilder().addComponents(
-                new discord.ButtonBuilder()
+            const comprar33 = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
                     .setCustomId('comprar33')
                     .setLabel('Já Habilitada')
                     .setEmoji("<:padlock_5754374:1166904628672213044>")
                     .setDisabled(true)
-                    .setStyle('Secondary'),
-                new discord.ButtonBuilder()
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('info33')
                     .setEmoji("<:info:1167105337648742553>")
-                    .setStyle('Secondary'),
+                    .setStyle(ButtonStyle.Secondary),
 
             )
 
