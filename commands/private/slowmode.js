@@ -7,109 +7,94 @@ const {
     EmbedBuilder,
     ApplicationCommandOptionType,
     ChannelType,
-} = require('discord.js')
+} = require('discord.js');
 
-const idioma = require("../../database/models/language")
+const idioma = require("../../database/models/language");
 
-const menssagemID = []
+const menssagemID = [];
 
 module.exports = {
     name: 'slowmode',
-    description: 'Painel para gerência o SlowMode do chat.',
+    description: 'Painel para gerenciar o SlowMode do chat.',
     type: ApplicationCommandType.ChatInput,
-
     menssagemID,
 
-
     async run(client, interaction, args) {
-
-
         let lang = await idioma.findOne({
-            guildId: interaction.guild.id
-        })
-        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+            guildId: interaction.guild.id,
+        });
 
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js');
 
-        if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
+        if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) {
             return interaction.reply({
-                content: `${lang.alertNaoTemPermissão}`,
-                ephemeral: true
-            })
-
-
-
+                content: `${lang.alertNaoTemPermissao}`,
+                ephemeral: true,
+            });
+        }
 
         const buttons = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId(`ativar`)
+                    .setCustomId('ativar')
+                    .setLabel(`Ativar`)
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
+                    .setCustomId('desativar')
+                    .setLabel(`Desativar`)
+                    .setStyle(ButtonStyle.Danger)
+                    .setDisabled(true)
+            );
+
+        const buttons2 = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('ativar')
                     .setLabel(`Ativar`)
                     .setStyle(ButtonStyle.Success)
                     .setDisabled(true),
                 new ButtonBuilder()
-                    .setCustomId(`desativar`)
+                    .setCustomId('desativar')
                     .setLabel(`Desativar`)
                     .setStyle(ButtonStyle.Danger)
-
-            )
-        const buttons2 = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId(`ativar`)
-                    .setLabel(`Ativar`)
-                    .setStyle(ButtonStyle.Success),
-                new ButtonBuilder()
-                    .setCustomId(`desativar`)
-                    .setLabel(`Desativar`)
-                    .setStyle(ButtonStyle.Danger)
-                    .setDisabled(true)
             )
 
-
+        const corDaMensagem = '#00ff00'
 
         const embed = new EmbedBuilder()
-            .setTitle(`Painel SlowMode`)
-            .setColor('#41b2b0')
-            .setDescription(`Configura abaixo o modo de texto no chat`)
-
-
-        menssagemID.pop()
-
-        const channel = interaction.channel
-
-        if (channel.rateLimitPerUser === 0) {
-
-            await channel.send({
-                embeds: [embed],
-                components: [buttons2]
-            }).then(async sentMessage => {
-
-                const messageId = sentMessage.id;
-                menssagemID.push(messageId)
+            .setTitle(`Painel de Configuração de SlowMode`)
+            .setFields([
+                {
+                    name: `Configurações Disponíveis`,
+                    value: `> Personalize o modo lento do chat ajustando o tempo de espera entre mensagens para controlar a velocidade da conversa.`,
+                },
+            ])
+            .setFooter({
+                iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
+                text: `Solicitado por ${interaction.user.username}`,
             })
+            .setThumbnail(interaction.guild.iconURL({ extension: 'png' }))
+            .setTimestamp()
+            .setColor('#41b2b0');
 
-            return await interaction.reply({
-                content: `> \`+\` Acabei de envei o painel no ${channel} `,
-                ephemeral: true
-            })
-        }
+        menssagemID.pop();
 
-        if (channel.rateLimitPerUser > 0) {
+        const channel = interaction.channel;
 
-            await channel.send({
-                embeds: [embed],
-                components: [buttons]
-            }).then(async sentMessage => {
+        const messageContent = `> \`+\` Acabei de enviar o painel em ${channel}`
 
-                const messageId = sentMessage.id;
-                menssagemID.push(messageId)
-            })
+        const components = channel.rateLimitPerUser === 0 ? [buttons] : [buttons2]
 
-            return await interaction.reply({
-                content: `> \`+\` Acabei de envei o painel no ${channel} `,
-                ephemeral: true
-            })
+        await channel.send({
+            embeds: [embed],
+            components: components,
+        }).then(async (sentMessage) => {
+            menssagemID.push(sentMessage.id)
+        })
 
-        }
-    }
+        return await interaction.reply({
+            content: messageContent,
+            ephemeral: true,
+        })
+    },
 }

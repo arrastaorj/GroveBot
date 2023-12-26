@@ -24,8 +24,6 @@ client.on("interactionCreate", async (interaction) => {
     })
     lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
-
-
     const buttons = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
@@ -84,7 +82,19 @@ client.on("interactionCreate", async (interaction) => {
                     ephemeral: true
                 })
 
-            await interaction.showModal(modal);
+
+
+            const resultadoArray = menssagemID
+            const numeroSemColchetes = resultadoArray[0];
+
+            if (interaction.message.id !== numeroSemColchetes) {
+                return await interaction.reply({
+                    content: `> \`-\` Você está interagindo com a mensagem errada.`,
+                    ephemeral: true
+                });
+            }
+
+            await interaction.showModal(modal)
 
             break;
         }
@@ -97,18 +107,33 @@ client.on("interactionCreate", async (interaction) => {
                     ephemeral: true
                 })
 
-            const channel = interaction.channel;
+            const channel = interaction.channel
+
+
+            const resultadoArray = menssagemID
+            const numeroSemColchetes = resultadoArray[0]
+            const message = await channel.messages.fetch(`${numeroSemColchetes}`)
+
+            if (interaction.message.id !== numeroSemColchetes) {
+                return await interaction.reply({
+                    content: `> \`-\` Você está interagindo com a mensagem errada.`,
+                    ephemeral: true
+                })
+            }
+
+
             const valor = 0;
             channel.setRateLimitPerUser(valor).catch(err => {
                 return;
             })
 
-            const resultadoArray = menssagemID
-            const numeroSemColchetes = resultadoArray[0];
-            const message = await channel.messages.fetch(`${numeroSemColchetes}`);
+
 
             await message.edit({ components: [buttons2] })
-            return await interaction.reply({ content: `> \`+\` Modo lento está **desativado** com sucesso!`, ephemeral: true })
+            return await interaction.reply({
+                content: `> \`+\` Modo lento está **desativado** com sucesso!`,
+                ephemeral: true
+            })
 
         }
 
@@ -120,22 +145,31 @@ client.on("interactionCreate", async (interaction) => {
         await interaction.deferUpdate();
         valor = interaction.fields.getTextInputValue('ativarSlow');
 
-
         if (!/^\d+$/.test(valor)) {
-            return await interaction.followUp({ content: '> \`-\` <a:alerta:1163274838111162499> Por favor, forneça um número válido.', ephemeral: true });
+            return await interaction.followUp({
+                content: `> \`-\` <a:alerta:1163274838111162499> Por favor, forneça um número válido.`,
+                ephemeral: true
+            })
         }
 
         const channel = interaction.channel;
+
         channel.setRateLimitPerUser(parseInt(valor)).catch(err => {
             return;
         });
 
         const resultadoArray = menssagemID
         const numeroSemColchetes = resultadoArray[0];
-        const message = await channel.messages.fetch(`${numeroSemColchetes}`);
-        await message.edit({ components: [buttons] })
+        const message = await channel.messages.fetch(`${numeroSemColchetes}`)
 
-        return await interaction.followUp({ content: `> \`+\` Modo lento está **Ativado** com sucesso!\n> \`+\` SlowMode de: **${valor}s**`, ephemeral: true })
+        await message.edit({
+            components: [buttons]
+        })
+
+        return await interaction.followUp({
+            content: `> \`+\` Modo lento está **Ativado** com sucesso!\n> \`+\` SlowMode de: **${valor}s**`,
+            ephemeral: true
+        })
 
     }
 })
