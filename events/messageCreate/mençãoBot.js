@@ -21,9 +21,7 @@ client.on("messageCreate", async (message) => {
                 .setColor('#41b2b0')
                 .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
                 .setDescription(`**Olá!** Você me chamou? Meu nome é **Grove.** É um prazer conhecê-lo! Digite \`/\` para visualizar todos os meus comandos.\n\n Use </help:1167214616187773049> \n\n Se você me curtiu, considere vota no meu Top.gg \n\n*Esta mensagem será apagada em **50 segundos!***`)
-                //.setThumbnail(user.displayAvatarURL())
                 .setThumbnail(message.guild.iconURL({ extension: 'png' }))
-
                 .setFooter({
                     iconURL: message.member.displayAvatarURL({ extension: 'png' }),
                     text: `Solicitado por ${message.member.displayName}`,
