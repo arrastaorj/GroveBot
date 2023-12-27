@@ -164,13 +164,17 @@ module.exports = {
                 const embedGiveaway = new EmbedBuilder()
                     .setTitle(`${award}`)
                     .setColor('#41b2b0')
+                    .setTimestamp()
                     .addFields(
                         { name: `Patrocinado por`, value: `${user}` },
                         { name: `Duração`, value: `<t:${timer}:R>`, inline: true },
                         { name: `Realizado por`, value: `${member}`, inline: true },
                         { name: `Ganhadores`, value: `${String(winners)} Sorteado` })
                     .setThumbnail(interaction.guild.iconURL({ extension: 'png' }))
-
+                    .setFooter({
+                        iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
+                        text: `Solicitado por ${interaction.user.displayName}`,
+                    })
 
 
                 const buttonGiveaway = (giveaway, participants) => {
