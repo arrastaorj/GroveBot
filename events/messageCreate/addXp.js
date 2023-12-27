@@ -41,7 +41,7 @@ client.on("messageCreate", async (message, member) => {
             if (message.channel.type === 'dm') return
 
 
-            const xpToGive = getRandomXp(1, 5)
+            const xpToGive = getRandomXp(1, 20)
 
             const query = {
                 userId: message.author.id,
@@ -52,16 +52,15 @@ client.on("messageCreate", async (message, member) => {
                 const level = await Level.findOne(query)
 
                 if (level) {
+
                     level.xp += xpToGive
+                    const xpNeededForNextLevel = calculateLevelXp(level.level + 1);
 
-                    if (level.xp > calculateLevelXp(level.level)) {
-                        level.xp = 0
-                        level.level += 1
+                    if (level.xp > xpNeededForNextLevel) {
+                        level.xp = 0;
+                        level.level += 1;
 
-
-
-                        client.channels.cache.get(cmd1).send(`**🎆 ${message.author}, ${lang.msg347} \`${level.level}\` **`)
-
+                        client.channels.cache.get(cmd1).send(`**🎆 ${message.author}, ${lang.msg347} \`${level.level}\` **`);
                     }
 
                     await level.save().catch((e) => {

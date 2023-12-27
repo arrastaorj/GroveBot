@@ -6,6 +6,7 @@ const canvas = require("canvas")
 registerFont("./fonts/Pelita.otf", { family: "Pelita" })
 const idioma = require("../../database/models/language")
 
+
 module.exports = {
     name: "rank",
     description: "Exibe seu rank no servidor.",
@@ -38,21 +39,43 @@ module.exports = {
             await interaction.deferReply({ fetchReply: true })
 
 
-            let dataGlobal = await level.find({
-                guildId: interaction.guild.id
-            }).sort([["xp", "descending"]]).exec()
+            let allUserData = await level.find({}).exec();
+
+            const uniqueUsers = {};
+
+            allUserData.forEach((userData) => {
+                const userId = userData.userId; // Substitua "userId" pelo campo que contém a identificação única do usuário
+
+                if (!uniqueUsers[userId] ||
+                    uniqueUsers[userId].level < userData.level ||
+                    (uniqueUsers[userId].level === userData.level && uniqueUsers[userId].xp < userData.xp)
+                ) {
+                    uniqueUsers[userId] = userData;
+                }
+            });
+
+            const dataGlobal = Object.values(uniqueUsers).sort((a, b) => {
+                if (b.level !== a.level) {
+                    return b.level - a.level;
+                } else {
+                    return b.xp - a.xp;
+                }
+            }).slice(0, 10);
 
 
-            dataGlobal = dataGlobal.slice(0, 10)
-            if (!dataGlobal)
+
+            if (!dataGlobal || dataGlobal.length === 0) {
                 return interaction.reply({
                     content: `${lang.msg204}`,
                     ephemeral: true
-                })
+                });
+            }
 
 
+            console.log(dataGlobal)
 
             const ranks = Math.min(10, dataGlobal.length)
+
 
             const userNames = []
             const userContents = []
