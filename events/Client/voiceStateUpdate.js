@@ -36,6 +36,6 @@ client.on("voiceStateUpdate", (oldState, newState) => {
                 player.destroy();
             }
 
-        }, 60000)
+        }, 120000)
     }
 });

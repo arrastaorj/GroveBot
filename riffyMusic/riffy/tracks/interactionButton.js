@@ -100,7 +100,7 @@ async function handleMusicButton(interaction, player) {
                         )
 
                     }
-                }, 60000);
+                }, 120000)
 
 
                 player.pause(true)
