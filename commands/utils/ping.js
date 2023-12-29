@@ -12,8 +12,8 @@ module.exports = {
 
     let lang = await idioma.findOne({
       guildId: interaction.guild.id
-  })
-  lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+    })
+    lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
     const cmd = await comandos.findOne({
@@ -33,7 +33,7 @@ module.exports = {
 
       let Embed2 = new Discord.EmbedBuilder()
         .setDescription(`> \`+\` **👋 ${lang.msg202} ${interaction.user},** ${lang.msg203} \`${client.ws.ping}ms\``)
-        .setColor("#6dfef2")
+        .setColor("#ba68c8")
 
       interaction.reply({ embeds: [Embed2], content: ``, ephemeral: true })
     }

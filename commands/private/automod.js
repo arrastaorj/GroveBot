@@ -107,7 +107,7 @@ module.exports = {
                     if (!mod1) return
 
                     const embed = new discord.EmbedBuilder()
-                        .setColor("#6dfef2")
+                        .setColor("#ba68c8")
                         .setTimestamp()
                         .setAuthor({ name: `${lang.msg63}` })
                         .addFields({ name: `${lang.msg64}`, value: `${lang.msg65}` })
@@ -154,7 +154,7 @@ module.exports = {
                     if (!mod2) return
 
                     const embed = new discord.EmbedBuilder()
-                        .setColor("#6dfef2")
+                        .setColor("#ba68c8")
                         .setTimestamp()
                         .setAuthor({ name: `${lang.msg63}` })
                         .addFields({ name: `${lang.msg64}`, value: `${lang.msg68}` })
@@ -201,7 +201,7 @@ module.exports = {
                     if (!mod3) return
 
                     const embed = new discord.EmbedBuilder()
-                        .setColor("#6dfef2")
+                        .setColor("#ba68c8")
                         .setTimestamp()
                         .setAuthor({ name: `${lang.msg63}` })
                         .addFields({ name: `${lang.msg64}`, value: `${lang.msg70}` })
@@ -250,7 +250,7 @@ module.exports = {
                     if (!mod4) return
 
                     const embed = new discord.EmbedBuilder()
-                        .setColor("#6dfef2")
+                        .setColor("#ba68c8")
                         .setTimestamp()
                         .setAuthor({ name: `${lang.msg63}` })
                         .addFields({ name: `${lang.msg64}`, value: `${lang.msg72}` })

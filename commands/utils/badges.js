@@ -47,7 +47,7 @@ module.exports = {
 
 
             let embed1 = new EmbedBuilder()
-                .setColor("#6dfef2")
+                .setColor("#ba68c8")
                 .setAuthor({ name: `Badges - ${interaction.guild.name}`, iconURL: client.user.displayAvatarURL() })
                 .setThumbnail(`${interaction.guild.iconURL({ dynamic: true })}`)
                 .setDescription(`<:1769discordstaff:1157876972031053984> Discord Staff: \`${counts['Staff'] || 0}\`
@@ -151,7 +151,7 @@ module.exports = {
                 if (check === "Staff") {
 
                     let embed_staff = new EmbedBuilder()
-                        .setColor("Blurple")
+                        .setColor("#ba68c8")
                         .setTitle(`<:1769discordstaff:1157876972031053984> Discord Staff (${counts['Staff'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -161,7 +161,7 @@ module.exports = {
                 if (check === "Partner") {
 
                     let embed_partner = new EmbedBuilder()
-                        .setColor("Blurple")
+                        .setColor("#ba68c8")
                         .setTitle(`<:9928discordpartnerbadge:1157876829596684370> Partner (${counts['Partner'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -171,7 +171,7 @@ module.exports = {
                 if (check === "CertifiedModerator") {
 
                     let embed_moderator = new EmbedBuilder()
-                        .setColor("Orange")
+                        .setColor("ba68c8")
                         .setTitle(`<:discordmod:1178827911667646544> Certified Moderator (${counts['CertifiedModerator'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -180,7 +180,7 @@ module.exports = {
                 if (check === "Hypesquad") {
 
                     let embed_hypesquad = new EmbedBuilder()
-                        .setColor("Gold")
+                        .setColor("ba68c8")
                         .setTitle(`<:7606badgehypesquadevents:1157876137347788830> HypeSquad Events (${counts['Hypesquad'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -189,7 +189,7 @@ module.exports = {
                 if (check === "HypeSquadOnlineHouse1") {
 
                     let embed_bravery = new EmbedBuilder()
-                        .setColor("Purple")
+                        .setColor("ba68c8")
                         .setTitle(`<:6601hypesquadbravery:1061274089609760908> HypeSquad Bravery (${counts['HypeSquadOnlineHouse1'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -198,7 +198,7 @@ module.exports = {
                 if (check === "HypeSquadOnlineHouse2") {
 
                     let embed_brilliance = new EmbedBuilder()
-                        .setColor("#f17a65")
+                        .setColor("#ba68c8")
                         .setTitle(`<:6936hypesquadbrilliance:1061274087193854042> HypeSquad Brilliance (${counts['HypeSquadOnlineHouse2'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -207,7 +207,7 @@ module.exports = {
                 if (check === "HypeSquadOnlineHouse3") {
 
                     let embed_balance = new EmbedBuilder()
-                        .setColor("#42d0b9")
+                        .setColor("#ba68c8")
                         .setTitle(`<:5242hypesquadbalance:1061274091623034881> HypeSquad Balance (${counts['HypeSquadOnlineHouse3'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -216,7 +216,7 @@ module.exports = {
                 if (check === "BugHunterLevel1") {
 
                     let embed_bug1 = new EmbedBuilder()
-                        .setColor("Green")
+                        .setColor("ba68c8")
                         .setTitle(`<:4744bughunterbadgediscord:1157875129309724772> Bug Hunter (${counts['BugHunterLevel1'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -225,7 +225,7 @@ module.exports = {
                 if (check === "BugHunterLevel2") {
 
                     let embed_bug2 = new EmbedBuilder()
-                        .setColor("Gold")
+                        .setColor("ba68c8")
                         .setTitle(`<:1692bughunter:1157875132048605234> Bug Hunter Gold (${counts['BugHunterLevel2'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -234,7 +234,7 @@ module.exports = {
                 if (check === "ActiveDeveloper") {
 
                     let embed_active_dev = new EmbedBuilder()
-                        .setColor("#2da864")
+                        .setColor("#ba68c8")
                         .setTitle(`<:7011activedeveloperbadge:1061277829255413781> Active Developer (${counts['ActiveDeveloper'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -243,7 +243,7 @@ module.exports = {
                 if (check === "VerifiedDeveloper") {
 
                     let embed_verified_developer = new EmbedBuilder()
-                        .setColor("Blurple")
+                        .setColor("#ba68c8")
                         .setTitle(`<:Early_Verified_Bot_Developer:1063599974098665592> Early Verified Bot Developer (${counts['VerifiedDeveloper'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 
@@ -252,7 +252,7 @@ module.exports = {
                 if (check === "PremiumEarlySupporter") {
 
                     let embed_verified_developer = new EmbedBuilder()
-                        .setColor("Blurple")
+                        .setColor("#ba68c8")
                         .setTitle(`<:Early_Supporter:1063599098135060590> Early Supporter (${counts['PremiumEarlySupporter'] || 0})`)
                         .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
 

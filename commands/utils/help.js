@@ -33,7 +33,7 @@ module.exports = {
 
             const embed = new discord.EmbedBuilder()
                 .setTitle(`${lang.msg175}`)
-                .setColor("#6dfef2")
+                .setColor("#ba68c8")
                 .setDescription(`${lang.msg176}`)
 
             const menu = new discord.ActionRowBuilder()

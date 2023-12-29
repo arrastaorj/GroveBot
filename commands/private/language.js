@@ -81,7 +81,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setTitle("Selecione um idioma")
-            .setColor("#6dfef2")
+            .setColor("#ba68c8")
             .setDescription("Escolha o idioma desejado para a comunicação.")
             .setTimestamp()
             .setFooter({ text: `Grove` })

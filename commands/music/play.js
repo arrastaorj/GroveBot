@@ -89,7 +89,7 @@ module.exports = {
                         iconURL: track.info.requester.user.displayAvatarURL({ dynamic: true })
                     })
                     .setDescription(`${lang.msg8} **${tracks.length}** ${lang.msg9} **${playlistInfo.name}**`)
-                    .setColor("#6dfef2")
+                    .setColor("#ba68c8")
                     .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
 
 
@@ -139,7 +139,7 @@ module.exports = {
                         iconURL: track.info.requester.user.displayAvatarURL({ dynamic: true })
                     })
                     .setThumbnail(track.thumbnail)
-                    .setColor("#6dfef2")
+                    .setColor("#ba68c8")
                     .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
                     .setDescription(`[${track.info.title}](${track.info.uri})`)
                     .addFields([

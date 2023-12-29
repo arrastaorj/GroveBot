@@ -67,7 +67,7 @@ module.exports = {
 
 
             const embed = new discord.EmbedBuilder()
-                .setColor("#6dfef2")
+                .setColor("#ba68c8")
                 .setImage(guild.bannerURL({ size: 1024 }))
                 .setAuthor({ name: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setThumbnail(guild.iconURL({ dynamic: true }))

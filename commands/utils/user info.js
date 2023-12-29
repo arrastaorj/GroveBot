@@ -241,7 +241,7 @@ module.exports = {
 
 
                     const embed = new discord.EmbedBuilder()
-                        .setColor("#6dfef2")
+                        .setColor("#ba68c8")
                         .setTitle(`${list.split(",").join(" ")}`)
                         .setAuthor({ name: `${userDataNameGlobal}` })
                         .setThumbnail(AvatarUser)
@@ -294,11 +294,11 @@ module.exports = {
                         let avatar = new discord.EmbedBuilder()
 
                             .setImage(AvatarUser)
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
                         let banner = new discord.EmbedBuilder()
 
                             .setImage(userBanner)
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
 
                         const permsArray = member.permissions.toArray().map(p => permsObj[p])
 
@@ -385,7 +385,7 @@ module.exports = {
 
                         let avatar = new discord.EmbedBuilder()
                             .setImage(AvatarUser)
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
 
                         const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
 
@@ -529,7 +529,7 @@ module.exports = {
 
 
                     const embed = new discord.EmbedBuilder()
-                        .setColor("#6dfef2")
+                        .setColor("#ba68c8")
                         .setTitle(`${list.split(",").join(" ")}`)
                         .setAuthor({ name: `${userDataNameGlobal}` })
                         .setThumbnail(AvatarUser)
@@ -566,10 +566,10 @@ module.exports = {
 
                         let avatar = new discord.EmbedBuilder()
                             .setImage(AvatarUser)
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
                         let banner = new discord.EmbedBuilder()
                             .setImage(userBanner)
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
 
                         const permsArray = member.permissions.toArray().map(p => permsObj[p])
 
@@ -651,7 +651,7 @@ module.exports = {
 
                         let avatar = new discord.EmbedBuilder()
                             .setImage(AvatarUser)
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
                         const m = await interaction.reply({ embeds: [embed], components: [btnAvatarPermissão], fetchReply: true })
 
 
@@ -813,7 +813,7 @@ module.exports = {
 
 
                     const embed = new discord.EmbedBuilder()
-                        .setColor("#6dfef2")
+                        .setColor("#ba68c8")
                         .setTitle(`${list.split(",").join(" ")}`)
                         .setAuthor({ name: `${userDataNameGlobal}` })
                         .setThumbnail(AvatarUser)
@@ -862,11 +862,11 @@ module.exports = {
                         let avatar = new discord.EmbedBuilder()
 
                             .setImage(AvatarUser)
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
                         let banner = new discord.EmbedBuilder()
 
                             .setImage(userBanner)
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
 
                         const permsArray = member.permissions.toArray().map(p => permsObj[p])
 
@@ -949,7 +949,7 @@ module.exports = {
 
                         let avatar = new discord.EmbedBuilder()
                             .setImage(AvatarUser)
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
 
                         const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
 
@@ -1103,7 +1103,7 @@ module.exports = {
 
 
                         const embed = new discord.EmbedBuilder()
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
                             .setTitle(`${list.split(",").join(" ")}`)
                             .setAuthor({ name: `${userDataNameGlobal}` })
                             .setThumbnail(AvatarUser)
@@ -1137,11 +1137,11 @@ module.exports = {
                             let avatar = new discord.EmbedBuilder()
 
                                 .setImage(AvatarUser)
-                                .setColor("#6dfef2")
+                                .setColor("#ba68c8")
                             let banner = new discord.EmbedBuilder()
 
                                 .setImage(userBanner)
-                                .setColor("#6dfef2")
+                                .setColor("#ba68c8")
 
                             const permsArray = member.permissions.toArray().map(p => permsObj[p])
 
@@ -1246,7 +1246,7 @@ module.exports = {
 
                             let avatar = new discord.EmbedBuilder()
                                 .setImage(AvatarUser)
-                                .setColor("#6dfef2")
+                                .setColor("#ba68c8")
 
                             const m = await interaction.reply({ embeds: [embed], components: [btnInfo], fetchReply: true })
 
@@ -1372,7 +1372,7 @@ module.exports = {
 
 
                         const embed = new discord.EmbedBuilder()
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
                             // .setTitle(`${list.split(",").join(" ")}`)
                             .setAuthor({ name: `${userDataNameGlobal}` })
                             .setThumbnail(AvatarUser)
@@ -1406,11 +1406,11 @@ module.exports = {
                             let avatar = new discord.EmbedBuilder()
 
                                 .setImage(AvatarUser)
-                                .setColor("#6dfef2")
+                                .setColor("#ba68c8")
                             let banner = new discord.EmbedBuilder()
 
                                 .setImage(userBanner)
-                                .setColor("#6dfef2")
+                                .setColor("#ba68c8")
 
                             const permsArray = member.permissions.toArray().map(p => permsObj[p])
 
@@ -1517,7 +1517,7 @@ module.exports = {
 
                             let avatar = new discord.EmbedBuilder()
                                 .setImage(AvatarUser)
-                                .setColor("#6dfef2")
+                                .setColor("#ba68c8")
 
                             const m = await interaction.reply({
                                 embeds: [embed],

@@ -241,7 +241,7 @@ async function handleMusicButton(interaction, player) {
 
                     const embed = new EmbedBuilder()
                         .setTitle(`Fila de Reprodução - Página ${currentPage + 1}/${pages.length}`)
-                        .setColor("#6dfef2")
+                        .setColor("#ba68c8")
                         .setDescription(formatQueue(pages[currentPage], MAX_TRACKS_PER_PAGE))
                         .setThumbnail(currentTrack.info.thumbnail);
 
@@ -271,7 +271,7 @@ async function handleMusicButton(interaction, player) {
 
                         const newEmbed = new EmbedBuilder()
                             .setTitle(`Fila de Reprodução - Página ${currentPage + 1}/${pages.length}`)
-                            .setColor("#6dfef2")
+                            .setColor("#ba68c8")
                             .setDescription(formatQueue(pages[currentPage], MAX_TRACKS_PER_PAGE))
                             .setThumbnail(currentTrack.info.thumbnail);
 
