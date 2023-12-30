@@ -12,6 +12,8 @@ const {
 
 
 const User = require('../../database/models/economia')
+const canalComandos = require("../../database/models/comandos")
+const idioma = require("../../database/models/language")
 
 module.exports = {
     name: "tranferir",
@@ -28,14 +30,46 @@ module.exports = {
             name: "valor",
             type: ApplicationCommandOptionType.Integer,
             description: "Qual o valor?",
-            required: false
+            required: true
         },
     ],
 
     run: async (client, interaction, args) => {
 
+
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+
+
+        const canalID = await canalComandos.findOne({
+            guildId: interaction.guild.id
+        })
+        if (!canalID) return interaction.reply({
+            content: `${lang.alertCommandos}`,
+            ephemeral: true
+        })
+
+        let canalPermitido = canalID.canal1
+        if (interaction.channel.id !== canalPermitido) {
+            return interaction.reply({
+                content: `${lang.alertCanalErrado} <#${canalPermitido}>.`,
+                ephemeral: true
+            })
+        }
+
+
         const user = interaction.options.getUser("usuario")
         const valor = interaction.options.getInteger("valor")
+
+
+        if (user.id === interaction.user.id) {
+            return interaction.reply({
+                content: `> \`-\` <a:alerta:1163274838111162499> Embora sua simpatia seja apreciada, não é possível efetuar uma transferência para a própria conta.`,
+                ephemeral: true,
+            })
+        }
 
         const member = await User.findOne({
             guildId: interaction.guild.id,
@@ -46,7 +80,7 @@ module.exports = {
         if (!isValidInteger || parseInt(valor) <= 0) {
             return interaction.reply({
                 content: "Você deve fornecer um valor numérico sem **símbolos** ou **caracteres** especial para realizar o pagamento!",
-                ephemeral: false
+                ephemeral: true
             });
         }
 
@@ -60,7 +94,7 @@ module.exports = {
         if (valor < 1 || isNaN(valor) || valor <= 0) {
             return interaction.reply({
                 content: "Você tem que colocar um valor numérico maior que **0** para realizar o depósito!",
-                ephemeral: false
+                ephemeral: true
             });
         }
 
@@ -72,7 +106,7 @@ module.exports = {
         if (!userToPay) {
             return interaction.reply({
                 content: `O usuário que você está tentando pagar não está registrado.`,
-                ephemeral: false
+                ephemeral: true
             })
         }
 
