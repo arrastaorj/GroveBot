@@ -5,7 +5,6 @@ const {
 
 } = require("discord.js")
 
-
 const comandos = require("../../database/models/comandos")
 const idioma = require("../../database/models/language")
 
@@ -65,7 +64,6 @@ module.exports = {
                     { name: `Servidor`, value: `${interaction.guild}`, inline: true },
                     { name: `Usuário`, value: `<@${interaction.user.id}>`, inline: true },
                     { name: `Chave Pix`, value: `${chavePix}`, inline: true },
-
                     { name: `Dica`, value: `Utilize sua chave PIX para efetuar transações de forma simples e rápida entre usuários.` },
                 )
                 .setFooter({
@@ -92,7 +90,6 @@ module.exports = {
                     { name: `Servidor`, value: `${guild}`, inline: true },
                     { name: `Usuário`, value: `<@${query.userId}>`, inline: true },
                     { name: `Chave Pix`, value: `${query.pix}`, inline: true },
-
                     { name: `Dica`, value: `Utilize sua chave PIX para efetuar transações de forma simples e rápida entre usuários.` },
                 )
                 .setFooter({
