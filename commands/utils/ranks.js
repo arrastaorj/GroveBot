@@ -19,7 +19,7 @@ const comandos = require("../../database/models/comandos")
 
 module.exports = {
     name: "rank",
-    description: "teste",
+    description: "Gere um ranking global ou do servidor atual.",
     type: ApplicationCommandType.ChatInput,
     options: [
         {
