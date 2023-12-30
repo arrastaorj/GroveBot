@@ -18,7 +18,7 @@ const language = {
     msg14: "Não foram encontrados resultados para sua consulta.",
     msg15: "Você já resgatou recompensas diárias hoje! Aguarde",
     msg16: "Para resgata novamente.",
-    msg17: "> \`+\` Você regatou **<:dollar_9729309:1178199735799119892>",
+    msg17: "**Você regatou**",
     msg18: "GroveCoins**",
     msg19: "> \`-\` Você não tem tantas moedas na carteira para depositar.",
     msg20: "> \`-\` Insira um número acima de 0.",

@@ -25,6 +25,11 @@ const userSchema = new Schema({
         default: 0,
         required: true,
     },
+    valorDaily: {
+        type: Number,
+        default: 0,
+        required: true,
+    },
 
     lastDaily: {
         type: Number,

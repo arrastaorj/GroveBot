@@ -39,6 +39,7 @@ module.exports = {
             userId: interaction.user.id,
         })
 
+     
         if (!query) {
 
             const novoUsuario = {
@@ -47,6 +48,7 @@ module.exports = {
                 saldo: 0,
                 bank: 0,
                 pix: chavePix,
+                valorDaily: 0,
                 lastDaily: 0,
                 begTimeout: 0,
 
@@ -77,7 +79,7 @@ module.exports = {
             })
 
         } else {
-
+        
             const guild = interaction.client.guilds.cache.get(query.guildId);
 
             const embed = new EmbedBuilder()
