@@ -8,7 +8,7 @@ const User = require("../../database/models/banco")
 
 
 const ms = require("../../plugins/parseMs")
-const comandos = require("../../database/models/comandos")
+const canalComandos = require("../../database/models/comandos")
 const idioma = require("../../database/models/language")
 
 
@@ -26,7 +26,21 @@ module.exports = {
         lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
+        const canalID = await canalComandos.findOne({
+            guildId: interaction.guild.id
+        })
+        if (!canalID) return interaction.reply({
+            content: `${lang.alertCommandos}`,
+            ephemeral: true
+        })
 
+        let canalPermitido = canalID.canal1
+        if (interaction.channel.id !== canalPermitido) {
+            return interaction.reply({
+                content: `${lang.alertCanalErrado} <#${canalPermitido}>.`,
+                ephemeral: true
+            })
+        }
 
         const amount = Math.floor(Math.random() * 10000) + 1000;
 
@@ -64,13 +78,10 @@ module.exports = {
             user.saldo += amount * 1;
             await user.save()
 
-
-
             const embed = new EmbedBuilder()
                 .setColor('#41b2b0')
                 .setTitle(`Recompensa Diário`)
                 .setDescription(`Parabéns! Você acabou de resgatar seu prêmio diário.`)
-                
                 .setFields(
                     {
                         name: `${lang.msg17}`,
@@ -101,6 +112,9 @@ module.exports = {
         } catch (error) {
             console.log(`Error with /daily: ${error}`);
         }
+
+
+
 
     }
 }

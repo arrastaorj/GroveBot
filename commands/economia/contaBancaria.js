@@ -5,7 +5,7 @@ const {
 
 } = require("discord.js")
 
-const comandos = require("../../database/models/comandos")
+const canalComandos = require("../../database/models/comandos")
 const idioma = require("../../database/models/language")
 
 const banco = require("../../database/models/banco")
@@ -32,6 +32,29 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+
+
+        const canalID = await canalComandos.findOne({
+            guildId: interaction.guild.id
+        })
+        if (!canalID) return interaction.reply({
+            content: `${lang.alertCommandos}`,
+            ephemeral: true
+        })
+
+        let canalPermitido = canalID.canal1
+        if (interaction.channel.id !== canalPermitido) {
+            return interaction.reply({
+                content: `${lang.alertCanalErrado} <#${canalPermitido}>.`,
+                ephemeral: true
+            })
+        }
+
         const chavePix = interaction.options.getString("pix")
 
         const query = await banco.findOne({
@@ -39,7 +62,7 @@ module.exports = {
             userId: interaction.user.id,
         })
 
-     
+
         if (!query) {
 
             const novoUsuario = {
@@ -79,7 +102,7 @@ module.exports = {
             })
 
         } else {
-        
+
             const guild = interaction.client.guilds.cache.get(query.guildId);
 
             const embed = new EmbedBuilder()
