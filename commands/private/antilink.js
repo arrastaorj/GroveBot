@@ -105,7 +105,7 @@ module.exports = {
 
                     await interaction.reply({
 
-                        content: `> \`-\` <a:alerta:1163274838111162499> O antilink já está ativado em seu servidor.`,
+                        content: `${lang.AlertaATLAtivo}`,
                         ephemeral: true
                     })
 
@@ -115,7 +115,7 @@ module.exports = {
 
                     await interaction.reply({
 
-                        content: `> \`+\` O Antilink foi ativado em seu servidor. Agora, estou fortalecendo a proteção contra links indesejados para garantir a segurança do seu servidor.`,
+                        content: `${lang.msg420}`,
                         ephemeral: true
                     })
 
@@ -125,7 +125,7 @@ module.exports = {
 
                     await interaction.reply({
 
-                        content: `> \`-\` <a:alerta:1163274838111162499> O antilink já está desativado em seu servidor.`,
+                        content: `${lang.AlertaATLDesativado}`,
                         ephemeral: true
                     })
 
@@ -141,7 +141,7 @@ module.exports = {
 
                     await interaction.reply({
 
-                        content: `> \`+\` O antilink foi desativado em seu servidor.`,
+                        content: `${lang.msg421}`,
                         ephemeral: true
                     })
 
@@ -157,7 +157,7 @@ module.exports = {
                 await guildConfig.save();
 
                 await interaction.reply({
-                    content: `> \`+\` O cargo ${role.name} foi adicionado à lista de cargos permitidos para enviar links.`,
+                    content: `${lang.msg422} ${role.name} ${lang.msg423}`,
                     ephemeral: true
                 })
 
@@ -165,7 +165,7 @@ module.exports = {
 
                 await interaction.reply({
 
-                    content: `> \`-\` <a:alerta:1163274838111162499> O cargo ${role.name} já foi incluído na lista de cargos autorizados para enviar links.`,
+                    content: `${lang.AlertCargoIncludio} ${role.name} ${lang.AlertCargoIncludio2}`,
                     ephemeral: true
                 })
 
@@ -180,15 +180,14 @@ module.exports = {
 
                 await interaction.reply({
 
-                    content: `> \`+\` O cargo ${role.name} foi removido da lista de cargos permitidos para enviar links.`,
+                    content: `${lang.msg422} ${role.name} ${lang.msg424}`,
                     ephemeral: true
                 })
 
             } else {
 
                 await interaction.reply({
-
-                    content: `> \`-\` <a:alerta:1163274838111162499> O cargo ${role.name} não estava na lista de cargos permitidos para enviar links.`,
+                    content: `${lang.AlertCargoNPermitido} ${role.name} ${lang.AlertCargoNPermitido2}`,
                     ephemeral: true
 
                 })

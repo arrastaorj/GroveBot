@@ -37,11 +37,11 @@ module.exports = {
             .addComponents(
                 new ButtonBuilder()
                     .setCustomId('ativar')
-                    .setLabel(`Ativar`)
+                    .setLabel(`${lang.msg427}`)
                     .setStyle(ButtonStyle.Success),
                 new ButtonBuilder()
                     .setCustomId('desativar')
-                    .setLabel(`Desativar`)
+                    .setLabel(`${lang.msg428}`)
                     .setStyle(ButtonStyle.Danger)
                     .setDisabled(true)
             );
@@ -50,28 +50,26 @@ module.exports = {
             .addComponents(
                 new ButtonBuilder()
                     .setCustomId('ativar')
-                    .setLabel(`Ativar`)
+                    .setLabel(`${lang.msg427}`)
                     .setStyle(ButtonStyle.Success)
                     .setDisabled(true),
                 new ButtonBuilder()
                     .setCustomId('desativar')
-                    .setLabel(`Desativar`)
+                    .setLabel(`${lang.msg428}`)
                     .setStyle(ButtonStyle.Danger)
             )
 
-        const corDaMensagem = '#00ff00'
-
         const embed = new EmbedBuilder()
-            .setTitle(`Painel de Configuração de SlowMode`)
+            .setTitle(`${lang.msg429}`)
             .setFields([
                 {
-                    name: `Configurações Disponíveis`,
-                    value: `> Personalize o modo lento do chat ajustando o tempo de espera entre mensagens para controlar a velocidade da conversa.`,
+                    name: `${lang.msg430}`,
+                    value: `${lang.msg431}`,
                 },
             ])
             .setFooter({
                 iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
-                text: `Solicitado por ${interaction.user.username}`,
+                text: `${lang.msg432} ${interaction.user.username}`,
             })
             .setThumbnail(interaction.guild.iconURL({ extension: 'png' }))
             .setTimestamp()
@@ -81,7 +79,7 @@ module.exports = {
 
         const channel = interaction.channel;
 
-        const messageContent = `> \`+\` Acabei de enviar o painel em ${channel}`
+        const messageContent = `${lang.msg433} ${channel}`
 
         const components = channel.rateLimitPerUser === 0 ? [buttons] : [buttons2]
 

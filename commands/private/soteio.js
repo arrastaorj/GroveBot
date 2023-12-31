@@ -166,14 +166,14 @@ module.exports = {
                     .setColor('#41b2b0')
                     .setTimestamp()
                     .addFields(
-                        { name: `Patrocinado por`, value: `${user}` },
-                        { name: `Duração`, value: `<t:${timer}:R>`, inline: true },
-                        { name: `Realizado por`, value: `${member}`, inline: true },
-                        { name: `Ganhadores`, value: `${String(winners)} Sorteado` })
+                        { name: `${lang.msg434}`, value: `${user}` },
+                        { name: `${lang.msg435}`, value: `<t:${timer}:R>`, inline: true },
+                        { name: `${lang.msg436}`, value: `${member}`, inline: true },
+                        { name: `${lang.msg437}`, value: `${String(winners)} ${lang.msg438}` })
                     .setThumbnail(interaction.guild.iconURL({ extension: 'png' }))
                     .setFooter({
                         iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
-                        text: `Solicitado por ${interaction.user.displayName}`,
+                        text: `${lang.msg432} ${interaction.user.displayName}`,
                     })
 
 
@@ -181,12 +181,12 @@ module.exports = {
                     return new ActionRowBuilder().addComponents(
                         new ButtonBuilder()
                             .setCustomId(`GIVEAWAY_ENTER_${giveaway}`)
-                            .setLabel(`Participar (${participants.length})`)
+                            .setLabel(`${lang.msg439} (${participants.length})`)
                             .setEmoji("🎉")
                             .setStyle(ButtonStyle.Secondary),
                         new ButtonBuilder()
                             .setCustomId(`GIVEAWAY_VIEW_PARTICIPANTS`)
-                            .setLabel(`Participantes`)
+                            .setLabel(`${lang.msg440}`)
                             .setEmoji("📃")
                             .setStyle(ButtonStyle.Secondary))
                 }
@@ -201,16 +201,16 @@ module.exports = {
                         message = await channel.send({ embeds: [embedGiveaway], components: [buttonGiveaway(award, giveaway.participants)], fetchReply: true })
                     }
                     if (topic) {
-                        message.startThread({ name: `Sorteio ${award}`, })
+                        message.startThread({ name: `${lang.msg441} ${award}`, })
                     }
                     giveaway.channelId.push(message.channelId);
                     giveaway.messageId.push(message.id);
 
 
-                    await interaction.reply({ content: `Sorteio \`${award}\` iniciado no canal ${channel}.`, ephemeral: true })
+                    await interaction.reply({ content: `${lang.msg441} \`${award}\` ${lang.msg442} ${channel}.`, ephemeral: true })
                 } catch (e) {
                     storage.delete(award);
-                    return await interaction.reply({ content: 'Ocorreu um erro ao enviar o sorteio', ephemeral: true });
+                    return await interaction.reply({ content: `${lang.msg443}`, ephemeral: true });
                 }
 
                 const options = { time: timeMillis, componentType: ComponentType.Button };
@@ -220,16 +220,16 @@ module.exports = {
                     switch (i.customId) {
                         case `GIVEAWAY_ENTER_${award}`: {
                             if (exclusive && !i.member.roles.cache.has(exclusive.id)) {
-                                return await i.reply({ content: `Vocë precisa ter o cargo ${roleMention(exclusive.id)} para participar deste sorteio.`, ephemeral: true });
+                                return await i.reply({ content: `${lang.msg444} ${roleMention(exclusive.id)} ${lang.msg445}`, ephemeral: true });
                             }
                             if (giveaway.participants.includes(i.member.id)) {
                                 giveaway.participants.forEach((p, index) => { if (p === i.member.id) { giveaway.participants.splice(index, 1) } });
                                 await i.update({ components: [buttonGiveaway(award, giveaway.participants)] });
-                                return await i.followUp({ content: 'Você não está mais participando do sorteio.', ephemeral: true });
+                                return await i.followUp({ content: `${lang.msg446}`, ephemeral: true });
                             } else {
                                 giveaway.participants.push(i.member.id);
                                 await i.update({ components: [buttonGiveaway(award, giveaway.participants)] });
-                                return await i.followUp({ content: 'Você agora está participando do sorteio.', ephemeral: true });
+                                return await i.followUp({ content: `${lang.msg447}`, ephemeral: true });
                             }
                         }
                         case 'GIVEAWAY_VIEW_PARTICIPANTS': {
@@ -240,8 +240,8 @@ module.exports = {
                                 if (member) list.push(member.user.tag);
                             })
 
-                            const format = list.length === 0 ? 'Sem participantes.' : list.join(', ');
-                            return i.reply({ content: 'Participantes do sorteio', ephemeral: true, files: [new AttachmentBuilder(Buffer.from(format, 'ascii'), { name: `participantes.txt` })] });
+                            const format = list.length === 0 ? `${lang.msg448}` : list.join(', ');
+                            return i.reply({ content: `${lang.msg449}`, ephemeral: true, files: [new AttachmentBuilder(Buffer.from(format, 'ascii'), { name: `participantes.txt` })] });
                         }
                     }
                 })
@@ -252,8 +252,8 @@ module.exports = {
                         if (winners > giveaway.participants.length) {
 
                             const embed = EmbedBuilder.from(message.embeds[0]);
-                            embed.spliceFields(1, 1, { name: 'Duração', value: `Finalizado <t:${timer}:R>` });
-                            embed.spliceFields(3, 1, { name: 'Vencedor(es)', value: `Participantes insuficientes` });
+                            embed.spliceFields(1, 1, { name: `${lang.msg450}`, value: `${lang.msg451} <t:${timer}:R>` });
+                            embed.spliceFields(3, 1, { name: `${lang.msg452}`, value: `${lang.msg453}` });
 
                             storage.delete(award);
                             await message.edit({ embeds: [embed], components: [] }).catch(() => false);
@@ -265,12 +265,12 @@ module.exports = {
                             const list = getWinners().join(', ');
 
                             const embed = EmbedBuilder.from(message.embeds[0]);
-                            embed.spliceFields(1, 1, { name: 'Duração', value: `Finalizado <t:${timer}:R>` });
-                            embed.spliceFields(3, 1, { name: 'Vencedor(es)', value: `${list}` });
+                            embed.spliceFields(1, 1, { name: `${lang.msg450}`, value: `${lang.msg451} <t:${timer}:R>` });
+                            embed.spliceFields(3, 1, { name: `${lang.msg452}`, value: `${list}` });
 
                             storage.delete(award);
                             await message.edit({ embeds: [embed], components: [] }).catch(() => false);
-                            await channel.send(`> \`+\` Parabéns 🎉 **${list}**, Você e ganhador do sorteio`);
+                            await channel.send(`${lang.msg454} **${list}**, ${lang.msg455}`);
                         }
                     } else if (reason === 'messageDelete') {
                         storage.delete(award);
@@ -294,7 +294,7 @@ module.exports = {
 
                     if (!storage.has(award)) {
 
-                        return await interaction.reply({ content: `Não existe um sorteio com o nome \`${award}\` em andamento.`, ephemeral: true })
+                        return await interaction.reply({ content: `${lang.msg456} \`${award}\` ${lang.msg457}`, ephemeral: true })
 
                     }
 
@@ -302,7 +302,7 @@ module.exports = {
 
 
                     await interaction.guild.channels.fetch(giveaway.channelId[0]).then(async (channel) => await channel.messages.fetch(giveaway.messageId[0]).then((m) => m.delete()).catch(() => false)).catch(() => false)
-                    return await interaction.reply({ content: `Sorteio \`${award}\` finalizado.`, ephemeral: true })
+                    return await interaction.reply({ content: `${lang.msg441} \`${award}\` ${lang.msg451}.`, ephemeral: true })
 
                 } catch {
                     return

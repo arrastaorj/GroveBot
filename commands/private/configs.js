@@ -1113,7 +1113,7 @@ module.exports = {
                     }
 
                     let LogsAddUser = new discord.EmbedBuilder()
-                        .setDescription(`**Canal de musica configurado:** \n\n> \`+\` ${cargoNames}`)
+                        .setDescription(`**${lang.msg425}** \n\n> \`+\` ${cargoNames}`)
                         .setTimestamp()
                         .setColor('13F000')
                         .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -1138,7 +1138,7 @@ module.exports = {
                     }
 
                     let LogsAddUser = new discord.EmbedBuilder()
-                        .setDescription(`**Canal de musica atualizado:** \n\n> \`+\` ${cargoNames}`)
+                        .setDescription(`**${lang.msg426}** \n\n> \`+\` ${cargoNames}`)
                         .setTimestamp()
                         .setColor('13F000')
                         .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
