@@ -10,8 +10,7 @@ const {
     registerFont,
 } = require('canvas')
 
-
-const User = require('../../database/models/economia')
+const banco = require("../../database/models/banco")
 const canalComandos = require("../../database/models/comandos")
 const idioma = require("../../database/models/language")
 
@@ -71,10 +70,13 @@ module.exports = {
             })
         }
 
-        const member = await User.findOne({
+        const member = await banco.findOne({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         })
+
+
+
 
         const isValidInteger = /^\d+$/.test(valor);
         if (!isValidInteger || parseInt(valor) <= 0) {
@@ -98,7 +100,7 @@ module.exports = {
             });
         }
 
-        const userToPay = await User.findOne({
+        const userToPay = await banco.findOne({
             guildId: interaction.guild.id,
             userId: user.id
         })
@@ -110,7 +112,7 @@ module.exports = {
             })
         }
 
-        await User.findOneAndUpdate({
+        await banco.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: user.id
         },
@@ -118,7 +120,7 @@ module.exports = {
                 $inc: { saldo: parseInt(valor) }
             })
 
-        await User.findOneAndUpdate({
+        await banco.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         },

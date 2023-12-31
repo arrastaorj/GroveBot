@@ -13,7 +13,7 @@ const {
 
 const ms = require("../../plugins/parseMs")
 const { createCanvas, loadImage, registerFont } = require('canvas')
-const User = require('../../database/models/economia')
+const banco = require("../../database/models/banco")
 const Explorar = require('../../database/models/explorar')
 const comandos = require("../../database/models/comandos")
 
@@ -64,7 +64,7 @@ module.exports = {
             userId: interaction.user.id,
         }
 
-        let user2 = await User.findOne(query2)
+        let user2 = await banco.findOne(query2)
 
 
 

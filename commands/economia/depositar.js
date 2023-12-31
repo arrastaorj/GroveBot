@@ -2,7 +2,8 @@ const {
     ApplicationCommandOptionType,
 } = require('discord.js')
 const comandos = require("../../database/models/comandos")
-const User = require('../../database/models/economia')
+const banco = require("../../database/models/banco")
+
 const idioma = require("../../database/models/language")
 
 module.exports = {
@@ -49,7 +50,7 @@ module.exports = {
                     userId: interaction.user.id,
                 }
 
-                let data = await User.findOne(query)
+                let data = await banco.findOne(query)
 
                 if (data) {
 

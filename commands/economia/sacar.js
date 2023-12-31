@@ -6,7 +6,8 @@ const {
 
 
 const comandos = require("../../database/models/comandos")
-const User = require('../../database/models/economia')
+const banco = require("../../database/models/banco")
+
 const idioma = require("../../database/models/language")
 
 module.exports = {
@@ -55,7 +56,7 @@ module.exports = {
 
             }
 
-            let data = await User.findOne(query)
+            let data = await banco.findOne(query)
 
             if (data) {
 

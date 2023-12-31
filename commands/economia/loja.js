@@ -7,8 +7,7 @@ const {
 } = require("discord.js")
 
 
-
-const schema = require("../../database/models/economia")
+const banco = require("../../database/models/banco")
 const skin = require("../../database/models/skin")
 const comandos = require("../../database/models/comandos")
 const idioma = require("../../database/models/language")
@@ -255,13 +254,13 @@ module.exports = {
 
 
                     async function buySkin(interaction, user, cost, image, imgField) {
-                        let data = await schema.findOne({
+                        let data = await banco.findOne({
                             guildId: interaction.guild.id,
                             userId: user.id,
                         });
 
                         if (!data) {
-                            data = await schema.create({
+                            data = await banco.create({
                                 guildId: interaction.guild.id,
                                 userId: user.id,
                             });
@@ -406,13 +405,13 @@ module.exports = {
 
 
                     async function buySkin(interaction, user, cost, image, imgField) {
-                        let data = await schema.findOne({
+                        let data = await banco.findOne({
                             guildId: interaction.guild.id,
                             userId: user.id,
                         });
 
                         if (!data) {
-                            data = await schema.create({
+                            data = await banco.create({
                                 guildId: interaction.guild.id,
                                 userId: user.id,
                             });

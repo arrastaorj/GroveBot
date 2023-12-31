@@ -2,14 +2,11 @@ const {
     ApplicationCommandType, EmbedBuilder,
 } = require('discord.js')
 
-
-const User = require("../../database/models/banco")
-
-
-
-const ms = require("../../plugins/parseMs")
+const banco = require("../../database/models/banco")
 const canalComandos = require("../../database/models/comandos")
 const idioma = require("../../database/models/language")
+const ms = require("../../plugins/parseMs")
+
 
 
 module.exports = {
@@ -50,7 +47,7 @@ module.exports = {
                 userId: interaction.user.id,
             };
 
-            let user = await User.findOne(query)
+            let user = await banco.findOne(query)
 
             if (user) {
                 let timeout = 86400000;
@@ -112,9 +109,6 @@ module.exports = {
         } catch (error) {
             console.log(`Error with /daily: ${error}`);
         }
-
-
-
 
     }
 }
