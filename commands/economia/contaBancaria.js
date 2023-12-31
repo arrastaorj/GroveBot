@@ -64,7 +64,7 @@ module.exports = {
         });
 
         if (queryExistente) {
-            return interaction.reply(`> \`-\` <a:alerta:1163274838111162499> Essa chave PIX já está cadastrada. Por favor, escolha outra chave.`)
+            return interaction.reply(`${lang.AlertaChavePix}`)
         }
 
 
@@ -91,18 +91,18 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor('#41b2b0')
-                .setTitle(`Conta bancária`)
-                .setDescription(`Parabéns! Sua conta bancária foi criada com sucesso. Abaixo, você encontrará os detalhes da sua nova conta.`)
+                .setTitle(`${lang.msg402}`)
+                .setDescription(`${lang.msg403}`)
                 .setThumbnail(interaction.user.displayAvatarURL({ extension: 'png' }))
                 .setFields(
-                    { name: `Servidor`, value: `${interaction.guild}`, inline: true },
-                    { name: `Usuário`, value: `<@${interaction.user.id}>`, inline: true },
-                    { name: `Chave Pix`, value: `${chavePix}`, inline: true },
-                    { name: `Dica`, value: `Utilize sua chave PIX para efetuar transações de forma simples e rápida entre usuários.` },
+                    { name: `${lang.msg404}`, value: `${interaction.guild}`, inline: true },
+                    { name: `${lang.msg405}`, value: `<@${interaction.user.id}>`, inline: true },
+                    { name: `${lang.msg406}`, value: `${chavePix}`, inline: true },
+                    { name: `${lang.msg407}`, value: `${lang.msg408}` },
                 )
                 .setFooter({
                     iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
-                    text: `Solicitado por ${interaction.user.displayName}`,
+                    text: `${lang.msg410} ${interaction.user.displayName}`,
                 })
                 .setTimestamp()
 
@@ -116,19 +116,18 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor('#41b2b0')
-                .setTitle(`Conta bancária`)
-                .setDescription(`Você já possui uma conta registrada. A seguir, apresentamos suas informações de conta.`)
+                .setTitle(`${lang.msg402}`)
+                .setDescription(`${lang.msg409}`)
                 .setThumbnail(interaction.user.displayAvatarURL({ extension: 'png' }))
-
                 .setFields(
-                    { name: `Servidor`, value: `${guild}`, inline: true },
-                    { name: `Usuário`, value: `<@${query.userId}>`, inline: true },
-                    { name: `Chave Pix`, value: `${query.pix}`, inline: true },
-                    { name: `Dica`, value: `Utilize sua chave PIX para efetuar transações de forma simples e rápida entre usuários.` },
+                    { name: `${lang.msg404}`, value: `${interaction.guild}`, inline: true },
+                    { name: `${lang.msg405}`, value: `<@${interaction.user.id}>`, inline: true },
+                    { name: `${lang.msg406}`, value: `${chavePix}`, inline: true },
+                    { name: `${lang.msg407}`, value: `${lang.msg408}` },
                 )
                 .setFooter({
                     iconURL: interaction.guild.iconURL({ extension: 'png' }),
-                    text: `Grove Banks`,
+                    text: `${lang.msg411}`,
                 })
                 .setTimestamp()
 

@@ -12,6 +12,8 @@ module.exports = {
     name: 'implorar',
     description: 'Implore por algumas moedas.',
     type: ApplicationCommandType.ChatInput,
+
+
     run: async (client, interaction) => {
 
         let lang = await idioma.findOne({

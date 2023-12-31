@@ -70,7 +70,7 @@ module.exports = {
                 .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId('home')
-                .setLabel(`Página 1/3`)
+                .setLabel(`${lang.msg415} 1/3`)
                 .setDisabled(true)
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
@@ -86,7 +86,7 @@ module.exports = {
                 .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId('home')
-                .setLabel(`Página 3/3`)
+                .setLabel(`${lang.msg415} 3/3`)
                 .setDisabled(true)
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
@@ -103,7 +103,7 @@ module.exports = {
 
             new ButtonBuilder()
                 .setCustomId('home')
-                .setLabel(`Página 2/3`)
+                .setLabel(`${lang.msg415} 2/3`)
                 .setDisabled(true)
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
@@ -127,7 +127,7 @@ module.exports = {
         const comprar11 = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('comprar11')
-                .setLabel('Já Habilitada')
+                .setLabel(`${lang.msg416}`)
                 .setEmoji("<:padlock_5754374:1166904628672213044>")
                 .setDisabled(true)
                 .setStyle(ButtonStyle.Secondary),
@@ -150,7 +150,7 @@ module.exports = {
         const comprar22 = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('comprar22')
-                .setLabel('Já Habilitada')
+                .setLabel(`${lang.msg416}`)
                 .setEmoji("<:padlock_5754374:1166904628672213044>")
                 .setDisabled(true)
                 .setStyle(ButtonStyle.Secondary),
@@ -173,7 +173,7 @@ module.exports = {
         const comprar33 = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('comprar33')
-                .setLabel('Já Habilitada')
+                .setLabel(`${lang.msg416}`)
                 .setEmoji("<:padlock_5754374:1166904628672213044>")
                 .setDisabled(true)
                 .setStyle(ButtonStyle.Secondary),

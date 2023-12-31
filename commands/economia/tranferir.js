@@ -58,7 +58,7 @@ module.exports = {
             })
         }
 
-        
+
         const chavePix = interaction.options.getString("pix")
         const valor = interaction.options.getInteger("valor")
 
@@ -72,21 +72,21 @@ module.exports = {
         const isValidInteger = /^\d+$/.test(valor);
         if (!isValidInteger || parseInt(valor) <= 0) {
             return interaction.reply({
-                content: "Você deve fornecer um valor numérico sem **símbolos** ou **caracteres** especial para realizar o pagamento!",
+                content: `${lang.AlertaNumeroValido}`,
                 ephemeral: true
             });
         }
 
         if (!member || member.saldo < valor) {
             return interaction.reply({
-                content: `> \`-\` Você não tem <:dollar_9729309:1178199735799119892> **${valor.toLocaleString()} GroveCoins** suficiente para realizar o pagamento!`,
+                content: `${lang.AlertaSaldoInsuficiente} **${valor.toLocaleString()} GroveCoins** ${lang.AlertaSaldoInsuficiente2}`,
                 ephemeral: false,
             })
         }
 
         if (valor < 1 || isNaN(valor) || valor <= 0) {
             return interaction.reply({
-                content: "Você tem que colocar um valor numérico maior que **0** para realizar o depósito!",
+                content: `${lang.AlertaMaior0}`,
                 ephemeral: true
             });
         }
@@ -98,7 +98,7 @@ module.exports = {
 
         if (!userToPay) {
             return interaction.reply({
-                content: `O usuário que você está tentando pagar não está registrado.`,
+                content: `${lang.alertaConta}`,
                 ephemeral: true
             })
         }
@@ -185,12 +185,12 @@ module.exports = {
 
         ctx.fillStyle = "white"
         ctx.font = "bold 16px Sans"
-        ctx.fillText(`Você realizou uma transferência de ${valor.toLocaleString()}\nGroveCoins para ${userReceived.displayName}`, 173, 92)
+        ctx.fillText(`${lang.msg417} ${valor.toLocaleString()}\nGroveCoins ${lang.msg418} ${userReceived.displayName}`, 173, 92)
 
         const transCard = new AttachmentBuilder(canvas.toBuffer(), "transCard.png")
 
         return await interaction.editReply({
-            content: `**Notificação:**`,
+            content: `**${lang.msg419}:**`,
             files: [transCard]
         })
 

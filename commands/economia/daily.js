@@ -8,7 +8,6 @@ const idioma = require("../../database/models/language")
 const ms = require("../../plugins/parseMs")
 
 
-
 module.exports = {
     name: 'daily',
     description: 'Colete seus GroveCoins diários',
@@ -65,20 +64,19 @@ module.exports = {
 
             } else {
                 return interaction.reply({
-                    content: `> \`-\` <a:alerta:1163274838111162499> Você ainda não criou sua conta no banco. Utilize </conta bancaria:1190720716195254442> para cadastrar sua chave PIX e gerar sua conta.`,
+                    content: `${lang.AlertaContaBanco}`,
                     ephemeral: false
                 })
 
             }
-
 
             user.saldo += amount * 1;
             await user.save()
 
             const embed = new EmbedBuilder()
                 .setColor('#41b2b0')
-                .setTitle(`Recompensa Diário`)
-                .setDescription(`Parabéns! Você acabou de resgatar seu prêmio diário.`)
+                .setTitle(`${lang.msg412}`)
+                .setDescription(`${lang.msg413}`)
                 .setFields(
                     {
                         name: `${lang.msg17}`,
@@ -86,7 +84,7 @@ module.exports = {
                         inline: true
                     },
                     {
-                        name: `**Último daily**`,
+                        name: `**${lang.msg414}**`,
                         value: `<:dollar_9729309:1178199735799119892> **${user.valorDaily.toLocaleString()} GroveCoins**`,
                         inline: true
                     },
@@ -94,7 +92,7 @@ module.exports = {
                 )
                 .setFooter({
                     iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
-                    text: `Solicitado por ${interaction.user.displayName}`,
+                    text: `${lang.msg410} ${interaction.user.displayName}`,
                 })
                 .setTimestamp()
 
