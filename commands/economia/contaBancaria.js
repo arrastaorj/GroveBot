@@ -58,6 +58,19 @@ module.exports = {
 
         const chavePix = interaction.options.getString("pix")
 
+
+
+        const queryExistente = await banco.findOne({
+            guildId: interaction.guild.id,
+            pix: chavePix,
+        });
+
+        if (queryExistente) {
+            return interaction.reply(`> \`-\` <a:alerta:1163274838111162499> Essa chave PIX já está cadastrada. Por favor, escolha outra chave.`)
+        }
+
+
+
         const query = await banco.findOne({
             guildId: interaction.guild.id,
             userId: interaction.user.id,

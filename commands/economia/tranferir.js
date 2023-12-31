@@ -20,9 +20,9 @@ module.exports = {
     type: ApplicationCommandType.ChatInput,
     options: [
         {
-            name: "usuario",
-            type: ApplicationCommandOptionType.User,
-            description: "Mencione quem você irá pagar.",
+            name: "pix",
+            type: ApplicationCommandOptionType.String,
+            description: "Insira a chave PIX de destino.",
             required: true
         },
         {
@@ -58,24 +58,14 @@ module.exports = {
             })
         }
 
-
-        const user = interaction.options.getUser("usuario")
+        const chavePix = interaction.options.getString("pix")
         const valor = interaction.options.getInteger("valor")
 
-
-        if (user.id === interaction.user.id) {
-            return interaction.reply({
-                content: `> \`-\` <a:alerta:1163274838111162499> Embora sua simpatia seja apreciada, não é possível efetuar uma transferência para a própria conta.`,
-                ephemeral: true,
-            })
-        }
 
         const member = await banco.findOne({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         })
-
-
 
 
         const isValidInteger = /^\d+$/.test(valor);
@@ -102,7 +92,7 @@ module.exports = {
 
         const userToPay = await banco.findOne({
             guildId: interaction.guild.id,
-            userId: user.id
+            pix: chavePix,
         })
 
         if (!userToPay) {
@@ -114,7 +104,7 @@ module.exports = {
 
         await banco.findOneAndUpdate({
             guildId: interaction.guild.id,
-            userId: user.id
+            pix: chavePix,
         },
             {
                 $inc: { saldo: parseInt(valor) }
@@ -127,6 +117,8 @@ module.exports = {
             {
                 $inc: { saldo: -parseInt(valor) }
             })
+
+
 
 
         await interaction.deferReply({ fetchReply: true })
@@ -186,11 +178,15 @@ module.exports = {
         }
 
 
-        await drawRoundedImageWithBorder(ctx, user.displayAvatarURL({ extension: 'png', dynamic: false }), 571, 17, 121, 115, 20, 5, '#00ffa8');
+
+        const userIdReceived = userToPay.userId;
+        const userReceived = await interaction.client.users.fetch(userIdReceived);
+
+        await drawRoundedImageWithBorder(ctx, userReceived.displayAvatarURL({ extension: 'png', dynamic: false }), 571, 17, 121, 115, 20, 5, '#00ffa8');
 
         ctx.fillStyle = "white"
         ctx.font = "bold 16px Sans"
-        ctx.fillText(`Você realizou uma transferência de ${valor.toLocaleString()}\nGroveCoins para ${user.displayName}`, 173, 92)
+        ctx.fillText(`Você realizou uma transferência de ${valor.toLocaleString()}\nGroveCoins para ${userReceived.displayName}`, 173, 92)
 
         const transCard = new AttachmentBuilder(canvas.toBuffer(), "transCard.png")
 
