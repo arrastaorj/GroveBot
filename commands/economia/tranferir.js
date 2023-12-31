@@ -58,6 +58,7 @@ module.exports = {
             })
         }
 
+        
         const chavePix = interaction.options.getString("pix")
         const valor = interaction.options.getInteger("valor")
 
@@ -117,8 +118,6 @@ module.exports = {
             {
                 $inc: { saldo: -parseInt(valor) }
             })
-
-
 
 
         await interaction.deferReply({ fetchReply: true })

@@ -2,9 +2,10 @@ const {
     ApplicationCommandType
 } = require("discord.js")
 const ms = require("ms")
-const comandos = require("../../database/models/comandos")
-const banco = require("../../database/models/banco")
 
+
+const canalComandos = require("../../database/models/comandos")
+const banco = require("../../database/models/banco")
 const idioma = require("../../database/models/language")
 
 module.exports = {
@@ -19,51 +20,49 @@ module.exports = {
         lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
-        const cmd = await comandos.findOne({
+        const canalID = await canalComandos.findOne({
             guildId: interaction.guild.id
         })
+        if (!canalID) return interaction.reply({
+            content: `${lang.alertCommandos}`,
+            ephemeral: true
+        })
 
-        if (!cmd) return interaction.reply({ content: `${lang.alertCommandos}`, ephemeral: true })
+        let canalPermitido = canalID.canal1
+        if (interaction.channel.id !== canalPermitido) {
+            return interaction.reply({
+                content: `${lang.alertCanalErrado} <#${canalPermitido}>.`,
+                ephemeral: true
+            })
+        }
 
 
-        let cmd1 = cmd.canal1
+        let amount = Math.floor(Math.random() * 1000) + 100
 
-        if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
+        const query = {
+            guildId: interaction.guild.id,
+            userId: interaction.user.id,
+        }
 
+        let data = await banco.findOne(query)
 
+        if (data) {
 
+            let timeout = 300000
 
-            let amount = Math.floor(Math.random() * 1000) + 100
+            if (timeout - (Date.now() - data.begTimeout) > 0) {
+                let timeLeft = ms(timeout - (Date.now() - data.begTimeout))
 
-            const query = {
-                guildId: interaction.guild.id,
-                userId: interaction.user.id,
-            }
-
-            let data = await banco.findOne(query)
-
-            if (data) {
-
-                let timeout = 300000
-
-                if (timeout - (Date.now() - data.begTimeout) > 0) {
-                    let timeLeft = ms(timeout - (Date.now() - data.begTimeout))
-
-                    await interaction.reply({
-                        content: `${interaction.user}\n${lang.msg38} **${timeLeft}** ${lang.msg39}`, ephemeral: true
-                    })
-                } else {
-                    data.begTimeout = Date.now()
-                    data.wallet += amount * 1
-                    await data.save()
-                    await interaction.reply({ content: `${interaction.user}\n${lang.msg40} ${amount.toLocaleString()} ${lang.msg41}` })
-                }
-
+                await interaction.reply({
+                    content: `${interaction.user}\n${lang.msg38} **${timeLeft}** ${lang.msg39}`, ephemeral: true
+                })
+            } else {
+                data.begTimeout = Date.now()
+                data.wallet += amount * 1
+                await data.save()
+                await interaction.reply({ content: `${interaction.user}\n${lang.msg40} ${amount.toLocaleString()} ${lang.msg41}` })
             }
 
         }
-        else
-
-            if (interaction.channel.id !== cmd1) { interaction.reply({ content: `${lang.alertCanalErrado} <#${cmd1}>.`, ephemeral: true }) }
     }
 }

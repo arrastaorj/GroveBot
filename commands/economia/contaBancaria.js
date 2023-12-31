@@ -10,7 +10,6 @@ const idioma = require("../../database/models/language")
 const banco = require("../../database/models/banco")
 
 
-
 module.exports = {
     name: 'conta',
     description: 'Crie uma conta no banco Grove',
@@ -59,7 +58,6 @@ module.exports = {
         const chavePix = interaction.options.getString("pix")
 
 
-
         const queryExistente = await banco.findOne({
             guildId: interaction.guild.id,
             pix: chavePix,
@@ -70,12 +68,10 @@ module.exports = {
         }
 
 
-
         const query = await banco.findOne({
             guildId: interaction.guild.id,
             userId: interaction.user.id,
         })
-
 
         if (!query) {
 
@@ -92,7 +88,6 @@ module.exports = {
             }
 
             await banco.create(novoUsuario)
-
 
             const embed = new EmbedBuilder()
                 .setColor('#41b2b0')
