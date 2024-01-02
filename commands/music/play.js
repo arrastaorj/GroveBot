@@ -82,24 +82,34 @@ module.exports = {
                 const track = tracks.shift()
                 track.info.requester = interaction.member
 
+                const sourceName = track.info.sourceName;
+
+                let emoji
+
+                if (sourceName === 'youtube') {
+                    emoji = "https://raw.githubusercontent.com/arrastaorj/flags/main/youtube2.png"
+                } else if (sourceName === 'spotify') {
+                    emoji = "https://raw.githubusercontent.com/arrastaorj/flags/main/spotify.png"
+                }
+
 
                 const PlayList = new EmbedBuilder()
                     .setAuthor({
                         name: `${lang.msgPlaylist}`,
-                        iconURL: track.info.requester.user.displayAvatarURL({ dynamic: true })
+                        iconURL: emoji
                     })
                     .setDescription(`${lang.msg8} **${tracks.length}** ${lang.msg9} **${playlistInfo.name}**`)
                     .setColor("#ba68c8")
                     .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
 
-
                 try {
 
-                    await interaction.editReply({ embeds: [PlayList], fetchReply: true }).then((msg) => {
-                        setTimeout(() => {
-                            msg.delete().catch((e) => null)
-                        }, 10000)
-                    })
+                    await interaction.editReply({ embeds: [PlayList], fetchReply: true })
+                    // .then((msg) => {
+                    //     setTimeout(() => {
+                    //         msg.delete().catch((e) => null)
+                    //     }, 10000)
+                    // })
 
                 } catch {
                     return
@@ -132,41 +142,61 @@ module.exports = {
                 const formattedLength = formatTime(Math.round(musicLength / 1000));
 
 
+                const sourceName = track.info.sourceName;
+
+                let emoji
+
+                if (sourceName === 'youtube') {
+                    emoji = "https://raw.githubusercontent.com/arrastaorj/flags/main/youtube2.png"
+                } else if (sourceName === 'spotify') {
+                    emoji = "https://raw.githubusercontent.com/arrastaorj/flags/main/spotify.png"
+                }
+
+
+                const thumbnailPromise = track.info.thumbnail;
+                const thumbnailLink = await thumbnailPromise;
+
+
 
                 const embed = new EmbedBuilder()
                     .setAuthor({
                         name: `${lang.msg10}`,
-                        iconURL: track.info.requester.user.displayAvatarURL({ dynamic: true })
+                        iconURL: emoji
                     })
-                    .setThumbnail(track.thumbnail)
+                    .setThumbnail(thumbnailLink)
                     .setColor("#ba68c8")
                     .setImage('https://raw.githubusercontent.com/arrastaorj/flags/main/tenor.gif')
-                    .setDescription(`[${track.info.title}](${track.info.uri})`)
+                    .setDescription(`**${lang.msg458}**\n[${track.info.title}](${track.info.uri})`)
                     .addFields([
+
+                        {
+                            name: `${lang.msg13}`,
+                            value: `${formattedLength}`,
+                            inline: false,
+                        },
+                        {
+                            name: `${lang.msg12}`,
+                            value: `${track.info.author}`,
+                            inline: true,
+                        },
+
                         {
                             name: `${lang.msg11}`,
                             value: `<@${track.info.requester.id}>`,
                             inline: true,
                         },
-                        {
-                            name: `${lang.msg12}`,
-                            value: `**${track.info.author}**`,
-                            inline: true,
-                        },
-                        {
-                            name: `${lang.msg13}`,
-                            value: `**${formattedLength}**`,
-                            inline: true,
-                        },
+
+
                     ])
 
                 try {
 
-                    await interaction.editReply({ embeds: [embed], fetchReply: true }).then((msg) => {
-                        setTimeout(() => {
-                            msg.delete().catch((e) => null)
-                        }, 10000)
-                    })
+                    await interaction.editReply({ embeds: [embed], fetchReply: true })
+                    // .then((msg) => {
+                    //     setTimeout(() => {
+                    //         msg.delete().catch((e) => null)
+                    //     }, 10000)
+                    // })
 
                     if (!player.playing && !player.paused) return player.play()
 

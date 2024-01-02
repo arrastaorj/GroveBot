@@ -26,6 +26,7 @@
     "musiccard": "^1.1.7",
     "node-canvas-with-twemoji-and-discord-emoji": "^1.2.1",
     "prodia.js": "^2.1.2",
-    "riffy": "^1.0.3"
+    "riffy": "^1.0.3",
+    "riffy-spotify": "^1.0.0"
   }
 }

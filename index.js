@@ -3,6 +3,7 @@ const { GatewayIntentBits, Partials } = require('discord.js')
 require('dotenv').config()
 
 const client = new discord.Client({
+  fetchAllMembers: true,
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
@@ -38,12 +39,12 @@ connectiondb.start();
 client.login(process.env.tokenGrove)
 
 
-process.on('unhandRejection', (reason, promise) => {
-  console.log(`❗ | [Erro]\n\n` + reason, promise)
-})
-process.on('uncaughtException', (error, origin) => {
-  console.log(`❗ | [Erro]\n\n` + error, origin)
-})
-process.on('uncaughtExceptionMonitor', (error, origin) => {
-  console.log(`❗ | [Erro]\n\n` + error, origin)
-})
+// process.on('unhandRejection', (reason, promise) => {
+//   console.log(`❗ | [Erro]\n\n` + reason, promise)
+// })
+// process.on('uncaughtException', (error, origin) => {
+//   console.log(`❗ | [Erro]\n\n` + error, origin)
+// })
+// process.on('uncaughtExceptionMonitor', (error, origin) => {
+//   console.log(`❗ | [Erro]\n\n` + error, origin)
+// })

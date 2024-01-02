@@ -461,6 +461,8 @@ const language = {
     msg455: "Eres el ganador del sorteo",
     msg456: "No hay un sorteo con el nombre",
     msg457: "en curso.",
+    msg458: "Música",
+
 
     AlertCargoNPermitido: "> \`-\` <a:alerta:1163274838111162499> El rol",
     AlertCargoNPermitido2: "> \`-\` no estaba en la lista de roles permitidos para enviar enlaces.",
