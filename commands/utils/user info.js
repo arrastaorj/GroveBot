@@ -65,7 +65,6 @@ module.exports = {
 
         ])
         const btnVoltar = new discord.ActionRowBuilder().addComponents([
-
             new discord.ButtonBuilder()
                 .setStyle(discord.ButtonStyle.Secondary)
                 .setLabel(`${lang.msg251}`)
@@ -1685,7 +1684,7 @@ module.exports = {
                     },
                 }
 
-            
+
                 const embed = new discord.EmbedBuilder()
                     .setColor("#41b2b0")
                     .setAuthor({ name: `${userInfos.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
