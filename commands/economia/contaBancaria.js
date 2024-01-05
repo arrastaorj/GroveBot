@@ -97,7 +97,7 @@ module.exports = {
                 .setFields(
                     { name: `${lang.msg404}`, value: `${interaction.guild}`, inline: true },
                     { name: `${lang.msg405}`, value: `<@${interaction.user.id}>`, inline: true },
-                    { name: `${lang.msg406}`, value: `${chavePix}`, inline: true },
+                    { name: `${lang.msg406}`, value: `${query.pix}`, inline: true },
                     { name: `${lang.msg407}`, value: `${lang.msg408}` },
                 )
                 .setFooter({
@@ -122,7 +122,7 @@ module.exports = {
                 .setFields(
                     { name: `${lang.msg404}`, value: `${interaction.guild}`, inline: true },
                     { name: `${lang.msg405}`, value: `<@${interaction.user.id}>`, inline: true },
-                    { name: `${lang.msg406}`, value: `${chavePix}`, inline: true },
+                    { name: `${lang.msg406}`, value: `${query.pix}`, inline: true },
                     { name: `${lang.msg407}`, value: `${lang.msg408}` },
                 )
                 .setFooter({

@@ -243,7 +243,7 @@ module.exports = {
                     const embed = new discord.EmbedBuilder()
                         .setColor("#ba68c8")
                         .setTitle(`${list.split(",").join(" ")}`)
-                        .setAuthor({ name: `${userDataNameGlobal}` })
+                        .setAuthor({ name: `${userDataNameGlobal}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                         .setThumbnail(AvatarUser)
                         .setFields(
                             {
@@ -252,7 +252,7 @@ module.exports = {
                                 inline: true
                             },
                             {
-                                name: '<:ID:1185538038617604187> ID',
+                                name: '<:filas:1183481870051201184> ID',
                                 value: `\`\`\`${member.user.id}\`\`\``,
                                 inline: true
                             },
@@ -531,7 +531,7 @@ module.exports = {
                     const embed = new discord.EmbedBuilder()
                         .setColor("#ba68c8")
                         .setTitle(`${list.split(",").join(" ")}`)
-                        .setAuthor({ name: `${userDataNameGlobal}` })
+                        .setAuthor({ name: `${userDataNameGlobal}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                         .setThumbnail(AvatarUser)
                         .setFields(
                             {
@@ -540,7 +540,7 @@ module.exports = {
                                 inline: true
                             },
                             {
-                                name: '<:ID:1185538038617604187> ID',
+                                name: '<:filas:1183481870051201184> ID',
                                 value: `\`\`\`${member.user.id}\`\`\``,
                                 inline: true
                             },
@@ -815,7 +815,7 @@ module.exports = {
                     const embed = new discord.EmbedBuilder()
                         .setColor("#ba68c8")
                         .setTitle(`${list.split(",").join(" ")}`)
-                        .setAuthor({ name: `${userDataNameGlobal}` })
+                        .setAuthor({ name: `${userDataNameGlobal}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                         .setThumbnail(AvatarUser)
                         .setFields(
                             {
@@ -824,7 +824,7 @@ module.exports = {
                                 inline: true
                             },
                             {
-                                name: '<:ID:1185538038617604187> ID',
+                                name: '<:filas:1183481870051201184> ID',
                                 value: `\`\`\`${member.user.id}\`\`\``,
                                 inline: true
                             },
@@ -1105,7 +1105,7 @@ module.exports = {
                         const embed = new discord.EmbedBuilder()
                             .setColor("#ba68c8")
                             .setTitle(`${list.split(",").join(" ")}`)
-                            .setAuthor({ name: `${userDataNameGlobal}` })
+                            .setAuthor({ name: `${userDataNameGlobal}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                             .setThumbnail(AvatarUser)
 
                             .setFields(
@@ -1115,7 +1115,7 @@ module.exports = {
                                     inline: true
                                 },
                                 {
-                                    name: '<:ID:1185538038617604187> ID',
+                                    name: '<:filas:1183481870051201184> ID',
                                     value: `\`\`\`${member.user.id}\`\`\``,
                                     inline: true
                                 },
@@ -1374,7 +1374,7 @@ module.exports = {
                         const embed = new discord.EmbedBuilder()
                             .setColor("#ba68c8")
                             // .setTitle(`${list.split(",").join(" ")}`)
-                            .setAuthor({ name: `${userDataNameGlobal}` })
+                            .setAuthor({ name: `${userDataNameGlobal}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                             .setThumbnail(AvatarUser)
 
                             .setFields(
@@ -1384,7 +1384,7 @@ module.exports = {
                                     inline: true
                                 },
                                 {
-                                    name: '<:ID:1185538038617604187> ID',
+                                    name: '<:filas:1183481870051201184> ID',
                                     value: `\`\`\`${member.user.id}\`\`\``,
                                     inline: true
                                 },
@@ -1587,11 +1587,133 @@ module.exports = {
                 }
             } catch (e) {
 
-                interaction.reply({
-                    content: `${lang.AlertApiUser}`,
-                    ephemeral: true
+
+                const userId = interaction.options.getUser('usuario') || interaction.user
+                const member = interaction.guild.members.cache.get(userId.id)
+
+
+                const createdAt = new Date(member.user.createdTimestamp)
+                const cameinAt = new Date(member.joinedTimestamp)
+
+                const userResponse = await fetch(`https://discord.com/api/v10/users/${userId.id}`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bot ${process.env.tokenGrove}`,
+                        "content-type": "application/json",
+                    },
                 })
 
+                const user = await userResponse.json()
+
+
+                const avatarId = user.avatar
+                const avatarUrl = `https://cdn.discordapp.com/avatars/${userId.id}/${avatarId}.png`
+
+                const bannerData = `https://cdn.discordapp.com/banners/${user.id}/${user.banner}.png`
+                const bannerUrl = bannerData.includes("null") ? "null" : bannerData
+
+
+                const userFlags = user.public_flags
+
+                const premiumTypes = {
+                    0: 'None',
+                    1: 'NitroClassic',
+                    2: 'Nitro',
+                    3: 'NitroBasic'
+                }
+
+                const flags = {
+                    STAFF: 1 << 0,
+                    PARTNER: 1 << 1,
+                    HYPESQUAD: 1 << 2,
+                    BubHunterLevel1: 1 << 3,
+                    HypeSquadOnlineHouse1: 1 << 6,
+                    HypeSquadOnlineHouse2: 1 << 7,
+                    HypeSquadOnlineHouse3: 1 << 8,
+                    PremiumEarlySupporter: 1 << 9,
+                    TeamPseudoUser: 1 << 10,
+                    BubHunterLevel2: 1 << 14,
+                    VerifiedBot: 1 << 16,
+                    VerifiedDeveloper: 1 << 17,
+                    CertifiedModerator: 1 << 18,
+                    BotHttpInteractions: 1 << 19,
+                    ActiveDeveloper: 1 << 22
+                }
+
+                const public_flags = Object.entries(flags)
+                    .reduce((result, [flag, value]) => {
+                        result[flag] = Boolean(userFlags & value)
+                        return result
+                    }, {})
+
+                const premiumTypeValue = premiumTypes[user.premium_type]
+
+                const finalFlagsArray = Object.keys(public_flags)
+                    .filter(flag => public_flags[flag])
+                    .concat(premiumTypeValue !== 'None' ? premiumTypeValue : [])
+
+
+                premiumSince = []
+                const userId22 = userId.id
+                client.guilds.cache.forEach(guild => {
+                    const member = guild.members.cache.get(userId22)
+                    if (member && member.premiumSince) {
+                        premiumSince = new Date(member.premiumSinceTimestamp)
+                        finalFlagsArray.push('Booster')
+                    } else {
+                        return
+                    }
+                })
+
+                const userInfos = {
+                    user: {
+                        id: user.id,
+                        username: user.username,
+                        global_name: user.global_name,
+                        premiumType: premiumTypeValue,
+                        premiumSince: premiumSince,
+                        createdAt: createdAt,
+                        cameinAt: cameinAt,
+                        discriminator: user.discriminator,
+                    },
+                    profile: {
+                        badgesArray: finalFlagsArray,
+                        avatarUrl: avatarUrl,
+                        bannerUrl: bannerUrl,
+                        bannerColor: user.banner_color,
+                        avatar_decoration: user.avatar_decoration_data,
+                    },
+                }
+
+            
+                const embed = new discord.EmbedBuilder()
+                    .setColor("#41b2b0")
+                    .setAuthor({ name: `${userInfos.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
+                    .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
+                    .setFields(
+                        {
+                            name: '<:crvt:1179217380715544668> Tag',
+                            value: `\`\`\`${userInfos.user.username}\`\`\``,
+                            inline: true
+                        },
+                        {
+                            name: '<:filas:1183481870051201184> ID',
+                            value: `\`\`\`${userInfos.user.id}\`\`\``,
+                            inline: true
+                        },
+                        {
+                            name: '<:crvt:1179215960754896977> Data de criação da conta',
+                            value: `<t:${~~Math.ceil(userInfos.user.createdAt / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
+                            inline: false
+                        },
+                        {
+                            name: '<:crvt:1179215962839453817> Entrou em',
+                            value: `<t:${~~(userInfos.user.cameinAt / 1000)}:f> (<t:${~~(userInfos.user.cameinAt / 1000)}:R>)`,
+                            inline: false
+                        }
+                    )
+
+                await interaction.reply({ embeds: [embed], fetchReply: true })
 
             }
         }
