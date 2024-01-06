@@ -42,6 +42,14 @@ function getBadgeEmoji(badge) {
             return '<:supportscommands:1178827914603659336>';
         case 'ApplicationAutoModerationRuleCreateBadge':
             return '<:automod:1178827907095875604>';
+        case 'Hypesquad':
+            return '<:hypesquadevents:1193268727970549851>';
+        case 'BugHunterLevel1':
+            return '<:BugHunterLevel1:1193268762577731696>';
+        case 'BugHunterLevel2':
+            return '<:BugHunterLevel2:1193268813295255672>';
+        case 'BugHunterLevel3':
+            return '<:BugHunterLevel3:1193268971693166683>';
         default:
             return '';
     }
@@ -69,6 +77,10 @@ function formatBadge(badge) {
         'VerifiedBot': '<:VerifiedBot:1178828214039236668>',
         'ApplicationCommandBadge': '<:supportscommands:1178827914603659336>',
         'ApplicationAutoModerationRuleCreateBadge': '<:automod:1178827907095875604>',
+        'Hypesquad': "<:hypesquadevents:1193268727970549851>",
+        'BugHunterLevel1': "<:BugHunterLevel1:1193268762577731696>",
+        'BugHunterLevel2': "<:BugHunterLevel2:1193268813295255672>",
+        'BugHunterLevel3': "<:BugHunterLevel3:1193268971693166683>",
     };
 
     return badgeEmojis[badge] || '';

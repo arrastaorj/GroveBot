@@ -42,10 +42,10 @@ client.on("messageCreate", async (message) => {
                 //     .setURL("https://akaneweb.netlify.app/")
                 //     .setStyle(ButtonStyle.Link),
 
-                // new ButtonBuilder()
-                //     .setLabel("Top.gg")
-                //     .setURL("https://top.gg/bot/1025398453112684654/vote")
-                //     .setStyle(ButtonStyle.Link),
+                new ButtonBuilder()
+                    .setLabel("Top.gg")
+                    .setURL("https://top.gg/bot/1053482665942196224/vote")
+                    .setStyle(ButtonStyle.Link),
 
                 new ButtonBuilder()
                     .setLabel("Suporte")

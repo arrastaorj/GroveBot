@@ -100,8 +100,14 @@ module.exports = {
 
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
 
-            let membro = interaction.options.getUser('usuario') || interaction.user
-            let user = interaction.guild.members.cache.get(membro.id)
+            const membro = interaction.options.getUser('usuario') || interaction.user
+
+
+            const userInGuild = interaction.guild.members.cache.has(membro.id)
+            if (!userInGuild) return interaction.reply({ content: `> \`-\` <a:alerta:1163274838111162499> Usuário não encontrado no servidor.`, ephemeral: false })
+
+
+            const user = interaction.guild.members.cache.get(membro.id)
             const member = interaction.guild.members.cache.get(user.id)
 
 
