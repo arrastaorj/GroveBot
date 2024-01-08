@@ -21,8 +21,18 @@ module.exports = {
                 {
                     name: 'action',
                     description: 'Ativar ou desativar o Antilink.',
-                    type: ApplicationCommandOptionType.Boolean,
+                    type: ApplicationCommandOptionType.String,
                     required: true,
+                    choices: [
+                        {
+                            name: 'Ativar',
+                            value: 'ativar',
+                        },
+                        {
+                            name: 'Desativar',
+                            value: 'desativar',
+                        },
+                    ],
                 },
             ],
         },
@@ -98,37 +108,30 @@ module.exports = {
 
         const subcommand = interaction.options.getSubcommand();
 
+
+
         if (subcommand === 'status') {
-            const action = interaction.options.getBoolean('action');
-            if (action) {
+            const action = interaction.options.getString('action');
+            if (action === 'ativar') {
                 if (guildConfig.antilinkEnabled) {
-
                     await interaction.reply({
-
                         content: `${lang.AlertaATLAtivo}`,
                         ephemeral: true
-                    })
-
+                    });
                 } else {
-                    guildConfig.antilinkEnabled = true
-                    await guildConfig.save()
-
+                    guildConfig.antilinkEnabled = true;
+                    await guildConfig.save();
                     await interaction.reply({
-
                         content: `${lang.msg420}`,
                         ephemeral: true
-                    })
-
+                    });
                 }
-            } else {
+            } else if (action === 'desativar') {
                 if (!guildConfig.antilinkEnabled) {
-
                     await interaction.reply({
-
                         content: `${lang.AlertaATLDesativado}`,
                         ephemeral: true
-                    })
-
+                    });
                 } else {
                     guildConfig.antilinkEnabled = false;
                     await guildConfig.save();
@@ -136,17 +139,16 @@ module.exports = {
                     if (!guildConfig.antilinkEnabled) {
                         await GuildConfig.findOneAndDelete({
                             guildId,
-                        })
+                        });
                     }
 
                     await interaction.reply({
-
                         content: `${lang.msg421}`,
                         ephemeral: true
-                    })
-
+                    });
                 }
             }
+
         } else if (subcommand === 'addrole') {
 
             const role = interaction.options.getRole('role');
