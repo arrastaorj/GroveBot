@@ -99,7 +99,7 @@ module.exports = {
         interaction.reply({
             embeds: [embedEmpty],
             components: buttonCreator,
-            ephemeral: true
+            ephemeral: false
         })
 
 

@@ -77,6 +77,8 @@ client.on('messageDelete', async (message) => {
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {
 
+try {
+
 
     const guildConfig = await GuildConfig.findOne({
         guildId: oldMessage.guild.id
@@ -126,6 +128,9 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
             await logChannel.send({ embeds: [embed] })
         }
     }
+} catch {
+    return
+}
 })
 
 client.on("channelCreate", async (channel) => {
