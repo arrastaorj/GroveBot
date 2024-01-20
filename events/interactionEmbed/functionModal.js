@@ -2,7 +2,7 @@ const client = require('../../index')
 const discord = require("discord.js")
 const { ModalBuilder, roleMention, ActionRowBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder, codeBlock, ChannelSelectMenuBuilder, ButtonBuilder, ButtonStyle, RoleSelectMenuBuilder } = require("discord.js");
 const { isHex, isImage, isLink } = require("./functionsManager");
-const { buttonCreator } = require("../../commands/private/embed");
+const { buttonCreator } = require("../../commands/administração/embed");
 const idioma = require("../../database/models/language")
 
 client.on("interactionCreate", async (interaction) => {

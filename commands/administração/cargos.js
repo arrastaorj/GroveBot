@@ -287,7 +287,7 @@ module.exports = {
 
         await interaction.reply({
 
-            content: `> \`-\` <a:alerta:1163274838111162499> ${interaction.user},\n\n**dropdownRoles**, ${lang.msg77}\n\n**${lang.msg78}** ${chat}\n**Logs:** ${logs}`,
+            content: `> \`-\` <a:alerta:1163274838111162499> ${interaction.user},\n\n**SelectMenu**, ${lang.msg77}\n\n**${lang.msg78}** ${chat}\n**Logs:** ${logs}`,
             ephemeral: true,
 
         })

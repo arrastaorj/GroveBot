@@ -54,7 +54,6 @@ module.exports = {
                 return interaction.reply({ content: `${lang.msg401}`, ephemeral: true });
             }
 
-
             if (!interaction.member.voice.channelId) {
                 return interaction.reply({ content: `${lang.AlertCanaldeVoz}`, ephemeral: true });
             }

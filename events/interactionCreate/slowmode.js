@@ -15,7 +15,7 @@ const {
 const idioma = require("../../database/models/language")
 
 
-const { menssagemID } = require("../../commands/private/slowmode")
+const { menssagemID } = require("../../commands/moderação/slowmode.js")
 
 client.on("interactionCreate", async (interaction) => {
 
