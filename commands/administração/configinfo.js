@@ -1,6 +1,7 @@
 const {
     ApplicationCommandType,
     ApplicationCommandOptionType,
+    PermissionFlagsBits,
     EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
@@ -31,6 +32,19 @@ module.exports = {
 
     run: async (client, interaction) => {
 
+
+        let lang = await idioma.findOne({
+            guildId: interaction.guild.id
+        })
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+
+
+        //Verificação para somente quem tiver permição usar o comando
+        if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
+            return interaction.reply({
+                content: `${lang.alertNaoTemPermissão}`,
+                ephemeral: true
+            })
 
         let subcommands = interaction.options.getSubcommand()
 
