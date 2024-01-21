@@ -4,6 +4,7 @@ const cargos = new db.Schema({
     guildId: { type: String, required: true },
     msgID: { type: String },
     logsId: { type: String },
+    Img: { type: String },
     cargo1Id: { type: String },
     cargo2Id: { type: String },
     cargo3Id: { type: String },

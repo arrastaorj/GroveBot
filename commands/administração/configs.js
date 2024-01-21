@@ -88,7 +88,7 @@ module.exports = {
             options: [
                 {
                     name: "imagem",
-                    type: discord.ApplicationCommandOptionType.Attachment,
+                    type: discord.ApplicationCommandOptionType.String,
                     description: "Anexe uma imagem valida. (PNG/JPEG)",
                     required: true
                 },
@@ -540,7 +540,12 @@ module.exports = {
                     return interaction.reply({ content: lang.alertPermissãoBot, ephemeral: true })
                 }
 
-                const cmd1 = interaction.options.getAttachment('imagem')
+                const cmd1 = interaction.options.getString('imagem')
+
+                if (cmd1 && !/\.(png|jpeg)$/i.test(cmd1)) {
+                    return interaction.reply({ content: 'O link da imagem deve terminar com .png ou .jpeg.\nExemplo: https://i.imgur.com/lCmmOZD.jpeg', ephemeral: true })
+                }
+
 
                 const user = await fbv.findOne({
                     guildId: interaction.guild.id
@@ -551,7 +556,7 @@ module.exports = {
                         guildId: interaction.guild.id,
                     }
                     if (cmd1) {
-                        newCmd.canal1 = cmd1.url
+                        newCmd.canal1 = cmd1
                     }
 
                     await fbv.create(newCmd)
@@ -564,7 +569,7 @@ module.exports = {
 
                     let LogsAddUser = new discord.EmbedBuilder()
                         .setDescription(`**${lang.msg88}** \n\n> \`+\` ${lang.msg89} **${cmd1.name}** \n\n > \`+\` ${lang.msg90} **${cmd1.height}** \n\n > \`+\` ${lang.msg91} **${cmd1.width}**`)
-                        .setImage(cmd1.url)
+                        .setImage(cmd1)
                         .setTimestamp()
                         .setColor('13F000')
                         .setFooter({ text: `${interaction.member.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
@@ -579,7 +584,7 @@ module.exports = {
                     } else {
                         await fbv.findOneAndUpdate({
                             guildId: interaction.guild.id
-                        }, { $set: { "canal1": cmd1.url } })
+                        }, { $set: { "canal1": cmd1 } })
                     }
 
                     let cargoNames = []

@@ -41,17 +41,25 @@ module.exports = {
         let cmd1 = cmd.canal1
 
         if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
+
             await interaction.deferReply()
 
+            try {
 
 
+                const userId = interaction.options.getUser("user").id || interaction.user
+                const bufferImg = await profileImage(userId)
+                const imgAttachment = new AttachmentBuilder(bufferImg, { name: "profile.png" });
 
+                interaction.editReply({ files: [imgAttachment] })
 
-            const userId = interaction.options.getUser("user").id || interaction.user
-            const bufferImg = await profileImage(userId)
-            const imgAttachment = new AttachmentBuilder(bufferImg, { name: "profile.png" });
+            } catch {
 
-            interaction.editReply({ files: [imgAttachment] })
+                interaction.followUp({
+                    content: `> \`-\` <a:alerta:1163274838111162499> Ocorreu um erro inesperado. Tente novamente mais tarde`,
+                    ephemeral: true
+                })
+            }
         }
         else if (interaction.channel.id !== cmd1) {
             interaction.reply({

@@ -34,6 +34,7 @@ module.exports = {
             description: "Adicione uma descrição",
             required: true
         },
+
         {
             name: "cargo1",
             type: discord.ApplicationCommandOptionType.Role,
@@ -46,12 +47,20 @@ module.exports = {
             description: "Mencione o cargo ou cole o ID",
             required: true
         },
+
+        {
+            name: "cor",
+            type: discord.ApplicationCommandOptionType.String,
+            description: "Cor da embed em hexadecimal",
+            required: false
+        },
         {
             name: "imagem",
-            type: discord.ApplicationCommandOptionType.Attachment,
+            type: discord.ApplicationCommandOptionType.String,
             description: "Anexe uma imagem PNG/JPEG/GIF/WEBP",
             required: false
         },
+
         {
             name: "cargo3",
             type: discord.ApplicationCommandOptionType.Role,
@@ -134,8 +143,27 @@ module.exports = {
 
 
         const descrição = interaction.options.getString("descricao")
-        const imagem = interaction.options.getAttachment("imagem")
 
+        const cor = interaction.options.getString("cor")
+
+        function isValidHexColor(str) {
+            const hexColorRegex = /^#[0-9A-Fa-f]{6}$/;
+            return hexColorRegex.test(str);
+        }
+
+        if (cor && !isValidHexColor(cor)) {
+            return interaction.reply({ content: 'Formato de cor inválido. Forneça um código de cor hexadecimal válido\nExemplo: #42f2f5', ephemeral: true });
+        }
+
+
+        const imagem = interaction.options.getString("imagem")
+
+        if (imagem && !/\.(png|jpeg|gif)$/i.test(imagem)) {
+            return interaction.reply({
+                content: 'O link da imagem deve terminar com **.png**, **.jpeg** ou **.gif**\nExemplo: https://i.imgur.com/lCmmOZD.jpeg',
+                ephemeral: true
+            });
+        }
 
         const cargo1 = options.getRole("cargo1")
         const cargo2 = options.getRole("cargo2")
@@ -187,15 +215,18 @@ module.exports = {
         }
 
 
-        const embed = new discord.EmbedBuilder();
+        const embed = new discord.EmbedBuilder()
+
         if (descrição) {
-            embed.setDescription(`${descrição}`);
+            embed.setDescription(`${descrição}`)
         }
         if (imagem) {
-            embed.setImage(`${imagem.url}`);
+            embed.setImage(`${imagem}`)
         }
 
-
+        if (cor) {
+            embed.setColor(`${cor}`)
+        }
 
         const stringSelectMenu = new discord.StringSelectMenuBuilder()
             .setCustomId('select2')
@@ -245,7 +276,8 @@ module.exports = {
                 const newCargo = {
                     guildId: interaction.guild.id,
                     msgID: sentMessage.id,
-                    logsId: logs.id
+                    logsId: logs.id,
+                    Img: imagem
                 };
 
                 for (let i = 0; i < cargoNames.length; i++) {
@@ -271,7 +303,8 @@ module.exports = {
                 const newCargo = {
                     guildId: interaction.guild.id,
                     msgID: sentMessage.id,
-                    logsId: logs.id
+                    logsId: logs.id,
+                    Img: imagem
                 };
 
                 for (let i = 0; i < cargoNames.length; i++) {
