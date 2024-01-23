@@ -19,6 +19,7 @@ client.on("interactionCreate", async (interaction) => {
     const modal = interaction.fields
 
 
+
     switch (interaction.customId) {
         case 'CREATOR_SET_TITLE':
             const embedTitle = EmbedBuilder.from(interaction.message.embeds[0])
@@ -309,6 +310,91 @@ client.on("interactionCreate", async (interaction) => {
             break
 
 
+        case 'limpa':
+
+            const embedEmpty = new discord.EmbedBuilder()
+                .setTitle(`${lang.msg141}`)
+                .setDescription(`${lang.msg142}`)
+
+            const buttonCreator = [
+                new discord.ActionRowBuilder().addComponents(
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_SET_TITLE')
+                        .setLabel(`${lang.msg379}`)
+                        .setStyle(discord.ButtonStyle.Secondary)
+                        .setEmoji(`🗨`),
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_SET_DESCRIPTION')
+                        .setLabel(`${lang.msg380}`)
+                        .setStyle(discord.ButtonStyle.Secondary)
+                        .setEmoji(`📃`),
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_SET_COLOR')
+                        .setLabel(`${lang.msg381}`)
+                        .setStyle(discord.ButtonStyle.Secondary)
+                        .setEmoji(`🧪`),
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_SET_IMAGE')
+                        .setLabel(`${lang.msg382}`)
+                        .setStyle(discord.ButtonStyle.Secondary)
+                        .setEmoji(`🖼`),
+                ),
+                new discord.ActionRowBuilder().addComponents(
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_SET_THUMBNAIL')
+                        .setLabel(`${lang.msg383}`)
+                        .setStyle(discord.ButtonStyle.Secondary)
+                        .setEmoji(`🖼`),
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_SET_AUTHOR')
+                        .setLabel(`${lang.msg384}`)
+                        .setStyle(discord.ButtonStyle.Secondary)
+                        .setEmoji(`🧒`),
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_SET_FOOTER')
+                        .setLabel(`${lang.msg385}`)
+                        .setStyle(discord.ButtonStyle.Secondary)
+                        .setEmoji(`📝`),
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_MENTION_ROLE')
+                        .setLabel(`${lang.msg386}`)
+                        .setStyle(discord.ButtonStyle.Secondary)
+                        .setEmoji(`📢`)
+                ),
+                new discord.ActionRowBuilder().addComponents(
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_IMPORT_JSON')
+                        .setLabel(`${lang.msg387}`)
+                        .setStyle(discord.ButtonStyle.Primary)
+                        .setEmoji(`⬇`),
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_EXPORT_JSON')
+                        .setLabel(`${lang.msg388}`)
+                        .setStyle(discord.ButtonStyle.Primary)
+                        .setEmoji(`⬆`),
+                    new discord.ButtonBuilder()
+                        .setCustomId('CREATOR_SEND')
+                        .setLabel(`${lang.msg389}`)
+                        .setStyle(discord.ButtonStyle.Success)
+                        .setEmoji(`📤`),
+                    new discord.ButtonBuilder()
+                        .setCustomId('limpa')
+                        .setLabel(`Limpar embed`)
+                        .setEmoji("🧹")
+                        .setStyle(discord.ButtonStyle.Danger)
+                )
+            ]
+
+
+            await interaction.update({
+                content: "",
+                embeds: [embedEmpty],
+                components: buttonCreator
+            })
+
+            break
+
+
         case 'CREATOR_BACK': {
 
             const buttonCreator = [
@@ -372,9 +458,13 @@ client.on("interactionCreate", async (interaction) => {
                         .setLabel(`${lang.msg389}`)
                         .setStyle(discord.ButtonStyle.Success)
                         .setEmoji(`📤`),
+                    new discord.ButtonBuilder()
+                        .setCustomId('limpa')
+                        .setLabel(`Limpar embed`)
+                        .setEmoji("🧹")
+                        .setStyle(discord.ButtonStyle.Danger)
                 )
             ]
-
 
             const message = interaction.message
 

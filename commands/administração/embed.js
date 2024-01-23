@@ -93,6 +93,12 @@ module.exports = {
                     .setLabel(`${lang.msg153}`)
                     .setStyle(discord.ButtonStyle.Success)
                     .setEmoji(`📤`),
+                new discord.ButtonBuilder()
+                    .setCustomId('limpa')
+                    .setLabel(`Limpar embed`)
+                    .setEmoji("🧹")
+                    .setStyle(discord.ButtonStyle.Danger)
+
             )
         ]
 
