@@ -22,4 +22,5 @@ client.on(`ready`, async () => {
   client.user.setStatus('online')
 
   console.log("[Bot-Status]".bgBlue, `> Estou online como: ${client.user.username}`.blue)
+
 })
