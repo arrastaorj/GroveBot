@@ -16,7 +16,7 @@ client.riffy = new Riffy.Riffy(client, nodes, {
     const guild = client.guilds.cache.get(payload.d.guild_id)
     if (guild) guild.shard.send(payload)
   },
-  defaultSearchPlatform: "ytsearch",
+  defaultSearchPlatform: "ytmsearch",
   restVersion: "v4",
   plugins: [spotify]
 });
