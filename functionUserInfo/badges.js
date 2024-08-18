@@ -60,8 +60,12 @@ function getFormattedBadge(badge) {
 }
 
 function hasBadge(badgesArrayUser, badge) {
-    return badgesArrayUser.includes(badge)
+    if (!badgesArrayUser || badgesArrayUser.length === 0) {
+        return false; // Retorna falso se o array de insígnias do usuário estiver vazio ou não existir
+    }
+    return badgesArrayUser.includes(badge);
 }
+
 
 
 function formatBadge(badge) {
