@@ -24,7 +24,7 @@ function getTwitchAccessToken() {
     })
         .then(response => {
             twitchAccessToken = response.data.access_token;
-            console.log('Token de acesso da Twitch obtido com sucesso');
+            // console.log('Token de acesso da Twitch obtido com sucesso');
         })
         .catch(error => {
             console.error('Erro ao obter o token de acesso da Twitch:', error.response.data);
@@ -88,7 +88,7 @@ function checkIfStreamerIsLive(streamerUsername, guildId, notificationChannelId)
             if (streamData && streamData.type === 'live') {
                 // Verifica se já foi notificado neste servidor
                 if (!notifications[guildId]?.includes(streamerUsername)) {
-                    console.log(`${streamerUsername} está ao vivo no servidor ${guildId}! 🎥`);
+                    //console.log(`${streamerUsername} está ao vivo no servidor ${guildId}! 🎥`);
 
                     // Obtendo informações adicionais do streamer e do jogo
                     Promise.all([getStreamerInfo(streamData.user_id), getGameInfo(streamData.game_id)])
@@ -120,7 +120,7 @@ function checkIfStreamerIsLive(streamerUsername, guildId, notificationChannelId)
                         });
                 }
             } else {
-                console.log(`${streamerUsername} não está ao vivo no servidor ${guildId}.`);
+                //console.log(`${streamerUsername} não está ao vivo no servidor ${guildId}.`);
                 // Remove o streamer da lista de notificados quando ele sair do ar
                 if (notifications[guildId]) {
                     notifications[guildId] = notifications[guildId].filter(username => username !== streamerUsername);
