@@ -79,7 +79,13 @@ module.exports = {
                     name: "membro",
                     type: ApplicationCommandOptionType.User,
                     description: "Selecione o membro do Discord que faz live.",
-                    required: true // Torna este campo obrigatório
+                    required: true 
+                },
+                {
+                    name: "cargo",
+                    type: ApplicationCommandOptionType.Role,
+                    description: "Selecione o cargo que será atribuído quando o membro estiver ao vivo.",
+                    required: false
                 },
             ],
         },
@@ -106,9 +112,12 @@ module.exports = {
             });
         }
 
-        const canal = interaction.options.getChannel('canal');
-        const usuario = interaction.options.getString('usuario').toLowerCase(); // Normaliza para minúsculas
-        const membro = interaction.options.getUser('membro');
+        const canal = interaction.options.getChannel('canal')
+        const usuario = interaction.options.getString('usuario').toLowerCase()
+        const membro = interaction.options.getUser('membro')
+        const cargoEmLive = interaction.options.getRole('cargo')
+
+
 
         // Obtenha o token de acesso da Twitch (se ainda não estiver disponível)
         if (!twitchAccessToken) {
@@ -142,10 +151,18 @@ module.exports = {
                     { name: 'Membro do Discord', value: `<@${membro.id}>`, inline: true }
                 );
 
+
+                if (cargoEmLive) {
+                    embed.addFields({ name: 'Cargo "EM LIVE"', value: `<@&${cargoEmLive.id}>`, inline: true });
+                }
+
+                
+
             if (stremerConfig) {
                 // Atualiza a configuração existente
                 stremerConfig.canal1 = canal.id;
                 stremerConfig.discordMemberId = membro.id; // Atualiza o ID do membro
+                if (cargoEmLive) stremerConfig.cargoEmLive = cargoEmLive.id;
                 await stremerConfig.save();
                 embed.setDescription(`Configuração atualizada para o streamer **${usuario}**.`);
             } else {
@@ -154,7 +171,8 @@ module.exports = {
                     guildId: interaction.guild.id,
                     stremer: usuario,
                     canal1: canal.id,
-                    discordMemberId: membro.id // Salva o ID do membro
+                    discordMemberId: membro.id, // Salva o ID do membro
+                    cargoEmLive: cargoEmLive ? cargoEmLive.id : null
                 });
                 await stremerConfig.save();
                 embed.setDescription(`Streamer **${usuario}** cadastrado com sucesso!`);

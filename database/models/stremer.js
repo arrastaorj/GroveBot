@@ -5,6 +5,7 @@ const stremerSchema = new Schema({
     stremer: { type: String, required: true },
     discordMemberId: { type: String, required: true },
     canal1: { type: String, required: true },
-});
+    cargoEmLive: { type: String, required: false },
+})
 
 module.exports = model('Stremer', stremerSchema);

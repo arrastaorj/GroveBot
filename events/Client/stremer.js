@@ -71,66 +71,88 @@ function getGameInfo(gameId) {
         });
 }
 
-// Função para verificar se o streamer está ao vivo
-function checkIfStreamerIsLive(streamerUsername, guildId, notificationChannelId) {
-    return axios.get(`https://api.twitch.tv/helix/streams`, {
-        headers: {
-            'Client-ID': twitchClientId,
-            'Authorization': `Bearer ${twitchAccessToken}`
-        },
-        params: {
-            user_login: streamerUsername
-        }
-    })
-        .then(response => {
-            const streamData = response.data.data[0];
+async function checkIfStreamerIsLive(streamerUsername, guildId, notificationChannelId) {
+    try {
+        const response = await axios.get(`https://api.twitch.tv/helix/streams`, {
+            headers: {
+                'Client-ID': twitchClientId,
+                'Authorization': `Bearer ${twitchAccessToken}`
+            },
+            params: {
+                user_login: streamerUsername
+            }
+        });
 
-            if (streamData && streamData.type === 'live') {
-                // Verifica se já foi notificado neste servidor
-                if (!notifications[guildId]?.includes(streamerUsername)) {
-                    //console.log(`${streamerUsername} está ao vivo no servidor ${guildId}! 🎥`);
+        const streamData = response.data.data[0];
 
-                    // Obtendo informações adicionais do streamer e do jogo
-                    Promise.all([getStreamerInfo(streamData.user_id), getGameInfo(streamData.game_id)])
-                        .then(([streamerInfo, gameInfo]) => {
-                            if (streamerInfo && gameInfo) {
-                                const profileImageUrl = streamerInfo.profile_image_url;
-                                const gameImageUrl = gameInfo.box_art_url.replace('{width}x{height}', '1280x1080'); // Ajustar tamanho da imagem do jogo
+        // Obtém as informações do streamer no banco de dados
+        const stremerConfig = await Stremer.findOne({ guildId, stremer: streamerUsername });
 
-                                const playList = new EmbedBuilder()
-                                    .setColor('#9146FF')
-                                    .setTitle(`${streamerUsername} está ao vivo! 🎥`)
-                                    .setURL(`https://www.twitch.tv/${streamerUsername}`)
-                                    .setThumbnail(profileImageUrl) // Imagem do perfil do streamer
-                                    .addFields(
-                                        { name: 'Título da Live', value: streamData.title || 'Título ainda não disponível', inline: true },
-                                    )
-                                    .setImage(gameImageUrl) // Imagem do jogo
-                                    .setTimestamp()
-                                    .setFooter({ text: 'Assista na Twitch', iconURL: `${profileImageUrl}` });
+        if (streamData && streamData.type === 'live') {
+            // Verifica se já foi notificado neste servidor
+            if (!notifications[guildId]?.includes(streamerUsername)) {
+                // Obtendo informações adicionais do streamer e do jogo
+                const [streamerInfo, gameInfo] = await Promise.all([
+                    getStreamerInfo(streamData.user_id),
+                    getGameInfo(streamData.game_id)
+                ]);
 
-                                sendNotification(notificationChannelId, { embeds: [playList] });
+                if (streamerInfo && gameInfo) {
+                    const profileImageUrl = streamerInfo.profile_image_url;
+                    const gameImageUrl = gameInfo.box_art_url.replace('{width}x{height}', '1280x1080'); // Ajustar tamanho da imagem do jogo
 
-                                // Adiciona o streamer à lista de notificados para este servidor
-                                if (!notifications[guildId]) {
-                                    notifications[guildId] = [];
-                                }
-                                notifications[guildId].push(streamerUsername);
-                            }
-                        });
-                }
-            } else {
-                //console.log(`${streamerUsername} não está ao vivo no servidor ${guildId}.`);
-                // Remove o streamer da lista de notificados quando ele sair do ar
-                if (notifications[guildId]) {
-                    notifications[guildId] = notifications[guildId].filter(username => username !== streamerUsername);
+                    const embed = new EmbedBuilder()
+                        .setColor('#9146FF')
+                        .setTitle(`${streamerUsername} está ao vivo! 🎥`)
+                        .setURL(`https://www.twitch.tv/${streamerUsername}`)
+                        .setThumbnail(profileImageUrl) // Imagem do perfil do streamer
+                        .addFields(
+                            { name: 'Título da Live', value: streamData.title || 'Título ainda não disponível', inline: true },
+                        )
+                        .setImage(gameImageUrl) // Imagem do jogo
+                        .setTimestamp()
+                        .setFooter({ text: 'Assista na Twitch', iconURL: `${profileImageUrl}` });
+
+
+                    sendNotification(notificationChannelId, {
+                        content: `<@${stremerConfig.discordMemberId}> está ao vivo!`, // Marca o usuário do Discord
+                        embeds: [embed]
+                    });
+
+                    // Adiciona o streamer à lista de notificados para este servidor
+                    if (!notifications[guildId]) {
+                        notifications[guildId] = [];
+                    }
+                    notifications[guildId].push(streamerUsername);
+
+                    // Adiciona o cargo "EM LIVE" ao membro do Discord
+                    const guild = client.guilds.cache.get(guildId);
+                    const member = guild.members.cache.get(stremerConfig.discordMemberId);
+                    const role = guild.roles.cache.get(stremerConfig.cargoEmLive);
+                    if (member && role) {
+                        await member.roles.add(role);
+                    }
                 }
             }
-        })
-        .catch(error => {
-            console.error('Erro ao verificar se o streamer está ao vivo:', error.response.data);
-        });
+        } else {
+            // Remove o streamer da lista de notificados quando ele sair do ar
+            if (notifications[guildId]) {
+                notifications[guildId] = notifications[guildId].filter(username => username !== streamerUsername);
+            }
+
+            // Remove o cargo "EM LIVE" do membro do Discord
+            const guild = client.guilds.cache.get(guildId);
+            const member = guild.members.cache.get(stremerConfig.discordMemberId);
+            const role = guild.roles.cache.get(stremerConfig.cargoEmLive);
+            if (member && role) {
+                await member.roles.remove(role);
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao verificar se o streamer está ao vivo:', error.response ? error.response.data : error.message);
+    }
 }
+
 
 // Função para enviar a notificação para o canal especificado
 function sendNotification(channelId, message) {
@@ -154,7 +176,7 @@ function startLiveCheck() {
             streamers.forEach((stremer) => {
                 checkIfStreamerIsLive(stremer.stremer, stremer.guildId, stremer.canal1);
             });
-        }, 120000); // 10000ms = 10 segundos
+        }, 10000); // 10000ms = 10 segundos
     });
 }
 
