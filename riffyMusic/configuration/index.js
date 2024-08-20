@@ -5,26 +5,12 @@ module.exports = {
     nodes: [
         {
 
-            host: "node.raidenbot.xyz",
-            port: 5501,
-            name: 'LavaLink 1',
-            password: "pwd",
-            secure: false
+            host: "lavagrove.squareweb.app",
+            port: 443,
+            name: 'GroveLavaLink',
+            password: "7856",
+            secure: true
 
         },
     ]
 }
-
-
-// host: "groveserver.discloud.app",
-// port: 443,
-// name: 'GroveLavaLink',
-// password: "7856",
-// secure: true
-
-
-// host: "node.raidenbot.xyz",
-// port: 5501,
-// name: 'LavaLink 1',
-// password: "pwd",
-// secure: false

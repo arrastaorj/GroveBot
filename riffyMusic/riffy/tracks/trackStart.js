@@ -1,7 +1,11 @@
 const { AttachmentBuilder } = require("discord.js")
 const client = require("../../../index")
 const { playRow, playRow2, disconnectRow, disconnectRow2 } = require("../buttons/musicButtons")
-const { musicCard } = require("musiccard");
+//const musicCard = require("../../build/class");
+
+const { ClassicPro } = require("musicard")
+
+
 
 
 const activeMessages = new Map()
@@ -20,19 +24,30 @@ client.riffy.on('trackStart', async (player, track) => {
     const musicLength = track.info.length
     const formattedLength = formatTime(Math.round(musicLength / 1000))
 
+    const card = await ClassicPro({
+        name: `${track.info.title}`,
+        author: `${track.info.author}`,
+        setColor: "auto",
+        thumbnailImage: `${track.info.thumbnail}`,
+        progress: "10",
+        startTime: "00:00",
+        endTime: `${formattedLength}`
+    })
+    // const card = new musicCard()
+    //     .setName(track.info.title)
+    //     .setAuthor(track.info.author)
+    //     .setColor("auto")
+    //     .setThumbnail(track.info.thumbnail)
+    //     .setProgress(10)
+    //     .setStartTime("00:00")
+    //     .setEndTime(formattedLength)
 
-    const card = new musicCard()
-        .setName(track.info.title)
-        .setAuthor(track.info.author)
-        .setColor("auto")
-        .setThumbnail(track.info.thumbnail)
-        .setProgress(10)
-        .setStartTime("00:00")
-        .setEndTime(formattedLength)
+
+    const attachment = new AttachmentBuilder(card, { name: "profile.png" });
 
 
-    const buffer = await card.build()
-    const attachment = new AttachmentBuilder(buffer, { name: `musicard.png` })
+    //const buffer = await card.build()
+    //const attachment = new AttachmentBuilder(buffer, { name: `musicard.png` })
 
 
     playedTracks.push(track)
