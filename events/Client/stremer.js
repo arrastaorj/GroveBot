@@ -72,6 +72,7 @@ function getGameInfo(gameId) {
 }
 
 async function checkIfStreamerIsLive(streamerUsername, guildId, notificationChannelId) {
+    
     try {
         const response = await axios.get(`https://api.twitch.tv/helix/streams`, {
             headers: {
@@ -149,7 +150,7 @@ async function checkIfStreamerIsLive(streamerUsername, guildId, notificationChan
             }
         }
     } catch (error) {
-        console.error('Erro ao verificar se o streamer está ao vivo:', error.response ? error.response.data : error.message);
+       // console.error('Erro ao verificar se o streamer está ao vivo:', error.response ? error.response.data : error.message);
     }
 }
 
@@ -176,7 +177,7 @@ function startLiveCheck() {
             streamers.forEach((stremer) => {
                 checkIfStreamerIsLive(stremer.stremer, stremer.guildId, stremer.canal1);
             });
-        }, 10000); // 10000ms = 10 segundos
+        }, 120000); // 10000ms = 10 segundos
     });
 }
 

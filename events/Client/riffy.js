@@ -25,4 +25,3 @@ client.riffy = new Riffy.Riffy(client, nodes, {
 (async () => {
   await loadRiffy()
 })()
-
