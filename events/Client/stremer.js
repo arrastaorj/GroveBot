@@ -72,7 +72,7 @@ function getGameInfo(gameId) {
 }
 
 async function checkIfStreamerIsLive(streamerUsername, guildId, notificationChannelId) {
-    
+
     try {
         const response = await axios.get(`https://api.twitch.tv/helix/streams`, {
             headers: {
@@ -150,7 +150,7 @@ async function checkIfStreamerIsLive(streamerUsername, guildId, notificationChan
             }
         }
     } catch (error) {
-       // console.error('Erro ao verificar se o streamer está ao vivo:', error.response ? error.response.data : error.message);
+        // console.error('Erro ao verificar se o streamer está ao vivo:', error.response ? error.response.data : error.message);
     }
 }
 
