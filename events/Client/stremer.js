@@ -1,6 +1,6 @@
 const client = require("../../index");
 const axios = require('axios');
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const Stremer = require('../../database/models/stremer'); // Importando o modelo do MongoDB
 
 // Credenciais da Twitch
@@ -99,8 +99,19 @@ async function checkIfStreamerIsLive(streamerUsername, guildId, notificationChan
                 ]);
 
                 if (streamerInfo && gameInfo) {
+
+
+                    const liveButton = new ButtonBuilder()
+                        .setLabel('Assistir na Twitch')
+                        .setStyle(ButtonStyle.Link)
+                        .setURL(`https://www.twitch.tv/${streamerUsername}`);
+
+                    const row = new ActionRowBuilder()
+                        .addComponents(liveButton);
+
+
                     const profileImageUrl = streamerInfo.profile_image_url;
-                    const gameImageUrl = gameInfo.box_art_url.replace('{width}x{height}', '1280x1080'); // Ajustar tamanho da imagem do jogo
+                    const gameImageUrl = gameInfo.box_art_url.replace(/-\{width\}x\{height\}/, "");
 
                     const embed = new EmbedBuilder()
                         .setColor('#9146FF')
@@ -117,7 +128,8 @@ async function checkIfStreamerIsLive(streamerUsername, guildId, notificationChan
 
                     sendNotification(notificationChannelId, {
                         content: `<@${stremerConfig.discordMemberId}> está ao vivo!`, // Marca o usuário do Discord
-                        embeds: [embed]
+                        embeds: [embed],
+                        components: [row]
                     });
 
                     // Adiciona o streamer à lista de notificados para este servidor
@@ -177,7 +189,7 @@ function startLiveCheck() {
             streamers.forEach((stremer) => {
                 checkIfStreamerIsLive(stremer.stremer, stremer.guildId, stremer.canal1);
             });
-        }, 120000); // 10000ms = 10 segundos
+        }, 120000); // 120000 = 10 segundos
     });
 }
 

@@ -2,9 +2,16 @@ const discord = require("discord.js")
 const idioma = require("../../database/models/language")
 
 module.exports = {
-    name: 'anunciar',
-    description: 'Crie um anúncio utilizando um formato de incorporação personalizável',
+    name: 'embed',
+    description: 'Abra um painel interativo para criar sua embed personalizada.',
     type: discord.ApplicationCommandType.ChatInput,
+    options: [
+        {
+            name: "criar",
+            type: discord.ApplicationCommandOptionType.Subcommand,
+            description: "Abra um painel interativo para criar sua embed personalizada.",
+        }
+    ],
 
 
     run: async (client, interaction) => {
@@ -105,7 +112,7 @@ module.exports = {
         interaction.reply({
             embeds: [embedEmpty],
             components: buttonCreator,
-            ephemeral: false
+            ephemeral: true
         })
 
 
