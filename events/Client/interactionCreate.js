@@ -1,6 +1,5 @@
 const client = require("../../index")
 const Discord = require("discord.js")
-const bot = require('../../bot.json')
 
 client.on(`interactionCreate`, async (interaction) => {
 
@@ -29,7 +28,6 @@ client.on(`interactionCreate`, async (interaction) => {
 
     const e1 = new Discord.EmbedBuilder()
       .setDescription(`Não foi possível realizar este comando.`)
-      .setColor(bot.config.color)
 
     interaction.reply({ embeds: [e1] })
 

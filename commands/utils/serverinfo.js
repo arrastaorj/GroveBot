@@ -1,5 +1,4 @@
 const discord = require("discord.js")
-const bot = require("../../bot.json")
 const comandos = require("../../database/models/comandos")
 const idioma = require("../../database/models/language")
 
