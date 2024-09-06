@@ -4,22 +4,6 @@ const GuildConfig = require('../../database/models/auditlogs');
 const { EmbedBuilder } = require('discord.js');
 
 
-// const guildConfig = await GuildConfig.findOne({
-//     guildId: oldMessage.guild.id
-// })
-
-// if (!guildConfig) return
-
-// if (guildConfig.auditlogs) {
-
-//     const logChannel = client.channels.cache.get(guildConfig.canal);
-
-//     if (logChannel) {
-
-//     }
-// }
-
-
 client.on('messageDelete', async (message) => {
 
     const guildConfig = await GuildConfig.findOne({
@@ -77,60 +61,60 @@ client.on('messageDelete', async (message) => {
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {
 
-try {
+    try {
 
 
-    const guildConfig = await GuildConfig.findOne({
-        guildId: oldMessage.guild.id
-    })
+        const guildConfig = await GuildConfig.findOne({
+            guildId: oldMessage.guild.id
+        })
 
-    if (!guildConfig) return
+        if (!guildConfig) return
 
-    if (guildConfig.auditlogs) {
+        if (guildConfig.auditlogs) {
 
-        const logChannel = client.channels.cache.get(guildConfig.canal);
+            const logChannel = client.channels.cache.get(guildConfig.canal);
 
-        if (logChannel) {
+            if (logChannel) {
 
-            const embed = new EmbedBuilder()
-                .setTitle('Menssagem Editada')
-                .setColor("#03f7ff")
-                .setTimestamp()
-                .setThumbnail(oldMessage.guild.iconURL({ extension: 'png' }))
-                .addFields(
-                    {
-                        name: `👤 Usuário`,
-                        value: `${newMessage.author}`,
-                        inline: true,
-                    },
-                    {
-                        name: `📝 Canal`,
-                        value: `${newMessage.channel}`,
-                        inline: true,
-                    },
-                    {
-                        name: `🗯️ Mensagem Antiga`,
-                        value: `${oldMessage.content}`,
-                    },
-                    {
-                        name: `💭 Mensagem Nova`,
-                        value: `${newMessage.content}`,
-                    },
-                    {
-                        name: `📅 Data/Hora`,
-                        value: `<t:${~~Math.ceil(oldMessage.createdTimestamp / 1000)}> (<t:${~~(oldMessage.createdTimestamp / 1000)}:R>)`,
-                    },
-                )
+                const embed = new EmbedBuilder()
+                    .setTitle('Menssagem Editada')
+                    .setColor("#03f7ff")
+                    .setTimestamp()
+                    .setThumbnail(oldMessage.guild.iconURL({ extension: 'png' }))
+                    .addFields(
+                        {
+                            name: `👤 Usuário`,
+                            value: `${newMessage.author}`,
+                            inline: true,
+                        },
+                        {
+                            name: `📝 Canal`,
+                            value: `${newMessage.channel}`,
+                            inline: true,
+                        },
+                        {
+                            name: `🗯️ Mensagem Antiga`,
+                            value: `${oldMessage.content}`,
+                        },
+                        {
+                            name: `💭 Mensagem Nova`,
+                            value: `${newMessage.content}`,
+                        },
+                        {
+                            name: `📅 Data/Hora`,
+                            value: `<t:${~~Math.ceil(oldMessage.createdTimestamp / 1000)}> (<t:${~~(oldMessage.createdTimestamp / 1000)}:R>)`,
+                        },
+                    )
 
-            if (oldMessage.attachments.size > 0 && !oldMessage.content) {
-                embed.setImage(oldMessage.attachments.first().url);
+                if (oldMessage.attachments.size > 0 && !oldMessage.content) {
+                    embed.setImage(oldMessage.attachments.first().url);
+                }
+                await logChannel.send({ embeds: [embed] })
             }
-            await logChannel.send({ embeds: [embed] })
         }
+    } catch {
+        return
     }
-} catch {
-    return
-}
 })
 
 client.on("channelCreate", async (channel) => {
@@ -345,260 +329,447 @@ client.on("channelUpdate", async (oldChannel, newChannel) => {
 
 })
 
+client.on("guildChannelPermissionsUpdate", async (channel, oldPermissions, newPermissions) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: channel.guild.id
+    });
 
+    if (!guildConfig || !guildConfig.auditlogs) return;
 
-// client.on("guildChannelPermissionsUpdate", (channel, oldPermissions, newPermissions) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **${channel} - (\`${channel.id}\`) Permissões do Canal Atualizadas!**`)
-//         .setColor("#ff0000")
-//     log({ embeds: [embed] })
-// })
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
 
-// client.on("guildChannelTopicUpdate", (channel, oldTopic, newTopic) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **${channel} - (\`${channel.id}\`) Tópico do Canal Atualizado!**`)
-//         .setColor("#ff0000");
-//     log({ embeds: [embed] });
-// })
+    const embed = new EmbedBuilder()
+        .setTitle('🔒 **Permissões Atualizadas no Canal**')
+        .setDescription(`> As permissões do canal ${channel} (\`${channel.id}\`) foram atualizadas.`)
+        .setColor("#ff0000")
+        .setTimestamp()
+        .setThumbnail(channel.guild.iconURL({ extension: 'png' }));
 
+    logChannel.send({ embeds: [embed] });
+});
 
-// // { CINCO } - EMOJIS
-// client.on("emojiCreate", (emoji) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **Novo Emoji Criado!**\n\n> **Emoji; ${emoji}**\n> **ID do Emoji; ${emoji.id}**\n> **URL do Emoji; [Clique aqui](${emoji.url})**`)
-//         .setColor("#ff0000")
-//         .setThumbnail(`${emoji.url}`);
-//     log({ embeds: [embed] });
-// })
+client.on("guildChannelTopicUpdate", async (channel, oldTopic, newTopic) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: channel.guild.id
+    });
 
-// client.on("emojiDelete", (emoji) => {
-//     let embed = new EmbedBuilder()
-//         .Description(`> **Um Emoji foi Deletado!**\n\n> **Emoji; ${emoji.name}**\n> **ID do Emoji; ${emoji.id}**\n> **URL do Emoji; [Clique aqui](${emoji.url})**`)
-//         .setColor("#ff0000")
-//         .setThumbnail(`${emoji.url}`);
-//     log({ embeds: [embed] });
-// })
+    if (!guildConfig || !guildConfig.auditlogs) return;
 
-// client.on("emojiUpdate", (oldEmoji, newEmoji) => {
-//     if (oldEmoji.name !== newEmoji.name) {
-//         let embed = new EmbedBuilder()
-//             .setDescription(`> **Nome do Emoji ${oldEmoji} Atualizado!**\n\n> **Nome Antigo; ${oldEmoji.name}**\n> **Novo Nome; ${newEmoji.name}**\n> **URL do Emoji; [Clique aqui](${newEmoji.url})**`)
-//             .setColor("#ff0000")
-//             .setThumbnail(`${newEmoji.url}`);
-//         log({ embeds: [embed] });
-//     }
-// })
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
 
+    const embed = new EmbedBuilder()
+        .setTitle('📝 **Tópico do Canal Atualizado**')
+        .setDescription(`> O tópico do canal ${channel} (\`${channel.id}\`) foi atualizado.`)
+        .setColor("#ff0000")
+        .setTimestamp()
+        .setThumbnail(channel.guild.iconURL({ extension: 'png' }))
+        .addFields(
+            { name: '📖 **Tópico Antigo**', value: oldTopic || 'Nenhum', inline: true },
+            { name: '📘 **Novo Tópico**', value: newTopic || 'Nenhum', inline: true }
+        );
 
-// // { BEŞ } - GUILD & GUILDMEMBERS
-// client.on("guildMemberRoleAdd", (member, role) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **${member} (\`${member.id}\`) recebeu a função ${role} (\`${role.id}\`)!**`)
-//         .setColor("#37393f")
-//     log({ embeds: [embed] })
-// })
+    logChannel.send({ embeds: [embed] });
+});
 
-// client.on("guildMemberRoleRemove", (member, role) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **${member} (\`${member.id}\`) perdeu a função ${role} (\`${role.id}\`)!**`)
-//         .setColor("#37393f")
-//     log({ embeds: [embed] })
-// })
+client.on("emojiCreate", async (emoji) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: emoji.guild.id
+    });
 
-// client.on("guildMemberNicknameUpdate", (member, oldNickname, newNickname) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> O nome de **${member.user.tag}** no servidor foi atualizado!\n\n> **Nome antigo; \`${oldNickname == null ? member.user.username : oldNickname}\`**\n> **Novo nome; \`${newNickname == null ? member.user.username : newNickname}\`**`)
-//         .setColor("#37393f")
-//         .setThumbnail(`${member.user.avatarURL({ dynamic: true })}`)
-//     log({ embeds: [embed] })
-// })
+    if (!guildConfig || !guildConfig.auditlogs) return;
 
-// client.on("guildBannerAdd", (guild, bannerURL) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> Um banner foi adicionado ao servidor!\n\n> **URL do banner;** [Clique aqui](${bannerURL})`)
-//         .setImage(`${bannerURL}`)
-//         .setColor("#37393f")
-//         .setThumbnail(`${guild.iconURL({ dynamic: true })}`)
-//     log({ embeds: [embed] })
-// })
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
 
-// client.on("guildMemberEntered", (member) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **${member} - ${member.user.tag} entrou pelo portão do servidor!**`)
-//         .setColor("#37393f")
-//     log({ embeds: [embed] })
-// })
+    const embed = new EmbedBuilder()
+        .setTitle('😀 **Emoji Criado**')
+        .setDescription(`> **Emoji:** ${emoji}\n> **ID:** ${emoji.id}\n> **URL:** [Clique aqui](${emoji.url})`)
+        .setColor("#5dff05")
+        .setThumbnail(emoji.url)
+        .setTimestamp();
 
-// client.on("guildMemberBoost", (member) => {
-//     let embed = new EmbedBuilder()
-//         .Description(`> **${member} - ${member.user.tag} usou reforço no servidor!**`)
-//         .setColor("#00ff00")
-//     log({ embeds: [embed] })
-// })
+    logChannel.send({ embeds: [embed] });
+});
 
-// client.on("guildMemberUnboost", (member) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **${member} - ${member.user.tag} - O usuário removeu seu reforço no servidor!**`)
-//         .setColor("#ff0000")
-//     log({ embeds: [embed] })
-// })
+client.on("emojiDelete", async (emoji) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: emoji.guild.id
+    });
 
-// client.on("guildBoostLevelUp", (guild, oldLevel, newLevel) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **O nível de reforço do servidor agora é ${newLevel}!**`)
-//         .setColor("#00ff00")
-//     log({ embeds: [embed] })
-// })
+    if (!guildConfig || !guildConfig.auditlogs) return;
 
-// client.on("guildBoostLevelDown", (guild, oldLevel, newLevel) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **O nível de reforço do servidor agora é ${newLevel}!**`)
-//         .setColor("#ff0000")
-//     log({ embeds: [embed] })
-// })
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
 
-// client.on("guildAfkChannelAdd", (guild, afkChannel) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **Um canal AFK foi adicionado ao servidor!**\n\n> **Canal; ${afkChannel}**`)
-//         .setColor("#37393f")
-//         .setThumbnail(`${guild.iconURL({ dynamic: true })}`)
-//     log({ embeds: [embed] })
-// })
+    const embed = new EmbedBuilder()
+        .setTitle('😢 **Emoji Deletado**')
+        .setDescription(`> **Nome:** ${emoji.name}\n> **ID:** ${emoji.id}\n> **URL:** [Clique aqui](${emoji.url})`)
+        .setColor("#ff0000")
+        .setThumbnail(emoji.url)
+        .setTimestamp();
 
-// client.on("guildVanityURLAdd", (guild, vanityURL) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **Um URL personalizado foi adquirido para o servidor!**\n\n> **URL; ${vanityURL}**`)
-//         .setColor("#00ff00")
-//         .setThumbnail(`${guild.iconURL({ dynamic: true })}`)
-//     log({ embeds: [embed] })
-// })
+    logChannel.send({ embeds: [embed] });
+});
 
-// client.on("guildVanityURLRemove", (guild, vanityURL) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **O URL personalizado do servidor foi removido!**\n\n> **URL; ${vanityURL}**`)
-//         .setColor("#ff0000")
-//         .setThumbnail(`${guild.iconURL({ dynamic: true })}`)
-//     log({ embeds: [embed] })
-// })
+client.on("guildMemberRoleAdd", async (member, role) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: member.guild.id
+    });
 
-// client.on("guildVanityURLUpdate", (guild, oldVanityURL, newVanityURL) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **O URL personalizado do servidor foi alterado!**\n\n> **URL antigo; ${oldVanityURL}**\n> **Novo URL; ${newVanityURL}**`)
-//         .setColor("#ff0000")
-//         .setThumbnail(`${guild.iconURL({ dynamic: true })}`)
-//     log({ embeds: [embed] })
-// })
+    if (!guildConfig || !guildConfig.auditlogs) return;
 
-// client.on("guildFeaturesUpdate", (oldGuild, newGuild) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **Foram feitas atualizações no servidor!**\n\n> **Configurações antigas; ${oldGuild.features.join(", ")}**\n> **Novas configurações; ${newGuild.features.join(", ")}**`)
-//         .setColor("#ff0000")
-//         .setThumbnail(`${newGuild.iconURL({ dynamic: true })}`)
-//     log({ embeds: [embed] })
-// })
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
 
-// client.on("guildOwnerUpdate", (oldGuild, newGuild) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **A propriedade do servidor foi transferida!**\n\n> **Antigo proprietário; ${oldGuild.owner}**\n> **Novo proprietário; ${newGuild.owner}**`)
-//         .setColor("#ff0000")
-//         .setThumbnail(`${newGuild.iconURL({ dynamic: true })}`)
-//     log({ embeds: [embed] })
-// })
+    const embed = new EmbedBuilder()
+        .setTitle('🎖️ **Função Adicionada**')
+        .setDescription(`> **Usuário:** ${member} (\`${member.id}\`)\n> **Função Recebida:** ${role} (\`${role.id}\`)`)
+        .setColor("#37393f")
+        .setTimestamp();
 
-// client.on("guildPartnerAdd", (guild) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **O servidor tornou-se um parceiro do Discord!**`)
-//         .setColor("#00ff00")
-//     log({ embeds: [embed] })
-// })
-
-// client.on("guildPartnerRemove", (guild) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **A parceria do servidor com o Discord foi encerrada!**`)
-//         .setColor("#ff0000")
-//     log({ embeds: [embed] })
-// })
-
-// client.on("guildVerificationAdd", (guild) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **O servidor foi verificado!**`)
-//         .setColor("#00ff00")
-//     log({ embeds: [embed] })
-// })
-
-// client.on("guildVerificationRemove", (guild) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **O servidor já não está verificado!**`)
-//         .setColor("#ff0000")
-//     log({ embeds: [embed] })
-// })
-
-// client.on("unhandledGuildUpdate", (oldGuild, newGuild) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **Foram feitas atualizações no servidor, mas a ação específica não pôde ser detectada!**`)
-//         .setColor("#ff0000")
-//         .setThumbnail(`${newGuild.iconURL({ dynamic: true })}`)
-//     log({ embeds: [embed] })
-// })
-
-
-// client.on("messagePinned", (message) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **Uma nova mensagem foi fixada!**\n\n> **Autor da mensagem; ${message.author}**\n> **Conteúdo da mensagem; ${message.content}**\n> **URL da mensagem; [Clique aqui](${message.url})**`)
-//         .setColor("#37393f")
-//         .setThumbnail(`${message.member.user.avatarURL({ dynamic: true })}`)
-//     log({ embeds: [embed] })
-// })
+    logChannel.send({ embeds: [embed] });
+});
 
 
 
-// client.on("rolePermissionsUpdate", (role, oldPermissions, newPermissions) => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **${role} - (\`${role.id}\`) As permissões da função foram atualizadas!**`)
-//         .setColor("#ff0000")
-//     log({ embeds: [embed] })
-// })
 
 
-// client.on("roleUpdate", (oldRole, newRole) => {
-//     if (oldRole.name !== newRole.name) {
-//         let embed = new EmbedBuilder()
-//             .setDescription(`> **O nome da função ${oldRole} foi atualizado!**\n\n> **Nome antigo: ${oldRole.name}**\n> **Novo nome: ${newRole.name}**`)
-//             .setColor("#ff0000");
-//         log({ embeds: [embed] });
-//     } else if (oldRole.position !== newRole.position) {
-//         let embed = new EmbedBuilder()
-//             .setDescription(`> **A posição da função ${oldRole} foi atualizada!**\n\n> **Posição antiga: ${oldRole.position}**\n> **Nova posição: ${newRole.position}**`)
-//             .setColor("#ff0000");
-//         log({ embeds: [embed] });
-//     } else if (oldRole.hexColor !== newRole.hexColor) {
-//         let embed = new EmbedBuilder()
-//             .setDescription(`> **A cor da função ${oldRole} foi atualizada!**\n\n> **Cor antiga: ${oldRole.hexColor}**\n> **Nova cor: ${newRole.hexColor}**`)
-//             .setColor("#ff0000");
-//         log({ embeds: [embed] });
-//     } else if (oldRole.icon !== newRole.icon) {
-//         let embed = new EmbedBuilder()
-//             .setDescription(`> **O ícone da função ${oldRole} foi atualizado!**\n\n> **Ícone antigo: [Clique aqui!](${oldRole.iconURL})**\n> **Novo ícone: [Clique aqui!](${newRole.iconURL})**`)
-//             .setColor("#ff0000");
-//         log({ embeds: [embed] });
-//     } else {
-//         let embed = new EmbedBuilder()
-//             .setDescription(`> **Foram feitas alterações na função ${oldRole}, mas a natureza das alterações não pôde ser detectada!**`)
-//             .setColor("#ff0000");
-//         log({ embeds: [embed] });
-//     }
-// })
 
-// client.on("roleCreate", role => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **Uma nova função foi criada!**\n\n> **Função: ${role}**\n> **ID da função: ${role.id}**`)
-//         .setColor("#ff0000");
-//     log({ embeds: [embed] });
-// })
 
-// client.on("roleDelete", role => {
-//     let embed = new EmbedBuilder()
-//         .setDescription(`> **Uma função foi excluída!**\n\n> **Função: ${role.name}**\n> **ID da função: ${role.id}**\n> **Cor da função: ${role.color}**`)
-//         .setColor("#ff0000");
-//     log({ embeds: [embed] });
-// })
+
+client.on("guildMemberNicknameUpdate", async (member, oldNickname, newNickname) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: member.guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> O nome de **${member.user.tag}** foi atualizado!\n> **Nome Antigo: \`${oldNickname ?? member.user.username}\`**\n> **Novo Nome: \`${newNickname ?? member.user.username}\`**`)
+        .setColor("#37393f")
+        .setThumbnail(member.user.avatarURL({ dynamic: true }));
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildBoostLevelUp", async (guild, oldLevel, newLevel) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **O nível de reforço do servidor subiu para ${newLevel}!**`)
+        .setColor("#00ff00");
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildBoostLevelDown", async (guild, oldLevel, newLevel) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **O nível de reforço do servidor desceu para ${newLevel}!**`)
+        .setColor("#ff0000");
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildAfkChannelAdd", async (guild, afkChannel) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **Um canal AFK foi adicionado ao servidor!**\n\n> **Canal: ${afkChannel}**`)
+        .setColor("#37393f")
+        .setThumbnail(`${guild.iconURL({ dynamic: true })}`);
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildVanityURLAdd", async (guild, vanityURL) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **Um URL personalizado foi adquirido para o servidor!**\n\n> **URL: ${vanityURL}**`)
+        .setColor("#00ff00")
+        .setThumbnail(`${guild.iconURL({ dynamic: true })}`);
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildVanityURLRemove", async (guild, vanityURL) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **O URL personalizado do servidor foi removido!**\n\n> **URL: ${vanityURL}**`)
+        .setColor("#ff0000")
+        .setThumbnail(`${guild.iconURL({ dynamic: true })}`);
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildVanityURLUpdate", async (guild, oldVanityURL, newVanityURL) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **O URL personalizado do servidor foi alterado!**\n\n> **URL antigo: ${oldVanityURL}**\n> **Novo URL: ${newVanityURL}**`)
+        .setColor("#ff0000")
+        .setThumbnail(`${guild.iconURL({ dynamic: true })}`);
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildFeaturesUpdate", async (oldGuild, newGuild) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: newGuild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **Foram feitas atualizações no servidor!**\n\n> **Configurações antigas: ${oldGuild.features.join(", ")}**\n> **Novas configurações: ${newGuild.features.join(", ")}**`)
+        .setColor("#ff0000")
+        .setThumbnail(`${newGuild.iconURL({ dynamic: true })}`);
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildOwnerUpdate", async (oldGuild, newGuild) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: newGuild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **A propriedade do servidor foi transferida!**\n\n> **Antigo proprietário: ${oldGuild.owner}**\n> **Novo proprietário: ${newGuild.owner}**`)
+        .setColor("#ff0000")
+        .setThumbnail(`${newGuild.iconURL({ dynamic: true })}`);
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildPartnerAdd", async (guild) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **O servidor tornou-se um parceiro do Discord!**`)
+        .setColor("#00ff00");
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildPartnerRemove", async (guild) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **A parceria do servidor com o Discord foi encerrada!**`)
+        .setColor("#ff0000");
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildVerificationAdd", async (guild) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **O servidor foi verificado!**`)
+        .setColor("#00ff00");
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("guildVerificationRemove", async (guild) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **O servidor já não está verificado!**`)
+        .setColor("#ff0000");
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("unhandledGuildUpdate", async (oldGuild, newGuild) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: newGuild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **Foram feitas atualizações no servidor, mas a ação específica não pôde ser detectada!**`)
+        .setColor("#ff0000")
+        .setThumbnail(`${newGuild.iconURL({ dynamic: true })}`);
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("messagePinned", async (message) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: message.guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **Uma nova mensagem foi fixada!**\n\n> **Autor da mensagem: ${message.author}**\n> **Conteúdo da mensagem: ${message.content}**\n> **URL da mensagem: [Clique aqui](${message.url})**`)
+        .setColor("#37393f")
+        .setThumbnail(`${message.member.user.avatarURL({ dynamic: true })}`);
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("rolePermissionsUpdate", async (role, oldPermissions, newPermissions) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: role.guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **${role} - (\`${role.id}\`) As permissões da função foram atualizadas!**`)
+        .setColor("#ff0000");
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("roleUpdate", async (oldRole, newRole) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: newRole.guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    if (oldRole.name !== newRole.name) {
+        let embed = new EmbedBuilder()
+            .setDescription(`> **O nome da função ${oldRole} foi atualizado!**\n\n> **Nome antigo: ${oldRole.name}**\n> **Novo nome: ${newRole.name}**`)
+            .setColor("#ff0000");
+        logChannel.send({ embeds: [embed] });
+    } else if (oldRole.position !== newRole.position) {
+        let embed = new EmbedBuilder()
+            .setDescription(`> **A posição da função ${oldRole} foi atualizada!**\n\n> **Posição antiga: ${oldRole.position}**\n> **Nova posição: ${newRole.position}**`)
+            .setColor("#ff0000");
+        logChannel.send({ embeds: [embed] });
+    } else if (oldRole.hexColor !== newRole.hexColor) {
+        let embed = new EmbedBuilder()
+            .setDescription(`> **A cor da função ${oldRole} foi atualizada!**\n\n> **Cor antiga: ${oldRole.hexColor}**\n> **Nova cor: ${newRole.hexColor}**`)
+            .setColor("#ff0000");
+        logChannel.send({ embeds: [embed] });
+    } else if (oldRole.icon !== newRole.icon) {
+        let embed = new EmbedBuilder()
+            .setDescription(`> **O ícone da função ${oldRole} foi atualizado!**\n\n> **Ícone antigo: [Clique aqui!](${oldRole.iconURL})**\n> **Novo ícone: [Clique aqui!](${newRole.iconURL})**`)
+            .setColor("#ff0000");
+        logChannel.send({ embeds: [embed] });
+    } else {
+        let embed = new EmbedBuilder()
+            .setDescription(`> **Foram feitas alterações na função ${oldRole}, mas a natureza das alterações não pôde ser detectada!**`)
+            .setColor("#ff0000");
+        logChannel.send({ embeds: [embed] });
+    }
+});
+
+client.on("roleCreate", async (role) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: role.guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **Uma nova função foi criada!**\n\n> **Função: ${role}**\n> **ID da função: ${role.id}**`)
+        .setColor("#ff0000");
+    logChannel.send({ embeds: [embed] });
+});
+
+client.on("roleDelete", async (role) => {
+    const guildConfig = await GuildConfig.findOne({
+        guildId: role.guild.id
+    });
+
+    if (!guildConfig || !guildConfig.auditlogs) return;
+
+    const logChannel = client.channels.cache.get(guildConfig.canal);
+    if (!logChannel) return;
+
+    let embed = new EmbedBuilder()
+        .setDescription(`> **Uma função foi excluída!**\n\n> **Função: ${role.name}**\n> **ID da função: ${role.id}**\n> **Cor da função: ${role.color}**`)
+        .setColor("#ff0000");
+    logChannel.send({ embeds: [embed] });
+});
