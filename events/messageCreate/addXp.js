@@ -5,6 +5,7 @@ const Level = require("../../database/models/level")
 const calculateLevelXp = require('../../plugins/calculateLevelXp');
 const cooldowns = new Set()
 const idioma = require("../../database/models/language")
+const canvafy = require("canvafy");
 
 client.on("messageCreate", async (message, member) => {
 
@@ -60,7 +61,27 @@ client.on("messageCreate", async (message, member) => {
                         level.xp = 0;
                         level.level += 1;
 
-                        client.channels.cache.get(cmd1).send(`**🎆 ${message.author}, ${lang.msg347} \`${level.level}\` **`);
+
+                        // Criando a imagem de Level Up com Canvafy
+                        const levelUpImage = await new canvafy.LevelUp()
+                            .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 1024 }))
+                            .setBackground("image", "https://github.com/arrastaorj/flags/blob/main/rankAtendimento.jpg?raw=true")
+                            .setUsername(message.author.username)
+                            .setBorder("#000000")
+                            .setAvatarBorder("#ff0000")
+                            .setOverlayOpacity(0.7)
+                            .setLevels(level.level - 1, level.level)  // Exibe o nível anterior e o atual
+                            .build();
+
+                        const attachment = new discord.AttachmentBuilder(levelUpImage, { name: "level_up.png" });
+
+                        client.channels.cache.get(cmd1).send({
+
+                            content: `**${message.author}, ${lang.msg347} \`${level.level}\`!**`,
+                            files: [attachment]
+                        })
+
+
                     }
 
                     await level.save().catch((e) => {
