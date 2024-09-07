@@ -1,6 +1,7 @@
 const client = require('../../index')
 const discord = require("discord.js")
 const ticket = require("../../database/models/ticket")
+const Atendente = require("../../database/models/ticketAtendimentos")
 const discordTranscripts = require('discord-html-transcripts')
 const idioma = require("../../database/models/language")
 
@@ -278,14 +279,101 @@ client.on("interactionCreate", async (interaction) => {
                             .setLabel(`${lang.msg313}`)
                             .setStyle(1)
 
+                        let assumir = new discord.ButtonBuilder()  // Novo botão para assumir o ticket
+                            .setCustomId("assumirTicket")
+                            .setEmoji('🤝')
+                            .setLabel("Assumir Atendimento")
+                            .setStyle(3);
+
+
                         const deletar = new discord.ActionRowBuilder().addComponents(add, remover, fechar)
-                        const deletar2 = new discord.ActionRowBuilder().addComponents(sair, notificar, call)
-
-
+                        const deletar2 = new discord.ActionRowBuilder().addComponents(sair, notificar, assumir, call)
                         channel.send({ embeds: [criado], components: [deletar2, deletar] }).then(m => { m.pin() })
 
                     })
                 }
+
+            }
+
+            if (interaction.customId === 'assumirTicket') {
+
+                // Verifique se o usuário tem permissão para gerenciar canais
+                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) {
+                    return interaction.reply({
+                        content: `${lang.alertNaoTemPermissão}`,
+                        ephemeral: true
+                    });
+                }
+
+                const channel = interaction.channel;
+                const atendente = interaction.user;
+                const guildId = interaction.guild.id;
+
+
+                // Verifique se o ticket já foi assumido
+                const cmd = await ticket.findOne({
+                    guildId: interaction.guild.id,
+                    createdChannelID: channel.id
+                });
+
+                if (cmd && cmd.atendenteId) {
+                    return interaction.reply({
+                        content: `Este ticket já foi assumido por <@${cmd.atendenteId}>.`,
+                        ephemeral: true
+                    });
+                }
+
+                await interaction.deferReply({ ephemeral: false });
+
+
+                // Notifique o canal sobre quem assumiu o ticket
+                let embed = new discord.EmbedBuilder()
+                    .setColor('#2f3136')
+                    .setDescription(`Este ticket foi assumido por ${atendente}.`);
+
+                // Responder à interação
+                await interaction.editReply({
+                    embeds: [embed],
+                    components: [],
+                });
+
+
+
+                // Atualize o atendente no banco de dados para o ticket
+                await ticket.findOneAndUpdate({
+                    guildId: interaction.guild.id,
+                    createdChannelID: channel.id
+                }, { $set: { atendenteId: atendente.id } });
+
+
+                // Atualize as permissões para o atendente
+                await channel.permissionOverwrites.edit(atendente, {
+                    ViewChannel: true,
+                    SendMessages: true,
+                    AttachFiles: true,
+                    EmbedLinks: true,
+                    AddReactions: true
+                });
+
+                // Verificar se o usuário já existe no banco de dados de atendentes para este servidor
+                let atendenteData = await Atendente.findOne({ guildId: guildId, userId: atendente.id });
+
+
+                if (!atendenteData) {
+                    // Se o atendente não existir para este servidor, crie um novo documento
+                    atendenteData = new Atendente({
+                        userId: atendente.id,
+                        guildId: guildId,
+                        atendimentosRealizados: 1 // Inicia com 1 atendimento
+                    });
+                } else {
+                    // Se o atendente já existe para este servidor, incrementa a contagem de atendimentos
+                    atendenteData.atendimentosRealizados += 1;
+                }
+
+                // Salvar as mudanças no banco de dados
+                await atendenteData.save();
+
 
             }
 
@@ -519,7 +607,7 @@ client.on("interactionCreate", async (interaction) => {
                         new discord.ButtonBuilder()
                             .setLabel(`${lang.msg327}`)
                             .setEmoji("<:crvt:1168028479833505842>")
-                            .setURL(fetchedChannel.url) // Use channelId diretamente, não .url
+                            .setURL(fetchedChannel.url)
                             .setStyle(5)
                     );
 
@@ -720,34 +808,94 @@ client.on("interactionCreate", async (interaction) => {
             }
 
             if (interaction.customId === 'deletar') {
-
-
                 if (!interaction.isButton()) return;
 
-                if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) return interaction.reply({ content: `${lang.alertNaoTemPermissão}`, ephemeral: true })
+                try {
+                    // Verifique se o usuário tem permissão para gerenciar canais
+                    if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageChannels)) {
+                        return interaction.reply({
+                            content: `${lang.alertNaoTemPermissão}`,
+                            ephemeral: true
+                        });
+                    }
 
-                const topic = interaction.channel.topic
-
-                const channel = interaction.channel
-
-                const attachment = await discordTranscripts.createTranscript(channel)
-
-                const transcriptTimestamp = Math.round(Date.now() / 1000)
-
-                interaction.channel.delete()
+                    const channel = interaction.channel;
+                    const topic = channel.topic;
+                    const guildId = interaction.guild.id;
 
 
-                let embed = new discord.EmbedBuilder()
-                    .setDescription(`**${lang.msg345}:** <@${topic}>\`(${topic})\` \n **${lang.msg346}:** ${interaction.user}\`(${interaction.user.id})\` \n **${lang.msg400}** <t:${transcriptTimestamp}:R> (<t:${transcriptTimestamp}:F>)`)
-                    .setTimestamp()
+                    // Obter o ticket relacionado ao canal atual
+                    const cmd = await ticket.findOne({
+                        guildId: guildId,
+                        createdChannelID: channel.id
+                    });
 
-                let chat_log = cmd3.canalLog
+                    // Verifique se o ticket foi assumido por alguém
+                    if (!cmd || !cmd.atendenteId) {
+                        return interaction.reply({
+                            content: 'Este ticket ainda não foi assumido por nenhum atendente.',
+                            ephemeral: true
+                        });
+                    }
 
-                let canal = interaction.guild.channels.cache.get(chat_log)
+                    // Obtenha os dados do atendente
+                    const atendenteData = await Atendente.findOne({ guildId: guildId, userId: cmd.atendenteId });
 
-                canal.send({ embeds: [embed], files: [attachment] })
+                    if (!atendenteData) {
+                        return interaction.reply({
+                            content: 'Não foi possível encontrar os dados do atendente.',
+                            ephemeral: true
+                        });
+                    }
 
+                    const attachment = await discordTranscripts.createTranscript(channel);
+                    const transcriptTimestamp = Math.round(Date.now() / 1000);
+
+                    // Deletar o canal após o transcript ser criado
+                    await interaction.channel.delete();
+
+                    // Crie a embed com as informações do atendente e número de tickets
+                    let embed = new discord.EmbedBuilder()
+                        .setColor('#5865F2') // Azul do Discord
+                        .setTitle('📋 Ticket Encerrado') // Título com emoji
+                        .setDescription(`
+                        **👤 Ticket de:** <@${topic}> \`(${topic})\`
+                        **🛠️ Encerrado por:** ${interaction.user} \`(${interaction.user.id})\`
+                        **📅 Data de encerramento:** <t:${transcriptTimestamp}:R> (<t:${transcriptTimestamp}:F>)
+                        **👨‍💼 Assumido por:** <@${cmd.atendenteId}> 
+                        **🏆 Atendimentos realizados:** ${atendenteData.atendimentosRealizados}
+                    `)
+                        .setThumbnail(interaction.guild.iconURL({ extension: 'png' })) // Imagem pequena do servidor
+                        .setFooter({
+                            text: `Ticket ID: ${channel.id}`,
+                            iconURL: interaction.user.displayAvatarURL({ extension: 'png' })
+                        })
+                        .setTimestamp();
+
+                    // Busca o ticket no banco de dados para resetar o atendente
+                    await ticket.findOneAndUpdate({
+                        guildId: guildId,
+                        createdChannelID: channel.id
+                    }, {
+                        $unset: { atendenteId: "" } // Remove o atendente associado ao ticket
+                    });
+
+
+                    // Enviar a embed para o canal de logs
+                    let chat_log = cmd3.canalLog;
+                    let canal = interaction.guild.channels.cache.get(chat_log);
+                    await canal.send({ embeds: [embed], files: [attachment] });
+
+                } catch (error) {
+                    console.error('Erro ao deletar o ticket:', error);
+                    await interaction.reply({
+                        content: 'Houve um erro ao processar a solicitação de deletar o ticket.',
+                        ephemeral: true
+                    });
+                }
             }
+
+
 
         } catch (error) {
 

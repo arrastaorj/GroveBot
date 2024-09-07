@@ -13,7 +13,7 @@ const cmd = new db.Schema({
     createdVoicelID: { type: String },
     createdChannelID: { type: String },
     userId: { type: String },
-
+    atendenteId: { type: String },
 });
 
 

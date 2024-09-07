@@ -16,12 +16,21 @@ registerFont("./fonts/Pelita.otf", { family: "Pelita" })
 const level = require("../../database/models/level")
 const idioma = require("../../database/models/language")
 const comandos = require("../../database/models/comandos")
+const canvafy = require("canvafy"); // Certifique-se de ter instalado o canvafy
+const Atendente = require("../../database/models/ticketAtendimentos");
+
 
 module.exports = {
     name: "rank",
     description: "Gere um ranking global ou do servidor atual.",
     type: ApplicationCommandType.ChatInput,
     options: [
+        {
+            name: "atendimentos",
+            type: ApplicationCommandOptionType.Subcommand,
+            description: "Exibir o ranking de atendentes do servidor",
+
+        },
         {
             name: "global",
             type: ApplicationCommandOptionType.Subcommand,
@@ -30,10 +39,9 @@ module.exports = {
         {
             name: "server",
             type: ApplicationCommandOptionType.Subcommand,
-            description: "Exibir a classificação atual do servidor.",
+            description: "Exibir a classificação de atendimento no ticket atual deste servidor.",
 
         },
-
     ],
 
 
@@ -43,6 +51,65 @@ module.exports = {
 
 
         switch (subcommands) {
+
+
+            case "atendimentos": {
+
+                try {
+                    const guildId = interaction.guild.id;
+
+                    // Obtenha os 10 melhores atendentes para o servidor
+                    const atendentes = await Atendente.find({ guildId })
+                        .sort({ atendimentosRealizados: -1 })
+                        .limit(10);
+
+                    if (atendentes.length === 0) {
+                        return interaction.reply({ content: "Não há atendimentos registrados.", ephemeral: true });
+                    }
+
+                    // Monta os dados para o Canvafy
+                    const usersData = await Promise.all(
+                        atendentes.map(async (atendente, index) => {
+                            const user = await client.users.fetch(atendente.userId);
+                            return {
+                                top: index + 1,
+                                avatar: user.displayAvatarURL({ format: "png" }),
+                                tag: user.tag,
+                                score: atendente.atendimentosRealizados
+                            };
+                        })
+                    );
+
+                    // Gera a imagem do ranking usando Canvafy
+                    const topImage = await new canvafy.Top()
+                        .setOpacity(0.6)
+                        .setScoreMessage("Atendimentos:")
+                        .setabbreviateNumber(false)
+                        //.setBackground("image", "https://cdn.discordapp.com/attachments/1041745966186909826/1091378469000183848/4326598.png")
+                        .setColors({
+                            box: '#212121',
+                            username: '#ffffff',
+                            score: '#ffffff',
+                            firstRank: '#f7c716',
+                            secondRank: '#9e9e9e',
+                            thirdRank: '#94610f'
+                        })
+                        .setUsersData(usersData)
+                        .build();
+
+                    const attachment = new AttachmentBuilder(topImage, { name: "rank.png" });
+
+                    // Envia a imagem de ranking
+                    await interaction.reply({ files: [attachment] });
+
+                } catch (error) {
+                    console.error(error);
+                    interaction.reply({ content: "Ocorreu um erro ao gerar o ranking.", ephemeral: true });
+                }
+
+                break
+            }
+
 
             case "global": {
 
