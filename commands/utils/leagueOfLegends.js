@@ -4,7 +4,6 @@ const axios = require('axios')
 const fetch = require('node-fetch');
 const Canvas = require('canvas')
 const { registerFont } = require("canvas")
-
 registerFont("././fonts/Evogria.otf", { family: "Evogria" })
 registerFont("././fonts/the.otf", { family: "the" })
 
