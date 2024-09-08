@@ -32,59 +32,6 @@ module.exports = {
         })
         lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
-
-        const btnInfo = new discord.ActionRowBuilder().addComponents([
-            new discord.ButtonBuilder()
-                .setStyle(discord.ButtonStyle.Primary)
-                .setLabel(`${lang.msg246}`)
-                .setCustomId("infos"),
-        ])
-        const btnPaginaInicial = new discord.ActionRowBuilder().addComponents([
-            new discord.ButtonBuilder()
-                .setStyle(discord.ButtonStyle.Secondary)
-                .setLabel(`${lang.msg247}`)
-                .setCustomId("inicial"),
-        ])
-        const btnAvatarBannerPermissão = new discord.ActionRowBuilder().addComponents([
-
-            new discord.ButtonBuilder()
-                .setStyle(discord.ButtonStyle.Primary)
-                .setLabel(`${lang.msg248}`)
-                .setCustomId("avatar"),
-
-            new discord.ButtonBuilder()
-                .setStyle(discord.ButtonStyle.Secondary)
-                .setLabel(`${lang.msg249}`)
-                .setCustomId("banner"),
-
-            new discord.ButtonBuilder()
-                .setLabel(`${lang.msg250}`)
-                .setEmoji("<:9081settings:1167219166898557029>")
-                .setStyle(discord.ButtonStyle.Danger)
-                .setCustomId('verPerms')
-
-        ])
-        const btnVoltar = new discord.ActionRowBuilder().addComponents([
-            new discord.ButtonBuilder()
-                .setStyle(discord.ButtonStyle.Secondary)
-                .setLabel(`${lang.msg251}`)
-                .setCustomId("voltar"),
-
-        ])
-        const btnAvatarPermissão = new discord.ActionRowBuilder().addComponents([
-            new discord.ButtonBuilder()
-                .setStyle(discord.ButtonStyle.Primary)
-                .setLabel(`${lang.msg248}`)
-                .setCustomId("avatar"),
-
-            new discord.ButtonBuilder()
-                .setLabel(`${lang.msg250}`)
-                .setEmoji("<:9081settings:1167219166898557029>")
-                .setStyle(discord.ButtonStyle.Danger)
-                .setCustomId('verPerms')
-        ])
-
-
         const cmd = await comandos.findOne({
             guildId: interaction.guild.id
         })
@@ -177,12 +124,6 @@ module.exports = {
 
                 return emojiMap[boostLevel] ? `<:${emojiMap[boostLevel]}>` : '❌';
             }
-
-            let emoji = getBoostEmoji(boost);
-            let emoji2 = getBoostEmoji(nextBoost);
-
-
-
 
             let list = []
 
@@ -280,12 +221,8 @@ module.exports = {
                 });
             }
 
-            // Envia a embed
+            
             interaction.editReply({ embeds: [embed] });
-
-
-
-            interaction.editReply({ embeds: [embed] })
         }
 
 

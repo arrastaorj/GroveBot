@@ -1,6 +1,6 @@
-const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ComponentType, ApplicationCommandType } = require("discord.js")
-const comandos = require("../../database/models/comandos")
-const idioma = require("../../database/models/language")
+const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ComponentType, ApplicationCommandType } = require("discord.js");
+const comandos = require("../../database/models/comandos");
+const idioma = require("../../database/models/language");
 
 module.exports = {
     name: "badges",
@@ -8,263 +8,110 @@ module.exports = {
     type: ApplicationCommandType.ChatInput,
 
     run: async (client, interaction) => {
+        let lang = await idioma.findOne({ guildId: interaction.guild.id });
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js');
 
-        let lang = await idioma.findOne({
-            guildId: interaction.guild.id
-        })
-        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+        const cmd = await comandos.findOne({ guildId: interaction.guild.id });
 
+        if (!cmd) {
+            return interaction.reply({ content: `${lang.alertCommandos}`, ephemeral: true });
+        }
 
-        const cmd = await comandos.findOne({
-            guildId: interaction.guild.id
-        })
+        const cmd1 = cmd.canal1;
+        if (!cmd1 || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
+            let counts = {};
 
-        if (!cmd) return interaction.reply({
-            content: `${lang.alertCommandos}`,
-            ephemeral: true
-        })
-
-        let cmd1 = cmd.canal1
-
-        if (cmd1 === null || cmd1 === false || !client.channels.cache.get(cmd1) || cmd1 === interaction.channel.id) {
-
-
-            let badges = []
-            let counts = {}
-
+            // Contando as insígnias dos membros
             for (const member of interaction.guild.members.cache.values()) {
-                const user = await client.users.fetch(member.user.id)
-                badges = badges.concat(user.flags?.toArray())
-            }
-
-            for (const badge of badges) {
-                if (counts[badge]) {
-                    counts[badge]++
-                } else {
-                    counts[badge] = 1
-                }
+                const user = await client.users.fetch(member.user.id);
+                const badges = user.flags?.toArray() || [];
+                badges.forEach(badge => counts[badge] = (counts[badge] || 0) + 1);
             }
 
 
-            let embed1 = new EmbedBuilder()
+
+            function generateBadgeDescription(counts) {
+                return `
+                <:discordstaff:1282352857273864223> Discord Staff: \`${counts['Staff'] || 0}\`
+                <:discordpartner:1282353010231738511> Partner: \`${counts['Partner'] || 0}\`
+                <:certifiedmoderator:1282353057816121515> Certified Moderator: \`${counts['CertifiedModerator'] || 0}\`
+                <:HypeSquadEvents:1282353106063196242> HypeSquad Events: \`${counts['Hypesquad'] || 0}\`
+                <:HypeSquadBravery:1282353144805851238> HypeSquad Bravery: \`${counts['HypeSquadOnlineHouse1'] || 0}\`
+                <:HypeSquadBrilliance:1282353194625925170> HypeSquad Brilliance: \`${counts['HypeSquadOnlineHouse2'] || 0}\`
+                <:HypeSquadBalance:1282353224929509505> HypeSquad Balance: \`${counts['HypeSquadOnlineHouse3'] || 0}\`
+                <:BugHunter:1282353259738169365> Bug Hunter: \`${counts['BugHunterLevel1'] || 0}\`
+                <:BugHunterGold:1282353295607992411> Bug Hunter Gold: \`${counts['BugHunterLevel2'] || 0}\`
+                <:ActiveDeveloper:1282353335319527536> Active Developer: \`${counts['ActiveDeveloper'] || 0}\`
+                <:EarlyVerifiedBotDeveloper:1282353381851140136> Early Verified Bot Developer: \`${counts['VerifiedDeveloper'] || 0}\`
+                <:EarlySupporter:1282353409990852731> Early Supporter: \`${counts['PremiumEarlySupporter'] || 0}\`
+                <:verifiedbot:1282353437362618501> Bot Verificado: \`${counts['VerifiedBot'] || 0}\``
+            }
+
+
+            // Criando embed de exibição das insígnias
+            const embed1 = new EmbedBuilder()
                 .setColor("#ba68c8")
                 .setAuthor({ name: `Badges - ${interaction.guild.name}`, iconURL: client.user.displayAvatarURL() })
-                .setThumbnail(`${interaction.guild.iconURL({ dynamic: true })}`)
-                .setDescription(`<:1769discordstaff:1157876972031053984> Discord Staff: \`${counts['Staff'] || 0}\`
-            <:9928discordpartnerbadge:1157876829596684370> Partner: \`${counts['Partner'] || 0}\`
-            <:discordmod:1178827911667646544> Certified Moderator: \`${counts['CertifiedModerator'] || 0}\`
-            <:7606badgehypesquadevents:1157876137347788830> HypeSquad Events: \`${counts['Hypesquad'] || 0}\`
-            <:6601hypesquadbravery:1061274089609760908> HypeSquad Bravery: \`${counts['HypeSquadOnlineHouse1'] || 0}\`
-            <:6936hypesquadbrilliance:1061274087193854042> HypeSquad Brilliance: \`${counts['HypeSquadOnlineHouse2'] || 0}\`
-            <:5242hypesquadbalance:1061274091623034881> HypeSquad Balance: \`${counts['HypeSquadOnlineHouse3'] || 0}\`
-            <:4744bughunterbadgediscord:1157875129309724772> Bug Hunter: \`${counts['BugHunterLevel1'] || 0}\`
-            <:1692bughunter:1157875132048605234> Bug Hunter Gold: \`${counts['BugHunterLevel2'] || 0}\`
-            <:7011activedeveloperbadge:1061277829255413781> Active Developer: \`${counts['ActiveDeveloper'] || 0}\`
-            <:Early_Verified_Bot_Developer:1063599974098665592> Early Verified Bot Developer: \`${counts['VerifiedDeveloper'] || 0}\`
-            <:Early_Supporter:1063599098135060590> Early Supporter: \`${counts['PremiumEarlySupporter'] || 0}\``)
-
-            const row = new ActionRowBuilder()
+                .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
+                .setDescription(generateBadgeDescription(counts))
 
             const menu = new StringSelectMenuBuilder()
                 .setCustomId("badges")
                 .setPlaceholder("Badges")
-                .setOptions(
-                    {
-                        label: `Discord Staff (${counts['Staff'] || 0})`,
-                        emoji: "<:1769discordstaff:1157876972031053984>",
-                        value: "Staff",
-                    },
-                    {
-                        label: `Partner (${counts['Partner'] || 0})`,
-                        emoji: "<:9928discordpartnerbadge:1157876829596684370>",
-                        value: "Partner",
-                    },
-                    {
-                        label: `Certified Moderator (${counts['CertifiedModerator'] || 0})`,
-                        emoji: "<:discordmod:1178827911667646544>",
-                        value: "CertifiedModerator",
-                    },
-                    {
-                        label: `HypeSquad Events (${counts['Hypesquad'] || 0})`,
-                        emoji: "<:7606badgehypesquadevents:1157876137347788830>",
-                        value: "Hypesquad",
-                    },
-                    {
-                        label: `HypeSquad Bravery (${counts['HypeSquadOnlineHouse1'] || 0})`,
-                        emoji: "<:6601hypesquadbravery:1061274089609760908>",
-                        value: "HypeSquadOnlineHouse1",
-                    },
-                    {
-                        label: `HypeSquad Brilliance (${counts['HypeSquadOnline2'] || 0})`,
-                        emoji: "<:6936hypesquadbrilliance:1061274087193854042>",
-                        value: "HypeSquadOnlineHouse2",
-                    },
-                    {
-                        label: `HypeSquad Balance (${counts['HypeSquadOnlineHouse3'] || 0})`,
-                        emoji: "<:5242hypesquadbalance:1061274091623034881>",
-                        value: "HypeSquadOnlineHouse3"
-                    },
-                    {
-                        label: `Bug Hunter (${counts['BugHunterLevel1'] || 0})`,
-                        emoji: "<:4744bughunterbadgediscord:1157875129309724772>",
-                        value: "BugHunterLevel1",
-                    },
-                    {
-                        label: `Bug Hunter Gold (${counts['BugHunterLevel2'] || 0})`,
-                        emoji: "<:1692bughunter:1157875132048605234>",
-                        value: "BugHunterLevel2",
-                    },
-                    {
-                        label: `Active Developer (${counts['ActiveDeveloper'] || 0})`,
-                        emoji: "<:7011activedeveloperbadge:1061277829255413781>",
-                        value: "ActiveDeveloper",
-                    },
-                    {
-                        label: `Early Verified Bot Developer (${counts['VerifiedDeveloper'] || 0})`,
-                        emoji: "<:Early_Verified_Bot_Developer:1063599974098665592>",
-                        value: `VerifiedDeveloper`,
-                    },
-                    {
-                        label: `Early Supporter (${counts['PremiumEarlySupporter'] || 0})`,
-                        emoji: `<:Early_Supporter:1063599098135060590>`,
-                        value: `PremiumEarlySupporter`,
-                    }
-                )
+                .addOptions(
+                    Object.entries(counts).map(([key, value]) => ({
+                        label: `${key} (${value})`,
+                        emoji: getEmojiForBadge(key), // Adicione uma função para obter o emoji correto
+                        value: key,
+                    }))
+                );
 
-            row.addComponents(menu)
+            const row = new ActionRowBuilder().addComponents(menu);
 
-            const msg = await interaction.reply({ embeds: [embed1], components: [row] })
+            const msg = await interaction.reply({ embeds: [embed1], components: [row] });
 
-            let collector = msg.createMessageComponentCollector({ componentType: ComponentType.StringSelect })
+            // Coletor para interações com o menu de seleção
+            const collector = msg.createMessageComponentCollector({ componentType: ComponentType.StringSelect });
 
             collector.on('collect', async (interaction) => {
-                let check = interaction.values[0]
-                interaction.message.edit()
+                const badgeType = interaction.values[0];
+                const members = interaction.guild.members.cache
+                    .filter(member => member.user.flags?.toArray().includes(badgeType))
+                    .map(member => member.user.username);
 
-                let members = []
-                await interaction.guild.members.cache.forEach(async member => {
-                    if (member.user.flags.toArray().includes(check)) members.push(member)
-                })
+                const description = members.length > 0
+                    ? `${lang.msg156}\n\n> ${members.join('\n> ')}`
+                    : lang.msg155;
 
-                if (members.length == 0) members.push(`${lang.msg155}`)
+                const embed = new EmbedBuilder()
+                    .setColor("#ba68c8")
+                    .setTitle(`${getEmojiForBadge(badgeType)} ${badgeType} (${counts[badgeType] || 0})`)
+                    .setDescription(description);
 
-                if (check === "Staff") {
-
-                    let embed_staff = new EmbedBuilder()
-                        .setColor("#ba68c8")
-                        .setTitle(`<:1769discordstaff:1157876972031053984> Discord Staff (${counts['Staff'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_staff], ephemeral: true })
-
-                }
-                if (check === "Partner") {
-
-                    let embed_partner = new EmbedBuilder()
-                        .setColor("#ba68c8")
-                        .setTitle(`<:9928discordpartnerbadge:1157876829596684370> Partner (${counts['Partner'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_partner], ephemeral: true })
-
-                }
-                if (check === "CertifiedModerator") {
-
-                    let embed_moderator = new EmbedBuilder()
-                        .setColor("ba68c8")
-                        .setTitle(`<:discordmod:1178827911667646544> Certified Moderator (${counts['CertifiedModerator'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_moderator], ephemeral: true })
-                }
-                if (check === "Hypesquad") {
-
-                    let embed_hypesquad = new EmbedBuilder()
-                        .setColor("ba68c8")
-                        .setTitle(`<:7606badgehypesquadevents:1157876137347788830> HypeSquad Events (${counts['Hypesquad'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_hypesquad], ephemeral: true })
-                }
-                if (check === "HypeSquadOnlineHouse1") {
-
-                    let embed_bravery = new EmbedBuilder()
-                        .setColor("ba68c8")
-                        .setTitle(`<:6601hypesquadbravery:1061274089609760908> HypeSquad Bravery (${counts['HypeSquadOnlineHouse1'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_bravery], ephemeral: true })
-                }
-                if (check === "HypeSquadOnlineHouse2") {
-
-                    let embed_brilliance = new EmbedBuilder()
-                        .setColor("#ba68c8")
-                        .setTitle(`<:6936hypesquadbrilliance:1061274087193854042> HypeSquad Brilliance (${counts['HypeSquadOnlineHouse2'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_brilliance], ephemeral: true })
-                }
-                if (check === "HypeSquadOnlineHouse3") {
-
-                    let embed_balance = new EmbedBuilder()
-                        .setColor("#ba68c8")
-                        .setTitle(`<:5242hypesquadbalance:1061274091623034881> HypeSquad Balance (${counts['HypeSquadOnlineHouse3'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_balance], ephemeral: true })
-                }
-                if (check === "BugHunterLevel1") {
-
-                    let embed_bug1 = new EmbedBuilder()
-                        .setColor("ba68c8")
-                        .setTitle(`<:4744bughunterbadgediscord:1157875129309724772> Bug Hunter (${counts['BugHunterLevel1'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_bug1], ephemeral: true })
-                }
-                if (check === "BugHunterLevel2") {
-
-                    let embed_bug2 = new EmbedBuilder()
-                        .setColor("ba68c8")
-                        .setTitle(`<:1692bughunter:1157875132048605234> Bug Hunter Gold (${counts['BugHunterLevel2'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_bug2], ephemeral: true })
-                }
-                if (check === "ActiveDeveloper") {
-
-                    let embed_active_dev = new EmbedBuilder()
-                        .setColor("#ba68c8")
-                        .setTitle(`<:7011activedeveloperbadge:1061277829255413781> Active Developer (${counts['ActiveDeveloper'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_active_dev], ephemeral: true })
-                }
-                if (check === "VerifiedDeveloper") {
-
-                    let embed_verified_developer = new EmbedBuilder()
-                        .setColor("#ba68c8")
-                        .setTitle(`<:Early_Verified_Bot_Developer:1063599974098665592> Early Verified Bot Developer (${counts['VerifiedDeveloper'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_verified_developer], ephemeral: true })
-                }
-                if (check === "PremiumEarlySupporter") {
-
-                    let embed_verified_developer = new EmbedBuilder()
-                        .setColor("#ba68c8")
-                        .setTitle(`<:Early_Supporter:1063599098135060590> Early Supporter (${counts['PremiumEarlySupporter'] || 0})`)
-                        .setDescription(`${lang.msg156} \n\n> ${members.join('\n> ')}`)
-
-                    return interaction.reply({ embeds: [embed_verified_developer], ephemeral: true })
-                }
-            })
+                await interaction.reply({ embeds: [embed], ephemeral: true });
+                
+            });
+        } else {
+            interaction.reply({ content: `${lang.alertCanalErrado} <#${cmd1}>.`, ephemeral: true });
         }
-        else if (interaction.channel.id !== cmd1) {
-            interaction.reply({
-                content: `${lang.alertCanalErrado} <#${cmd1}>.`,
-                ephemeral: true
-            })
-        }
-    }
+    },
+};
+
+function getEmojiForBadge(badge) {
+    const badgeEmojis = {
+        'Staff': '<:discordstaff:1282352857273864223>',
+        'Partner': '<:discordpartner:1282353010231738511>',
+        'CertifiedModerator': '<:certifiedmoderator:1282353057816121515>',
+        'Hypesquad': '<:HypeSquadEvents:1282353106063196242>',
+        'HypeSquadOnlineHouse1': '<:HypeSquadBravery:1282353144805851238>',
+        'HypeSquadOnlineHouse2': '<:HypeSquadBrilliance:1282353194625925170>',
+        'HypeSquadOnlineHouse3': '<:HypeSquadBalance:1282353224929509505>',
+        'BugHunterLevel1': '<:BugHunter:1282353259738169365>',
+        'BugHunterLevel2': '<<:BugHunterGold:1282353295607992411>',
+        'ActiveDeveloper': '<:ActiveDeveloper:1282353335319527536>',
+        'VerifiedDeveloper': '<:EarlyVerifiedBotDeveloper:1282353381851140136>',
+        'PremiumEarlySupporter': '<:EarlySupporter:1282353409990852731>',
+        'VerifiedBot': '<:verifiedbot:1282353437362618501>',
+    };
+    return badgeEmojis[badge] || '❓'; // Retorna um emoji padrão caso o badge não esteja mapeado
 }
