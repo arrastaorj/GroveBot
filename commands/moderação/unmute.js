@@ -23,7 +23,7 @@ module.exports = {
     run: async (client, interaction) => {
         // Verifica se o autor tem a permissão de moderar membros
         if (!interaction.member.permissions.has(discord.PermissionsBitField.Flags.ModerateMembers)) {
-            return interaction.reply({ content: "🚫 Você não tem permissão para desmutar membros.", ephemeral: true });
+            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Você não tem permissão para desmutar membros.", ephemeral: true });
         }
 
         const user = interaction.options.getUser("user");
@@ -33,17 +33,17 @@ module.exports = {
 
         // Verifica se o usuário está no servidor
         if (!member) {
-            return interaction.reply({ content: "⚠️ Este usuário não está no servidor.", ephemeral: true });
+            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Este usuário não está no servidor.", ephemeral: true });
         }
 
         // Verifica se o membro está mutado (tem o cargo de mute)
         const muteRole = interaction.guild.roles.cache.find(role => role.name.toLowerCase() === "mutado");
         if (!muteRole) {
-            return interaction.reply({ content: "⚠️ O cargo de 'mutado' não foi encontrado. Verifique se ele existe.", ephemeral: true });
+            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> O cargo de 'mutado' não foi encontrado. Verifique se ele existe.", ephemeral: true });
         }
 
         if (!member.roles.cache.has(muteRole.id)) {
-            return interaction.reply({ content: "⚠️ Este usuário não está mutado.", ephemeral: true });
+            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Este usuário não está mutado.", ephemeral: true });
         }
 
         // Removendo o cargo de mute do usuário
@@ -71,7 +71,7 @@ module.exports = {
 
             if (!guildConfig) {
                 // Caso não haja configuração, informa o moderador
-                return interaction.followUp({ content: "⚠️ O canal de logs não foi configurado neste servidor. Nenhum log foi gerado.", ephemeral: true });
+                return interaction.followUp({ content: "> \`-\` <a:alerta:1163274838111162499> O canal de logs não foi configurado neste servidor. Nenhum log foi gerado. Você pode usar **/audit logs** para configurar um novo canal de logs.", ephemeral: true });
             }
 
             const logChannel = client.channels.cache.get(guildConfig.canal);
@@ -92,11 +92,11 @@ module.exports = {
                 // Envia o embed no canal de logs
                 logChannel.send({ embeds: [logEmbed] });
             } else {
-                return interaction.followUp({ content: "⚠️ O canal de logs configurado não foi encontrado. Nenhum log foi gerado.", ephemeral: true });
+                return interaction.followUp({ content: "> \`-\` <a:alerta:1163274838111162499> O canal de logs configurado não foi encontrado. Nenhum log foi gerado. Você pode usar **/audit logs** para configurar um novo canal de logs.", ephemeral: true });
             }
         } catch (error) {
             console.error(error);
-            return interaction.reply({ content: "❗ Ocorreu um erro ao tentar desmutar este usuário.", ephemeral: true });
+            return interaction.reply({ content: "> \`-\` <a:alerta:1163274838111162499> Ocorreu um erro ao tentar desmutar este usuário.", ephemeral: true });
         }
     }
 };
