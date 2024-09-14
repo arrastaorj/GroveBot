@@ -17,13 +17,13 @@ client.on("interactionCreate", async (interaction) => {
             }
         }
 
-        case 'CREATOR_SELECT_CHANNEL': {
+        // case 'CREATOR_SELECT_CHANNEL': {
 
-            if (interaction.values && Array.isArray(interaction.values)) {
-                const channelId = interaction.values[0];
-                return await creatorSend(interaction, channelId);
-            }
-        }
+        //     if (interaction.values && Array.isArray(interaction.values)) {
+        //         const channelId = interaction.values[0];
+        //         return await creatorSend(interaction, channelId);
+        //     }
+        // }
     }
 })
 
@@ -44,49 +44,47 @@ const creatorMentionRole = async (interaction, role) => {
     await interaction.update({ content: `${roleMention(role)}` });
 }
 
-const creatorSend = async (interaction, channelId) => {
+// const creatorSend = async (interaction, channelId) => {
 
-    let lang = await idioma.findOne({
-        guildId: interaction.guild.id
-    })
-    lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+//     let lang = await idioma.findOne({
+//         guildId: interaction.guild.id
+//     })
+//     lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
 
 
-    const channel = interaction.guild.channels.cache.get(channelId);
-    const message = interaction.message;
+//     const channel = interaction.guild.channels.cache.get(channelId);
+//     const message = interaction.message;
 
-    if (!channel) {
-        return await interaction.reply({ content: `${lang.msg397}`, ephemeral: true });
-    }
-    else if (!message.embeds) {
-        return await interaction.reply({ content: `${lang.msg375}`, ephemeral: true })
-    }
-    //else if (!channel.permissionsFor(member).has(PermissionsBitField.Flags.ManageMessages)) {
-    //	return await interaction.reply({ content: 'Voce não pode enviar a mensagem neste canal.', ephemeral: true });
-    //}
-    const content = message.content;
-    const embed = EmbedBuilder.from(message.embeds[0]);
+//     if (!channel) {
+//         return await interaction.reply({ content: `${lang.msg397}`, ephemeral: true });
+//     }
+//     else if (!message.embeds) {
+//         return await interaction.reply({ content: `${lang.msg375}`, ephemeral: true })
+//     }
 
-    switch (channel.type) {
-        case ChannelType.GuildText: {
-            await channel.send({ content: content, embeds: [embed] });
-            return await interaction.update({ content: `${lang.msg398} ${channel}.'`, embeds: [], components: [], ephemeral: true });
-        }
-        case ChannelType.GuildForum: {
-            await channel.threads.create({ name: embed.data.title, autoArchiveDuration: 60, message: { content: content, embeds: [embed] } });
-            return await interaction.update({ content: `${lang.msg398} ${channel}.'`, embeds: [], components: [], ephemeral: true });
-        }
-        case ChannelType.PublicThread: {
-            await channel.send({ content: content, embeds: [embed] });
-            return await interaction.update({ content: `${lang.msg398} ${channel}.'`, embeds: [], components: [], ephemeral: true });
-        }
-        case ChannelType.PrivateThread: {
-            await channel.send({ content: content, embeds: [embed] });
-            return await interaction.update({ content: `${lang.msg398} ${channel}.'`, embeds: [], components: [], ephemeral: true });
-        }
-        default: {
-            return await interaction.reply({ content: `${lang.msg399}`, ephemeral: true });
-        }
-    }
+//     const content = message.content;
+//     const embed = EmbedBuilder.from(message.embeds[0]);
 
-}
+//     switch (channel.type) {
+//         case ChannelType.GuildText: {
+//             await channel.send({ content: content, embeds: [embed] });
+//             return await interaction.update({ content: `${lang.msg398} ${channel}.'`, embeds: [], components: [], ephemeral: true });
+//         }
+//         case ChannelType.GuildForum: {
+//             await channel.threads.create({ name: embed.data.title, autoArchiveDuration: 60, message: { content: content, embeds: [embed] } });
+//             return await interaction.update({ content: `${lang.msg398} ${channel}.'`, embeds: [], components: [], ephemeral: true });
+//         }
+//         case ChannelType.PublicThread: {
+//             await channel.send({ content: content, embeds: [embed] });
+//             return await interaction.update({ content: `${lang.msg398} ${channel}.'`, embeds: [], components: [], ephemeral: true });
+//         }
+//         case ChannelType.PrivateThread: {
+//             await channel.send({ content: content, embeds: [embed] });
+//             return await interaction.update({ content: `${lang.msg398} ${channel}.'`, embeds: [], components: [], ephemeral: true });
+//         }
+//         default: {
+//             return await interaction.reply({ content: `${lang.msg399}`, ephemeral: true });
+//         }
+//     }
+
+// }

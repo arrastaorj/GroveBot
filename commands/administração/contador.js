@@ -3,8 +3,10 @@ const {
     ApplicationCommandOptionType,
     ChannelType,
     PermissionsBitField,
+    PermissionFlagsBits,
 } = require("discord.js");
 
+const idioma = require("../../database/models/language")
 const CounterModel = require("../../database/models/counter")
 
 module.exports = {
@@ -34,8 +36,21 @@ module.exports = {
     run: async (client, interaction) => {
 
 
+        let lang = await idioma.findOne({ guildId: interaction.guild.id })
+        lang = lang ? require(`../../languages/${lang.language}.js`) : require('../../languages/pt.js')
+        
+        if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
+            return interaction.reply({
+                content: `${lang.alertNaoTemPermissão}`,
+                ephemeral: true
+            })
+
+
         const type = interaction.options.getString("type");
         const name = interaction.options.getString("name");
+
+
+
 
         if (!type || !["USERS", "MEMBERS", "BOTS"].includes(type.toUpperCase())) {
             return interaction.reply({

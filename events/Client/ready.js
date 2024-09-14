@@ -35,7 +35,7 @@ client.on('ready', async () => {
   // Exemplo: Verificar a cada 24 horas (86400000 ms)
   setInterval(() => {
     fetchLatestPatch(client)
-  }, 10000) // 86400000 24 horas
+  }, 86400000) // 86400000 24 horas
 
 
   console.log("[Bot-Status]".bgBlue, `> Estou online como: ${client.user.username}`.blue)
