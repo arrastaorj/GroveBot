@@ -62,7 +62,7 @@ module.exports = {
 
             await interaction.deferReply();
 
-            const userDataResponse = await fetch(`https://groveapi.discloud.app/user/${user.id}`);
+            const userDataResponse = await fetch(`https://groveapi.squareweb.app/user/${user.id}`);
             const userData = await userDataResponse.json();
 
             const {
@@ -111,15 +111,15 @@ module.exports = {
 
             function getBoostEmoji(boostLevel) {
                 const emojiMap = {
-                    BoostLevel1: 'discordboost1:1178527220474576957',
-                    BoostLevel2: 'discordboost2:1178527223683240006',
-                    BoostLevel3: 'discordboost3:1178527224832466965',
-                    BoostLevel4: 'discordboost4:1178527227730739210',
-                    BoostLevel5: 'discordboost5:1178527229391675472',
-                    BoostLevel6: 'discordboost6:1178527232260579430',
-                    BoostLevel7: 'discordboost7:1178527233791504454',
-                    BoostLevel8: 'discordboost8:1178527236211617874',
-                    BoostLevel9: 'discordboost9:1178527237734137916',
+                    BoostLevel1: 'boost1:1284902479854571610',
+                    BoostLevel2: 'boost2:1284902501346312396',
+                    BoostLevel3: 'boost3:1284902527560847381',
+                    BoostLevel4: 'boost4:1284902546137157784',
+                    BoostLevel5: 'boost5:1284902568044134551',
+                    BoostLevel6: 'boost6:1284902586146619473',
+                    BoostLevel7: 'boost7:1284902603519430670',
+                    BoostLevel8: 'boost8:1284902623199105096',
+                    BoostLevel9: 'boost9:1284902642526584852',
                 };
 
                 return emojiMap[boostLevel] ? `<:${emojiMap[boostLevel]}>` : '❌';
@@ -162,22 +162,22 @@ module.exports = {
             // Adiciona campos fixos que sempre estarão presentes
             embed.addFields(
                 {
-                    name: '<:crvt:1179217380715544668> Tag',
+                    name: '<:user:1284903902545711136> Tag',
                     value: `\`\`\`${member.user.tag}\`\`\``,
                     inline: true
                 },
                 {
-                    name: '<:filas:1183481870051201184> ID',
+                    name: '<:id:1284903920019308604> ID',
                     value: `\`\`\`${member.user.id}\`\`\``,
                     inline: true
                 },
                 {
-                    name: `<:crvt:1179215960754896977> ${lang.msg233}`,
+                    name: `<:data1:1284903946045100145> ${lang.msg233}`,
                     value: `<t:${~~Math.ceil(member.user.createdTimestamp / 1000)}> (<t:${~~(member.user.createdTimestamp / 1000)}:R>)`,
                     inline: false
                 },
                 {
-                    name: `<:crvt:1179215962839453817> ${lang.msg234}`,
+                    name: `<:data2:1284903970426323014> ${lang.msg234}`,
                     value: `<t:${~~(user.joinedTimestamp / 1000)}:f> (<t:${~~(user.joinedTimestamp / 1000)}:R>)`,
                     inline: false
                 }
@@ -186,7 +186,7 @@ module.exports = {
             // Adiciona o campo relacionado ao Nitro Boost apenas se a data de boost existir
             if (boostDateTemp) {
                 embed.addFields({
-                    name: `<:discordnitro:1178827913106305024> ${lang.msg235}`,
+                    name: `<:nitro:1284902411894521876> ${lang.msg235}`,
                     value: `<t:${~~(boostDateTemp / 1000)}:f> (<t:${~~(boostDateTemp / 1000)}:R>)`,
                     inline: false
                 });
@@ -195,7 +195,7 @@ module.exports = {
             // Adiciona o campo relacionado ao próximo Boost apenas se a data existir
             if (nextBoostDateTemp) {
                 embed.addFields({
-                    name: `<:1592wumpuswaveboost:1180830275182276658> ${lang.msg236}`,
+                    name: `<:impusona:1284903567034941571> ${lang.msg236}`,
                     value: `<t:${~~(nextBoostDateTemp / 1000)}:f> (<t:${~~(nextBoostDateTemp / 1000)}:R>)`,
                     inline: false
                 });
@@ -221,7 +221,7 @@ module.exports = {
                 });
             }
 
-            
+
             interaction.editReply({ embeds: [embed] });
         }
 

@@ -331,65 +331,65 @@ client.on("interactionCreate", async (interaction) => {
                         .setCustomId('CREATOR_SET_TITLE')
                         .setLabel(`${lang.msg379}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:titulo:1284311543915479152>`),
+                        .setEmoji(`<:titulo:1284643807576723507>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_DESCRIPTION')
                         .setLabel(`${lang.msg380}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:descrio:1284311528895545365>`),
+                        .setEmoji(`<:descrio:1284643835171045467>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_COLOR')
                         .setLabel(`${lang.msg381}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:cores:1284311517713530971>`),
+                        .setEmoji(`<:cor:1284643852329943081>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_IMAGE')
                         .setLabel(`${lang.msg382}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:imagem:1284311502509047839>`),
+                        .setEmoji(`<:imagem:1284643867156680788>`),
                 ),
                 new discord.ActionRowBuilder().addComponents(
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_THUMBNAIL')
                         .setLabel(`${lang.msg383}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:miniatura:1284311491444740096>`),
+                        .setEmoji(`<:miniatura:1284643880377253939>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_AUTHOR')
                         .setLabel(`${lang.msg384}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:autor:1284311479721394230>`),
+                        .setEmoji(`<:autor:1284643891764658229>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_FOOTER')
                         .setLabel(`${lang.msg385}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:rodape:1284311462814158962>`),
+                        .setEmoji(`<:rodape:1284643905152749598>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_MENTION_ROLE')
                         .setLabel(`${lang.msg386}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:cargo:1284311441926652027>`)
+                        .setEmoji(`<:cargo:1284643916594937877>`)
                 ),
                 new discord.ActionRowBuilder().addComponents(
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_IMPORT_JSON')
                         .setLabel(`${lang.msg387}`)
                         .setStyle(discord.ButtonStyle.Primary)
-                        .setEmoji(`<:importa:1284311398960205874>`),
+                        .setEmoji(`<:importa:1284643944877265019>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_EXPORT_JSON')
                         .setLabel(`${lang.msg388}`)
                         .setStyle(discord.ButtonStyle.Primary)
-                        .setEmoji(`<:eporta:1284311419759890452>`),
+                        .setEmoji(`<:exporta:1284643930666831872>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SEND')
                         .setLabel(`${lang.msg389}`)
                         .setStyle(discord.ButtonStyle.Success)
-                        .setEmoji(`<:enviar:1284311377695215777>`),
+                        .setEmoji(`<:envia:1284643956071596153>`),
                     new discord.ButtonBuilder()
                         .setCustomId('limpa')
                         .setLabel(`Limpar embed`)
-                        .setEmoji("<:limpa:1284311349312098334>")
+                        .setEmoji("<:limpa:1284643966838374470>")
                         .setStyle(discord.ButtonStyle.Danger)
                 )
             ]
@@ -412,65 +412,65 @@ client.on("interactionCreate", async (interaction) => {
                         .setCustomId('CREATOR_SET_TITLE')
                         .setLabel(`${lang.msg379}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:titulo:1284311543915479152>`),
+                        .setEmoji(`<:titulo:1284643807576723507>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_DESCRIPTION')
                         .setLabel(`${lang.msg380}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:descrio:1284311528895545365>`),
+                        .setEmoji(`<:descrio:1284643835171045467>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_COLOR')
                         .setLabel(`${lang.msg381}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:cores:1284311517713530971>`),
+                        .setEmoji(`<:cor:1284643852329943081>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_IMAGE')
                         .setLabel(`${lang.msg382}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:imagem:1284311502509047839>`),
+                        .setEmoji(`<:imagem:1284643867156680788>`),
                 ),
                 new discord.ActionRowBuilder().addComponents(
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_THUMBNAIL')
                         .setLabel(`${lang.msg383}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:miniatura:1284311491444740096>`),
+                        .setEmoji(`<:miniatura:1284643880377253939>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_AUTHOR')
                         .setLabel(`${lang.msg384}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:autor:1284311479721394230>`),
+                        .setEmoji(`<:autor:1284643891764658229>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SET_FOOTER')
                         .setLabel(`${lang.msg385}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:rodape:1284311462814158962>`),
+                        .setEmoji(`<:rodape:1284643905152749598>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_MENTION_ROLE')
                         .setLabel(`${lang.msg386}`)
                         .setStyle(discord.ButtonStyle.Secondary)
-                        .setEmoji(`<:cargo:1284311441926652027>`)
+                        .setEmoji(`<:cargo:1284643916594937877>`)
                 ),
                 new discord.ActionRowBuilder().addComponents(
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_IMPORT_JSON')
                         .setLabel(`${lang.msg387}`)
                         .setStyle(discord.ButtonStyle.Primary)
-                        .setEmoji(`<:importa:1284311398960205874>`),
+                        .setEmoji(`<:importa:1284643944877265019>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_EXPORT_JSON')
                         .setLabel(`${lang.msg388}`)
                         .setStyle(discord.ButtonStyle.Primary)
-                        .setEmoji(`<:eporta:1284311419759890452>`),
+                        .setEmoji(`<:exporta:1284643930666831872>`),
                     new discord.ButtonBuilder()
                         .setCustomId('CREATOR_SEND')
                         .setLabel(`${lang.msg389}`)
                         .setStyle(discord.ButtonStyle.Success)
-                        .setEmoji(`<:enviar:1284311377695215777>`),
+                        .setEmoji(`<:envia:1284643956071596153>`),
                     new discord.ButtonBuilder()
                         .setCustomId('limpa')
                         .setLabel(`Limpar embed`)
-                        .setEmoji("<:limpa:1284311349312098334>")
+                        .setEmoji("<:limpa:1284643966838374470>")
                         .setStyle(discord.ButtonStyle.Danger)
                 )
             ]

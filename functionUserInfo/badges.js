@@ -1,55 +1,55 @@
 function getBadgeEmoji(badge) {
     switch (badge) {
         case 'Nitro':
-            return '<:discordnitro:1178827913106305024>';
+            return '<:nitro:1284902411894521876>';
         case 'BoostLevel1':
-            return '<:discordboost1:1178527220474576957>';
+            return '<:boost1:1284902479854571610>';
         case 'BoostLevel2':
-            return '<:discordboost2:1178527223683240006>';
+            return '<:boost2:1284902501346312396>';
         case 'BoostLevel3':
-            return '<:discordboost3:1178527224832466965>';
+            return '<:boost3:1284902527560847381>';
         case 'BoostLevel4':
-            return '<:discordboost4:1178527227730739210>';
+            return '<:boost4:1284902546137157784>';
         case 'BoostLevel5':
-            return '<:discordboost5:1178527229391675472>';
+            return '<:boost5:1284902568044134551>';
         case 'BoostLevel6':
-            return '<:discordboost6:1178527232260579430>';
+            return '<:boost6:1284902586146619473>';
         case 'BoostLevel7':
-            return '<:discordboost7:1178527233791504454>';
+            return '<:boost7:1284902603519430670>';
         case 'BoostLevel8':
-            return '<:discordboost8:1178527236211617874>';
+            return '<:boost8:1284902623199105096>';
         case 'BoostLevel9':
-            return '<:discordboost9:1178527237734137916>';
+            return '<:boost9:1284902642526584852>';
         case 'HypeSquadOnlineHouse1':
-            return '<:hypesquadbravery:1178528159503757443>';
+            return '<:HypeSquadBravery:1282353144805851238>';
         case 'HypeSquadOnlineHouse2':
-            return '<:hypesquadbrilliance:1178528160711716934>';
+            return '<:HypeSquadBrilliance:1282353194625925170>';
         case 'HypeSquadOnlineHouse3':
-            return '<:hypesquadbalance:1178528157368852480>';
+            return '<:HypeSquadBalance:1282353224929509505>';
         case 'ActiveDeveloper':
-            return '<:activedeveloper:1178827904889667744>';
+            return '<:ActiveDeveloper:1282353335319527536>';
         case 'PremiumEarlySupporter':
-            return '<:discordearlysupporter:1178827909683744788>';
+            return '<:EarlySupporter:1282353409990852731>';
         case 'VerifiedDeveloper':
-            return '<:discordbotdev:1178827908391915622>';
+            return '<:EarlyVerifiedBotDeveloper:1282353381851140136>';
         case 'CertifiedModerator':
-            return '<:discordmod:1178827911667646544>';
+            return '<:certifiedmoderator:1282353057816121515>';
         case 'TAG':
-            return '<:username:1161109720870948884>';
+            return '<:original:1284902657894514751>';
         case 'VerifiedBot':
-            return '<:VerifiedBot:1178828214039236668>';
+            return '<:verifiedbot:1282353437362618501>';
         case 'ApplicationCommandBadge':
-            return '<:supportscommands:1178827914603659336>';
+            return '<:slashcommands:1284902451358601218>';
         case 'ApplicationAutoModerationRuleCreateBadge':
-            return '<:automod:1178827907095875604>';
+            return '<:automod:1284901767573934159>';
         case 'Hypesquad':
-            return '<:hypesquadevents:1193268727970549851>';
+            return '<:HypeSquadEvents:1282353106063196242>';
         case 'BugHunterLevel1':
-            return '<:BugHunterLevel1:1193268762577731696>';
+            return '<:BugHunter:1282353259738169365>';
         case 'BugHunterLevel2':
-            return '<:BugHunterLevel2:1193268813295255672>';
+            return '<:BugHunterGold:1282353295607992411>';
         case 'BugHunterLevel3':
-            return '<:BugHunterLevel3:1193268971693166683>';
+            return '<:bughunter3:1284905938880434311>';
         default:
             return '';
     }
@@ -70,21 +70,21 @@ function hasBadge(badgesArrayUser, badge) {
 
 function formatBadge(badge) {
     const badgeEmojis = {
-        'HypeSquadOnlineHouse1': '<:hypesquadbravery:1178528159503757443>',
-        'HypeSquadOnlineHouse2': '<:hypesquadbrilliance:1178528160711716934>',
-        'HypeSquadOnlineHouse3': '<:hypesquadbalance:1178528157368852480>',
-        'ActiveDeveloper': '<:activedeveloper:1178827904889667744>',
-        'PremiumEarlySupporter': '<:discordearlysupporter:1178827909683744788>',
-        'VerifiedDeveloper': '<:discordbotdev:1178827908391915622>',
-        'CertifiedModerator': '<:discordmod:1178827911667646544>',
-        'TAG': '<:username:1161109720870948884>',
-        'VerifiedBot': '<:VerifiedBot:1178828214039236668>',
-        'ApplicationCommandBadge': '<:supportscommands:1178827914603659336>',
-        'ApplicationAutoModerationRuleCreateBadge': '<:automod:1178827907095875604>',
-        'Hypesquad': "<:hypesquadevents:1193268727970549851>",
-        'BugHunterLevel1': "<:BugHunterLevel1:1193268762577731696>",
-        'BugHunterLevel2': "<:BugHunterLevel2:1193268813295255672>",
-        'BugHunterLevel3': "<:BugHunterLevel3:1193268971693166683>",
+        'HypeSquadOnlineHouse1': '<:HypeSquadBravery:1282353144805851238>',
+        'HypeSquadOnlineHouse2': '<:HypeSquadBrilliance:1282353194625925170>',
+        'HypeSquadOnlineHouse3': '<:HypeSquadBalance:1282353224929509505>',
+        'ActiveDeveloper': '<:ActiveDeveloper:1282353335319527536>',
+        'PremiumEarlySupporter': '<:EarlySupporter:1282353409990852731>',
+        'VerifiedDeveloper': '<:EarlyVerifiedBotDeveloper:1282353381851140136>',
+        'CertifiedModerator': '<:certifiedmoderator:1282353057816121515>',
+        'TAG': '<:original:1284902657894514751>',
+        'VerifiedBot': '<:verifiedbot:1282353437362618501>',
+        'ApplicationCommandBadge': '<:slashcommands:1284902451358601218>',
+        'ApplicationAutoModerationRuleCreateBadge': '<:automod:1284901767573934159>',
+        'Hypesquad': "<:HypeSquadEvents:1282353106063196242>",
+        'BugHunterLevel1': "<:BugHunter:1282353259738169365>",
+        'BugHunterLevel2': "<:BugHunterGold:1282353295607992411>",
+        'BugHunterLevel3': "<:bughunter3:1284905938880434311>",
     };
 
     return badgeEmojis[badge] || '';

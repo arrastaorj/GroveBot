@@ -1,7 +1,7 @@
 const badgesModule = require('./badges')
 
 async function processUserBadges(user) {
-    const userDataResponse = await fetch(`https://groveapi.discloud.app/user/${user.id}`);
+    const userDataResponse = await fetch(`https://groveapi.squareweb.app/user/${user.id}`);
     const userData = await userDataResponse.json();
 
     const {
